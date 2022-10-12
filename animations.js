@@ -1,4 +1,4 @@
-let lineAnimationTime = 1000; //
+let lineAnimationTime = 1000;
 if(window.location.pathname === "/webflow-development-landing") {
 	lineAnimationTime = 2500;
 }
