@@ -21,14 +21,13 @@ $("[app='campaign']").on("submit", function (event) {
       if (data.status === 1) {
         successInfo.css("display", "block");
         successInfo.html(
-          "display",
-          "SprawdÅº wiadomoÅ›Ä‡, ktÃ³rÄ… wÅ‚aÅ›nie od nas otrzymaÅ‚eÅ›!"
+          "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!"
         );
         errorInfo.css("display", "none");
       } else {
         console.log(data);
         errorInfo.css("display", "block");
-        errorInfo.html("display", "CoÅ› poszÅ‚o nie tak");
+        errorInfo.html("Coś poszło nie tak");
       }
     }
   });
