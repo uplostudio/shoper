@@ -23,12 +23,12 @@ $("[app='create_trial_step1']").on("submit", function (event) {
         $("[app='trial-domain']").html(data.host);
       } else {
         $(form).find(".w-form-fail").css("display", "block");
-        $(form).find(".w-form-fail").html("Podany email jest nieprawidÅ‚owy");
+        $(form).find(".w-form-fail").html("Podany email jest nieprawidłowy");
         if (data.code === 2) {
           $(form)
             .find(".w-form-fail")
             .html(
-              "UruchomiÅ‚eÅ› co najmniej cztery wersje testowe sklepu w zbyt krÃ³tkim czasie. Odczekaj 24h od ostatniej udanej prÃ³by, zanim zrobisz to ponownie."
+              "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie."
             );
         }
       }
