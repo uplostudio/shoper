@@ -1,0 +1,35 @@
+$(".is-cons-popup").on("click", function () {
+  $("#cons").addClass("modal--open");
+});
+
+$("[app='campaign']").on("submit", function (event) {
+  event.preventDefault();
+  event.stopPropagation();
+  const successInfo = $(this).find(".w-form-done");
+  const errorInfo = $(this).find(".w-form-fail");
+  $.ajax({
+    url: "https://www.shoper.pl/ajax.php",
+    headers: {},
+    method: "POST",
+    data: {
+      action: $(this).attr("action"),
+      email: $(this).find("[app='email_campaign']").val(),
+      phone: $(this).find("[app='phone_campaign']").val(),
+      url: $(this).find("[app='url_campaign']").val()
+    },
+    success: function (data) {
+      if (data.status === 1) {
+        successInfo.css("display", "block");
+        successInfo.html(
+          "display",
+          "SprawdÅº wiadomoÅ›Ä‡, ktÃ³rÄ… wÅ‚aÅ›nie od nas otrzymaÅ‚eÅ›!"
+        );
+        errorInfo.css("display", "none");
+      } else {
+        console.log(data);
+        errorInfo.css("display", "block");
+        errorInfo.html("display", "CoÅ› poszÅ‚o nie tak");
+      }
+    }
+  });
+});
