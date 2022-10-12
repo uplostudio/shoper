@@ -17,7 +17,7 @@ $("[app='create_trial_step2']").on("submit", function (event) {
         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       } else {
         errorInfo.css("display", "block");
-        errorInfo.html("Podany numer jest nieprawidÅ‚owy");
+        errorInfo.html("Podany numer jest nieprawidłowy");
       }
     }
   });
