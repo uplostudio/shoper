@@ -5,8 +5,7 @@ $(".is-trial-popup").on("click", function () {
 $("[app='create_trial_step1']").on("submit", function (event) {
   event.preventDefault();
   event.stopPropagation();
-  localStorage.setItem("trial_email", $(this).find("[app='email']").val());
-  const form = this;
+  const errorInfo = $(this).find(".w-form-fail");
   $.ajax({
     url: "https://www.shoper.pl/ajax.php",
     headers: {},
@@ -22,12 +21,10 @@ $("[app='create_trial_step1']").on("submit", function (event) {
         $("[modal='create_trial_step2']").addClass("modal--open");
         $("[app='trial-domain']").html(data.host);
       } else {
-        $(form).find(".w-form-fail").css("display", "block");
-        $(form).find(".w-form-fail").html("Podany email jest nieprawidłowy");
+        errorInfo.css("display", "block");
+        errorInfo.html("Podany email jest nieprawidłowy");
         if (data.code === 2) {
-          $(form)
-            .find(".w-form-fail")
-            .html(
+          errorInfo.html(
               "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie."
             );
         }
