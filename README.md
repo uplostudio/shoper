@@ -2,9 +2,11 @@
 
 ## accordion.js
 
-* Responsibility: Creating Accordions on the page
-* Added: Globally
-* Requires: 
+### Responsibility
+Creating Accordions on the page
+### Added
+Globally
+### Requires: 
 Adding in the footer
 ```js
 (new Accordion({
@@ -16,14 +18,18 @@ Adding in the footer
 
 ## animations.js
 
-* Responsibility: Webflow Interactions
-* Added: Globally
+### Responsibility
+Webflow Interactions
+### Added
+Globally
 
 ## campaign.js
 
-* Responsibility: API Connection for setting consultation Form on Campaign pages
-* Added: Globally
-* Requires:
+### Responsibility
+API Connection for setting consultation Form on Campaign pages
+### Added
+Globally
+### Requires:
 1. Button with class ```.is-cons-popup``` to open popup
 2. Symbol ```modal_campaign```
 3. Form ```[app='campaign']```
@@ -38,9 +44,11 @@ document.querySelector("[app='campaign']").setAttribute("action", "send_sc_offer
 
 ## contact.js
 
-* Responsibility: API Connection for Contact Form
-* Added: Contact Page
-* Requires:
+### Responsibility
+API Connection for Contact Form
+### Added:
+Contact Page
+### Requires:
 1. Form ```[app='send_contact']```
 2. Inputs:
 ```[app='email_campaign']```
@@ -55,9 +63,11 @@ document.querySelector("[app='campaign']").setAttribute("action", "send_sc_offer
 
 ## login.js
 
-* Responsibility: API Connection for Login Form
-* Added: Globally
-* Requires:
+### Responsibility: 
+API Connection for Login Form
+### Added: 
+Globally
+### Requires:
 1. Button with class ```.is-login-popup``` to open popup
 2. Symbol ```modal_login_and_trialstep1```
 3. Form ```[app='login']```
@@ -71,3 +81,10 @@ document.querySelector("[app='modal_login_type']").innerHTML = "kampanię";
 ```js
 document.querySelector("[app='login']").setAttribute("action", "get_campaign");
 ```
+
+## navigation.js
+
+* Responsibility: Creating Accordions on the page
+* Added: Globally
+* Requires: 
+1. Usign selected classes in the navigation:  ```.nav``` ```.nav__menu``` ```. nav__dropdown``` ```.nav__dropdown-tab``` 
