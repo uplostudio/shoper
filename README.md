@@ -123,3 +123,17 @@ If it's a new form:
 3. Form ```[app='create_trial_step1']```
 4. Inputs:
 ```[app='email']```
+
+## trial-step-1.js
+
+### Responsibility: 
+API Connection for Creating Trial Step 1
+### Added: 
+Globally
+### Requires:
+If modal is being used:
+1. Create Trial Step 1
+2. Symbol ```modal_trial-step-2```
+3. Form ```[app='create_trial_step2']``` (Already set up in Webflow Symbol)
+4. Inputs:
+```[app='phone']```(Already set up in Webflow Symbol)
