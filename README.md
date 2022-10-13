@@ -32,11 +32,11 @@ Globally
 ### Requires:
 1. Button with class ```.is-cons-popup``` to open popup
 2. Symbol ```modal_campaign```
-3. Form ```[app='campaign']```
+3. Form ```[app='campaign']``` (already setup in Webflow Symbol)
 4. Inputs:
 ```[app='email_campaign']```
 ```[app='phone_campaign']```
-```[app='url_campaign']```
+```[app='url_campaign']``` (already setup in Webflow Symbol)
 5. Adding in the footer one of campaign actions: ```send_sc_offer``` ```send_mail``` ```send_mail_allegro```
 ```js
 document.querySelector("[app='campaign']").setAttribute("action", "send_sc_offer");
@@ -70,9 +70,9 @@ Globally
 ### Requires:
 1. Button with class ```.is-login-popup``` to open popup
 2. Symbol ```modal_login_and_trialstep1```
-3. Form ```[app='login']```
-4. Inputs:
-```[app='host']```
+3. Form ```[app='login']``` (already setup in Webflow Symbol)
+4. Inputs: 
+```[app='host']``` (already setup in Webflow Symbol)
 5. Adding in the footer text which will appear in Modal/Popup
 ```js
 document.querySelector("[app='modal_login_type']").innerHTML = "kampanię";
@@ -88,3 +88,38 @@ document.querySelector("[app='login']").setAttribute("action", "get_campaign");
 * Added: Globally
 * Requires: 
 1. Usign selected classes in the navigation:  ```.nav``` ```.nav__menu``` ```. nav__dropdown``` ```.nav__dropdown-tab``` 
+
+## promotion.js
+
+### Responsibility
+API Connection for Promotions
+### Added:
+Home Page
+### Requires:
+1. Inputs:
+```[app='promo_time']```
+```[app='promo_price']```
+```[app='promo_title']```
+2. Adding in the footer script
+```js
+<script src="https://shoper-web.netlify.io/promotion.js"></script>
+```
+
+## trial-step-1.js
+
+### Responsibility: 
+API Connection for Creating Trial Step 1
+### Added: 
+Globally
+### Requires:
+If modal is being used:
+1. Button with class ```.is-trial-popup``` 
+2. Symbol ```modal_login_and_trialstep1```
+
+
+If it's a new form:
+
+
+3. Form ```[app='create_trial_step1']```
+4. Inputs:
+```[app='email']```
