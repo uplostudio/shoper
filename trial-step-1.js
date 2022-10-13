@@ -18,7 +18,7 @@ $("[app='create_trial_step1']").on("submit", function (event) {
     success: function (data) {
       console.log(data);
       if (data.status === 1) {
-        $("[app='trial_simple']").removeClass("modal--open");
+        $("[app='create_trial_step1_modal']").removeClass("modal--open");
         $("[modal='create_trial_step2']").addClass("modal--open");
         $("[app='trial-domain']").html(data.host);
       } else {
