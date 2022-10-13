@@ -124,7 +124,7 @@ If it's a new form:
 4. Inputs:
 ```[app='email']```
 
-## trial-step-1.js
+## trial-step-2.js
 
 ### Responsibility: 
 API Connection for Creating Trial Step 1
