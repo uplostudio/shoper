@@ -1,5 +1,5 @@
 $(".is-cons-popup").on("click", function () {
-  $("#cons").addClass("modal--open");
+  $("[app='campaign_modal']").addClass("modal--open");
 });
 
 $("[app='campaign']").on("submit", function (event) {
