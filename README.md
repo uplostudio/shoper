@@ -96,7 +96,7 @@ API Connection for Promotions
 ### Added:
 Home Page
 ### Requires:
-1. Inputs:
+1. Text elements:
 ```[app='promo_time']```
 ```[app='promo_price']```
 ```[app='promo_title']```
