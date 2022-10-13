@@ -27,7 +27,7 @@ $("[app='campaign']").on("submit", function (event) {
       } else {
         console.log(data);
         errorInfo.css("display", "block");
-        errorInfo.html("Coś poszło nie tak");
+        errorInfo.html("Podaj poprawny adres sklepu w formacie nazwasklepu.pl lub www.nazwasklepu.pl");
       }
     }
   });
