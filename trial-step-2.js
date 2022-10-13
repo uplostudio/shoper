@@ -8,7 +8,6 @@ $("[app='create_trial_step2']").on("submit", function (event) {
     method: "POST",
     data: {
       action: "create_trial_step2",
-      //email: localStorage.getItem("trial_email"),
       phone: $(this).find("[app='phone']").val(),
     },
     success: function (data) {
