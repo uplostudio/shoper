@@ -1,6 +1,6 @@
 // Required Attributes: form[app='login'], input[app='host']
 
-$(".is-login-popup").on("click", function () {
+$(".is-login-popup, [app='open_login_modal_button']").on("click", function () {
   $("[app='login_modal'").addClass("modal--open");
 });
 
