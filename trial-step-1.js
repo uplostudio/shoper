@@ -1,4 +1,4 @@
-$(".is-trial-popup").on("click", function () {
+$(".is-trial-popup, [app='open_trial_modal_button']").on("click", function () {
   $("[app='create_trial_step1_modal']").addClass("modal--open");
 });
 
