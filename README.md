@@ -30,7 +30,7 @@ API Connection for setting consultation Form on Campaign pages
 ### Added
 Globally
 ### Requires:
-1. Button with class ```.is-cons-popup``` to open popup
+1. Button with class ```[app='open_consultation_modal_button']``` to open popup
 2. Symbol ```modal_campaign```
 3. Form ```[app='campaign']``` (already setup in Webflow Symbol)
 4. Inputs:
@@ -68,7 +68,7 @@ API Connection for Login Form
 ### Added: 
 Globally
 ### Requires:
-1. Button with class ```.is-login-popup``` to open popup
+1. Button with class ```[app='open_login_modal_button']``` to open popup
 2. Symbol ```modal_login_and_trialstep1```
 3. Form ```[app='login']``` (already setup in Webflow Symbol)
 4. Inputs: 
