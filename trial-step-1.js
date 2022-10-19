@@ -22,7 +22,7 @@ createTrialStepOne.forEach((n) => {
       }),
     }).then((response) => {
       let status = response.status;
-      console.log(response);
+
 
       if (status === 200) {
         document
