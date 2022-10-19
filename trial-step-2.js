@@ -2,7 +2,6 @@ let createTrialStepTwo = document.querySelectorAll(
   "[app='create_trial_step2']"
 );
 
-console.log(createTrialStepTwo);
 
 createTrialStepTwo.forEach((n) => {
   n.addEventListener("submit", (e) => {
