@@ -22,7 +22,7 @@ createTrialStepTwo.forEach((n) => {
       }),
     }).then((response) => {
       let status = response.status;
-      console.log(response);
+
 
       if (status === 200) {
         // MyTrackEvent Success (Step Two)
