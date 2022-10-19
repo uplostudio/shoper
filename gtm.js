@@ -20,6 +20,7 @@ inputsStepOne.forEach((n) => {
       };
 
       dataLayer.push(data);
+      console.log(dataLayer)
     }
   })
   // Control Focus Step One
