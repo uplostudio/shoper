@@ -54,8 +54,6 @@ let createTrialStepOne = document.querySelectorAll(
   "[app='create_trial_step1']"
 );
 
-console.log(createTrialStepOne)
-
 createTrialStepOne.forEach((n) => {
   n.addEventListener("submit", (e) => {
     e.preventDefault();
