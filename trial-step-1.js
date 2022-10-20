@@ -60,31 +60,26 @@ createTrialStepOne.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
 
-    let url = "https://www.shoper.pl/ajax.php";
+    // let url = "https://www.shoper.pl/ajax.php";
 
-    fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
-      method: "POST",
-      body: JSON.stringify({
-        action: "create_trial_step1",
-        email: n.querySelector("[app='email']").value,
-      }),
-    }).then((response) => {
-      let status = response.status;
-
-
-      if (status === 200) {
-        document
+   $.ajax({
+    url: "https://www.shoper.pl/ajax.php",
+    headers: {},
+    method: "POST",
+    data: {
+      action: "create_trial_step1",
+      email: n.querySelector("[app='email']").value
+    },
+    success: function (data) {
+      console.log(data);
+      if (data.status === 1) {
+  document
           .querySelector("[app='create_trial_step1_modal']")
           .classList.remove("modal--open");
         document
           .querySelector("[modal='create_trial_step2']")
           .classList.add("modal--open");
-        // $("[app='trial-domain']").html(data.host);
-        // MyTrackEvent Success (Step One)
-        if (window.dataLayer) {
+ if (window.dataLayer) {
           data = {
             eventCategory: "Button form sent",
             eventAction: n.querySelector("input[type='submit']:nth-child(1)")
@@ -97,9 +92,7 @@ createTrialStepOne.forEach((n) => {
           console.log(dataLayer);
         }
       } else {
-        errorInfo.css("display", "block");
-        errorInfo.html("Podany email jest nieprawidłowy");
-        // MyTrackEvent Error (Step One)
+         // MyTrackEvent Error (Step One)
         if (window.dataLayer) {
           data = {
             eventCategory: "Button form error",
@@ -112,10 +105,22 @@ createTrialStepOne.forEach((n) => {
           dataLayer.push(data);
           console.log(dataLayer);
         }
+          let errorInfo = n.querySelector(".w-form-fail");
+          errorInfo.children[0].innerHTML = "Podany email jest nieprawidłowy";
+          errorInfo.style.display = "block";
+        if (data.code === 2) {
+          errorInfo.html(
+              "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie."
+            );
+        }
       }
-    });
+    }
+  });
   });
 });
+
+
+
 
 
 
