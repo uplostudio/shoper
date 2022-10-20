@@ -1,5 +1,6 @@
-let inputsStepTwo = document.querySelectorAll("[app='create_trial_step2'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])")
-
+let inputsStepTwo = document.querySelectorAll(
+  "[app='create_trial_step2'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])"
+);
 
 inputsStepTwo.forEach((n) => {
   // Control Blur Step Two
@@ -10,17 +11,17 @@ inputsStepTwo.forEach((n) => {
 
     if (window.dataLayer) {
       data = {
-        event: 'controlBlur',
+        event: "controlBlur",
         formId: elementId,
         controlName: n.getAttribute("data-name"),
         controlType: n.type,
-        controlValue: n.value
+        controlValue: n.value,
       };
 
       dataLayer.push(data);
       console.log(dataLayer);
     }
-  })
+  });
   // Control Focus Step Two
   n.addEventListener("focus", () => {
     let data;
@@ -29,23 +30,22 @@ inputsStepTwo.forEach((n) => {
 
     if (window.dataLayer) {
       data = {
-        event: 'controlFocus',
+        event: "controlFocus",
         formId: elementId,
         controlName: n.getAttribute("data-name"),
         controlType: n.type,
-        controlValue: n.value
+        controlValue: n.value,
       };
 
       dataLayer.push(data);
       console.log(dataLayer);
     }
-  })
-})
+  });
+});
 
 let createTrialStepTwo = document.querySelectorAll(
   "[app='create_trial_step2']"
 );
-
 
 createTrialStepTwo.forEach((n) => {
   n.addEventListener("submit", (e) => {
@@ -53,51 +53,53 @@ createTrialStepTwo.forEach((n) => {
     e.stopPropagation();
     let url = "https://www.shoper.pl/ajax.php";
 
-    fetch(url, {
-      headers: {
-        "Content-Type": "application/json",
-      },
+    $.ajax({
+      url: "https://www.shoper.pl/ajax.php",
+      headers: {},
       method: "POST",
-      body: JSON.stringify({
+      data: {
         action: "create_trial_step2",
         phone: n.querySelector("[app='phone']").value,
-      }),
-    }).then((response) => {
-      let status = response.status;
+      },
+      success: function (data) {
+        console.log(data);
+        if (data.status === 1) {
+          // MyTrackEvent Success (Step Two)
 
-      if (status === 200) {
-        // MyTrackEvent Success (Step Two)
-        window.location.href = "https://www.shoper.pl/zaloz-sklep/";
-        if (window.dataLayer) {
-          data = {
-            eventCategory: "Button form sent",
-            eventAction: n.querySelector("input[type='submit']").value,
-            eventLabel: window.location.pathname,
-            eventType: n.querySelector("input[type='tel']").value,
-          };
+          if (window.dataLayer) {
+            data = {
+              eventCategory: "Button form sent",
+              eventAction: n.querySelector("input[type='submit']").value,
+              eventLabel: window.location.pathname,
+              eventType: n.querySelector("input[type='tel']").value,
+            };
 
-          dataLayer.push(data);
-          console.log(dataLayer);
+            dataLayer.push(data);
+            console.log(dataLayer);
+          }
+          window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+        } else {
+          let errorInfo = n.querySelector(".w-form-fail");
+          errorInfo.children[0].innerHTML = "Podany numer jest nieprawidłowy";
+          errorInfo.style.display = "block";
+          // MyTrackEvent Error (Step Two)
+          if (window.dataLayer) {
+            data = {
+              eventCategory: "Button form error",
+              eventAction: n.querySelector("input[type='submit']").value,
+              eventLabel: window.location.pathname,
+              eventType: n.querySelector("input[type='tel']").value,
+            };
+
+            dataLayer.push(data);
+            console.log(dataLayer);
+          }
         }
-      } else {
-        errorInfo.css("display", "block");
-        errorInfo.html("Podany numer jest nieprawidłowy");
-        // MyTrackEvent Error (Step Two)
-        if (window.dataLayer) {
-          data = {
-            eventCategory: "Button form error",
-            eventAction: n.querySelector("input[type='submit']").value,
-            eventLabel: window.location.pathname,
-            eventType: n.querySelector("input[type='tel']").value,
-          };
-
-          dataLayer.push(data);
-          console.log(dataLayer);
-        }
-      }
+      },
     });
   });
 });
+
 
 
 
