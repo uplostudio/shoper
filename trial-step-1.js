@@ -13,9 +13,7 @@ inputsStepOne.forEach((n) => {
   n.addEventListener("blur", () => {
     let data;
     let element = document.querySelector("[app='create_trial_step1']");
-    console.log(element)
     let elementId = element.getAttribute("app");
-    console.log(elementId);
 
     if (window.dataLayer) {
       data = {
