@@ -2,6 +2,9 @@ let inputsStepOne = document.querySelectorAll("[app='create_trial_step1'] input:
 
    let trialOpen = document.querySelectorAll("[app='open_trial_modal_button']");
 
+
+console.log(trialOpen)
+
   trialOpen.forEach((n) => {
     n.addEventListener("click", () => {
         document.querySelector("[app='create_trial_step1_modal']").classList.add("modal--open");
@@ -13,7 +16,9 @@ inputsStepOne.forEach((n) => {
   n.addEventListener("blur", () => {
     let data;
     let element = document.querySelector("[app='create_trial_step1']");
+    console.log(element)
     let elementId = element.getAttribute("app");
+    console.log(elementId);
 
     if (window.dataLayer) {
       data = {
@@ -54,6 +59,8 @@ let createTrialStepOne = document.querySelectorAll(
   "[app='create_trial_step1']"
 );
 
+console.log(createTrialStepOne)
+
 createTrialStepOne.forEach((n) => {
   n.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -72,7 +79,9 @@ createTrialStepOne.forEach((n) => {
     success: function (data) {
       console.log(data);
       if (data.status === 1) {
-      
+let errorInfo = n.querySelector(".w-form-fail");
+          errorInfo.children[0].innerHTML = "Podany email jest nieprawidłowy";
+          errorInfo.style.display = "none";
   // document.querySelector("[app='create_trial_step1_modal']")
   //         .classList.remove("modal--open");
         document
@@ -81,6 +90,9 @@ createTrialStepOne.forEach((n) => {
  if (window.dataLayer) {
           data = {
             eventCategory: "Button form sent",
+            eventName: "formSubmitSuccess",
+            formId: n.querySelector("form").id,
+            // eventTime = this.getFormTime(),
             eventAction: n.querySelector("input[type='submit']:nth-child(1)")
               .value,
             eventLabel: window.location.pathname,
@@ -91,10 +103,13 @@ createTrialStepOne.forEach((n) => {
           console.log(dataLayer);
         }
       } else {
+        
          // MyTrackEvent Error (Step One)
         if (window.dataLayer) {
           data = {
             eventCategory: "Button form error",
+             eventName: "formSubmitError",
+            formId: n.querySelector("form").id,
             eventAction: n.querySelector("input[type='submit']:nth-child(1)")
               .value,
             eventLabel: window.location.pathname,
@@ -117,6 +132,7 @@ createTrialStepOne.forEach((n) => {
   });
   });
 });
+
 
 
 
