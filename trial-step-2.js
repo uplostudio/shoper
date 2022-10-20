@@ -26,7 +26,7 @@ inputsStepTwo.forEach((n) => {
   n.addEventListener("focus", () => {
     let data;
     let element = document.querySelector("[data-name='create_trial_step2']");
-    let elementId = element.id;
+    let elementId = element.getAttribute("data-name");
 
     if (window.dataLayer) {
       data = {
@@ -51,7 +51,7 @@ createTrialStepTwo.forEach((n) => {
   n.addEventListener("submit", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    let url = "https://www.shoper.pl/ajax.php";
+    // let url = "https://www.shoper.pl/ajax.php";
 
     $.ajax({
       url: "https://www.shoper.pl/ajax.php",
@@ -60,15 +60,21 @@ createTrialStepTwo.forEach((n) => {
       data: {
         action: "create_trial_step2",
         phone: n.querySelector("[app='phone']").value,
+        eventName: "formSubmitSuccess",
+            formId: n.querySelector("form").id
       },
       success: function (data) {
         console.log(data);
         if (data.status === 1) {
           // MyTrackEvent Success (Step Two)
-
+          let errorInfo = n.querySelector(".w-form-fail");
+          errorInfo.children[0].innerHTML = "Podany numer jest nieprawidłowy";
+          errorInfo.style.display = "none";
           if (window.dataLayer) {
             data = {
-              eventCategory: "Button form sent",
+              eventCategory: "Button modal form sent",
+               eventName: "formSubmitSuccess",
+            formId: n.querySelector("form").id,
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
@@ -79,13 +85,16 @@ createTrialStepTwo.forEach((n) => {
           }
           window.location.href = "https://www.shoper.pl/zaloz-sklep/";
         } else {
+           console.log(data);
           let errorInfo = n.querySelector(".w-form-fail");
           errorInfo.children[0].innerHTML = "Podany numer jest nieprawidłowy";
           errorInfo.style.display = "block";
           // MyTrackEvent Error (Step Two)
           if (window.dataLayer) {
             data = {
-              eventCategory: "Button form error",
+              eventCategory: "Button modal form sent",
+               eventName: "formSubmitError",
+            formId: n.querySelector("form").id,
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
@@ -99,6 +108,7 @@ createTrialStepTwo.forEach((n) => {
     });
   });
 });
+
 
 
 
