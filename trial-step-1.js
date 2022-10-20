@@ -1,8 +1,11 @@
 let inputsStepOne = document.querySelectorAll("[app='create_trial_step1'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])")
 
- let trialOpen = document.querySelector("[app='open_trial_modal_button']");
-  trialOpen.addEventListener("click", () => {
-    document.querySelector("[app='create_trial_step1_modal']").classList.add("modal--open");
+   let trialOpen = document.querySelectorAll("[app='open_trial_modal_button']");
+
+  trialOpen.forEach((n) => {
+    n.addEventListener("click", () => {
+        document.querySelector("[app='create_trial_step1_modal']").classList.add("modal--open");
+      })
   })
 
 inputsStepOne.forEach((n) => {
