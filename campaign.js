@@ -1,4 +1,4 @@
-$(".is-cons-popup, [app='open_consultation_modal_button']").on("click", function () {
+$("[app='open_consultation_modal_button']").on("click", function () {
   $("[app='campaign_modal']").addClass("modal--open");
 });
 
