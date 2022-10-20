@@ -2,9 +2,6 @@ let inputsStepOne = document.querySelectorAll("[app='create_trial_step1'] input:
 
    let trialOpen = document.querySelectorAll("[app='open_trial_modal_button']");
 
-
-console.log(trialOpen)
-
   trialOpen.forEach((n) => {
     n.addEventListener("click", () => {
         document.querySelector("[app='create_trial_step1_modal']").classList.add("modal--open");
