@@ -47,59 +47,57 @@ let createTrialStepTwo = document.querySelectorAll(
 );
 
 
-// createTrialStepTwo.forEach((n) => {
-//   n.addEventListener("submit", (e) => {
-//     e.preventDefault();
-//     e.stopPropagation();
+createTrialStepTwo.forEach((n) => {
+  n.addEventListener("submit", (e) => {
+    e.preventDefault();
+    e.stopPropagation();
+    let url = "https://www.shoper.pl/ajax.php";
 
-//     let url = "https://www.shoper.pl/ajax.php";
+    fetch(url, {
+      headers: {
+        "Content-Type": "application/json",
+      },
+      method: "POST",
+      body: JSON.stringify({
+        action: "create_trial_step2",
+        phone: n.querySelector("[app='phone']").value,
+      }),
+    }).then((response) => {
+      let status = response.status;
 
-//     fetch(url, {
-//       headers: {
-//         "Content-Type": "application/json",
-//       },
-//       method: "POST",
-//       body: JSON.stringify({
-//         action: "create_trial_step2",
-//         phone: n.querySelector("[app='phone']").value,
-//       }),
-//     }).then((response) => {
-//       let status = response.status;
+      if (status === 200) {
+        // MyTrackEvent Success (Step Two)
+        window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+        if (window.dataLayer) {
+          data = {
+            eventCategory: "Button form sent",
+            eventAction: n.querySelector("input[type='submit']").value,
+            eventLabel: window.location.pathname,
+            eventType: n.querySelector("input[type='tel']").value,
+          };
 
+          dataLayer.push(data);
+          console.log(dataLayer);
+        }
+      } else {
+        errorInfo.css("display", "block");
+        errorInfo.html("Podany numer jest nieprawidłowy");
+        // MyTrackEvent Error (Step Two)
+        if (window.dataLayer) {
+          data = {
+            eventCategory: "Button form error",
+            eventAction: n.querySelector("input[type='submit']").value,
+            eventLabel: window.location.pathname,
+            eventType: n.querySelector("input[type='tel']").value,
+          };
 
-//       if (status === 200) {
-//         // MyTrackEvent Success (Step Two)
-          window.location.href = "https://www.shoper.pl/zaloz-sklep/";
-//         if (window.dataLayer) {
-//           data = {
-//             eventCategory: "Button form sent",
-//             eventAction: n.querySelector("input[type='submit']").value,
-//             eventLabel: window.location.pathname,
-//             eventType: n.querySelector("input[type='tel']").value,
-//           };
-
-//           dataLayer.push(data);
-//           console.log(dataLayer);
-//         }
-//       } else {
-//         errorInfo.css("display", "block");
-            errorInfo.html("Podany numer jest nieprawidłowy");
-//         // MyTrackEvent Error (Step Two)
-//         if (window.dataLayer) {
-//           data = {
-//             eventCategory: "Button form error",
-//             eventAction: n.querySelector("input[type='submit']").value,
-//             eventLabel: window.location.pathname,
-//             eventType: n.querySelector("input[type='tel']").value,
-//           };
-
-//           dataLayer.push(data);
-//           console.log(dataLayer);
-//         }
-//       }
-//     });
-//   });
-// });
+          dataLayer.push(data);
+          console.log(dataLayer);
+        }
+      }
+    });
+  });
+});
 
 
 
