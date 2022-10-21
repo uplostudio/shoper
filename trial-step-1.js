@@ -117,6 +117,19 @@ createTrialStepOne.forEach((n) => {
   
             dataLayer.push(data);
             console.log(dataLayer);
+
+            data = {
+              event: 'myTrackEvent',
+              formId: n.querySelector("form").id,
+              eventCategory: "Button form sent",
+              eventAction: n.querySelector("input[type='submit']:nth-child(1)")
+                .value,
+              eventType: n.querySelector("[app='email']").value,
+              eventLabel: window.location.pathname,
+              
+            }
+
+            dataLayer.push(data);
           }
         } else {
           // MyTrackEvent Error (Step One)
@@ -134,6 +147,19 @@ createTrialStepOne.forEach((n) => {
 
             dataLayer.push(data);
             console.log(dataLayer);
+
+            data = {
+              event: 'myTrackEvent',
+              formId: n.querySelector("form").id,
+              eventCategory: "Button form sent",
+              eventAction: n.querySelector("input[type='submit']:nth-child(1)")
+                .value,
+              eventType: n.querySelector("[app='email']").value,
+              eventLabel: window.location.pathname,
+              
+            }
+
+            dataLayer.push(data);
           }
           let errorInfo = n.querySelector(".w-form-fail");
           errorInfo.children[0].innerHTML = "Podany email jest nieprawidłowy";
@@ -148,10 +174,6 @@ createTrialStepOne.forEach((n) => {
     });
   });
 });
-
-
-
-
 
 
 
