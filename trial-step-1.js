@@ -6,15 +6,11 @@ let trialOpen = document.querySelectorAll("[app='open_trial_modal_button']");
 
 let modal = document.querySelector("[app='create_trial_step1_modal']");
 
-console.log(inputsStepOne)
-
-
 
 // console.log(trialOpen);
 
 trialOpen.forEach((n) => {
   n.addEventListener("click", () => {
-    console.log(n);
     modal.classList.add("modal--open");
   });
 });
@@ -24,9 +20,9 @@ inputsStepOne.forEach((n) => {
   n.addEventListener("blur", () => {
     let data;
     let element = document.querySelector("[app='create_trial_step1']");
-    console.log(element);
+
     let elementId = element.getAttribute("app");
-    console.log(elementId);
+
 
     if (window.dataLayer) {
       data = {
