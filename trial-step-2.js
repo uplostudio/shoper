@@ -47,6 +47,8 @@ let createTrialStepTwo = document.querySelectorAll(
   "[app='create_trial_step2']"
 );
 
+// On submit actions start here
+
 createTrialStepTwo.forEach((n) => {
   n.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -72,18 +74,19 @@ createTrialStepTwo.forEach((n) => {
           errorInfo.style.display = "none";
           if (window.dataLayer) {
             data = {
+              event: "formSubmitSuccess",
               eventCategory: "Button modal form sent",
-               eventName: "formSubmitSuccess",
-            formId: n.querySelector("form").id,
+              formId: n.querySelector("form").id,
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
+              eventHistory: window.history
             };
 
             dataLayer.push(data);
             console.log(dataLayer);
           }
-          window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+          // window.location.href = "https://www.shoper.pl/zaloz-sklep/";
         } else {
            console.log(data);
           let errorInfo = n.querySelector(".w-form-fail");
@@ -92,12 +95,13 @@ createTrialStepTwo.forEach((n) => {
           // MyTrackEvent Error (Step Two)
           if (window.dataLayer) {
             data = {
+              event: "formSubmitError",
+              formId: n.querySelector("form").id,
               eventCategory: "Button modal form sent",
-               eventName: "formSubmitError",
-            formId: n.querySelector("form").id,
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
+              eventHistory: window.history
             };
 
             dataLayer.push(data);
