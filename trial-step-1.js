@@ -6,6 +6,8 @@ let trialOpen = document.querySelectorAll("[app='open_trial_modal_button']");
 
 let modal = document.querySelector("[app='create_trial_step1_modal']");
 
+console.log(inputsStepOne)
+
 
 
 // console.log(trialOpen);
@@ -37,6 +39,13 @@ inputsStepOne.forEach((n) => {
 
       dataLayer.push(data);
       console.log(dataLayer);
+
+      // data = {
+      // eventName: "formAbandon",
+      //   formId: elementId,
+      // }
+
+      // dataLayer.push(data);
     }
   });
   // Control Focus Step One
@@ -105,7 +114,7 @@ createTrialStepOne.forEach((n) => {
               eventType: n.querySelector("[app='email']").value,
               eventHistory: window.history
             };
-
+  
             dataLayer.push(data);
             console.log(dataLayer);
           }
@@ -139,6 +148,7 @@ createTrialStepOne.forEach((n) => {
     });
   });
 });
+
 
 
 
