@@ -91,7 +91,6 @@ createTrialStepTwo.forEach((n) => {
             };
 
             dataLayer.push(data);
-            console.log(dataLayer);
 
             data = {
               event: 'myTrackEvent',
@@ -104,6 +103,8 @@ createTrialStepTwo.forEach((n) => {
             }
 
             dataLayer.push(data);
+            console.log(dataLayer);
+            
           }
           window.location.href = "https://www.shoper.pl/zaloz-sklep/";
         } else {
@@ -124,7 +125,6 @@ createTrialStepTwo.forEach((n) => {
             };
 
             dataLayer.push(data);
-            console.log(dataLayer);
 
             data = {
               event: 'myTrackEvent',
@@ -137,6 +137,8 @@ createTrialStepTwo.forEach((n) => {
             }
 
             dataLayer.push(data);
+            console.log(dataLayer);
+            
           }
         }
       },
