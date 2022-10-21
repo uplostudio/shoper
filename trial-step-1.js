@@ -34,7 +34,6 @@ inputsStepOne.forEach((n) => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
 
       // data = {
       // eventName: "formAbandon",
@@ -112,7 +111,6 @@ createTrialStepOne.forEach((n) => {
             };
   
             dataLayer.push(data);
-            console.log(dataLayer);
 
             data = {
               event: 'myTrackEvent',
@@ -126,6 +124,8 @@ createTrialStepOne.forEach((n) => {
             }
 
             dataLayer.push(data);
+      console.log(dataLayer);
+              
           }
         } else {
           // MyTrackEvent Error (Step One)
@@ -142,7 +142,6 @@ createTrialStepOne.forEach((n) => {
             };
 
             dataLayer.push(data);
-            console.log(dataLayer);
 
             data = {
               event: 'myTrackEvent',
@@ -156,6 +155,8 @@ createTrialStepOne.forEach((n) => {
             }
 
             dataLayer.push(data);
+            console.log(dataLayer);
+            
           }
           let errorInfo = n.querySelector(".w-form-fail");
           errorInfo.children[0].innerHTML = "Podany email jest nieprawidłowy";
