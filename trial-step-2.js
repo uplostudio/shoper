@@ -20,6 +20,13 @@ inputsStepTwo.forEach((n) => {
 
       dataLayer.push(data);
       console.log(dataLayer);
+
+      // data = {
+      // eventName: "formAbandon",
+      //   formId: elementId,
+      // }
+
+      // dataLayer.push(data);
     }
   });
   // Control Focus Step Two
@@ -112,7 +119,6 @@ createTrialStepTwo.forEach((n) => {
     });
   });
 });
-
 
 
 
