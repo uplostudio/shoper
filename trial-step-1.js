@@ -95,14 +95,15 @@ createTrialStepOne.forEach((n) => {
             .classList.add("modal--open");
           if (window.dataLayer) {
             data = {
-              eventCategory: "Button form sent",
               eventName: "formSubmitSuccess",
               formId: n.querySelector("form").id,
+              eventCategory: "Button form sent",
               // eventTime = this.getFormTime(),
               // eventAction: n.querySelector("input[type='submit']:nth-child(1)")
               //   .value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("[app='email']").value,
+              eventHistory: window.history
             };
 
             dataLayer.push(data);
@@ -112,13 +113,14 @@ createTrialStepOne.forEach((n) => {
           // MyTrackEvent Error (Step One)
           if (window.dataLayer) {
             data = {
-              eventCategory: "Button form error",
               eventName: "formSubmitError",
               formId: n.querySelector("form").id,
+              eventCategory: "Button form error",
               eventAction: n.querySelector("input[type='submit']:nth-child(1)")
                 .value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("[app='email']").value,
+              eventHistory: window.history
             };
 
             dataLayer.push(data);
@@ -137,7 +139,6 @@ createTrialStepOne.forEach((n) => {
     });
   });
 });
-
 
 
 
