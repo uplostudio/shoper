@@ -92,6 +92,18 @@ createTrialStepTwo.forEach((n) => {
 
             dataLayer.push(data);
             console.log(dataLayer);
+
+            data = {
+              event: 'myTrackEvent',
+              formId: n.querySelector("form").id,
+              eventCategory: "Button form sent",
+              eventAction: n.querySelector("input[type='submit']").value,
+              eventType: n.querySelector("input[type='tel']").value,
+              eventLabel: window.location.pathname,
+              
+            }
+
+            dataLayer.push(data);
           }
           // window.location.href = "https://www.shoper.pl/zaloz-sklep/";
         } else {
@@ -113,14 +125,24 @@ createTrialStepTwo.forEach((n) => {
 
             dataLayer.push(data);
             console.log(dataLayer);
+
+            data = {
+              event: 'myTrackEvent',
+              formId: n.querySelector("form").id,
+              eventCategory: "Button form sent",
+              eventAction: n.querySelector("input[type='submit']").value,
+              eventType: n.querySelector("input[type='tel']").value,
+              eventLabel: window.location.pathname,
+              
+            }
+
+            dataLayer.push(data);
           }
         }
       },
     });
   });
 });
-
-
 
 
 
