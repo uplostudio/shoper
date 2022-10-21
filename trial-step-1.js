@@ -12,9 +12,8 @@ let modal = document.querySelector("[app='create_trial_step1_modal']");
 
 trialOpen.forEach((n) => {
   n.addEventListener("click", () => {
-    document
-      .querySelector("[app='create_trial_step1_modal']")
-      .classList.add("modal--open");
+    console.log(n);
+    modal.classList.add("modal--open");
   });
 });
 
@@ -85,7 +84,7 @@ createTrialStepOne.forEach((n) => {
       success: function (data) {
         console.log(data);
         if (data.status === 1) {
-          modal.style.display = "none";
+          modal.classList.remove("modal--open");
           let errorInfo = n.querySelector(".w-form-fail");
           errorInfo.children[0].innerHTML = "Podany email jest nieprawidłowy";
           errorInfo.style.display = "none";
@@ -138,8 +137,6 @@ createTrialStepOne.forEach((n) => {
     });
   });
 });
-
-
 
 
 
