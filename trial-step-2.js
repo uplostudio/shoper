@@ -77,7 +77,7 @@ createTrialStepTwo.forEach((n) => {
         if (data.status === 1) {
           // MyTrackEvent Success (Step Two)
           let errorInfo = n.querySelector(".w-form-fail");
-          errorInfo.children[0].innerHTML = "Podany numer jest nieprawidłowy";
+
           errorInfo.style.display = "none";
           if (window.dataLayer) {
             data = {
@@ -110,7 +110,7 @@ createTrialStepTwo.forEach((n) => {
         } else {
            console.log(data);
           let errorInfo = n.querySelector(".w-form-fail");
-          errorInfo.children[0].innerHTML = "Podany numer jest nieprawidłowy";
+          errorInfo.children[0].innerHTML = "Coś poszło nie tak. Spróbuj ponownie.";
           errorInfo.style.display = "block";
           // MyTrackEvent Error (Step Two)
           if (window.dataLayer) {
