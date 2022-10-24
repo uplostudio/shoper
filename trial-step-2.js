@@ -1,6 +1,29 @@
 let inputsStepTwo = document.querySelectorAll(
   "[app='create_trial_step2'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])"
 );
+// formAbandon
+window.addEventListener("beforeunload", () => {
+  inputsStepTwo.forEach((n) => {
+      inputVals = n.value;
+    let element = document.querySelector("[app='create_trial_step2']");
+    elementId = element.getAttribute("app");
+
+     inputValsArr.push(inputVals)
+     inputValsArrFiltered = inputValsArr.filter(el => el.length > 1)
+  })
+
+  if (inputValsArrFiltered.length > 0 && window.dataLayer) {
+    data = {
+        event: "formAbandon",
+      formId: elementId,
+        eventHistory: window.history
+      };
+
+      dataLayer.push(data);
+      console.log(dataLayer);
+
+  }
+})
 
 inputsStepTwo.forEach((n) => {
   // Control Blur Step Two
