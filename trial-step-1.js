@@ -6,6 +6,36 @@ let trialOpen = document.querySelectorAll("[app='open_trial_modal_button']");
 
 let modal = document.querySelector("[app='create_trial_step1_modal']");
 
+// beforeunload
+// formAbandon
+let inputVals
+let inputValsArr = []
+let inputValsArrFiltered
+let elementId;
+
+window.addEventListener("beforeunload", () => {
+  inputsStepOne.forEach((n) => {
+      inputVals = n.value;
+    let element = document.querySelector("[app='create_trial_step1']");
+    elementId = element.getAttribute("app");
+
+     inputValsArr.push(inputVals)
+     inputValsArrFiltered = inputValsArr.filter(el => el.length > 1)
+  })
+
+  if (inputValsArrFiltered.length > 0 && window.dataLayer) {
+    data = {
+        event: "formAbandon",
+      formId: elementId,
+        eventHistory: window.history
+      };
+
+      dataLayer.push(data);
+      console.log(dataLayer);
+
+  }
+})
+
 
 // console.log(trialOpen);
 
