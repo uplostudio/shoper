@@ -192,9 +192,9 @@ createTrialStepOne.forEach((n) => {
           errorInfo.children[0].innerHTML = "Podany email jest nieprawidłowy";
           errorInfo.style.display = "block";
           if (data.code === 2) {
-            errorInfo.html(
+            errorInfo.children[0].innerHTML =
               "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie."
-            );
+            
           }
         }
       },
