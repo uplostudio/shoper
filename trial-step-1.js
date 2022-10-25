@@ -179,7 +179,7 @@ let inputsStepOne = document.querySelectorAll(
               data = {
                 event: 'myTrackEvent',
                 formId: n.querySelector("form").id,
-                eventCategory: "Button form sent",
+                eventCategory: "Button form error",
                 eventAction: n.querySelector("input[type='submit']:nth-child(1)")
                   .value,
                 eventType: n.querySelector("[app='email']").value,
