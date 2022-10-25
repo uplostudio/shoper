@@ -126,6 +126,8 @@ let inputsStepOne = document.querySelectorAll(
           else if (data.code === 1 || data.status === 1) {
             modal.classList.remove("modal--open");
             let errorInfo = n.querySelector(".w-form-fail");
+            let trialDomain = n.querySelector("[app='trial-domain']");
+            trialDomain.innerHTML = data.host;
             errorInfo.style.display = "none";
 
             document
@@ -189,7 +191,14 @@ let inputsStepOne = document.querySelectorAll(
   //             console.log(dataLayer);
               
             }
-            
+            // let errorInfo = n.querySelector(".w-form-fail");
+            // errorInfo.children[0].innerHTML = "Podany email jest nieprawidłowy";
+            // errorInfo.style.display = "block";
+            // if (data.code === 2) {
+            //   errorInfo.children[0].innerHTML =
+            //     "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie."
+              
+            // }
           }
         },
       });
