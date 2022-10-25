@@ -118,7 +118,7 @@ createTrialStepTwo.forEach((n) => {
             data = {
               event: 'myTrackEvent',
               formId: n.querySelector("form").id,
-              eventCategory: "Button form sent",
+              eventCategory: "Button modal form sent",
               eventAction: n.querySelector("input[type='submit']").value,
               eventType: n.querySelector("input[type='tel']").value,
               eventLabel: window.location.pathname,
@@ -140,7 +140,7 @@ createTrialStepTwo.forEach((n) => {
             data = {
               event: "formSubmitError",
               formId: n.querySelector("form").id,
-              eventCategory: "Button modal form sent",
+              eventCategory: "Button modal form error",
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
@@ -152,7 +152,7 @@ createTrialStepTwo.forEach((n) => {
             data = {
               event: 'myTrackEvent',
               formId: n.querySelector("form").id,
-              eventCategory: "Button form sent",
+              eventCategory: "Button modal form error",
               eventAction: n.querySelector("input[type='submit']").value,
               eventType: n.querySelector("input[type='tel']").value,
               eventLabel: window.location.pathname,
