@@ -31,7 +31,7 @@ window.addEventListener("beforeunload", () => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
+//       console.log(dataLayer);
 
   }
 })
@@ -89,7 +89,7 @@ inputsStepOne.forEach((n) => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
+//       console.log(dataLayer);
     }
   });
 });
@@ -154,7 +154,7 @@ createTrialStepOne.forEach((n) => {
             }
 
             dataLayer.push(data);
-      console.log(dataLayer);
+//       console.log(dataLayer);
               
           }
         } else {
@@ -185,7 +185,7 @@ createTrialStepOne.forEach((n) => {
             }
 
             dataLayer.push(data);
-            console.log(dataLayer);
+//             console.log(dataLayer);
             
           }
           let errorInfo = n.querySelector(".w-form-fail");
