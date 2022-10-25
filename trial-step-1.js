@@ -126,7 +126,7 @@ let inputsStepOne = document.querySelectorAll(
           else if (data.code === 1 || data.status === 1) {
             modal.classList.remove("modal--open");
             let errorInfo = n.querySelector(".w-form-fail");
-            let trialDomain = n.querySelector("[app='trial-domain']");
+            let trialDomain = document.querySelector("[app='trial-domain']");
             trialDomain.innerHTML = data.host;
             errorInfo.style.display = "none";
 
