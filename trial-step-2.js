@@ -20,7 +20,7 @@ window.addEventListener("beforeunload", () => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
+//       console.log(dataLayer);
 
   }
 })
@@ -42,7 +42,7 @@ inputsStepTwo.forEach((n) => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
+//       console.log(dataLayer);
 
       // data = {
       // eventName: "formAbandon",
@@ -68,7 +68,7 @@ inputsStepTwo.forEach((n) => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
+//       console.log(dataLayer);
     }
   });
 });
@@ -126,7 +126,7 @@ createTrialStepTwo.forEach((n) => {
             }
 
             dataLayer.push(data);
-            console.log(dataLayer);
+//             console.log(dataLayer);
             
           }
           window.location.href = "https://www.shoper.pl/zaloz-sklep/";
@@ -160,7 +160,7 @@ createTrialStepTwo.forEach((n) => {
             }
 
             dataLayer.push(data);
-            console.log(dataLayer);
+//             console.log(dataLayer);
             
           }
         }
