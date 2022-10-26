@@ -116,7 +116,7 @@ let inputsStepOne = document.querySelectorAll(
           email: n.querySelector("[app='email']").value,
         },
         success: function (data) {
-          console.log(data);
+//           console.log(data);
           if (data.code === 2) {
 
             let errorInfo = n.querySelector(".w-form-fail");
