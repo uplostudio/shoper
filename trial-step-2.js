@@ -96,7 +96,7 @@ createTrialStepTwo.forEach((n) => {
             formId: n.querySelector("form").id
       },
       success: function (data) {
-        console.log(data);
+//         console.log(data);
         if (data.status === 1) {
           // MyTrackEvent Success (Step Two)
           let errorInfo = n.querySelector(".w-form-fail");
@@ -131,7 +131,7 @@ createTrialStepTwo.forEach((n) => {
           }
           window.location.href = "https://www.shoper.pl/zaloz-sklep/";
         } else {
-           console.log(data);
+//            console.log(data);
           let errorInfo = n.querySelector(".w-form-fail");
           errorInfo.children[0].innerHTML = "Coś poszło nie tak. Spróbuj ponownie.";
           errorInfo.style.display = "block";
