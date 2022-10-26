@@ -22,7 +22,7 @@ $("[app='login']").on("submit", function (event) {
       } else {
         console.log(data);
         errorInfo.css("display", "block");
-        errorInfo.html("Podaj poprawny adres sklepu w formacie nazwasklepu.pl lub www.nazwasklepu.pl");
+        errorInfo.html("Podaj poprawny adres sklepu w formacie nazwasklepu.pl lub https://www.nazwasklepu.pl");
       }
     }
   });
