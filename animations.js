@@ -17,6 +17,9 @@ $('.modal__close, .modal__close-area').on('click', function() {
 });
   $('.show-in-editor').each(function(){$(this).removeClass('show-in-editor')});
 
+
+// since sticky doesn't show on all subpages let's play try&catch for any errors
+try {
 // get the sticky element
 const stickyElm = document.querySelector(".nav-secondary");
 
@@ -26,6 +29,12 @@ const observer = new IntersectionObserver(
 );
 
 observer.observe(stickyElm);
+	
+} catch (err) {
+// do nothing - don't show error if element is not found
+}
+
+	
 
 //recalculate available space on mobile
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
