@@ -1,17 +1,17 @@
 // caculate menu height based on black friday's banner
 
-setInterval(function(){ 
-   let menu = document.querySelector(".nav__menu");
-   let banner = document.querySelector("#google-ads-bar");
-    bannerHeightString = window.getComputedStyle(banner).height
-    bannerHeightValue = parseInt(bannerHeightString)
+// setInterval(function(){
+//    let menu = document.querySelector(".nav__menu");
+//    let banner = document.querySelector("#google-ads-bar");
+//     bannerHeightString = window.getComputedStyle(banner).height
+//     bannerHeightValue = parseInt(bannerHeightString)
 
-if (window.innerWidth <= 991 && window.scrollY < 30) {
-  menu.style.height = `${window.innerHeight - bannerHeightValue}px`;
-} else {
-  menu.style.height = `${window.innerHeight}px`
-}
-}, 100);
+// if (window.innerWidth <= 991 && window.scrollY < 30) {
+//   menu.style.height = `${window.innerHeight - bannerHeightValue}px`;
+// } else {
+//   menu.style.height = `${window.innerHeight}px`
+// }
+// }, 100);
 
 (function () {
   const $nav = $(".nav");
@@ -73,17 +73,17 @@ if (window.innerWidth <= 991 && window.scrollY < 30) {
     jQuery.event.special.touchstart = {
       setup: function (_, ns, handle) {
         this.addEventListener("touchstart", handle, {
-          passive: !ns.includes("noPreventDefault")
+          passive: !ns.includes("noPreventDefault"),
         });
-      }
+      },
     };
 
     jQuery.event.special.touchend = {
       setup: function (_, ns, handle) {
         this.addEventListener("touchend", handle, {
-          passive: !ns.includes("noPreventDefault")
+          passive: !ns.includes("noPreventDefault"),
         });
-      }
+      },
     };
     /** -end Set data */
 
