@@ -1,3 +1,18 @@
+// caculate menu height based on black friday's banner
+
+setInterval(function(){ 
+   let menu = document.querySelector(".nav__menu");
+   let banner = document.querySelector("#google-ads-bar");
+    bannerHeightString = window.getComputedStyle(banner).height
+    bannerHeightValue = parseInt(bannerHeightString)
+
+if (window.innerWidth <= 991 && window.scrollY < 30) {
+  menu.style.height = `${window.innerHeight - bannerHeightValue}px`;
+} else {
+  menu.style.height = `${window.innerHeight}px`
+}
+}, 100);
+
 (function () {
   const $nav = $(".nav");
   const $nav_menu = $nav.find(".nav__menu");
