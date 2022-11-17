@@ -9,12 +9,12 @@ Webflow.push(function () {
     headers: {},
     method: "POST",
     data: {
-      action: "get_promotion"
+      action: "get_promotion",
     },
     success: function (data) {
-//       console.log(data);
-      $(promoTitleSelector).text(data.title);
-      $(promoPriceSelector).text(data.package.price_promo.month);
+      //       console.log(data);
+      // $(promoTitleSelector).text(data.title);
+      // $(promoPriceSelector).text(data.package.price_promo.month);
 
       let time = 0;
       // Update the count down every 1 second
@@ -53,12 +53,12 @@ Webflow.push(function () {
       setTimeout(() => {
         $("[app='promo_banner']").css({
           opacity: 1,
-          transform: "translate3d(0px, 0px, 0px)"
+          transform: "translate3d(0px, 0px, 0px)",
         });
       }, 1000);
     },
     error: function (jqXHR, textStatus, errorThrown) {
       console.log("error");
-    }
+    },
   });
 });
