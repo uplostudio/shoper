@@ -13,7 +13,7 @@ Webflow.push(function () {
       action: "get_promotion",
     },
     success: function (data) {
-      console.log(data);
+      console.log(data.package.price_promo.month);
       // $(promoTitleSelector).text(data.title);
       // $(promoPriceSelector).text(data.package.price_promo.month);
 
