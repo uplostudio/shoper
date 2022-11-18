@@ -4,10 +4,14 @@ let sendBcmForm = document.querySelectorAll("[app='bcm']");
 let sendBcmButton = document.querySelectorAll("[app='bcm-submit']");
 let errorBorderColor = `1px solid #eb4826`;
 let initialBorderColor = `1px solid #898989`;
+let form;
+let parentForm;
 
 sendBcmButton.forEach((n) => {
   n.addEventListener("click", (e) => {
-    let form = e.target.form;
+    form = e.target.form;
+    console.log(form);
+    parentForm = form.parentNode;
     let inputInFormPhone = form.querySelector("[app='phone_campaign']");
     let phoneValue = inputInFormPhone;
     let inputInFormEmail = form.querySelector("[app='email_campaign']");
@@ -68,7 +72,9 @@ sendBcmForm.forEach((n) => {
         email: n.querySelector("[app='email_campaign']").value,
       },
       success: function (data) {
-        console.log(data);
+        form.style.display = "none";
+        let successBox = parentForm.querySelector(".success-message");
+        successBox.style.display = "flex";
       },
     });
   });

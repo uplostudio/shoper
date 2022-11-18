@@ -10,15 +10,10 @@ let trialStepOneSubmit = document.querySelectorAll("[app='submit-step-one']");
 // Step One Submit Buttons
 trialStepOneSubmit.forEach((button) => {
   button.addEventListener("click", (e) => {
-    // Get the form the button is attachted to
     let form = e.target.form;
-    //  Get the input (email)
     let inputInForm = form.querySelector("[app='email']");
-    // Get the input value
     let emailValue = inputInForm;
-    // Get the native error box from wf
     let errorBox = form.nextElementSibling;
-    // get regex test result against email value
     function useRegexEmail(emailValue) {
       let regex =
         /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
