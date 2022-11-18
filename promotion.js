@@ -19,6 +19,7 @@ Webflow.push(function () {
 
       let dynamicTitle = document.title;
       dynamicTitle = `Sklep internetowy - Załóż sklep online z Shoper od ${data.package.price_promo.month} zł / miesiąc`;
+      console.log(dynamicTitle);
       // $(promoTitleSelector).text(data.title);
       // $(promoPriceSelector).text(data.package.price_promo.month);
 
