@@ -1,7 +1,7 @@
 var Webflow = Webflow || [];
 Webflow.push(function () {
   const promoTimeSelector = "[app='promo_time']";
-  const dailyPromo = "[app='daily_promo]";
+  const dailyPromo = "[app='daily_promo']";
   const promoPriceSelector = "[app='promo_price']";
   const promoTitleSelector = "[app='promo_title']";
 
@@ -13,8 +13,9 @@ Webflow.push(function () {
       action: "get_promotion",
     },
     success: function (data) {
-      console.log(data.package.price_promo.month);
-      dailyPromo.textContent = `Stwórz własny sklep internetowy już od ${data.package.price_promo.month} zł miesięcznie`;
+      $(dailyPromo).text(
+        `Stwórz własny sklep internetowy już od ${data.package.price_promo.month} zł miesięcznie`
+      );
       // $(promoTitleSelector).text(data.title);
       // $(promoPriceSelector).text(data.package.price_promo.month);
 
