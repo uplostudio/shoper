@@ -1,6 +1,7 @@
 var Webflow = Webflow || [];
 Webflow.push(function () {
   const promoTimeSelector = "[app='promo_time']";
+  const dailyPromo = "[app='daily_promo]";
   const promoPriceSelector = "[app='promo_price']";
   const promoTitleSelector = "[app='promo_title']";
 
@@ -12,7 +13,7 @@ Webflow.push(function () {
       action: "get_promotion",
     },
     success: function (data) {
-      //       console.log(data);
+      console.log(data);
       // $(promoTitleSelector).text(data.title);
       // $(promoPriceSelector).text(data.package.price_promo.month);
 
