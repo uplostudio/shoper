@@ -40,7 +40,7 @@ window.addEventListener("beforeunload", () => {
 trialOpen.forEach((n) => {
   n.addEventListener("click", () => {
     modal.classList.add("modal--open");
-    $(document.body).css("overflow", "visible");
+    $(document.body).css("overflow", "hidden");
   });
 });
 
@@ -130,6 +130,7 @@ createTrialStepOne.forEach((n) => {
           document
             .querySelector("[modal='create_trial_step2']")
             .classList.add("modal--open");
+          $(document.body).css("overflow", "hidden");
           if (window.dataLayer) {
             data = {
               eventName: "formSubmitSuccess",
