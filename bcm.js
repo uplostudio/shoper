@@ -79,3 +79,11 @@ sendBcmForm.forEach((n) => {
     });
   });
 });
+
+let banner = document.querySelectorAll("#black-friday-banner");
+banner.forEach((n) => {
+  n.addEventListener("click", () => {
+    let bf = document.querySelector("#black-friday");
+    bf.classList.add("modal--open");
+  });
+});
