@@ -10,7 +10,7 @@ let parentForm;
 sendBcmButton.forEach((n) => {
   n.addEventListener("click", (e) => {
     form = e.target.form;
-    console.log(form);
+    // console.log(form);
     parentForm = form.parentNode;
     let inputInFormPhone = form.querySelector("[app='phone_campaign']");
     let phoneValue = inputInFormPhone;
@@ -59,7 +59,7 @@ sendBcmForm.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
 
-    console.log("Dssdsdd");
+    // console.log("Dssdsdd");
     $.ajax({
       url: "https://www.shoper.pl/ajax.php",
       headers: {},
