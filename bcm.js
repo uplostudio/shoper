@@ -85,5 +85,6 @@ banner.forEach((n) => {
   n.addEventListener("click", () => {
     let bf = document.querySelector("#black-friday");
     bf.classList.add("modal--open");
+    $(document.body).css("overflow", "hidden");
   });
 });
