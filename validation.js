@@ -1,7 +1,7 @@
-console.log(
-  "%cValidation Dev Channel",
-  "color: white; font-family:monospace; background-color: red; font-size: 20px"
-);
+// console.log(
+//   "%cValidation Dev Channel",
+//   "color: white; font-family:monospace; background-color: red; font-size: 20px"
+// );
 
 let errorBorderColor = `1px solid #eb4826`;
 let initialBorderColor = `1px solid #898989`;
@@ -20,7 +20,7 @@ trialStepOneSubmit.forEach((button) => {
       return regex.test(emailValue);
     }
 
-    console.log(`Mail Regex Text: ${useRegexEmail(emailValue.value)}`);
+    // console.log(`Mail Regex Text: ${useRegexEmail(emailValue.value)}`);
 
     if (emailValue.value === "") {
       inputInForm.style.border = errorBorderColor;
@@ -43,7 +43,7 @@ let trialStepTwoSubmit = document.querySelectorAll(
 trialStepTwoSubmit.forEach((button) => {
   button.addEventListener("click", (e) => {
     let form = e.target.form;
-    console.log(form);
+    // console.log(form);
     let inputInForm = form.querySelector("[app='phone']");
     let phoneValue = inputInForm;
     let errorBox = inputInForm.parentNode.lastChild;
@@ -54,7 +54,7 @@ trialStepTwoSubmit.forEach((button) => {
       return regex.test(phoneValue);
     }
 
-    console.log(`Phone Regex Text: ${useRegexPhone(phoneValue.value)}`);
+    // console.log(`Phone Regex Text: ${useRegexPhone(phoneValue.value)}`);
 
     if (phoneValue.value === "") {
       inputInForm.style.border = errorBorderColor;
