@@ -40,6 +40,7 @@ window.addEventListener("beforeunload", () => {
 trialOpen.forEach((n) => {
   n.addEventListener("click", () => {
     modal.classList.add("modal--open");
+    $(document.body).css("overflow", "visible");
   });
 });
 
