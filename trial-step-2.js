@@ -127,7 +127,7 @@ createTrialStepTwo.forEach((n) => {
         phone: n.querySelector("[app='phone']").value,
         eventName: "formSubmitSuccess",
         formId: n.querySelector("form").id,
-        // gclid: gclidInput.value
+        gclid: gclidInput.value,
       },
       success: function (data) {
         //         console.log(data);
