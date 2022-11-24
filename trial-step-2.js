@@ -1,29 +1,62 @@
+let gclidInput, gclidValue;
+
+let regexp = /\?gclid=.*\w/gm;
+let locationG = window.location.search;
+let match = locationG.match(regexp);
+
+if (match !== null) {
+  let splited = match[0].split("=");
+  if (splited[0] !== "") {
+    gclidValue = splited[1].slice(0, -1);
+    localStorage.setItem("gclid", gclidValue);
+    // console.log(gclidValue)
+    gclidInput = document.querySelector("[name='adwords[gclid]']");
+    gclidInput.setAttribute("value", gclidValue);
+  } else if (localStorage.gclid === undefined) {
+    gclidValue = "";
+    gclidInput = document.querySelector("[name='adwords[gclid]']");
+    gclidInput.setAttribute("value", gclidValue);
+  }
+} else if (localStorage.gclid !== "undefined") {
+  gclidValue = localStorage.gclid;
+  gclidInput = document.querySelector("[name='adwords[gclid]']");
+  gclidInput.setAttribute("value", gclidValue);
+}
+
+if (localStorage.gclid === undefined) {
+  gclidValue = "";
+  gclidInput = document.querySelector("[name='adwords[gclid]']");
+  gclidInput.setAttribute("value", gclidValue);
+}
+
+// console.log(gclidInput)
+// console.log(localStorage.gclid)
+
 let inputsStepTwo = document.querySelectorAll(
   "[app='create_trial_step2'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])"
 );
 // formAbandon
 window.addEventListener("beforeunload", () => {
   inputsStepTwo.forEach((n) => {
-      inputVals = n.value;
+    inputVals = n.value;
     let element = document.querySelector("[app='create_trial_step2']");
     elementId = element.getAttribute("app");
 
-     inputValsArr.push(inputVals)
-     inputValsArrFiltered = inputValsArr.filter(el => el.length > 1)
-  })
+    inputValsArr.push(inputVals);
+    inputValsArrFiltered = inputValsArr.filter((el) => el.length > 1);
+  });
 
   if (inputValsArrFiltered.length > 0 && window.dataLayer) {
     data = {
-        event: "formAbandon",
+      event: "formAbandon",
       formId: elementId,
-        eventHistory: window.history
-      };
+      eventHistory: window.history,
+    };
 
-      dataLayer.push(data);
-//       console.log(dataLayer);
-
+    dataLayer.push(data);
+    //       console.log(dataLayer);
   }
-})
+});
 
 inputsStepTwo.forEach((n) => {
   // Control Blur Step Two
@@ -42,7 +75,7 @@ inputsStepTwo.forEach((n) => {
       };
 
       dataLayer.push(data);
-//       console.log(dataLayer);
+      //       console.log(dataLayer);
 
       // data = {
       // eventName: "formAbandon",
@@ -68,7 +101,7 @@ inputsStepTwo.forEach((n) => {
       };
 
       dataLayer.push(data);
-//       console.log(dataLayer);
+      //       console.log(dataLayer);
     }
   });
 });
@@ -93,10 +126,11 @@ createTrialStepTwo.forEach((n) => {
         action: "create_trial_step2",
         phone: n.querySelector("[app='phone']").value,
         eventName: "formSubmitSuccess",
-            formId: n.querySelector("form").id
+        formId: n.querySelector("form").id,
+        // gclid: gclidInput.value
       },
       success: function (data) {
-//         console.log(data);
+        //         console.log(data);
         if (data.status === 1) {
           // MyTrackEvent Success (Step Two)
           let errorInfo = n.querySelector(".w-form-fail");
@@ -110,30 +144,29 @@ createTrialStepTwo.forEach((n) => {
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
-              eventHistory: window.history
+              eventHistory: window.history,
             };
 
             dataLayer.push(data);
 
             data = {
-              event: 'myTrackEvent',
+              event: "myTrackEvent",
               formId: n.querySelector("form").id,
               eventCategory: "Button modal form sent",
               eventAction: n.querySelector("input[type='submit']").value,
               eventType: n.querySelector("input[type='tel']").value,
               eventLabel: window.location.pathname,
-              
-            }
+            };
 
             dataLayer.push(data);
-//             console.log(dataLayer);
-            
+            //             console.log(dataLayer);
           }
           window.location.href = "https://www.shoper.pl/zaloz-sklep/";
         } else {
-//            console.log(data);
+          //            console.log(data);
           let errorInfo = n.querySelector(".w-form-fail");
-          errorInfo.children[0].innerHTML = "Coś poszło nie tak. Spróbuj ponownie.";
+          errorInfo.children[0].innerHTML =
+            "Coś poszło nie tak. Spróbuj ponownie.";
           errorInfo.style.display = "block";
           // MyTrackEvent Error (Step Two)
           if (window.dataLayer) {
@@ -144,32 +177,28 @@ createTrialStepTwo.forEach((n) => {
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
-              eventHistory: window.history
+              eventHistory: window.history,
             };
 
             dataLayer.push(data);
 
             data = {
-              event: 'myTrackEvent',
+              event: "myTrackEvent",
               formId: n.querySelector("form").id,
               eventCategory: "Button modal form error",
               eventAction: n.querySelector("input[type='submit']").value,
               eventType: n.querySelector("input[type='tel']").value,
               eventLabel: window.location.pathname,
-              
-            }
+            };
 
             dataLayer.push(data);
-//             console.log(dataLayer);
-            
+            //             console.log(dataLayer);
           }
         }
       },
     });
   });
 });
-
-
 
 // $("[app='create_trial_step2']").on("submit", function (event) {
 //   event.preventDefault();
