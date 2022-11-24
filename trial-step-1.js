@@ -147,8 +147,7 @@ createTrialStepOne.forEach((n) => {
               event: "myTrackEvent",
               formId: n.querySelector("form").id,
               eventCategory: "Button form sent",
-              eventAction: n.querySelector("input[type='submit']:nth-child(1)")
-                .value,
+              eventAction: n.querySelector("input[type='submit']").value,
               eventType: n.querySelector("[app='email']").value,
               eventLabel: window.location.pathname,
             };
@@ -163,8 +162,8 @@ createTrialStepOne.forEach((n) => {
               eventName: "formSubmitError",
               formId: n.querySelector("form").id,
               eventCategory: "Button form error",
-              eventAction: n.querySelector("input[type='submit']:nth-child(1)")
-                .value,
+              // eventAction: n.querySelector("input[type='submit']:nth-child(1)").value,
+              eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("[app='email']").value,
               eventHistory: window.history,
@@ -176,8 +175,7 @@ createTrialStepOne.forEach((n) => {
               event: "myTrackEvent",
               formId: n.querySelector("form").id,
               eventCategory: "Button form error",
-              eventAction: n.querySelector("input[type='submit']:nth-child(1)")
-                .value,
+              eventAction: n.querySelector("input[type='submit']").value,
               eventType: n.querySelector("[app='email']").value,
               eventLabel: window.location.pathname,
             };
