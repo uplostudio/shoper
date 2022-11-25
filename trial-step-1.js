@@ -1,3 +1,22 @@
+let isFromBanner = false;
+
+window.addEventListener("load", () => {
+  let bannerD = document.querySelector("#w-slider-mask-1");
+  let blackFridaySlide = bannerD.children[1];
+  blackFridaySlide.id = "blackFridayData";
+
+  let descendants = blackFridaySlide.querySelectorAll("*");
+  // console.log(descendants)
+
+  descendants.forEach((n) => {
+    n.id = "blackFridayData";
+    n.addEventListener("click", () => {
+      isFromBanner = true;
+      // console.log(isFromBanner)
+    });
+  });
+});
+
 let inputsStepOne = document.querySelectorAll(
   "[app='create_trial_step1'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])"
 );

@@ -14,7 +14,8 @@ $(".nav__burger-inner").on("click", function () {
 //close modal
 $(".modal__close, .modal__close-area").on("click", function () {
   $(".modal--open").removeClass("modal--open");
-  $(document.body).css("overflow", "visible");
+  $(document.body).css("overflow", "auto");
+  isFromBanner = false;
 });
 $(".show-in-editor").each(function () {
   $(this).removeClass("show-in-editor");
