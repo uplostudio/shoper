@@ -64,7 +64,7 @@ Webflow.push(function () {
       }, 1000);
     },
     error: function (jqXHR, textStatus, errorThrown) {
-      console.log("error");
+      // console.log("error");
     },
   });
 });
