@@ -2,8 +2,8 @@
 
 let sendBcmForm = document.querySelectorAll("[app='bcm']");
 let sendBcmButton = document.querySelectorAll("[app='bcm-submit']");
-let errorBorderColor = `1px solid #eb4826`;
-let initialBorderColor = `1px solid #898989`;
+// let errorBorderColor = `1px solid #eb4826`;
+// let initialBorderColor = `1px solid #898989`;
 let form;
 let parentForm;
 
