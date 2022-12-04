@@ -5,7 +5,7 @@ let isFromBanner = false;
 
 window.addEventListener("load", () => {
   let bannerD = document.querySelector("#w-slider-mask-1");
-  let blackFridaySlide = bannerD.children[1];
+  let blackFridaySlide = bannerD.children[2];
   blackFridaySlide.id = "blackFridayData";
 
   let descendants = blackFridaySlide.querySelectorAll("*");
