@@ -10,7 +10,6 @@ let parentForm;
 sendBcmButton.forEach((n) => {
   n.addEventListener("click", (e) => {
     form = e.target.form;
-    // console.log(form);
     parentForm = form.parentNode;
     let inputInFormPhone = form.querySelector("[app='phone_campaign']");
     let phoneValue = inputInFormPhone;
@@ -59,14 +58,13 @@ sendBcmForm.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // console.log("Dssdsdd");
     $.ajax({
       url: "https://www.shoper.pl/ajax.php",
       headers: {},
       method: "POST",
       data: {
         action: "bcm22-2",
-        subject: "Black Promocja Sklep plus Grafika za 499 zł",
+        subject: "Mikołajkowa promocja Sklep + grafika za 499 zł",
         send: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS9iMGs3cnBxLw==",
         phone: n.querySelector("[app='phone_campaign']").value,
         email: n.querySelector("[app='email_campaign']").value,
