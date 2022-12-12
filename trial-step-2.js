@@ -32,6 +32,7 @@ if (localStorage.gclid === undefined) {
 }
 
 // fbclid
+// comment
 
 // let regexpFb = /\?fbclid=.*\w/gm;
 // let locationGFb = window.location.search;
