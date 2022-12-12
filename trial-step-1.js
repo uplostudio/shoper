@@ -4,20 +4,22 @@ let initialBorderColor = `1px solid #898989`;
 let isFromBanner = false;
 
 window.addEventListener("load", () => {
-  let bannerD = document.querySelector("#w-slider-mask-1");
-  let blackFridaySlide = bannerD.children[2];
-  blackFridaySlide.id = "blackFridayData";
+  try {
+    let bannerD = document.querySelector("#w-slider-mask-1");
+    let blackFridaySlide = bannerD.children[2];
+    blackFridaySlide.id = "blackFridayData";
 
-  let descendants = blackFridaySlide.querySelectorAll("*");
-  // console.log(descendants)
+    let descendants = blackFridaySlide.querySelectorAll("*");
+    // console.log(descendants)
 
-  descendants.forEach((n) => {
-    n.id = "blackFridayData";
-    n.addEventListener("click", () => {
-      isFromBanner = true;
-      // console.log(isFromBanner)
+    descendants.forEach((n) => {
+      n.id = "blackFridayData";
+      n.addEventListener("click", () => {
+        isFromBanner = true;
+        // console.log(isFromBanner)
+      });
     });
-  });
+  } catch (err) {}
 });
 
 let inputsStepOne = document.querySelectorAll(
