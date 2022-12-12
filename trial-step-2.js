@@ -160,6 +160,7 @@ createTrialStepTwo.forEach((n) => {
         eventName: "formSubmitSuccess",
         formId: n.querySelector("form").id,
         gclid: gclidInput.value,
+        fbclid: fbclidInput.value,
         blackFridayBanner: isFromBanner,
       },
       success: function (data) {
