@@ -110,7 +110,6 @@ $("[app='submit-contact']").on("click", function (e) {
           allInputs.forEach((n) => {
             n.value = "";
           });
-          bodyValue = "";
         } else {
           errorInfo.style.display = "block";
           errorInfo.innerHTML = "Coś poszło nie tak";
