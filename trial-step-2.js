@@ -1,4 +1,6 @@
-let gclidInput, gclidValue;
+let gclidInput, gclidValue, fbclidInput, fbclidValue;
+
+// gclid
 
 let regexp = /\?gclid=.*\w/gm;
 let locationG = window.location.search;
@@ -27,6 +29,36 @@ if (localStorage.gclid === undefined) {
   gclidValue = "";
   gclidInput = document.querySelector("[name='adwords[gclid]']");
   gclidInput.setAttribute("value", gclidValue);
+}
+
+// fbclid
+
+let regexpFb = /\?fbclid=.*\w/gm;
+let locationGFb = window.location.search;
+let matchFb = locationGFb.match(regexpFb);
+
+if (matchFb !== null) {
+  let splited = matchFb[0].split("=");
+  if (splited[0] !== "") {
+    fbclidValue = splited[1].slice(0, -1);
+    localStorage.setItem("fbclid", fbclidValue);
+    fbclidInput = document.querySelector("[name='adwords[fbclid]']");
+    fbclidInput.setAttribute("value", fbclidValue);
+  } else if (localStorage.fbclid === undefined) {
+    fbclidValue = "";
+    fbclidInput = document.querySelector("[name='adwords[fbclid]']");
+    fbclidInput.setAttribute("value", fbclidValue);
+  }
+} else if (localStorage.fbclid !== "undefined") {
+  fbclidValue = localStorage.fbclid;
+  fbclidInput = document.querySelector("[name='adwords[fbclid]']");
+  fbclidInput.setAttribute("value", fbclidValue);
+}
+
+if (localStorage.fbclid === undefined) {
+  fbclidValue = "";
+  fbclidInput = document.querySelector("[name='adwords[fbclid]']");
+  fbclidInput.setAttribute("value", fbclidValue);
 }
 
 // console.log(gclidInput)
