@@ -19,6 +19,7 @@ $("[app='submit-contact']").on("click", function (e) {
   let urlValue = urlInput.value;
   let subjectInput = form.querySelector("[app='subject_contact']");
   let subjectValue = subjectInput.value;
+  let allInputs = Array.from(form.getElementsByTagName("input"));
 
   function useRegexName(nameValue) {
     let regex =
@@ -106,6 +107,10 @@ $("[app='submit-contact']").on("click", function (e) {
           successInfo.innerHTML =
             "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
           errorInfo.style.display = "none";
+          allInputs.forEach((n) => {
+            n.value = "";
+          });
+          bodyValue = "";
         } else {
           errorInfo.style.display = "block";
           errorInfo.innerHTML = "Coś poszło nie tak";
