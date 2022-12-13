@@ -107,14 +107,6 @@ inputsStepTwo.forEach((n) => {
       };
 
       dataLayer.push(data);
-      //       console.log(dataLayer);
-
-      // data = {
-      // eventName: "formAbandon",
-      //   formId: elementId,
-      // }
-
-      // dataLayer.push(data);
     }
   });
   // Control Focus Step Two
@@ -175,6 +167,7 @@ createTrialStepTwo.forEach((n) => {
               event: "formSubmitSuccess",
               eventCategory: "Button modal form sent",
               formId: n.querySelector("form").id,
+              shop_id: data.license_id,
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
