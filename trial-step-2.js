@@ -156,7 +156,6 @@ createTrialStepTwo.forEach((n) => {
         blackFridayBanner: isFromBanner,
       },
       success: function (data) {
-        //         console.log(data);
         if (data.status === 1) {
           // MyTrackEvent Success (Step Two)
           let errorInfo = n.querySelector(".w-form-fail");

@@ -157,6 +157,15 @@ createTrialStepOne.forEach((n) => {
           $(document.body).css("overflow", "hidden");
           if (window.dataLayer) {
             data = {
+              event: "trial_EmailSubmitted",
+              shop_id: data.shop_id,
+              formId: n.querySelector("form").id,
+              email: n.querySelector("[app='email']").value,
+            };
+
+            dataLayer.push(data);
+
+            data = {
               eventName: "formSubmitSuccess",
               formId: n.querySelector("form").id,
               eventCategory: "Button form sent",
