@@ -1,13 +1,4 @@
 // blackfriday modal & contact
-window.addEventListener("load", () => {
-  let gtmBanner = document.querySelector("#top-bar-header");
-
-  gtmBanner.addEventListener("click", () => {
-    let bf = document.querySelector("[app='blackFriday']");
-    bf.classList.add("modal--open");
-    $(document.body).css("overflow", "hidden");
-  });
-});
 
 let sendBcmForm = document.querySelectorAll("[app='bcm']");
 let sendBcmButton = document.querySelectorAll("[app='bcm-submit']");
