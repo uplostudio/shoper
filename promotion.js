@@ -4,6 +4,8 @@ Webflow.push(function () {
   const dailyPromo = "[app='daily_promo']";
   const promoPriceSelector = "[app='promo_price']";
   const promoTitleSelector = "[app='promo_title']";
+  const oldPriceYear = "[app='promo_title_old']";
+  const newPriceYear = "[app='promo_title_new']";
 
   $.ajax({
     url: "https://www.shoper.pl/ajax.php",
@@ -13,14 +15,21 @@ Webflow.push(function () {
       action: "get_promotion",
     },
     success: function (data) {
-      $(dailyPromo).text(
-        `Stwórz własny sklep internetowy już od ${data.package.price_promo.month} zł miesięcznie`
-      );
+      let discountPercentage = data.package.discount;
+      let monthlyPromotion = data.package.price_promo.month;
+      let yearlyStandardPrice = data.package.price.total;
+      let yearlyPromoPrice = data.package.price_promo.total;
 
-      document.title = `Sklep internetowy - Załóż sklep online z Shoper od ${data.package.price_promo.month} zł / miesiąc`;
-      // console.log(document.title)
-      // $(promoTitleSelector).text(data.title);
-      // $(promoPriceSelector).text(data.package.price_promo.month);
+      document.title = `Sklep internetowy - Załóż sklep online z Shoper od ${monthlyPromotion} zł / miesiąc`;
+
+      $(dailyPromo).text(
+        `Stwórz własny sklep internetowy już od ${monthlyPromotion} zł miesięcznie`
+      );
+      $(promoTitleSelector).text(
+        `Roczny abonament sklepu ponad ${discountPercentage} taniej`
+      );
+      $(oldPriceYear).text(`${yearlyStandardPrice}`);
+      $(newPriceYear).text(`${yearlyPromoPrice}`);
 
       let time = 0;
       // Update the count down every 1 second
