@@ -406,8 +406,7 @@
 }
 
 .calculator__side--blue {
-  background-color: #f1f9fd;
-  border-left: 1px solid #dbe5ea;
+  background-color: #f8f9fa;
 }
 
 @media (min-width: 992px) {
