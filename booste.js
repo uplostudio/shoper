@@ -93,10 +93,12 @@ $("[app='booste_submit']").on("click", function (e) {
     acceptAgree.previousElementSibling.style.border = errorBorderColor;
     acceptAgree.parentNode.nextElementSibling.style.display = "flex";
     acceptAgree.parentNode.nextElementSibling.textContent =
-      "To pole jest wymagane";
+      acceptAgree.value === 0;
+    ("To pole jest wymagane");
   } else {
     acceptAgree.previousElementSibling.style.border = initialBorderColor;
     acceptAgree.parentNode.nextElementSibling.style.display = "none";
+    acceptAgree.value === 0;
   }
 
   if (
@@ -108,7 +110,7 @@ $("[app='booste_submit']").on("click", function (e) {
     $.ajax({
       url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
       headers: {},
-      method: "POST",
+      method: "GET",
       data: {
         firstname: nameValue,
         lastname: lastNameInputValue,
@@ -117,10 +119,7 @@ $("[app='booste_submit']").on("click", function (e) {
         shoperTermsEmail: shoperTermsEmail.checked,
         shoperTermsSms: shoperTermsSms.checked,
         shoperTermsTel: shoperTermsTel.checked,
-        acceptAgree: acceptAgree.checked,
-        boosteTermsEmail: boosteTermsEmail.checked,
-        boosteTermsSms: boosteTermsSms.checked,
-        boosteTermsTel: boosteTermsTel.checked,
+        acceptAgree: acceptAgree.value,
         country: "PL",
         refererUrl: "https://shoper.pl/finansowanie/booste",
       },
