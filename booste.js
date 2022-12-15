@@ -49,9 +49,11 @@ $("[app='booste_submit']").on("click", function (e) {
   if (nameValue === "") {
     nameInput.style.border = errorBorderColor;
     errorBoxName.style.display = "flex";
+    errorBoxName.textContent = "To pole jest wymagane";
   } else if (!useRegexName(nameValue)) {
     nameInput.style.border = errorBorderColor;
     errorBoxName.style.display = "flex";
+    errorBoxName.textContent = "Podaj poprawne dane";
   } else if (useRegexName(nameValue)) {
     nameInput.style.border = initialBorderColor;
     errorBoxName.style.display = "none";
