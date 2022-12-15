@@ -106,9 +106,9 @@ $("[app='booste_submit']").on("click", function (e) {
     urlInput !== ""
   ) {
     $.ajax({
-      url: "https://app.booste.com/sign-up",
+      url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
       headers: {},
-      method: "GET",
+      method: "POST",
       data: {
         firstname: nameValue,
         lastname: lastNameInputValue,
