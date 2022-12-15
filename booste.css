@@ -369,7 +369,7 @@
 
 .calculator__description li::before {
   content: " ";
-  background: #1a72ff;
+  background: #0027d6;
   width: 10px;
   height: 10px;
   position: absolute;
@@ -470,7 +470,7 @@
 }
 
 .calculator__slider .noUi-connect {
-  background-color: #1a72ff;
+  background-color: #0027d6;
 }
 
 .calculator__slider .noUi-handle {
@@ -483,7 +483,7 @@
   height: 40px;
   width: 40px;
   background-color: #ffffff;
-  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='24px' height='24px' viewBox='0 0 24 24' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3EIcon/Slide-Disabled%3C/title%3E%3Cg id='Icon/Slide-Disabled' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg id='slider-active' transform='translate(4.000000  8.000000)' stroke='%231A72FF' stroke-width='1.5'%3E%3Cpolyline id='Path' transform='translate(14.000000  4.000000) rotate(-90.000000) translate(-14.000000  -4.000000) ' points='10 2 14 6 18 2'%3E%3C/polyline%3E%3Cpolyline id='Path' transform='translate(2.000000  4.000000) scale(-1  1) rotate(-90.000000) translate(-2.000000  -4.000000) ' points='-2 2 2 6 6 2'%3E%3C/polyline%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
+  background-image: url("data:image/svg+xml,%3C%3Fxml version='1.0' encoding='UTF-8'%3F%3E%3Csvg width='24px' height='24px' viewBox='0 0 24 24' version='1.1' xmlns='http://www.w3.org/2000/svg' xmlns:xlink='http://www.w3.org/1999/xlink'%3E%3Ctitle%3EIcon/Slide-Disabled%3C/title%3E%3Cg id='Icon/Slide-Disabled' stroke='none' stroke-width='1' fill='none' fill-rule='evenodd' stroke-linecap='round' stroke-linejoin='round'%3E%3Cg id='slider-active' transform='translate(4.000000  8.000000)' stroke='%230027d6' stroke-width='1.5'%3E%3Cpolyline id='Path' transform='translate(14.000000  4.000000) rotate(-90.000000) translate(-14.000000  -4.000000) ' points='10 2 14 6 18 2'%3E%3C/polyline%3E%3Cpolyline id='Path' transform='translate(2.000000  4.000000) scale(-1  1) rotate(-90.000000) translate(-2.000000  -4.000000) ' points='-2 2 2 6 6 2'%3E%3C/polyline%3E%3C/g%3E%3C/g%3E%3C/svg%3E");
   background-position: center center;
   background-repeat: no-repeat;
   border-radius: 100%;
@@ -498,7 +498,7 @@
 
 .calculator__button {
   -moz-apperance: none;
-  background-color: #1a72ff;
+  background-color: #0027d6;
   border: none;
   border-radius: 32px;
   color: #ffffff;
@@ -663,7 +663,7 @@
 }
 
 .b-calc__radio-options input[type="radio"]:checked + label {
-  background-color: #1a72ff;
+  background-color: #0027d6;
   color: #ffffff;
   font-weight: 900;
   transition: 0.3s;
