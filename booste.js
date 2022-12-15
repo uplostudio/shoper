@@ -79,6 +79,14 @@ $("[app='booste_submit']").on("click", function (e) {
     errorBoxEmail.style.display = "none";
   }
 
+  if (urlValue === "") {
+    urlInput.style.border = errorBorderColor;
+    errorBoxUrl.style.display = "flex";
+  } else {
+    urlInput.style.border = initialBorderColor;
+    errorBoxUrl.style.display = "none";
+  }
+
   $.ajax({
     url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
     headers: {},
