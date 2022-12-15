@@ -154,6 +154,7 @@ createTrialStepTwo.forEach((n) => {
         gclid: gclidInput.value,
         fbclid: fbclidInput.value,
         blackFridayBanner: isFromBanner,
+        analyticsId: analyticsIdInputValue.value,
       },
       success: function (data) {
         if (data.status === 1) {

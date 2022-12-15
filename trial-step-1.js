@@ -1,7 +1,15 @@
+const myTimeout = setTimeout(ga, 1000);
+let analyticsId;
+let analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
 let errorBorderColor = `1px solid #eb4826`;
 let initialBorderColor = `1px solid #898989`;
-
 let isFromBanner = false;
+
+ga(function (tracker) {
+  analyticsId = tracker.get("clientId");
+  analyticsIdInputValue.value = analyticsId;
+  return analyticsIdInputValue;
+});
 
 window.addEventListener("load", () => {
   try {
@@ -136,6 +144,7 @@ createTrialStepOne.forEach((n) => {
       data: {
         action: "create_trial_step1",
         email: n.querySelector("[app='email']").value,
+        analyticsId: analyticsIdInputValue.value,
       },
       success: function (data) {
         //           console.log(data);
