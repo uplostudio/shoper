@@ -1,6 +1,6 @@
-$("[app='booste_submit']").on("click", function (event) {
-  event.preventDefault();
-  event.stopPropagation();
+$("[app='booste_submit']").on("click", function (e) {
+  event.preventDefault(e);
+  event.stopPropagation(e);
 
   let form = e.target.form;
   let nameInput = form.querySelector("[app='firstName']");
@@ -16,16 +16,20 @@ $("[app='booste_submit']").on("click", function (event) {
   let urlValue = urlInput.value;
   let errorBoxUrl = urlInput.nextElementSibling;
 
-  let shoperTermsEmail = form.querySelector("[name='shoper_terms_email']");
-  let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
-  let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
-  let acceptAgree = form.querySelector("[name='accept_agree']");
-  let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
-  let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
-  let boosteTermsTel = form.querySelector("[name='booste_terms_tel']");
+  let shoperTermsEmail = form.querySelector(
+    "[name='shoper_terms_email']"
+  ).checked;
+  let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']").checked;
+  let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']").checked;
+  let acceptAgree = form.querySelector("[name='accept_agree']").checked;
+  let boosteTermsEmail = form.querySelector(
+    "[name='booste_terms_email']"
+  ).checked;
+  let boosteTermsSms = form.querySelector("[name='booste_terms_sms']").checked;
+  let boosteTermsTel = form.querySelector("[name='booste_terms_tel']").checked;
 
   $.ajax({
-    url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
+    // url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
     headers: {},
     method: "GET",
     data: {
@@ -33,13 +37,13 @@ $("[app='booste_submit']").on("click", function (event) {
       lastname: lastNameInputValue,
       email: emailInput,
       website: urlValue,
-      shoperTermsEmail,
-      shoperTermsSms,
-      shoperTermsTel,
-      acceptAgree,
-      boosteTermsEmail,
-      boosteTermsSms,
-      boosteTermsTel,
+      shoperTermsEmail: shoperTermsEmail,
+      shoperTermsSms: shoperTermsSms,
+      shoperTermsTel: shoperTermsTel,
+      acceptAgree: acceptAgree,
+      boosteTermsEmail: boosteTermsEmail,
+      boosteTermsSms: boosteTermsSms,
+      boosteTermsTel: boosteTermsTel,
       country: "PL",
       refererUrl: "https://shoper.pl/finansowanie/booste",
     },
