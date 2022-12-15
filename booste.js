@@ -95,7 +95,6 @@ $("[app='booste_submit']").on("click", function (e) {
     acceptAgree.parentNode.nextElementSibling.textContent =
       "To pole jest wymagane";
   } else {
-    console.log(acceptAgree);
     acceptAgree.previousElementSibling.style.border = initialBorderColor;
     acceptAgree.parentNode.nextElementSibling.style.display = "none";
   }
