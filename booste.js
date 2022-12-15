@@ -58,7 +58,7 @@ $("[app='booste_submit']").on("click", function (e) {
   }
 
   if (lastNameInputValue === "") {
-    namelastNameInputnput.style.border = errorBorderColor;
+    lastNameInput.style.border = errorBorderColor;
     errorBoxLastName.style.display = "flex";
   } else if (!useRegexLastName(lastNameInputValue)) {
     lastNameInput.style.border = errorBorderColor;
