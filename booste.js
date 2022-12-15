@@ -40,8 +40,8 @@ $("[app='booste_submit']").on("click", function (event) {
       boosteTermsEmail,
       boosteTermsSms,
       boosteTermsTel,
-      country,
-      refererUrl,
+      country: "PL",
+      refererUrl: "https://shoper.pl/finansowanie/booste",
     },
 
     success: function (data) {
