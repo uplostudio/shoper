@@ -64,7 +64,7 @@ sendBcmForm.forEach((n) => {
       method: "POST",
       data: {
         action: "bcm22-2",
-        subject: "Mikołajkowa promocja Sklep + grafika za 499 zł",
+        subject: "Bezpłatna konsultacja Shoper",
         send: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS9iMGs3cnBxLw==",
         phone: n.querySelector("[app='phone_campaign']").value,
         email: n.querySelector("[app='email_campaign']").value,
