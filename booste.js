@@ -1,6 +1,6 @@
 $("[app='booste_submit']").on("click", function (e) {
-  event.preventDefault(e);
-  event.stopPropagation(e);
+  e.preventDefault();
+  e.stopPropagation();
 
   let form = e.target.form;
   let nameInput = form.querySelector("[app='firstName']");
