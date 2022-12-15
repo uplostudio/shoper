@@ -62,9 +62,11 @@ $("[app='booste_submit']").on("click", function (e) {
   if (lastNameInputValue === "") {
     lastNameInput.style.border = errorBorderColor;
     errorBoxLastName.style.display = "flex";
+    errorBoxLastName.textContent = "To pole jest wymagane";
   } else if (!useRegexLastName(lastNameInputValue)) {
     lastNameInput.style.border = errorBorderColor;
     errorBoxLastName.style.display = "flex";
+    errorBoxLastName.textContent = "Podaj poprawne dane";
   } else if (useRegexLastName(lastNameInputValue)) {
     lastNameInput.style.border = initialBorderColor;
     errorBoxLastName.style.display = "none";
@@ -73,9 +75,11 @@ $("[app='booste_submit']").on("click", function (e) {
   if (emailValue === "") {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
+    errorBoxEmail.textContent = "To pole jest wymagane";
   } else if (!useRegexEmail(emailValue)) {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
+    errorBoxEmail.textContent = "Podaj poprawne dane";
   } else if (useRegexEmail(emailValue)) {
     emailInput.style.border = initialBorderColor;
     errorBoxEmail.style.display = "none";
@@ -89,28 +93,35 @@ $("[app='booste_submit']").on("click", function (e) {
     errorBoxUrl.style.display = "none";
   }
 
-  $.ajax({
-    url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
-    headers: {},
-    method: "GET",
-    data: {
-      firstname: nameValue,
-      lastname: lastNameInputValue,
-      email: emailInput,
-      website: urlValue,
-      shoperTermsEmail: shoperTermsEmail,
-      shoperTermsSms: shoperTermsSms,
-      shoperTermsTel: shoperTermsTel,
-      acceptAgree: acceptAgree,
-      boosteTermsEmail: boosteTermsEmail,
-      boosteTermsSms: boosteTermsSms,
-      boosteTermsTel: boosteTermsTel,
-      country: "PL",
-      refererUrl: "https://shoper.pl/finansowanie/booste",
-    },
+  if (
+    useRegexName(nameValue) &&
+    useRegexLastName(lastNameInputValue) &&
+    useRegexEmail(emailValue) &&
+    urlInput !== ""
+  ) {
+    $.ajax({
+      url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
+      headers: {},
+      method: "GET",
+      data: {
+        firstname: nameValue,
+        lastname: lastNameInputValue,
+        email: emailInput,
+        website: urlValue,
+        shoperTermsEmail: shoperTermsEmail,
+        shoperTermsSms: shoperTermsSms,
+        shoperTermsTel: shoperTermsTel,
+        acceptAgree: acceptAgree,
+        boosteTermsEmail: boosteTermsEmail,
+        boosteTermsSms: boosteTermsSms,
+        boosteTermsTel: boosteTermsTel,
+        country: "PL",
+        refererUrl: "https://shoper.pl/finansowanie/booste",
+      },
 
-    success: function (data) {
-      console.log(data);
-    },
-  });
+      success: function (data) {
+        console.log(data);
+      },
+    });
+  }
 });
