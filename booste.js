@@ -108,7 +108,7 @@ $("[app='booste_submit']").on("click", function (e) {
     $.ajax({
       url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
       headers: {},
-      method: "POST",
+      method: "GET",
       data: {
         firstname: nameValue,
         lastname: lastNameInputValue,
