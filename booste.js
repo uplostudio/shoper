@@ -16,17 +16,13 @@ $("[app='booste_submit']").on("click", function (e) {
   let urlValue = urlInput.value;
   let errorBoxUrl = urlInput.nextElementSibling;
 
-  let shoperTermsEmail = form.querySelector(
-    "[name='shoper_terms_email']"
-  ).checked;
-  let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']").checked;
-  let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']").checked;
-  let acceptAgree = form.querySelector("[name='accept_agree']").checked;
-  let boosteTermsEmail = form.querySelector(
-    "[name='booste_terms_email']"
-  ).checked;
-  let boosteTermsSms = form.querySelector("[name='booste_terms_sms']").checked;
-  let boosteTermsTel = form.querySelector("[name='booste_terms_tel']").checked;
+  let shoperTermsEmail = form.querySelector("[name='shoper_terms_email']");
+  let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
+  let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
+  let acceptAgree = form.querySelector("[name='accept_agree']");
+  let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
+  let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
+  let boosteTermsTel = form.querySelector("[name='booste_terms_tel']");
 
   function useRegexName(nameValue) {
     let regex =
@@ -93,6 +89,15 @@ $("[app='booste_submit']").on("click", function (e) {
     errorBoxUrl.style.display = "none";
   }
 
+  if (!acceptAgree.checked) {
+    acceptAgree.previousElementSibling.style.border = errorBorderColor;
+    acceptAgree.parentNode.nextElementSibling.style.display = "flex";
+  } else {
+    console.log(acceptAgree);
+    acceptAgree.previousElementSibling.style.border = initialBorderColor;
+    acceptAgree.parentNode.nextElementSibling.style.display = "none";
+  }
+
   if (
     useRegexName(nameValue) &&
     useRegexLastName(lastNameInputValue) &&
@@ -102,24 +107,27 @@ $("[app='booste_submit']").on("click", function (e) {
     $.ajax({
       url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
       headers: {},
-      method: "GET",
+      method: "POST",
       data: {
         firstname: nameValue,
         lastname: lastNameInputValue,
         email: emailInput,
         website: urlValue,
-        shoperTermsEmail: shoperTermsEmail,
-        shoperTermsSms: shoperTermsSms,
-        shoperTermsTel: shoperTermsTel,
-        acceptAgree: acceptAgree,
-        boosteTermsEmail: boosteTermsEmail,
-        boosteTermsSms: boosteTermsSms,
-        boosteTermsTel: boosteTermsTel,
+        shoperTermsEmail: shoperTermsEmail.checked,
+        shoperTermsSms: shoperTermsSms.checked,
+        shoperTermsTel: shoperTermsTel.checked,
+        acceptAgree: acceptAgree.checked,
+        boosteTermsEmail: boosteTermsEmail.checked,
+        boosteTermsSms: boosteTermsSms.checked,
+        boosteTermsTel: boosteTermsTel.checked,
         country: "PL",
         refererUrl: "https://shoper.pl/finansowanie/booste",
       },
 
       success: function (data) {
+        console.log(data);
+      },
+      error: function (data) {
         console.log(data);
       },
     });
