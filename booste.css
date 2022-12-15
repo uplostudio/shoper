@@ -673,7 +673,7 @@
   top: 0;
   right: 0;
   bottom: 0;
-  background-color: rgba(255, 255, 255, 0.4);
+  background-color: #0027d6;
   z-index: 3;
   display: flex;
   justify-content: center;
@@ -693,7 +693,7 @@
   width: 17px;
   height: 17px;
   border-radius: 50%;
-  background: #1872ff;
+  background: #0027d6;
   animation-timing-function: cubic-bezier(0, 1, 1, 0);
 }
 
