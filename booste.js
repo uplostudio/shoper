@@ -28,8 +28,59 @@ $("[app='booste_submit']").on("click", function (e) {
   let boosteTermsSms = form.querySelector("[name='booste_terms_sms']").checked;
   let boosteTermsTel = form.querySelector("[name='booste_terms_tel']").checked;
 
+  function useRegexName(nameValue) {
+    let regex =
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+    return regex.test(nameValue);
+  }
+
+  function useRegexLastName(lastNameInputValue) {
+    let regex =
+      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
+    return regex.test(lastNameInputValue);
+  }
+
+  function useRegexEmail(emailValue) {
+    let regex =
+      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
+    return regex.test(emailValue);
+  }
+
+  if (nameValue === "") {
+    nameInput.style.border = errorBorderColor;
+    errorBoxName.style.display = "flex";
+  } else if (!useRegexName(nameValue)) {
+    nameInput.style.border = errorBorderColor;
+    errorBoxName.style.display = "flex";
+  } else if (useRegexName(nameValue)) {
+    nameInput.style.border = initialBorderColor;
+    errorBoxName.style.display = "none";
+  }
+
+  if (lastNameInputValue === "") {
+    namelastNameInputnput.style.border = errorBorderColor;
+    errorBoxLastName.style.display = "flex";
+  } else if (!useRegexLastName(lastNameInputValue)) {
+    lastNameInput.style.border = errorBorderColor;
+    errorBoxLastName.style.display = "flex";
+  } else if (useRegexLastName(lastNameInputValue)) {
+    lastNameInput.style.border = initialBorderColor;
+    errorBoxLastName.style.display = "none";
+  }
+
+  if (emailValue === "") {
+    emailInput.style.border = errorBorderColor;
+    errorBoxEmail.style.display = "flex";
+  } else if (!useRegexEmail(emailValue)) {
+    emailInput.style.border = errorBorderColor;
+    errorBoxEmail.style.display = "flex";
+  } else if (useRegexEmail(emailValue)) {
+    emailInput.style.border = initialBorderColor;
+    errorBoxEmail.style.display = "none";
+  }
+
   $.ajax({
-    // url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
+    url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
     headers: {},
     method: "GET",
     data: {
@@ -50,13 +101,6 @@ $("[app='booste_submit']").on("click", function (e) {
 
     success: function (data) {
       console.log(data);
-      if (data.status === 1) {
-        window.location.href = data.redirect;
-      } else {
-        console.log(data);
-        errorInfo.css("display", "block");
-        errorInfo.html("Podaj poprawny adres sklepu lub domeny roboczej");
-      }
     },
   });
 });
