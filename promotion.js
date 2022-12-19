@@ -22,14 +22,14 @@ Webflow.push(function () {
 
       document.title = `Sklep internetowy - Załóż sklep online z Shoper od ${monthlyPromotion} zł / miesiąc`;
 
-      // $(dailyPromo).text(
-      //   `Stwórz własny sklep internetowy już od ${monthlyPromotion} zł miesięcznie`
-      // );
-      // $(promoTitleSelector).text(
-      //   `Roczny abonament sklepu ponad ${discountPercentage} taniej`
-      // );
-      // $(oldPriceYear).text(`${yearlyStandardPrice}`);
-      // $(newPriceYear).text(`${yearlyPromoPrice}`);
+      $(dailyPromo).text(
+        `Stwórz własny sklep internetowy już od ${monthlyPromotion} zł miesięcznie`
+      );
+      $(promoTitleSelector).text(
+        `Roczny abonament sklepu ponad ${discountPercentage} taniej`
+      );
+      $(oldPriceYear).text(`${yearlyStandardPrice}`);
+      $(newPriceYear).text(`${yearlyPromoPrice}`);
 
       let time = 0;
       // Update the count down every 1 second
