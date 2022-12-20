@@ -1,4 +1,10 @@
-$("[multi='next_step']").on("click", function (e) {
+let formNextStepBtn = document.querySelector("[multi='next_step']");
+let formPrevStepBtn = document.querySelector("[multi='prev_step']");
+let prevSlideBtn = document.querySelector("[multi='arrow_prev']");
+let nextSlideBtn = document.querySelector("[multi='arrow_next']");
+let positive = false;
+
+formNextStepBtn.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
 
@@ -24,8 +30,6 @@ $("[multi='next_step']").on("click", function (e) {
   let nextSlideBtn = form.querySelector("[multi='arrow_next']");
   let prevPrevBtn = form.querySelector("[multi='arrow_prev']");
 
-  //   let formNextStepBtn = form.querySelector("[multi='next_step']");
-
   if (companyValue === "") {
     companyNameInput.style.border = errorBorderColor;
     errorBoxName.style.display = "flex";
@@ -41,9 +45,30 @@ $("[multi='next_step']").on("click", function (e) {
     urlInput.style.border = initialBorderColor;
     errorBoxUrl.style.display = "none";
   }
-
-  if (urlInputValue !== "" && companyValue !== "") {
-    e.target.classList.remove("inactive");
-    nextSlideBtn.click();
-  }
 });
+
+setInterval(function () {
+  let companyNameInput = document.querySelector("[multi='company_name']");
+  let companyValue = companyNameInput.value;
+  let urlInput = document.querySelector("[multi='url']");
+  let urlInputValue = urlInput.value;
+  if (urlInputValue !== "" && companyValue !== "") {
+    formNextStepBtn.classList.remove("inactive");
+    positive = true;
+  } else {
+    positive = false;
+  }
+
+  console.log(positive);
+
+  if (positive) {
+    formPrevStepBtn.addEventListener("click", () => {
+      prevSlideBtn.click();
+    });
+    formNextStepBtn.addEventListener("click", () => {
+      nextSlideBtn.click();
+    });
+  } else {
+    return;
+  }
+}, 1000);
