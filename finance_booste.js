@@ -1,4 +1,4 @@
-$("[app='booste_submit']").on("click", function (e) {
+$("[app='brutto_submit']").on("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
@@ -20,9 +20,9 @@ $("[app='booste_submit']").on("click", function (e) {
   let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
   let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
   let acceptAgree = form.querySelector("[name='accept_agree']");
-  let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
-  let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
-  let boosteTermsTel = form.querySelector("[name='booste_terms_tel']");
+  // let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
+  // let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
+  // let boosteTermsTel = form.querySelector("[name='booste_terms_tel']");
 
   function useRegexName(nameValue) {
     let regex =
