@@ -125,9 +125,9 @@ $("[app='brutto_submit']").on("click", function (e) {
         phone: phoneInputValue,
         email: emailInput,
         website: urlValue,
-        bruttoTerms: bruttoTerms.val(),
-        bruttoClause: bruttoClause.val(),
-        shoperPersonalData: shoperPersonalData.val(),
+        bruttoTerms: bruttoTerms,
+        bruttoClause: bruttoClause,
+        shoperPersonalData: shoperPersonalData,
       },
 
       success: function (data) {
