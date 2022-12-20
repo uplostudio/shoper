@@ -82,7 +82,7 @@ $("[app='brutto_submit']").on("click", function (e) {
   } else {
     bruttoTerms.previousElementSibling.style.border = initialBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "none";
-    bruttoTerms.value === 0;
+    bruttoTerms.value === 1;
   }
   if (!bruttoClause.checked) {
     bruttoClause.previousElementSibling.style.border = errorBorderColor;
@@ -93,7 +93,7 @@ $("[app='brutto_submit']").on("click", function (e) {
   } else {
     bruttoClause.previousElementSibling.style.border = initialBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "none";
-    bruttoClause.value === 0;
+    bruttoClause.value === 1;
   }
   if (!shoperPersonalData.checked) {
     shoperPersonalData.previousElementSibling.style.border = errorBorderColor;
@@ -125,6 +125,8 @@ $("[app='brutto_submit']").on("click", function (e) {
         phone: phoneInputValue,
         email: emailInput,
         website: urlValue,
+        bruttoTerms: bruttoTerms.value,
+        bruttoClause: bruttoClause.value,
         shoperPersonalData: shoperPersonalData.value,
       },
 
