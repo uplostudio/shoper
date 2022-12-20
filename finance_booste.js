@@ -120,13 +120,15 @@ $("[app='booste_submit']").on("click", function (e) {
     urlInput !== "" &&
     acceptAgree.checked
   ) {
-    fetch(`https://hooks.zapier.com/hooks/catch/492789/bke9mgj/`, {
-      body,
-      headers: {
-        Accept: "*/*",
-      },
-      method: "GET",
-    }).then(function (response) {
+    fetch(
+      `https://hooks.zapier.com/hooks/catch/492789/bke9mgj/?firstname=${nameValue}&lastname=${lastNameInputValue}&email=${emailValue}&website=${urlValue}&shoperTermsEmail=${shoperTermsEmail.checked}&shoperTermsSms=${shoperTermsSms.checked}&shoperTermsTel=${shoperTermsTel.checked}&acceptAgree="1"`,
+      {
+        headers: {
+          Accept: "*/*",
+        },
+        method: "GET",
+      }
+    ).then(function (response) {
       //   console.log(response.status);
     });
   } else {
