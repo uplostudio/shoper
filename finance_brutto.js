@@ -112,9 +112,9 @@ $("[app='brutto_submit']").on("click", function (e) {
   body.append("url", urlValue);
   body.append("phone", phoneInputValue);
   body.append("email", emailValue);
-  body.append("bruttoTerms", bruttoTerms);
-  body.append("bruttoClause", bruttoClause);
-  body.append("shoperPersonalData", shoperPersonalData);
+  body.append("bruttoTerms", bruttoTerms.value);
+  body.append("bruttoClause", bruttoClause.value);
+  body.append("shoperPersonalData", shoperPersonalData.value);
 
   if (
     useRegexPhone(phoneInputValue) &&
