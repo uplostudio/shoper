@@ -1,4 +1,4 @@
-$("[app='booste_submit']").on("click", function (e) {
+$("[app='brutto_submit']").on("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
