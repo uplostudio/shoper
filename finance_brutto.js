@@ -104,7 +104,7 @@ $("[app='brutto_submit']").on("click", function (e) {
   } else {
     shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "none";
-    shoperPersonalData.value === 0;
+    shoperPersonalData.value === 1;
   }
 
   if (
@@ -125,6 +125,7 @@ $("[app='brutto_submit']").on("click", function (e) {
         phone: phoneInputValue,
         email: emailInput,
         website: urlValue,
+        shoperPersonalData: shoperPersonalData.value,
       },
 
       success: function (data) {

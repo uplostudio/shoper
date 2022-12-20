@@ -98,7 +98,7 @@ $("[app='brutto_submit']").on("click", function (e) {
   } else {
     acceptAgree.previousElementSibling.style.border = initialBorderColor;
     acceptAgree.parentNode.nextElementSibling.style.display = "none";
-    acceptAgree.value === 0;
+    acceptAgree.value === 1;
   }
 
   if (
