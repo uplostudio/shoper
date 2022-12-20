@@ -119,7 +119,7 @@ $("[app='brutto_submit']").on("click", function (e) {
         shoperTermsEmail: shoperTermsEmail.checked,
         shoperTermsSms: shoperTermsSms.checked,
         shoperTermsTel: shoperTermsTel.checked,
-        acceptAgree: acceptAgree.value,
+        acceptAgree: acceptAgree.checked,
         country: "PL",
         refererUrl: "https://shoper.pl/finansowanie/booste",
       },
