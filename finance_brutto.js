@@ -77,8 +77,8 @@ $("[app='brutto_submit']").on("click", function (e) {
     bruttoTerms.previousElementSibling.style.border = errorBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "flex";
     bruttoTerms.parentNode.nextElementSibling.textContent =
-      bruttoTerms.value === 0;
-    ("To pole jest wymagane");
+      "To pole jest wymagane";
+    bruttoTerms.value === 0;
   } else {
     bruttoTerms.previousElementSibling.style.border = initialBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "none";
@@ -88,8 +88,8 @@ $("[app='brutto_submit']").on("click", function (e) {
     bruttoClause.previousElementSibling.style.border = errorBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "flex";
     bruttoClause.parentNode.nextElementSibling.textContent =
-      bruttoClause.value === 0;
-    ("To pole jest wymagane");
+      "To pole jest wymagane";
+    bruttoClause.value === 0;
   } else {
     bruttoClause.previousElementSibling.style.border = initialBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "none";
@@ -100,7 +100,6 @@ $("[app='brutto_submit']").on("click", function (e) {
     shoperPersonalData.parentNode.nextElementSibling.style.display = "flex";
     shoperPersonalData.parentNode.nextElementSibling.textContent =
       shoperPersonalData.value === 0;
-    ("To pole jest wymagane");
   } else {
     shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "none";
