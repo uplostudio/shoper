@@ -13,7 +13,7 @@ $("[multi='next_step']").on("click", function (e) {
   let countryValue = countryInput.value;
   let errorBoxCountry = countryInput.nextElementSibling;
   let monthlyIncomeInput = form.querySelector("[multi='monthly_euro_income']");
-  let monthlyIncomeValue = monthlyIncome.value;
+  let monthlyIncomeValue = monthlyIncomeInput.value;
   let erroBoxMonthlyIncome = monthlyIncomeInput.nextElementSibling;
   let businessTypeInput = form.querySelector(
     "[multi='business_activity_type']"
