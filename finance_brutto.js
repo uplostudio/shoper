@@ -107,6 +107,15 @@ $("[app='brutto_submit']").on("click", function (e) {
     shoperPersonalData.value === 1;
   }
 
+  const body = new FormData();
+  body.append("nipValue", nipValue);
+  body.append("url", urlValue);
+  body.append("phone", phoneInputValue);
+  body.append("email", emailValue);
+  body.append("bruttoTerms", bruttoTerms);
+  body.append("bruttoClause", bruttoClause);
+  body.append("shoperPersonalData", shoperPersonalData);
+
   if (
     useRegexPhone(phoneInputValue) &&
     useRegexEmail(emailValue) &&
@@ -116,26 +125,15 @@ $("[app='brutto_submit']").on("click", function (e) {
     bruttoClause.checked &&
     shoperPersonalData.checked
   ) {
-    $.ajax({
-      url: "https://www.shoper.pl/ajax.php",
-      headers: {},
+    fetch(`https://www.shoper.pl/ajax.php`, {
+      body,
+      headers: {
+        Accept: "*/*",
+      },
       method: "POST",
-      data: {
-        nip: nipValue,
-        phone: phoneInputValue,
-        email: emailInput,
-        website: urlValue,
-        bruttoTerms: bruttoTerms,
-        bruttoClause: bruttoClause,
-        shoperPersonalData: shoperPersonalData,
-      },
-
-      success: function (data) {
-        console.log(data);
-      },
-      error: function (data) {
-        console.log(data);
-      },
+    }).then(function (response) {
+      console.log(response.status);
     });
+  } else {
   }
 });
