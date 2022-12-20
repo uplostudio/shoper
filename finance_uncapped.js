@@ -1,4 +1,4 @@
-$("[app='brutto_submit']").on("click", function (e) {
+$("[multi='next_step']").on("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
@@ -24,7 +24,7 @@ $("[app='brutto_submit']").on("click", function (e) {
   let nextSlideBtn = form.querySelector("[multi='arrow_next']");
   let prevPrevBtn = form.querySelector("[multi='arrow_prev']");
 
-  let formNextStepBtn = form.querySelector("[multi='next_step']");
+  //   let formNextStepBtn = form.querySelector("[multi='next_step']");
 
   if (companyValue === "") {
     companyNameInput.style.border = errorBorderColor;
@@ -43,9 +43,7 @@ $("[app='brutto_submit']").on("click", function (e) {
   }
 
   if (urlInputValue !== "" && companyValue !== "") {
-    formNextStepBtn.classList.remove("inactive");
-    formNextStepBtn.addEventListener("click", () => {
-      nextSlideBtn.click();
-    });
+    e.target.classList.remove("inactive");
+    nextSlideBtn.click();
   }
 });
