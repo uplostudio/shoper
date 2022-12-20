@@ -93,8 +93,8 @@ $("[app='booste_submit']").on("click", function (e) {
     acceptAgree.previousElementSibling.style.border = errorBorderColor;
     acceptAgree.parentNode.nextElementSibling.style.display = "flex";
     acceptAgree.parentNode.nextElementSibling.textContent =
-      acceptAgree.value === 0;
-    ("To pole jest wymagane");
+      "To pole jest wymagane";
+    acceptAgree.value === 0;
   } else {
     acceptAgree.previousElementSibling.style.border = initialBorderColor;
     acceptAgree.parentNode.nextElementSibling.style.display = "none";
