@@ -101,35 +101,34 @@ $("[app='brutto_submit']").on("click", function (e) {
     acceptAgree.value === 1;
   }
 
+  const body = new FormData();
+  body.append("firstName", nameValue);
+  body.append("lastName", lastNameInputValue);
+  body.append("email", emailInput);
+  body.append("website", urlValue);
+  body.append("shoperTermsEmail", shoperTermsEmail.checked);
+  body.append("shoperTermsSms", shoperTermsSms.checked);
+  body.append("shoperTermsTel", shoperTermsTel.checked);
+  body.append("acceptAgree", "1");
+  body.append("country", "PL");
+  body.append("refererUrl", "https://shoper.pl/finansowanie/booste");
+
   if (
     useRegexName(nameValue) &&
     useRegexLastName(lastNameInputValue) &&
     useRegexEmail(emailValue) &&
-    urlInput !== ""
+    urlInput !== "" &&
+    acceptAgree.checked
   ) {
-    $.ajax({
-      url: "https://hooks.zapier.com/hooks/catch/492789/bke9mgj/",
-      headers: {},
+    fetch(`https://hooks.zapier.com/hooks/catch/492789/bke9mgj/`, {
+      body,
+      headers: {
+        Accept: "*/*",
+      },
       method: "GET",
-      data: {
-        firstname: nameValue,
-        lastname: lastNameInputValue,
-        email: emailInput,
-        website: urlValue,
-        shoperTermsEmail: shoperTermsEmail.checked,
-        shoperTermsSms: shoperTermsSms.checked,
-        shoperTermsTel: shoperTermsTel.checked,
-        acceptAgree: acceptAgree.checked,
-        country: "PL",
-        refererUrl: "https://shoper.pl/finansowanie/booste",
-      },
-
-      success: function (data) {
-        console.log(data);
-      },
-      error: function (data) {
-        console.log(data);
-      },
+    }).then(function (response) {
+      //   console.log(response.status);
     });
+  } else {
   }
 });
