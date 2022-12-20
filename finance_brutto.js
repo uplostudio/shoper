@@ -112,9 +112,10 @@ $("[app='brutto_submit']").on("click", function (e) {
   body.append("url", urlValue);
   body.append("phone", phoneInputValue);
   body.append("email", emailValue);
-  body.append("bruttoTerms", bruttoTerms.value);
-  body.append("bruttoClause", bruttoClause.value);
-  body.append("shoperPersonalData", shoperPersonalData.value);
+  body.append("bruttoTerms", "1");
+  body.append("bruttoClause", "1");
+  body.append("shoperPersonalData", "1");
+  body.append("action", "loan_decision_contact");
 
   if (
     useRegexPhone(phoneInputValue) &&
@@ -132,7 +133,7 @@ $("[app='brutto_submit']").on("click", function (e) {
       },
       method: "POST",
     }).then(function (response) {
-      console.log(response.status);
+      //   console.log(response.status);
     });
   } else {
   }
