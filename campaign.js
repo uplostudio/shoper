@@ -7,6 +7,7 @@ $("[app='campaign']").on("submit", function (event) {
   event.stopPropagation();
   const successInfo = $(this).find(".w-form-done");
   const errorInfo = $(this).find(".w-form-fail");
+  const form = $(this).find("#wf-form-campaign");
   $.ajax({
     url: "https://www.shoper.pl/ajax.php",
     headers: {},
@@ -15,20 +16,22 @@ $("[app='campaign']").on("submit", function (event) {
       action: $(this).attr("action"),
       email: $(this).find("[app='email_campaign']").val(),
       phone: $(this).find("[app='phone_campaign']").val(),
-      url: $(this).find("[app='url_campaign']").val()
+      url: $(this).find("[app='url_campaign']").val(),
     },
     success: function (data) {
+      console.log(data);
       if (data.status === 1) {
+        form.css("display", "none");
         successInfo.css("display", "block");
-        successInfo.html(
-          "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!"
-        );
+        successInfo.html("Sprawdź wiadomość, którą właśnie od nas otrzymałeś!");
         errorInfo.css("display", "none");
       } else {
         console.log(data);
         errorInfo.css("display", "block");
-        errorInfo.html("Podaj poprawny adres sklepu w formacie nazwasklepu.pl lub www.nazwasklepu.pl");
+        errorInfo.html(
+          "Podaj poprawny adres sklepu w formacie nazwasklepu.pl lub www.nazwasklepu.pl"
+        );
       }
-    }
+    },
   });
 });
