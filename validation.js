@@ -82,8 +82,8 @@ consultFormSubmit.forEach((button) => {
     let urlValue = urlInput;
     let emailValue = emailInput;
     let phoneValue = phoneInput;
-    let errorBoxPhone = phoneInput.nextElementSibling;
-    let errorBoxMail = emailInput.nextElementSibling;
+    let errorBoxPhone = phoneInput.parentNode.nextElementSibling;
+    let errorBoxMail = emailInput.parentNode.nextElementSibling;
     let errorBoxUrl = urlInput.parentNode.nextElementSibling;
 
     function useRegexPhone(phoneValue) {
