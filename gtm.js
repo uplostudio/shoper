@@ -3,11 +3,13 @@
 window.dataLayer = window.dataLayer || [];
 
 window.addEventListener("load", () => {
-  let gtmBanner = document.querySelector("#top-bar-header");
+  try {
+    let gtmBanner = document.querySelector("#top-bar-header");
 
-  gtmBanner.addEventListener("click", () => {
-    let bf = document.querySelector("[app='blackFriday']");
-    bf.classList.add("modal--open");
-    $(document.body).css("overflow", "hidden");
-  });
+    gtmBanner.addEventListener("click", () => {
+      let bf = document.querySelector("[app='blackFriday']");
+      bf.classList.add("modal--open");
+      $(document.body).css("overflow", "hidden");
+    });
+  } catch (err) {}
 });
