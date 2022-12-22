@@ -121,7 +121,7 @@ $("[app='booste_submit']").on("click", function (e) {
     acceptAgree.checked
   ) {
     fetch(
-      `https://hooks.zapier.com/hooks/catch/492789/bke9mgj/?firstname=${nameValue}&lastname=${lastNameInputValue}&email=${emailValue}&website=${urlValue}&shoperTermsEmail=${shoperTermsEmail.checked}&shoperTermsSms=${shoperTermsSms.checked}&shoperTermsTel=${shoperTermsTel.checked}&acceptAgree="1"&location="PL"&referer_url="https://shoper.pl/finansowanie/booste"`,
+      `https://hooks.zapier.com/hooks/catch/492789/bke9mgj/?action="https://app.booste.com/sign-up"&firstname=${nameValue}&lastname=${lastNameInputValue}&email=${emailValue}&website=${urlValue}&shoperTermsEmail=${shoperTermsEmail.checked}&shoperTermsSms=${shoperTermsSms.checked}&shoperTermsTel=${shoperTermsTel.checked}&acceptAgree="1"&location="PL"&referer_url="https://shoper.pl/finansowanie/booste"`,
       {
         headers: {
           Accept: "*/*",
