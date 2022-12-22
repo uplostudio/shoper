@@ -17,6 +17,7 @@ $("[app='campaign']").on("submit", function (event) {
       email: $(this).find("[app='email_campaign']").val(),
       phone: $(this).find("[app='phone_campaign']").val(),
       url: $(this).find("[app='url_campaign']").val(),
+      subject: $(this).attr("subject"),
     },
     success: function (data) {
       console.log(data);
