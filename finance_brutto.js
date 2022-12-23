@@ -42,11 +42,11 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (emailValue === "") {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
-    errorBoxEmail.textContent = "To pole jest wymagane";
+    // errorBoxEmail.textContent = "To pole jest wymagane";
   } else if (!useRegexEmail(emailValue)) {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
-    errorBoxEmail.textContent = "Podaj poprawne dane";
+    // errorBoxEmail.textContent = "Podaj poprawne dane";
   } else if (useRegexEmail(emailValue)) {
     emailInput.style.border = initialBorderColor;
     errorBoxEmail.style.display = "none";
@@ -55,11 +55,11 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (phoneInputValue === "") {
     phoneInput.style.border = errorBorderColor;
     errorBoxPhone.style.display = "flex";
-    errorBoxPhone.textContent = "To pole jest wymagane";
+    // errorBoxPhone.textContent = "To pole jest wymagane";
   } else if (!useRegexPhone(phoneInputValue)) {
     phoneInput.style.border = errorBorderColor;
     errorBoxPhone.style.display = "flex";
-    errorBoxPhone.textContent = "Podaj poprawne dane";
+    // errorBoxPhone.textContent = "Podaj poprawne dane";
   } else if (useRegexPhone(phoneInputValue)) {
     phoneInput.style.border = initialBorderColor;
     errorBoxPhone.style.display = "none";
@@ -76,8 +76,8 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (!bruttoTerms.checked) {
     bruttoTerms.previousElementSibling.style.border = errorBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "flex";
-    bruttoTerms.parentNode.nextElementSibling.textContent =
-      "To pole jest wymagane";
+    // bruttoTerms.parentNode.nextElementSibling.textContent =
+    //   "To pole jest wymagane";
     bruttoTerms.value === 0;
   } else {
     bruttoTerms.previousElementSibling.style.border = initialBorderColor;
@@ -87,8 +87,8 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (!bruttoClause.checked) {
     bruttoClause.previousElementSibling.style.border = errorBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "flex";
-    bruttoClause.parentNode.nextElementSibling.textContent =
-      "To pole jest wymagane";
+    // bruttoClause.parentNode.nextElementSibling.textContent =
+    //   "To pole jest wymagane";
     bruttoClause.value === 0;
   } else {
     bruttoClause.previousElementSibling.style.border = initialBorderColor;
@@ -98,8 +98,8 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (!shoperPersonalData.checked) {
     shoperPersonalData.previousElementSibling.style.border = errorBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "flex";
-    shoperPersonalData.parentNode.nextElementSibling.textContent =
-      "To pole jest wymagane";
+    // shoperPersonalData.parentNode.nextElementSibling.textContent =
+    //   "To pole jest wymagane";
     shoperPersonalData.value === 0;
   } else {
     shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
