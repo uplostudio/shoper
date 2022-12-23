@@ -70,6 +70,19 @@ $("[app='brutto_submit']").on("click", function (e) {
     errorBoxPhone.style.display = "none";
   }
 
+  if (nipValue === "") {
+    nipInput.style.border = errorBorderColor;
+    errorBoxNip.style.display = "flex";
+    // errorBoxPhone.textContent = "To pole jest wymagane";
+  } else if (!useRegexNip(nipValue)) {
+    nipInput.style.border = errorBorderColor;
+    errorBoxNip.style.display = "flex";
+    // errorBoxPhone.textContent = "Podaj poprawne dane";
+  } else if (useRegexNip(nipValue)) {
+    nipInput.style.border = initialBorderColor;
+    errorBoxNip.style.display = "none";
+  }
+
   if (urlValue === "") {
     urlInput.style.border = errorBorderColor;
     errorBoxUrl.style.display = "flex";
