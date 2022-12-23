@@ -25,6 +25,11 @@ $("[app='brutto_submit']").on("click", function (e) {
     return regex.test(phoneInputValue);
   }
 
+  function useRegexNip(nipValue) {
+    let regex = /^\d\d\d\d\d\d\d\d\d$/;
+    return regex.test(nipValue);
+  }
+
   function useRegexEmail(emailValue) {
     let regex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -120,7 +125,7 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (
     useRegexPhone(phoneInputValue) &&
     useRegexEmail(emailValue) &&
-    nipValue !== "" &&
+    useRegexNip(nipValue) &&
     urlInput !== "" &&
     bruttoTerms.checked &&
     bruttoClause.checked &&
