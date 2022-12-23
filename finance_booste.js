@@ -90,14 +90,16 @@ $("[app='booste_submit']").on("click", function (e) {
   }
 
   if (!acceptAgree.checked) {
-    acceptAgree.previousElementSibling.style.border = errorBorderColor;
-    acceptAgree.parentNode.nextElementSibling.style.display = "flex";
+    acceptAgree.parentElement.children[0].style.border = errorBorderColor;
+    acceptAgree.parentElement.parentElement.nextElementSibling.style.display =
+      "flex";
     // acceptAgree.parentNode.nextElementSibling.textContent =
     //   "To pole jest wymagane";
     acceptAgree.value === 0;
   } else {
-    acceptAgree.previousElementSibling.style.border = initialBorderColor;
-    acceptAgree.parentNode.nextElementSibling.style.display = "none";
+    acceptAgree.parentElement.children[0].style.border = initialBorderColor;
+    acceptAgree.parentElement.parentElement.nextElementSibling.style.display =
+      "none";
     acceptAgree.value === 1;
   }
 
