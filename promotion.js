@@ -22,6 +22,8 @@ Webflow.push(function () {
 
       document.title = `Sklep internetowy - Załóż sklep online z Shoper od ${monthlyPromotion} zł / miesiąc`;
 
+      $(promoPriceSelector).text(` ${monthlyPromotion}`);
+
       $(dailyPromo).text(
         `Stwórz własny sklep internetowy już od ${monthlyPromotion} zł miesięcznie`
       );
