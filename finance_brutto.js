@@ -84,39 +84,32 @@ $("[app='brutto_submit']").on("click", function (e) {
   }
 
   if (!bruttoTerms.checked) {
-    bruttoTerms.parentElement.children[0].style.border = errorBorderColor;
-    bruttoTerms.parentElement.children[0].style.display = "flex";
-    bruttoTerms.parentElement.children[0].textContent = "To pole jest wymagane";
+    bruttoTerms.previousElementSibling.style.border = errorBorderColor;
+    bruttoTerms.parentNode.nextElementSibling.style.display = "flex";
     bruttoTerms.value === 0;
   } else {
-    bruttoTerms.parentElement.children[0].style.border = initialBorderColor;
-    bruttoTerms.parentElement.children[0].style.display = "none";
+    bruttoTerms.previousElementSibling.style.border = initialBorderColor;
+    bruttoTerms.parentNode.nextElementSibling.style.display = "none";
     bruttoTerms.value === 1;
     return bruttoTerms.value;
   }
   if (!bruttoClause.checked) {
-    bruttoClause.parentElement.children[0].style.border = errorBorderColor;
-    bruttoClause.parentElement.children[0].style.display = "flex";
-    bruttoClause.parentElement.children[0].textContent =
-      "To pole jest wymagane";
+    bruttoClause.previousElementSibling.style.border = errorBorderColor;
+    bruttoClause.parentNode.nextElementSibling.style.display = "flex";
     bruttoClause.value === 0;
   } else {
-    bruttoClause.parentElement.children[0].style.border = initialBorderColor;
-    bruttoClause.parentElement.children[0].style.display = "none";
+    bruttoClause.previousElementSibling.style.border = initialBorderColor;
+    bruttoClause.parentNode.nextElementSibling.style.display = "none";
     bruttoClause.value === 1;
     return bruttoClause.value;
   }
   if (!shoperPersonalData.checked) {
-    shoperPersonalData.parentElement.children[0].style.border =
-      errorBorderColor;
-    shoperPersonalData.parentElement.children[0].style.display = "flex";
-    shoperPersonalData.parentElement.children[0].textContent =
-      "To pole jest wymagane";
+    shoperPersonalData.previousElementSibling.style.border = errorBorderColor;
+    shoperPersonalData.parentNode.nextElementSibling.style.display = "flex";
     shoperPersonalData.value === 0;
   } else {
-    shoperPersonalData.parentElement.children[0].style.border =
-      initialBorderColor;
-    shoperPersonalData.parentElement.children[0].style.display = "none";
+    shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
+    shoperPersonalData.parentNode.nextElementSibling.style.display = "none";
     shoperPersonalData.value === 1;
     return shoperPersonalData.value;
   }
