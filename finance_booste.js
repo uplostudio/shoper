@@ -45,11 +45,11 @@ $("[app='booste_submit']").on("click", function (e) {
   if (nameValue === "") {
     nameInput.style.border = errorBorderColor;
     errorBoxName.style.display = "flex";
-    // errorBoxName.textContent = "To pole jest wymagane";
+    errorBoxName.children[1].textContent = "To pole jest wymagane";
   } else if (!useRegexName(nameValue)) {
     nameInput.style.border = errorBorderColor;
     errorBoxName.style.display = "flex";
-    // errorBoxName.textContent = "Podaj poprawne dane";
+    errorBoxName.children[1].textContent = "Podaj poprawne dane";
   } else if (useRegexName(nameValue)) {
     nameInput.style.border = initialBorderColor;
     errorBoxName.style.display = "none";
@@ -58,11 +58,11 @@ $("[app='booste_submit']").on("click", function (e) {
   if (lastNameInputValue === "") {
     lastNameInput.style.border = errorBorderColor;
     errorBoxLastName.style.display = "flex";
-    // errorBoxLastName.textContent = "To pole jest wymagane";
+    errorBoxLastName.children[1].textContent = "To pole jest wymagane";
   } else if (!useRegexLastName(lastNameInputValue)) {
     lastNameInput.style.border = errorBorderColor;
     errorBoxLastName.style.display = "flex";
-    // errorBoxLastName.textContent = "Podaj poprawne dane";
+    errorBoxLastName.children[1].textContent = "Podaj poprawne dane";
   } else if (useRegexLastName(lastNameInputValue)) {
     lastNameInput.style.border = initialBorderColor;
     errorBoxLastName.style.display = "none";
@@ -71,11 +71,11 @@ $("[app='booste_submit']").on("click", function (e) {
   if (emailValue === "") {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
-    // errorBoxEmail.textContent = "To pole jest wymagane";
+    errorBoxEmail.children[1].textContent = "To pole jest wymagane";
   } else if (!useRegexEmail(emailValue)) {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
-    // errorBoxEmail.textContent = "Podaj poprawne dane";
+    errorBoxEmail.children[1].textContent = "Podaj poprawne dane";
   } else if (useRegexEmail(emailValue)) {
     emailInput.style.border = initialBorderColor;
     errorBoxEmail.style.display = "none";
@@ -93,8 +93,6 @@ $("[app='booste_submit']").on("click", function (e) {
     acceptAgree.parentElement.children[0].style.border = errorBorderColor;
     acceptAgree.parentElement.parentElement.nextElementSibling.style.display =
       "flex";
-    // acceptAgree.parentNode.nextElementSibling.textContent =
-    //   "To pole jest wymagane";
     acceptAgree.value === 0;
   } else {
     acceptAgree.parentElement.children[0].style.border = initialBorderColor;
