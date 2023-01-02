@@ -25,11 +25,6 @@ $("[app='brutto_submit']").on("click", function (e) {
     return regex.test(phoneInputValue);
   }
 
-  function useRegexNip(nipValue) {
-    let regex = /^\d\d\d\d\d\d\d\d\d$/;
-    return regex.test(nipValue);
-  }
-
   function useRegexEmail(emailValue) {
     let regex =
       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
@@ -47,11 +42,11 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (emailValue === "") {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
-    // errorBoxEmail.textContent = "To pole jest wymagane";
+    errorBoxEmail.children[1].textContent = "To pole jest wymagane";
   } else if (!useRegexEmail(emailValue)) {
     emailInput.style.border = errorBorderColor;
     errorBoxEmail.style.display = "flex";
-    // errorBoxEmail.textContent = "Podaj poprawne dane";
+    errorBoxEmail.children[1].textContent = "Podaj poprawne dane";
   } else if (useRegexEmail(emailValue)) {
     emailInput.style.border = initialBorderColor;
     errorBoxEmail.style.display = "none";
@@ -60,27 +55,14 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (phoneInputValue === "") {
     phoneInput.style.border = errorBorderColor;
     errorBoxPhone.style.display = "flex";
-    // errorBoxPhone.textContent = "To pole jest wymagane";
+    errorBoxPhone.children[1].textContent = "To pole jest wymagane";
   } else if (!useRegexPhone(phoneInputValue)) {
     phoneInput.style.border = errorBorderColor;
     errorBoxPhone.style.display = "flex";
-    // errorBoxPhone.textContent = "Podaj poprawne dane";
+    errorBoxPhone.children[1].textContent = "Podaj poprawne dane";
   } else if (useRegexPhone(phoneInputValue)) {
     phoneInput.style.border = initialBorderColor;
     errorBoxPhone.style.display = "none";
-  }
-
-  if (nipValue === "") {
-    nipInput.style.border = errorBorderColor;
-    errorBoxNip.style.display = "flex";
-    // errorBoxPhone.textContent = "To pole jest wymagane";
-  } else if (!useRegexNip(nipValue)) {
-    nipInput.style.border = errorBorderColor;
-    errorBoxNip.style.display = "flex";
-    // errorBoxPhone.textContent = "Podaj poprawne dane";
-  } else if (useRegexNip(nipValue)) {
-    nipInput.style.border = initialBorderColor;
-    errorBoxNip.style.display = "none";
   }
 
   if (urlValue === "") {
@@ -94,35 +76,38 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (!bruttoTerms.checked) {
     bruttoTerms.previousElementSibling.style.border = errorBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "flex";
-    // bruttoTerms.parentNode.nextElementSibling.textContent =
-    //   "To pole jest wymagane";
+    bruttoTerms.parentNode.nextElementSibling.textContent =
+      "To pole jest wymagane";
     bruttoTerms.value === 0;
   } else {
     bruttoTerms.previousElementSibling.style.border = initialBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "none";
     bruttoTerms.value === 1;
+    return bruttoTerms.value;
   }
   if (!bruttoClause.checked) {
     bruttoClause.previousElementSibling.style.border = errorBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "flex";
-    // bruttoClause.parentNode.nextElementSibling.textContent =
-    //   "To pole jest wymagane";
+    bruttoClause.parentNode.nextElementSibling.textContent =
+      "To pole jest wymagane";
     bruttoClause.value === 0;
   } else {
     bruttoClause.previousElementSibling.style.border = initialBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "none";
     bruttoClause.value === 1;
+    return bruttoClause.value;
   }
   if (!shoperPersonalData.checked) {
     shoperPersonalData.previousElementSibling.style.border = errorBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "flex";
-    // shoperPersonalData.parentNode.nextElementSibling.textContent =
-    //   "To pole jest wymagane";
+    shoperPersonalData.parentNode.nextElementSibling.textContent =
+      "To pole jest wymagane";
     shoperPersonalData.value === 0;
   } else {
     shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "none";
     shoperPersonalData.value === 1;
+    return shoperPersonalData.value;
   }
 
   const body = new FormData();
@@ -130,15 +115,14 @@ $("[app='brutto_submit']").on("click", function (e) {
   body.append("url", urlValue);
   body.append("phone", phoneInputValue);
   body.append("email", emailValue);
-  body.append("bruttoTerms", "1");
-  body.append("bruttoClause", "1");
-  body.append("shoperPersonalData", "1");
-  body.append("action", "loan_decision_contact");
+  body.append("bruttoTerms", bruttoTerms.value);
+  body.append("bruttoClause", bruttoClause.value);
+  body.append("shoperPersonalData", shoperPersonalData.value);
 
   if (
     useRegexPhone(phoneInputValue) &&
     useRegexEmail(emailValue) &&
-    useRegexNip(nipValue) &&
+    nipValue !== "" &&
     urlInput !== "" &&
     bruttoTerms.checked &&
     bruttoClause.checked &&
@@ -151,7 +135,7 @@ $("[app='brutto_submit']").on("click", function (e) {
       },
       method: "POST",
     }).then(function (response) {
-      //   console.log(response.status);
+      console.log(response.status);
     });
   } else {
   }
