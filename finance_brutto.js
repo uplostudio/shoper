@@ -36,6 +36,12 @@ $("[app='brutto_submit']").on("click", function (e) {
     return regex.test(emailValue);
   }
 
+  function useRegexUrl(urlValue) {
+    let regex =
+      /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
+    return regex.test(urlValue);
+  }
+
   if (nipValue === "") {
     nipInput.style.border = errorBorderColor;
     errorBoxNip.style.display = "flex";
@@ -78,14 +84,19 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (urlValue === "") {
     urlInput.style.border = errorBorderColor;
     errorBoxUrl.style.display = "flex";
-  } else {
+    errorBoxUrl.children[1].textContent = "To pole jest wymagane";
+  } else if (!useRegexUrl(urlValue)) {
+    urlInput.style.border = errorBorderColor;
+    errorBoxUrl.style.display = "flex";
+    errorBoxUrl.children[1].textContent = "Podaj poprawne dane";
+  } else if (useRegexUrl(urlValue)) {
     urlInput.style.border = initialBorderColor;
     errorBoxUrl.style.display = "none";
   }
-
   if (!bruttoTerms.checked) {
     bruttoTerms.previousElementSibling.style.border = errorBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "flex";
+    console.log(bruttoTerms.parentNode.nextElementSibling);
     bruttoTerms.value === 0;
   } else {
     bruttoTerms.previousElementSibling.style.border = initialBorderColor;
