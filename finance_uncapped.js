@@ -9,6 +9,7 @@ formNextStepBtn.addEventListener("click", (e) => {
   e.stopPropagation();
 
   let form = e.target.form;
+  // first step
   let companyNameInput = form.querySelector("[multi='company_name']");
   let companyValue = companyNameInput.value;
   let errorBoxName = companyNameInput.nextElementSibling;
@@ -26,6 +27,19 @@ formNextStepBtn.addEventListener("click", (e) => {
   );
   let businessTypeValue = businessTypeInput.value;
   let errorBoxBusinessType = businessTypeInput.nextElementSibling;
+  // second step
+  let firstNameInput = form.querySelector("[multi='first_name']");
+  let firstNameValue = firstNameInput.value;
+  let errorBoxFirstName = firstNameInput.nextElementSibling;
+  let lastNameInput = form.querySelector("[multi='last_name']");
+  let lastNameInputValue = lastNameInput.value;
+  let errorBoxLastName = lastNameInput.nextElementSibling;
+  let emailInput = form.querySelector("[multi='email']");
+  let emailInputValue = emailInput.value;
+  let errorBoxEmail = emailInput.nextElementSibling;
+  let phoneNumberInput = form.querySelector("[multi='phone']");
+  let phoneNumberInputValue = phoneNumberInput.value;
+  let errorBoxPhoneNumber = phoneNumberInput.nextElementSibling;
 
   let nextSlideBtn = form.querySelector("[multi='arrow_next']");
   let prevPrevBtn = form.querySelector("[multi='arrow_prev']");
@@ -56,19 +70,21 @@ setInterval(function () {
     formNextStepBtn.classList.remove("inactive");
     positive = true;
   } else {
+    formNextStepBtn.classList.add("inactive");
     positive = false;
   }
 
   console.log(positive);
 
   if (positive) {
-    formPrevStepBtn.addEventListener("click", () => {
-      prevSlideBtn.click();
-    });
+    formNextStepBtn.style.pointerEvents = "auto";
+    // formPrevStepBtn.addEventListener("click", () => {
+    //   prevSlideBtn.click();
+    // });
     formNextStepBtn.addEventListener("click", () => {
       nextSlideBtn.click();
     });
   } else {
-    return;
+    formNextStepBtn.style.pointerEvents = "none";
   }
 }, 1000);
