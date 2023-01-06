@@ -1,6 +1,17 @@
 let errorBorderColor = `1px solid #eb4826`;
 let initialBorderColor = `1px solid #898989`;
 
+function useRegexFirstName(firstNameValue) {
+  let regex =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
+  return regex.test(firstNameValue);
+}
+function useRegexLastName(lastNameValue) {
+  let regex =
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/;
+  return regex.test(lastNameValue);
+}
+
 function useRegexPhone(phoneInputValue) {
   let regex = /^\d\d\d\d\d\d\d\d\d$/;
   return regex.test(phoneInputValue);
@@ -21,6 +32,43 @@ function useRegexUrl(urlValue) {
   let regex =
     /((([A-Za-z]{3,9}:(?:\/\/)?)(?:[-;:&=\+\$,\w]+@)?[A-Za-z0-9.-]+|(?:www.|[-;:&=\+\$,\w]+@)[A-Za-z0-9.-]+)((?:\/[\+~%\/.\w-_]*)?\??(?:[-\+=&;%@.\w_]*)#?(?:[\w]*))?)/;
   return regex.test(urlValue);
+}
+
+function checkFirstName(e) {
+  let form = e.target.form;
+  let firstNameInput = form.querySelector("[app='firstName']");
+  let firstNameValue = firstNameInput.value;
+  let errorBoxFirstName = firstNameInput.nextElementSibling;
+  if (firstNameValue === "") {
+    firstNameInput.style.border = errorBorderColor;
+    errorBoxFirstName.style.display = "flex";
+    errorBoxFirstName.children[1].textContent = "To pole jest wymagane";
+  } else if (!useRegexFirstName(firstNameValue)) {
+    firstNameInput.style.border = errorBorderColor;
+    errorBoxFirstName.style.display = "flex";
+    errorBoxFirstName.children[1].textContent = "Podaj poprawne dane";
+  } else if (useRegexNip(nipValue)) {
+    firstNameInput.style.border = initialBorderColor;
+    errorBoxFirstName.style.display = "none";
+  }
+}
+function checkLastName(e) {
+  let form = e.target.form;
+  let lastNameInput = form.querySelector("[app='lastName']");
+  let lastNameValue = lastNameInput.value;
+  let errorBoxLastName = lastNameInput.nextElementSibling;
+  if (lastNameValue === "") {
+    lastNameInput.style.border = errorBorderColor;
+    errorBoxLastName.style.display = "flex";
+    errorBoxLastName.children[1].textContent = "To pole jest wymagane";
+  } else if (!useRegexFirstName(firstNameValue)) {
+    lastNameInput.style.border = errorBorderColor;
+    errorBoxLastName.style.display = "flex";
+    errorBoxLastName.children[1].textContent = "Podaj poprawne dane";
+  } else if (useRegexNip(nipValue)) {
+    lastNameInput.style.border = initialBorderColor;
+    errorBoxLastName.style.display = "none";
+  }
 }
 
 function checkNip(e) {
