@@ -71,6 +71,21 @@ function checkLastName(e) {
   }
 }
 
+function checkCompanyName(e) {
+  let form = e.target.form;
+  let companyNameInput = form.querySelector("[app='company_name']");
+  // let companyValue = companyNameInput.value;
+  let errorBoxCompany = companyNameInput.nextElementSibling;
+  if (nipValue === "") {
+    companyNameInput.style.border = errorBorderColor;
+    errorBoxCompany.style.display = "flex";
+    errorBoxCompany.children[1].textContent = "To pole jest wymagane";
+  } else {
+    companyNameInput.style.border = initialBorderColor;
+    errorBoxCompany.style.display = "none";
+  }
+}
+
 function checkNip(e) {
   let form = e.target.form;
   let nipInput = form.querySelector("[app='nipNumber']");
