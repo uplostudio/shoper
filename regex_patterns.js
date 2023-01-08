@@ -45,7 +45,7 @@ function useRegexUrl(urlValue) {
 function checkFirstName(e) {
   let form = e.target.form;
   let firstNameInput = form.querySelector("[app='firstName']");
-  let firstNameValue = firstNameInput.value;
+  firstNameValue = firstNameInput.value;
   let errorBoxFirstName = firstNameInput.nextElementSibling;
   if (firstNameValue === "") {
     firstNameInput.style.border = errorBorderColor;
@@ -63,7 +63,7 @@ function checkFirstName(e) {
 function checkLastName(e) {
   let form = e.target.form;
   let lastNameInput = form.querySelector("[app='lastName']");
-  let lastNameValue = lastNameInput.value;
+  lastNameValue = lastNameInput.value;
   let errorBoxLastName = lastNameInput.nextElementSibling;
   if (lastNameValue === "") {
     lastNameInput.style.border = errorBorderColor;
@@ -82,7 +82,7 @@ function checkLastName(e) {
 function checkCompanyName(e) {
   let form = e.target.form;
   let companyNameInput = form.querySelector("[app='company_name']");
-  let companyValue = companyNameInput.value;
+  companyValue = companyNameInput.value;
   let errorBoxCompany = companyNameInput.nextElementSibling;
   if (companyValue === "") {
     companyNameInput.style.border = errorBorderColor;
@@ -97,7 +97,7 @@ function checkCompanyName(e) {
 function checkNip(e) {
   let form = e.target.form;
   let nipInput = form.querySelector("[app='nipNumber']");
-  let nipValue = nipInput.value;
+  nipValue = nipInput.value;
   let errorBoxNip = nipInput.nextElementSibling;
   if (nipValue === "") {
     nipInput.style.border = errorBorderColor;
@@ -115,7 +115,7 @@ function checkNip(e) {
 function checkEmail(e) {
   let form = e.target.form;
   let emailInput = form.querySelector("[app='email']");
-  let emailValue = emailInput.value;
+  emailValue = emailInput.value;
   let errorBoxEmail = emailInput.nextElementSibling;
   if (emailValue === "") {
     emailInput.style.border = errorBorderColor;
@@ -134,7 +134,7 @@ function checkEmail(e) {
 function checkPhone(e) {
   let form = e.target.form;
   let phoneInput = form.querySelector("[app='phone']");
-  let phoneInputValue = phoneInput.value;
+  phoneInputValue = phoneInput.value;
   let errorBoxPhone = phoneInput.nextElementSibling;
   if (phoneInputValue === "") {
     phoneInput.style.border = errorBorderColor;
@@ -153,7 +153,7 @@ function checkPhone(e) {
 function checkUrl(e) {
   let form = e.target.form;
   let urlInput = form.querySelector("[app='url']");
-  let urlValue = urlInput.value;
+  urlValue = urlInput.value;
   let errorBoxUrl = urlInput.nextElementSibling;
   if (urlValue === "") {
     urlInput.style.border = errorBorderColor;
