@@ -2,20 +2,25 @@ let formNextStepBtn = document.querySelector("[multi='next_step']");
 let formPrevStepBtn = document.querySelector("[multi='prev_step']");
 let prevSlideBtn = document.querySelector("[multi='arrow_prev']");
 let nextSlideBtn = document.querySelector("[multi='arrow_next']");
+let uncappedSubmit = document.querySelector("[multi='submit']");
+
 let positive = false;
 
+formPrevStepBtn.addEventListener("click", () => {
+  prevSlideBtn.click();
+});
+
 formNextStepBtn.addEventListener("click", (e) => {
+  e.preventDefault();
+  e.stopPropagation();
+});
+
+uncappedSubmit.addEventListener("click", (e) => {
   e.preventDefault();
   e.stopPropagation();
 
   let form = e.target.form;
   // first step
-  let companyNameInput = form.querySelector("[multi='company_name']");
-  let companyValue = companyNameInput.value;
-  let errorBoxName = companyNameInput.nextElementSibling;
-  let urlInput = form.querySelector("[multi='url']");
-  let urlInputValue = urlInput.value;
-  let errorBoxUrl = urlInput.nextElementSibling;
   let countryInput = form.querySelector("[multi='country']");
   let countryValue = countryInput.value;
   let errorBoxCountry = countryInput.nextElementSibling;
@@ -28,45 +33,88 @@ formNextStepBtn.addEventListener("click", (e) => {
   let businessTypeValue = businessTypeInput.value;
   let errorBoxBusinessType = businessTypeInput.nextElementSibling;
   // second step
-  let firstNameInput = form.querySelector("[multi='first_name']");
-  let firstNameValue = firstNameInput.value;
-  let errorBoxFirstName = firstNameInput.nextElementSibling;
-  let lastNameInput = form.querySelector("[multi='last_name']");
-  let lastNameInputValue = lastNameInput.value;
-  let errorBoxLastName = lastNameInput.nextElementSibling;
-  let emailInput = form.querySelector("[multi='email']");
-  let emailInputValue = emailInput.value;
-  let errorBoxEmail = emailInput.nextElementSibling;
-  let phoneNumberInput = form.querySelector("[multi='phone']");
-  let phoneNumberInputValue = phoneNumberInput.value;
-  let errorBoxPhoneNumber = phoneNumberInput.nextElementSibling;
+
+  let privacyTerms = document.querySelector("[name='privacy']");
+  let overallTerms = document.querySelector("[name='terms']");
 
   let nextSlideBtn = form.querySelector("[multi='arrow_next']");
   let prevPrevBtn = form.querySelector("[multi='arrow_prev']");
 
-  if (companyValue === "") {
-    companyNameInput.style.border = errorBorderColor;
-    errorBoxName.style.display = "flex";
+  if (!privacyTerms.checked) {
+    privacyTerms.parentElement.children[0].style.border = errorBorderColor;
+    privacyTerms.parentElement.parentElement.children[1].style.display = "flex";
+    privacyTerms.value === 0;
   } else {
-    companyNameInput.style.border = initialBorderColor;
-    errorBoxName.style.display = "none";
+    privacyTerms.parentElement.children[0].style.border = initialBorderColor;
+    privacyTerms.parentElement.parentElement.children[1].style.display = "none";
+    privacyTerms.value === 1;
   }
 
-  if (urlInputValue === "") {
-    urlInput.style.border = errorBorderColor;
-    errorBoxUrl.style.display = "flex";
+  if (!overallTerms.checked) {
+    overallTerms.parentElement.children[0].style.border = errorBorderColor;
+    overallTerms.parentElement.parentElement.children[1].style.display = "flex";
+    overallTerms.value === 0;
   } else {
-    urlInput.style.border = initialBorderColor;
-    errorBoxUrl.style.display = "none";
+    overallTerms.parentElement.children[0].style.border = initialBorderColor;
+    overallTerms.parentElement.parentElement.children[1].style.display = "none";
+    overallTerms.value === 1;
+  }
+
+  checkCompanyName(e);
+  useRegexFirstName(firstNameValue);
+  checkFirstName(e);
+  useRegexLastName(lastNameValue);
+  checkLastName(e);
+  useRegexUrl(urlValue);
+  checkUrl(e);
+  useRegexEmail(emailValue);
+  checkEmail(e);
+  useRegexPhone(phoneInputValue);
+  checkPhone(e);
+
+  const body = new FormData();
+  body.append("companyName", companyValue);
+  body.append("url", urlValue);
+  body.append("country", countryValue);
+  body.append("monthlyEuroIncome", monthlyIncomeValue);
+  body.append("BusinessActivityType", businessTypeValue);
+  body.append("firstName", firstNameValue);
+  body.append("lastName", lastNameValue);
+  body.append("email", emailValue);
+  body.append("phone", phoneInputValue);
+  body.append("acceptAgree", privacyTerms.value);
+  body.append("acceptInfo", overallTerms.value);
+
+  if (
+    companyValue !== "" &&
+    useRegexUrl(urlValue) &&
+    useRegexFirstName(firstNameValue) &&
+    useRegexLastName(lastNameValue) &&
+    useRegexEmail(emailValue) &&
+    useRegexPhone(phoneInputValue) &&
+    privacyTerms.checked
+  ) {
+    fetch(`https://www.shoper.pl/ajax.php`, {
+      body,
+      action: "financing_uncapped",
+      headers: {
+        Accept: "*/*",
+      },
+      method: "POST",
+    }).then(function (response) {
+      console.log(response.status);
+    });
+  } else {
   }
 });
 
 setInterval(function () {
-  let companyNameInput = document.querySelector("[multi='company_name']");
+  let companyNameInput = document.querySelector("[app='company_name']");
   let companyValue = companyNameInput.value;
-  let urlInput = document.querySelector("[multi='url']");
-  let urlInputValue = urlInput.value;
-  if (urlInputValue !== "" && companyValue !== "") {
+  let urlInput = document.querySelector("[app='url']");
+  let urlValue = urlInput.value;
+
+  if (useRegexUrl(urlValue) && companyValue !== "") {
     formNextStepBtn.classList.remove("inactive");
     positive = true;
   } else {
