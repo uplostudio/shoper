@@ -108,7 +108,7 @@ uncappedSubmit.addEventListener("click", (e) => {
   }
 });
 
-setInterval(function () {
+setInterval(function checkFirstStep() {
   let companyNameInput = document.querySelector("[app='company_name']");
   let companyValue = companyNameInput.value;
   let urlInput = document.querySelector("[app='url']");
@@ -122,7 +122,7 @@ setInterval(function () {
     positive = false;
   }
 
-  console.log(positive);
+  // console.log(positive);
 
   if (positive) {
     formNextStepBtn.style.pointerEvents = "auto";
