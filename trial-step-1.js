@@ -409,7 +409,7 @@ createTrialStepOne.forEach((n) => {
         data: {
           action: "create_trial_step1",
           email: emailValue,
-          analyticsId: analyticsIdInputValue.value,
+          analytics_id: analyticsIdInputValue.value,
         },
         success: function (data) {
           //           console.log(data);
