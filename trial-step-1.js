@@ -1,8 +1,8 @@
 const myTimeout = setTimeout(ga, 1000);
 let analyticsId;
 let analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
-let errorBorderColor = `1px solid #eb4826`;
-let initialBorderColor = `1px solid #898989`;
+// let errorBorderColor = `1px solid #eb4826`;
+// let initialBorderColor = `1px solid #898989`;
 let isFromBanner = false;
 
 ga(function (tracker) {
@@ -124,9 +124,7 @@ inputsStepOne.forEach((n) => {
   });
 });
 
-let createTrialStepOne = document.querySelectorAll(
-  "[app='create_trial_step1']"
-);
+let createTrialStepOne = document.querySelectorAll("[app='submit-step-one']");
 
 // console.log(createTrialStepOne);
 
