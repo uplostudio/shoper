@@ -414,13 +414,13 @@ createTrialStepOne.forEach((n) => {
         success: function (data) {
           //           console.log(data);
           if (data.code === 2) {
-            let errorInfo = n.querySelector(".w-form-fail");
+            let errorInfo = form.querySelector(".w-form-fail");
             errorInfo.children[0].innerHTML =
               "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie.";
             errorInfo.style.display = "block";
           } else if (data.code === 1 || data.status === 1) {
             modal.classList.remove("modal--open");
-            let errorInfo = n.querySelector(".w-form-fail");
+            // let errorInfo = form.querySelector(".w-form-fail");
             let trialDomain = document.querySelector("[app='trial-domain']");
             trialDomain.innerHTML = data.host;
             // errorInfo.style.display = "none";
