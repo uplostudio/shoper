@@ -167,7 +167,7 @@ createTrialStepTwo.forEach((n) => {
               event: "formSubmitSuccess",
               eventCategory: "Button modal form sent",
               formId: n.querySelector("form").id,
-              shop_id: data.license_id,
+              "shop-id": data.license_id,
               eventAction: n.querySelector("input[type='submit']").value,
               eventLabel: window.location.pathname,
               eventType: n.querySelector("input[type='tel']").value,
