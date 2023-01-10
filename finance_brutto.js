@@ -26,7 +26,6 @@ $("[app='brutto_submit']").on("click", function (e) {
     bruttoTerms.previousElementSibling.style.border = initialBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "none";
     bruttoTerms.value === 1;
-    return bruttoTerms.value;
   }
   if (!bruttoClause.checked) {
     bruttoClause.previousElementSibling.style.border = errorBorderColor;
@@ -36,7 +35,6 @@ $("[app='brutto_submit']").on("click", function (e) {
     bruttoClause.previousElementSibling.style.border = initialBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "none";
     bruttoClause.value === 1;
-    return bruttoClause.value;
   }
   if (!shoperPersonalData.checked) {
     shoperPersonalData.previousElementSibling.style.border = errorBorderColor;
@@ -46,7 +44,6 @@ $("[app='brutto_submit']").on("click", function (e) {
     shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "none";
     shoperPersonalData.value === 1;
-    return shoperPersonalData.value;
   }
 
   const body = new FormData();
