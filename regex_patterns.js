@@ -26,7 +26,7 @@ function useRegexPhone(phoneInputValue) {
 }
 
 function useRegexNip(nipValue) {
-  let regex = /^\d\d\d\d\d\d\d\d\d$/;
+  let regex = /^\d\d\d\d\d\d\d\d\d\d$/;
   return regex.test(nipValue);
 }
 
