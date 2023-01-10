@@ -18,7 +18,7 @@ noUiSlider.create(slider, {
     from: (v) => v | 0,
   },
   range: {
-    min: 0,
+    min: 1,
     max: 100000,
   },
 });
