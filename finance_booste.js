@@ -14,9 +14,9 @@ $("[app='booste_submit']").on("click", function (e) {
   checkEmail(e);
   checkUrl(e);
 
-  let shoperTermsEmail = form.querySelector("[name='shoper_terms_email']");
-  let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
-  let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
+  // let shoperTermsEmail = form.querySelector("[name='shoper_terms_email']");
+  // let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
+  // let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
   let acceptAgree = form.querySelector("[name='accept_agree']");
   // let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
   // let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
@@ -47,10 +47,10 @@ $("[app='booste_submit']").on("click", function (e) {
   body.append("refererUrl", "https://shoper.pl/finansowanie/booste");
 
   if (
-    useRegexName(nameValue) &&
+    useRegexFirstName(nameValue) &&
     useRegexLastName(lastNameInputValue) &&
     useRegexEmail(emailValue) &&
-    urlInput !== "" &&
+    useRegexUrl(urlValue) &&
     acceptAgree.checked
   ) {
     fetch(
