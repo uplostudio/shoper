@@ -62,7 +62,8 @@ $("[app='booste_submit']").on("click", function (e) {
         method: "GET",
       }
     ).then(function (response) {
-      //   console.log(response.status);
+      form.style.display = "none";
+      form.parentElement.querySelector(".w-form-done").style.display = "block";
     });
   } else {
   }
