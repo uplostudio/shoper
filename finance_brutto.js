@@ -61,8 +61,8 @@ $("[app='brutto_submit']").on("click", function (e) {
   if (
     useRegexPhone(phoneInputValue) &&
     useRegexEmail(emailValue) &&
-    nipValue !== "" &&
-    urlInput !== "" &&
+    useRegexNip(nipValue) &&
+    useRegexUrl(urlValue) &&
     bruttoTerms.checked &&
     bruttoClause.checked &&
     shoperPersonalData.checked
