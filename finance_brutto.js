@@ -71,7 +71,8 @@ $("[app='brutto_submit']").on("click", function (e) {
       },
       method: "POST",
     }).then(function (response) {
-      console.log(response.status);
+      form.style.display = "none";
+      form.parentElement.querySelector(".w-form-done").style.display = "block";
     });
   } else {
   }
