@@ -23,7 +23,7 @@ setInterval(function () {
 
     if (window.innerWidth <= 991 && window.scrollY < 30) {
       menu.style.height = `${window.innerHeight - bannerHeightValue}px`;
-      console.log(menu.style.height);
+      // console.log(menu.style.height);
     } else {
       menu.style.height = `${window.innerHeight}px`;
     }
