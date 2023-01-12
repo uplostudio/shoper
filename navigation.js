@@ -3,7 +3,7 @@
 setInterval(function () {
   try {
     let menu = document.querySelector(".nav__menu");
-    let banner = document.querySelector("#google-ads-bar");
+    let banner = document.querySelector("#top-bar-header");
     bannerHeightString = window.getComputedStyle(banner).height;
     bannerHeightValue = parseInt(bannerHeightString);
 
