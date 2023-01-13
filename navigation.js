@@ -322,3 +322,9 @@ setInterval(function () {
 
   initNav();
 })();
+
+// footer year update
+try {
+  let footerYear = document.querySelector("#footer-year");
+  footerYear.innerHTML = new Date().getFullYear();
+} catch (e) {}
