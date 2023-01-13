@@ -1,3 +1,8 @@
+// footer year update
+
+let footerYear = document.querySelector("#footer-year");
+footerYear.innerHTML = new Date().getFullYear();
+
 // caculate menu height based on black friday's banner
 
 setInterval(function () {
