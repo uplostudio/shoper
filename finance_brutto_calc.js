@@ -9,7 +9,7 @@ let installmentRadios = document.querySelectorAll(
 );
 let manualInput = document.querySelector("input[name='manual-input']");
 let amountValue = 5000;
-let manualInputValue = amountValue;
+// let manualInputValue = amountValue;
 installmentRadios[0].checked = true;
 
 noUiSlider.create(slider, {
@@ -107,7 +107,14 @@ bruttoForm.addEventListener("change", () => {
     });
 });
 
-manualInput.addEventListener("keyup", () => {
+manualInput.addEventListener("change", (e) => {
+  if (manualInput.value < 5000) {
+    manualInput.value = 5000;
+  } else {
+  }
+  slider.noUiSlider.set(manualInput.value);
+  stepSliderValueElement.innerHTML = `${manualInput.value} zł`;
+
   let installmentPeriod = document.querySelector(
     'input[name="installment_amount"]:checked'
   ).value;
