@@ -1,14 +1,16 @@
-const myTimeout = setTimeout(ga, 3000);
+// const myTimeout = setTimeout(ga, 4000);
 let analyticsId;
 let analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
 let isFromBanner = false;
 
-ga(function (tracker) {
-  analyticsId = tracker.get("clientId");
-  analyticsIdInputValue.value = analyticsId;
-  console.log(analyticsId);
-  return analyticsIdInputValue;
-});
+var intervalId = window.setTimeout(function () {
+  ga(function (tracker) {
+    analyticsId = tracker.get("clientId");
+    analyticsIdInputValue.value = analyticsId;
+    console.log(analyticsId);
+    return analyticsIdInputValue;
+  });
+}, 2000);
 
 window.addEventListener("load", () => {
   try {
