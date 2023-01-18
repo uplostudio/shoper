@@ -59,7 +59,7 @@ $("[app='booste_submit']").on("click", function (e) {
         headers: {
           Accept: "*/*",
         },
-        method: "GET",
+        method: "POST",
       }
     )
       .then(function (response) {
@@ -69,12 +69,14 @@ $("[app='booste_submit']").on("click", function (e) {
       })
       .then((data) => {
         let status = data.status;
+        console.log(status);
         if (status === "success") {
-          window.location = `https://app.booste.com/sign-up&firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}&shoperTermsEmail=${shoperTermsEmail.checked}&shoperTermsSms=${shoperTermsSms.checked}&shoperTermsTel=${shoperTermsTel.checked}&acceptAgree="1"&location="PL"&referer_url="https://shoper.pl/finansowanie/booste`;
+          window.location = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
+        } else {
+          form.style.display = "none";
+          form.parentElement.querySelector(".w-form-fail").style.display =
+            "block";
         }
       });
-  } else {
-    form.style.display = "none";
-    form.parentElement.querySelector(".w-form-fail").style.display = "block";
   }
 });
