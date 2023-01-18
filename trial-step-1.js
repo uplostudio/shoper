@@ -22,7 +22,7 @@ var intervalId = window.setTimeout(function () {
   const tracker = ga.getAll()[0];
   let analyticsId = tracker.get("clientId");
   analyticsIdInputValue.value = analyticsId;
-  console.log(analyticsId);
+  // console.log(analyticsId);
   return analyticsIdInputValue;
 }, 5000);
 
