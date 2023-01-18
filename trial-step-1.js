@@ -24,7 +24,7 @@ var intervalId = window.setTimeout(function () {
   analyticsIdInputValue.value = analyticsId;
   console.log(analyticsId);
   return analyticsIdInputValue;
-}, 2000);
+}, 5000);
 
 window.addEventListener("load", () => {
   try {
