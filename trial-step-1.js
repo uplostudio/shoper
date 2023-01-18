@@ -3,13 +3,27 @@ let analyticsId;
 let analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
 let isFromBanner = false;
 
+// var intervalId = window.setTimeout(function () {
+//   ga(function (tracker) {
+//     analyticsId = tracker.get("clientId");
+//     analyticsIdInputValue.value = analyticsId;
+//     console.log(analyticsId);
+//     return analyticsIdInputValue;
+//   });
+// }, 2000);
+
 var intervalId = window.setTimeout(function () {
-  ga(function (tracker) {
-    analyticsId = tracker.get("clientId");
-    analyticsIdInputValue.value = analyticsId;
-    console.log(analyticsId);
-    return analyticsIdInputValue;
-  });
+  // ga(function (tracker) {
+  //   analyticsId = tracker.get("clientId");
+  //   analyticsIdInputValue.value = analyticsId;
+  //   console.log(analyticsId);
+  //   return analyticsIdInputValue;
+  // });
+  const tracker = ga.getAll()[0];
+  let analyticsId = tracker.get("clientId");
+  analyticsIdInputValue.value = analyticsId;
+  console.log(analyticsId);
+  return analyticsIdInputValue;
 }, 2000);
 
 window.addEventListener("load", () => {
