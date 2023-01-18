@@ -13,17 +13,13 @@ let isFromBanner = false;
 // }, 2000);
 
 var intervalId = window.setTimeout(function () {
-  // ga(function (tracker) {
-  //   analyticsId = tracker.get("clientId");
-  //   analyticsIdInputValue.value = analyticsId;
-  //   console.log(analyticsId);
-  //   return analyticsIdInputValue;
-  // });
-  const tracker = ga.getAll()[0];
-  let analyticsId = tracker.get("clientId");
-  analyticsIdInputValue.value = analyticsId;
-  // console.log(analyticsId);
-  return analyticsIdInputValue;
+  try {
+    const tracker = ga.getAll()[0];
+    let analyticsId = tracker.get("clientId");
+    analyticsIdInputValue.value = analyticsId;
+    // console.log(analyticsId);
+    return analyticsIdInputValue;
+  } catch (err) {}
 }, 5000);
 
 window.addEventListener("load", () => {
