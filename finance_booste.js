@@ -35,19 +35,19 @@ $("[app='booste_submit']").on("click", function (e) {
   if (shoperTermsEmail.checked) {
     shoperTermsEmail.value = 1;
   } else {
-    shoperTermsEmail.value = 0;
+    shoperTermsEmail.value = "";
   }
 
   if (shoperTermsSms.checked) {
     shoperTermsSms.value = 1;
   } else {
-    shoperTermsSms.value = 0;
+    shoperTermsSms.value = "";
   }
 
   if (shoperTermsTel.checked) {
     shoperTermsTel.value = 1;
   } else {
-    shoperTermsTel.value = 0;
+    shoperTermsTel.value = "";
   }
 
   const body = new FormData();
