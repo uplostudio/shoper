@@ -18,9 +18,6 @@ $("[app='booste_submit']").on("click", function (e) {
   let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
   let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
   let acceptAgree = form.querySelector("[name='accept_agree']");
-  // let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
-  // let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
-  // let boosteTermsTel = form.querySelector("[name='booste_terms_tel']");
 
   if (!acceptAgree.checked) {
     acceptAgree.parentElement.children[0].style.border = errorBorderColor;
@@ -63,8 +60,6 @@ $("[app='booste_submit']").on("click", function (e) {
     })
       .then(function (response) {
         return response.json();
-        // form.style.display = "none";
-        // form.parentElement.querySelector(".w-form-done").style.display = "block";
       })
       .then((data) => {
         let status = data.status;
