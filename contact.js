@@ -103,16 +103,15 @@ $("[app='submit-contact']").on("click", function (e) {
       },
       success: function (data) {
         if (data.status === 1) {
-          successInfo.style.display = "block";
-          successInfo.innerHTML =
-            "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
-          errorInfo.style.display = "none";
+          form.style.display = "none";
+          form.parentElement.querySelector(".w-form-done").style.display =
+            "block";
           allInputs.forEach((n) => {
             n.value = "";
           });
         } else {
-          errorInfo.style.display = "block";
-          errorInfo.innerHTML = "Coś poszło nie tak";
+          form.parentElement.querySelector(".w-form-fail").style.display =
+            "block";
         }
       },
       error: function (data) {},
