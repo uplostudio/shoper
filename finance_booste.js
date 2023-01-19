@@ -53,15 +53,14 @@ $("[app='booste_submit']").on("click", function (e) {
     useRegexUrl(urlValue) &&
     acceptAgree.checked
   ) {
-    fetch(
-      `https://hooks.zapier.com/hooks/catch/492789/bke9mgj/?action="https://app.booste.com/sign-up&firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}&shoperTermsEmail=${shoperTermsEmail.checked}&shoperTermsSms=${shoperTermsSms.checked}&shoperTermsTel=${shoperTermsTel.checked}&acceptAgree="1"&location="PL"&referer_url="https://shoper.pl/finansowanie/booste"`,
-      {
-        headers: {
-          Accept: "*/*",
-        },
-        method: "POST",
-      }
-    )
+    fetch(`https://hooks.zapier.com/hooks/catch/492789/bke9mgj/`, {
+      body: body,
+      action: "https://app.booste.com/sign-up",
+      headers: {
+        Accept: "*/*",
+      },
+      method: "POST",
+    })
       .then(function (response) {
         return response.json();
         // form.style.display = "none";
@@ -71,7 +70,7 @@ $("[app='booste_submit']").on("click", function (e) {
         let status = data.status;
         console.log(status);
         if (status === "success") {
-          window.location = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
+          window.location.href = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
         } else {
           form.style.display = "none";
           form.parentElement.querySelector(".w-form-fail").style.display =
