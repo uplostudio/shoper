@@ -18,6 +18,9 @@ $("[app='booste_submit']").on("click", function (e) {
   let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
   let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
   let acceptAgree = form.querySelector("[name='accept_agree']");
+  // let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
+  // let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
+  // let boosteTermsTel = form.querySelector("[name='booste_terms_tel']");
 
   if (!acceptAgree.checked) {
     acceptAgree.parentElement.children[0].style.border = errorBorderColor;
@@ -32,16 +35,16 @@ $("[app='booste_submit']").on("click", function (e) {
   }
 
   const body = new FormData();
-  body.append("firstName", firstNameValue);
-  body.append("lastName", lastNameValue);
+  body.append("firstname", firstNameValue);
+  body.append("lastname", lastNameValue);
   body.append("email", emailValue);
   body.append("website", urlValue);
-  body.append("shoperTermsEmail", shoperTermsEmail.checked);
-  body.append("shoperTermsSms", shoperTermsSms.checked);
-  body.append("shoperTermsTel", shoperTermsTel.checked);
-  body.append("acceptAgree", "1");
+  body.append("shoper_terms_email", shoperTermsEmail.checked);
+  body.append("shoper_terms_sms", shoperTermsSms.checked);
+  body.append("shoper_terms_tel", shoperTermsTel.checked);
+  body.append("accept_agree", "1");
   body.append("country", "PL");
-  body.append("refererUrl", "https://shoper.pl/finansowanie/booste");
+  body.append("referer_url", "https://shoper.pl/finansowanie/booste");
 
   if (
     useRegexFirstName(firstNameValue) &&
@@ -60,12 +63,15 @@ $("[app='booste_submit']").on("click", function (e) {
     })
       .then(function (response) {
         return response.json();
+        // form.style.display = "none";
+        // form.parentElement.querySelector(".w-form-done").style.display = "block";
       })
       .then((data) => {
         let status = data.status;
-        console.log(status);
+        // console.log(status);
         if (status === "success") {
           window.location.href = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
+          // console.log("redirection here")
         } else {
           form.style.display = "none";
           form.parentElement.querySelector(".w-form-fail").style.display =
