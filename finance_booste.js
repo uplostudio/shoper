@@ -76,8 +76,8 @@ $("[app='booste_submit']").on("click", function (e) {
   body.append("shoper_terms_email", shoperTermsEmail.value);
   body.append("shoper_terms_sms", shoperTermsSms.value);
   body.append("shoper_terms_tel", shoperTermsTel.value);
-  body.append("booste_terms_tel", boosteTermsEmail.value);
-  body.append("booste_terms_tel", boosteTermsSms.value);
+  body.append("booste_terms_email", boosteTermsEmail.value);
+  body.append("booste_terms_sms", boosteTermsSms.value);
   body.append("booste_terms_tel", boosteTermsTel.value);
   body.append("accept_agree", "1");
   body.append("country", "PL");
