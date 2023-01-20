@@ -199,3 +199,49 @@ If modal is being used:
 3. Form `[app='create_trial_step2']` (Already set up in Webflow Symbol)
 4. Inputs:
    `[app='phone']`(Already set up in Webflow Symbol)
+
+## regex_patterns.js /work in progress/
+
+### Responisbility:
+
+This file contains all the validation rules that are used on the site. From here, the functions are distributed to all the subpages where the forms are located. On individual subpages, there are no individual functions that both validate data and display individual error boxes. By making changes to this file, we change the operation in all forms.
+
+### Added:
+
+Globally
+
+### Requires:
+
+The intent is that each form is built the same way, using the same attributes next to the fields. The target diagram is below.
+
+| Input name | Attribute           | Variable for Input | Variable for Value | Variable for ErrorBox |
+| ---------- | ------------------- | ------------------ | ------------------ | --------------------- |
+| email      | `[app='email']`     | emailInput         | emailValue         | errorBoxEmail         |
+| phone      | `[app='phone']`     | phoneInput         | phoneValue         | errorBoxPhone         |
+| firstName  | `[app='firstName']` | firstNameInput     | firstNameValue     | errorBoxFirstName     |
+| lastName   | `[app='lastName']`  | lastNameInput      | lastInputValue     | errorBoxLastName      |
+| url        | `[app='url']`       | urlInput           | urlValue           | errorBoxUrl           |
+| NIP        | `[app='nip']`       | nipInput           | nipValue           | errorBoxNip           |
+| company    | `[app='company']`   | companyNameInput   | companyValue       | errorBoxCompany       |
+
+### Desired structure for each input field
+
+```
+<div class="form-field__wrapper">
+│   <label class="form-input-label></label>
+|   <input [app='xxx']>
+|   <div class="form-input__error-wrapper"></div> <-- errorBox
+</div>
+```
+
+### Patterns Description
+
+| Input name          | Pattern                                                                    |
+| ------------------- | -------------------------------------------------------------------------- |
+| `[app='email']`     | Most commonly used pattern for valid email addresses                       |
+| `[app='phone']`     | 9 digits only. No letters, no special characters.                          |
+| `[app='firstName']` | Only letters, no digits, no special characters (except "-", ",", ".", "'") |
+| `[app='lastName']`  | Only letters, no digits, no special characters (except "-", ",", ".", "'") |
+| `[app='url']`       | -                                                                          |
+| `[app='nip']`       | 9 digits only. No letters, no special characters.                          |
+| `[app='company']`   | -                                                                          |
