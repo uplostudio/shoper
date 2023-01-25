@@ -17,7 +17,31 @@ window.addEventListener("load", () => {
     e.stopPropagation();
   });
 
-  function getCalc() {
+  noUiSlider.create(slider, {
+    start: [5000],
+    connect: true,
+    step: 500,
+    format: {
+      to: (v) => v | 0,
+      from: (v) => v | 0,
+    },
+    range: {
+      min: 5000,
+      max: 50000,
+    },
+  });
+
+  let stepSliderValueElement = document.getElementById("slider-step-value");
+
+  slider.noUiSlider.on("update", function (values, handle) {
+    stepSliderValueElement.innerHTML = values[handle];
+    manualInput.value = values[handle];
+    // console.log(manualInput.value)
+  });
+
+  slider.noUiSlider.on("update", function (values, handle) {
+    stepSliderValueElement.innerHTML = `${values[handle]} zł`;
+    amountValue = values[handle];
     fetch(
       `https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`,
       {
@@ -49,34 +73,6 @@ window.addEventListener("load", () => {
         monthlyCost.innerHTML = `${roundedMonthlyCost} zł`;
         rrso.innerHTML = `${rrsoVal} %`;
       });
-  }
-
-  noUiSlider.create(slider, {
-    start: [5000],
-    connect: true,
-    step: 500,
-    format: {
-      to: (v) => v | 0,
-      from: (v) => v | 0,
-    },
-    range: {
-      min: 5000,
-      max: 50000,
-    },
-  });
-
-  let stepSliderValueElement = document.getElementById("slider-step-value");
-
-  slider.noUiSlider.on("update", function (values, handle) {
-    stepSliderValueElement.innerHTML = values[handle];
-    manualInput.value = values[handle];
-    // console.log(manualInput.value)
-  });
-
-  slider.noUiSlider.on("update", function (values, handle) {
-    stepSliderValueElement.innerHTML = `${values[handle]} zł`;
-    amountValue = values[handle];
-    getCalc();
   });
 
   bruttoForm.addEventListener("change", () => {
@@ -84,7 +80,40 @@ window.addEventListener("load", () => {
       let installmentPeriod = document.querySelector(
         'input[name="installment_amount"]:checked'
       ).value;
-      getCalc();
+      fetch(
+        `https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`,
+        {
+          headers: {
+            Accept: "*/*",
+          },
+          method: "GET",
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let obj = data.purchase_simulation.results;
+          let picked = Object.fromEntries(
+            Object.entries(obj).filter(([key]) =>
+              key.includes(`${installmentPeriod}`)
+            )
+          );
+          let pickedByPeriod = picked[`${installmentPeriod}`];
+          console.log(picked);
+
+          let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
+          let roundedRepaymentAmount = Math.round(
+            pickedByPeriod.repayment_amount
+          );
+          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
+          let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
+
+          totalCost.innerHTML = `${roundedTotalCost} zł`;
+          repaymentAmmount.innerHTML = `${roundedRepaymentAmount} zł`;
+          monthlyCost.innerHTML = `${roundedMonthlyCost} zł`;
+          rrso.innerHTML = `${rrsoVal} %`;
+        });
     } catch (err) {}
   });
 
@@ -101,7 +130,39 @@ window.addEventListener("load", () => {
         'input[name="installment_amount"]:checked'
       ).value;
 
-      getCalc();
+      fetch(
+        `https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`,
+        {
+          headers: {
+            Accept: "*/*",
+          },
+          method: "GET",
+        }
+      )
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let obj = data.purchase_simulation.results;
+          let picked = Object.fromEntries(
+            Object.entries(obj).filter(([key]) =>
+              key.includes(`${installmentPeriod}`)
+            )
+          );
+          let pickedByPeriod = picked[`${installmentPeriod}`];
+
+          let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
+          let roundedRepaymentAmount = Math.round(
+            pickedByPeriod.repayment_amount
+          );
+          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
+          let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
+
+          totalCost.innerHTML = `${roundedTotalCost} zł`;
+          repaymentAmmount.innerHTML = `${roundedRepaymentAmount} zł`;
+          monthlyCost.innerHTML = `${roundedMonthlyCost} zł`;
+          rrso.innerHTML = `${rrsoVal} %`;
+        });
     } catch (err) {}
   });
 
