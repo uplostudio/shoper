@@ -1,4 +1,4 @@
-let countries = [
+let countriesList = [
   { name_pl: "Afganistan", name_en: "Afghanistan", code: "AF" },
   { name_pl: "Albania", name_en: "Albania", code: "AL" },
   { name_pl: "Algieria", name_en: "Algeria", code: "DZ" },
