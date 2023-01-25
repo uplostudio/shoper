@@ -100,7 +100,7 @@ window.addEventListener("load", () => {
             )
           );
           let pickedByPeriod = picked[`${installmentPeriod}`];
-          console.log(picked);
+          // console.log(picked);
 
           let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
           let roundedRepaymentAmount = Math.round(
