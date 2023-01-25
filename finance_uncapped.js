@@ -1,3 +1,4 @@
+let countrySelect = document.querySelector("#country");
 let countriesList = [
   { name_pl: "Afganistan", name_en: "Afghanistan", code: "AF" },
   { name_pl: "Albania", name_en: "Albania", code: "AL" },
@@ -369,6 +370,13 @@ let countriesList = [
     code: "AE",
   },
 ];
+
+for (let key of countriesList) {
+  let option = document.createElement("option");
+  countrySelect.appendChild(option);
+  option.innerHTML = `${key.name_pl}`;
+  option.value = `${key.name_pl}`;
+}
 
 let formNextStepBtn = document.querySelector("[multi='next_step']");
 let formPrevStepBtn = document.querySelector("[multi='prev_step']");
