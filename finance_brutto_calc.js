@@ -65,7 +65,7 @@ window.addEventListener("load", () => {
         let roundedRepaymentAmount = Math.round(
           pickedByPeriod.repayment_amount
         );
-        let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
+        let roundedMonthlyCost = Math.round(pickedByPeriod.installment_amount);
         let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
 
         totalCost.innerHTML = `${roundedTotalCost} zł`;
@@ -102,7 +102,7 @@ window.addEventListener("load", () => {
           let pickedByPeriod = picked[`${installmentPeriod}`];
           // console.log(picked);
 
-          let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
+          let roundedTotalCost = Math.round(pickedByPeriod.installment_amount);
           let roundedRepaymentAmount = Math.round(
             pickedByPeriod.repayment_amount
           );
@@ -155,7 +155,9 @@ window.addEventListener("load", () => {
           let roundedRepaymentAmount = Math.round(
             pickedByPeriod.repayment_amount
           );
-          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
+          let roundedMonthlyCost = Math.round(
+            pickedByPeriod.installment_amount
+          );
           let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
 
           totalCost.innerHTML = `${roundedTotalCost} zł`;
