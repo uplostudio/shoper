@@ -102,11 +102,13 @@ window.addEventListener("load", () => {
           let pickedByPeriod = picked[`${installmentPeriod}`];
           // console.log(picked);
 
-          let roundedTotalCost = Math.round(pickedByPeriod.installment_amount);
+          let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
           let roundedRepaymentAmount = Math.round(
             pickedByPeriod.repayment_amount
           );
-          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
+          let roundedMonthlyCost = Math.round(
+            pickedByPeriod.installment_amount
+          );
           let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
 
           totalCost.innerHTML = `${roundedTotalCost} zł`;
