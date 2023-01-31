@@ -1,4 +1,18 @@
 let countrySelect = document.querySelector("#country");
+
+let monthlyIncomeInputForCheck = document.querySelector(
+  "[multi='monthly_euro_income']"
+);
+console.log(monthlyIncomeInputForCheck);
+
+monthlyIncomeInputForCheck.addEventListener("change", function () {
+  if (monthlyIncomeInputForCheck.value === "30") {
+    this.nextElementSibling.style.display = "flex";
+  } else {
+    this.nextElementSibling.style.display = "none";
+  }
+});
+
 let countriesList = [
   { name_pl: "Polska", name_en: "Poland", code: "PL" },
   { name_pl: "Afganistan", name_en: "Afghanistan", code: "AF" },
@@ -495,7 +509,11 @@ setInterval(function checkFirstStep() {
   let urlInput = document.querySelector("[app='url']");
   let urlValue = urlInput.value;
 
-  if (useRegexUrl(urlValue) && companyValue !== "") {
+  if (
+    useRegexUrl(urlValue) &&
+    companyValue !== "" &&
+    monthlyIncomeInputForCheck.value !== "30"
+  ) {
     formNextStepBtn.classList.remove("inactive");
     positive = true;
   } else {
@@ -503,13 +521,8 @@ setInterval(function checkFirstStep() {
     positive = false;
   }
 
-  // console.log(positive);
-
   if (positive) {
     formNextStepBtn.style.pointerEvents = "auto";
-    // formPrevStepBtn.addEventListener("click", () => {
-    //   prevSlideBtn.click();
-    // });
     formNextStepBtn.addEventListener("click", () => {
       nextSlideBtn.click();
     });
