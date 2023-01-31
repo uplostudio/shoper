@@ -1,5 +1,6 @@
 let countrySelect = document.querySelector("#country");
 let countriesList = [
+  { name_pl: "Polska", name_en: "Poland", code: "PL" },
   { name_pl: "Afganistan", name_en: "Afghanistan", code: "AF" },
   { name_pl: "Albania", name_en: "Albania", code: "AL" },
   { name_pl: "Algieria", name_en: "Algeria", code: "DZ" },
@@ -222,7 +223,6 @@ let countriesList = [
   { name_pl: "Peru", name_en: "Peru", code: "PE" },
   { name_pl: "Pitcairn", name_en: "Pitcairn", code: "PN" },
   { name_pl: "Polinezja Francuska", name_en: "French Polynesia", code: "PF" },
-  { name_pl: "Polska", name_en: "Poland", code: "PL" },
   { name_pl: "Portoryko", name_en: "Puerto Rico", code: "PR" },
   { name_pl: "Portugalia", name_en: "Portugal", code: "PT" },
   {
