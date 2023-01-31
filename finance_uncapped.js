@@ -3,7 +3,6 @@ let countrySelect = document.querySelector("#country");
 let monthlyIncomeInputForCheck = document.querySelector(
   "[multi='monthly_euro_income']"
 );
-console.log(monthlyIncomeInputForCheck);
 
 monthlyIncomeInputForCheck.addEventListener("change", function () {
   if (monthlyIncomeInputForCheck.value === "30") {
