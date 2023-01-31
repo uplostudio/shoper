@@ -104,6 +104,7 @@ $("[app='booste_submit']").on("click", function (e) {
       .then((data) => {
         let status = data.status;
         if (status === "success") {
+          form.reset();
           window.location.href = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
         } else {
           form.style.display = "none";
