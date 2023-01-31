@@ -10,7 +10,7 @@ window.addEventListener("load", () => {
   );
   let manualInput = document.querySelector("input[name='manual-input']");
   let amountValue = 5000;
-  installmentRadios[0].checked = true;
+  installmentRadios[4].checked = true;
 
   bruttoForm.addEventListener("submit", (e) => {
     e.preventDefault();
@@ -33,15 +33,20 @@ window.addEventListener("load", () => {
 
   let stepSliderValueElement = document.getElementById("slider-step-value");
 
-  slider.noUiSlider.on("update", function (values, handle) {
-    stepSliderValueElement.innerHTML = values[handle];
-    manualInput.value = values[handle];
-    // console.log(manualInput.value)
-  });
+  // slider.noUiSlider.on("update", function (values, handle) {
+  //   stepSliderValueElement.innerHTML = values[handle];
+  //   manualInput.value = values[handle];
+  //   // console.log(manualInput.value)
+  // });
 
   slider.noUiSlider.on("update", function (values, handle) {
     stepSliderValueElement.innerHTML = `${values[handle]} zł`;
+    manualInput.value = values[handle];
     amountValue = values[handle];
+    let installmentPeriod = document.querySelector(
+      'input[name="installment_amount"]:checked'
+    ).value;
+
     fetch(
       `https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`,
       {
@@ -55,17 +60,21 @@ window.addEventListener("load", () => {
         return response.json();
       })
       .then((data) => {
+        // console.log(data)
         let obj = data.purchase_simulation.results;
         let picked = Object.fromEntries(
-          Object.entries(obj).filter(([key]) => key.includes(`3`))
+          Object.entries(obj).filter(([key]) =>
+            key.includes(`${installmentPeriod}`)
+          )
         );
-        let pickedByPeriod = picked[3];
-
+        let pickedByPeriod = picked[`${installmentPeriod}`];
+        // console.log(pickedByPeriod[`${installmentPeriod}`])
         let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
+
         let roundedRepaymentAmount = Math.round(
           pickedByPeriod.repayment_amount
         );
-        let roundedMonthlyCost = Math.round(pickedByPeriod.installment_amount);
+        let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
         let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
 
         totalCost.innerHTML = `${roundedTotalCost} zł`;
@@ -106,9 +115,7 @@ window.addEventListener("load", () => {
           let roundedRepaymentAmount = Math.round(
             pickedByPeriod.repayment_amount
           );
-          let roundedMonthlyCost = Math.round(
-            pickedByPeriod.installment_amount
-          );
+          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
           let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
 
           totalCost.innerHTML = `${roundedTotalCost} zł`;
@@ -157,9 +164,7 @@ window.addEventListener("load", () => {
           let roundedRepaymentAmount = Math.round(
             pickedByPeriod.repayment_amount
           );
-          let roundedMonthlyCost = Math.round(
-            pickedByPeriod.installment_amount
-          );
+          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
           let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
 
           totalCost.innerHTML = `${roundedTotalCost} zł`;
