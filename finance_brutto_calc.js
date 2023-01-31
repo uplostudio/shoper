@@ -33,12 +33,6 @@ window.addEventListener("load", () => {
 
   let stepSliderValueElement = document.getElementById("slider-step-value");
 
-  // slider.noUiSlider.on("update", function (values, handle) {
-  //   stepSliderValueElement.innerHTML = values[handle];
-  //   manualInput.value = values[handle];
-  //   // console.log(manualInput.value)
-  // });
-
   slider.noUiSlider.on("update", function (values, handle) {
     stepSliderValueElement.innerHTML = `${values[handle]} zł`;
     manualInput.value = values[handle];
@@ -68,9 +62,7 @@ window.addEventListener("load", () => {
           )
         );
         let pickedByPeriod = picked[`${installmentPeriod}`];
-        // console.log(pickedByPeriod[`${installmentPeriod}`])
         let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
-
         let roundedRepaymentAmount = Math.round(
           pickedByPeriod.repayment_amount
         );
@@ -109,8 +101,6 @@ window.addEventListener("load", () => {
             )
           );
           let pickedByPeriod = picked[`${installmentPeriod}`];
-          // console.log(picked);
-
           let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
           let roundedRepaymentAmount = Math.round(
             pickedByPeriod.repayment_amount
