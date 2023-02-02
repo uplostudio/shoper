@@ -13,7 +13,7 @@ window.addEventListener("load", () => {
     });
   } catch (err) {}
 });
-window.addEventListener("load", () => {
+window.addEventListener("DOMContentLoaded", () => {
   // let subpage = window.location.pathname;
   let body = document.querySelector("body");
   // let scripts = head.querySelectorAll("script");
