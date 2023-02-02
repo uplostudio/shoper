@@ -13,15 +13,16 @@ window.addEventListener("load", () => {
     });
   } catch (err) {}
 });
+window.addEventListener("load", () => {
+  // let subpage = window.location.pathname;
+  let body = document.querySelector("body");
+  // let scripts = head.querySelectorAll("script");
 
-let subpage = window.location.pathname;
-let head = document.querySelector("head");
-let scripts = head.querySelectorAll("script");
-
-// if (subpage !== "/rodo") {
-let intercomSrc = "https://shoper-web.netlify.app/intercom.js";
-let intercomScript = document.createElement("script");
-intercomScript.src = intercomSrc;
-head.append(intercomScript);
-// } else {
-// }
+  // if (subpage !== "/rodo") {
+  let intercomSrc = "https://shoper-web.netlify.app/intercom.js";
+  let intercomScript = document.createElement("script");
+  intercomScript.src = intercomSrc;
+  body.append(intercomScript);
+  // } else {
+  // }
+});
