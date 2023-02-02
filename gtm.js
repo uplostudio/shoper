@@ -18,7 +18,7 @@ window.addEventListener("load", () => {
   let subpage = window.location.pathname;
   let body = document.querySelector("body");
 
-  if (subpage !== "/rodo" || subpage !== "/rodo/") {
+  if (subpage !== "/rodo" && subpage !== "/rodo/") {
     let intercomSrc = "https://shoper-web.netlify.app/intercom.js";
     let intercomScript = document.createElement("script");
     intercomScript.src = intercomSrc;
