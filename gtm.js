@@ -18,10 +18,10 @@ let subpage = window.location.pathname;
 let head = document.querySelector("head");
 let scripts = head.querySelectorAll("script");
 
-if (subpage !== "/rodo") {
-  let intercomSrc = "https://shoper-web.netlify.app/intercom.js";
-  let intercomScript = document.createElement("script");
-  intercomScript.src = intercomSrc;
-  head.append(intercomScript);
-} else {
-}
+// if (subpage !== "/rodo") {
+let intercomSrc = "https://shoper-web.netlify.app/intercom.js";
+let intercomScript = document.createElement("script");
+intercomScript.src = intercomSrc;
+head.append(intercomScript);
+// } else {
+// }
