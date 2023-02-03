@@ -25,7 +25,7 @@ Webflow.push(function () {
       $(promoPriceSelector).text(` ${monthlyPromotion} `);
 
       $(dailyPromo).text(
-        `Stwórz własny sklep internetowy już od ${monthlyPromotion} zł miesięcznie`
+        `Sklep internetowy ${discountPercentage} % taniej - Już od ${monthlyPromotion} zł miesięcznie!`
       );
       $(promoTitleSelector).text(
         `Roczny abonament sklepu ponad ${discountPercentage} taniej`
