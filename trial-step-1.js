@@ -22,22 +22,22 @@ var intervalId = window.setTimeout(function () {
   } catch (err) {}
 }, 5000);
 
-window.addEventListener("load", () => {
-  try {
-    let bannerD = document.querySelector("#w-slider-mask-1");
-    let blackFridaySlide = bannerD.children[2];
-    blackFridaySlide.id = "blackFridayData";
+// window.addEventListener("load", () => {
+//   try {
+//     let bannerD = document.querySelector("#w-slider-mask-1");
+//     let blackFridaySlide = bannerD.children[2];
+//     blackFridaySlide.id = "blackFridayData";
 
-    let descendants = blackFridaySlide.querySelectorAll("*");
+//     let descendants = blackFridaySlide.querySelectorAll("*");
 
-    descendants.forEach((n) => {
-      n.id = "blackFridayData";
-      n.addEventListener("click", () => {
-        isFromBanner = true;
-      });
-    });
-  } catch (err) {}
-});
+//     descendants.forEach((n) => {
+//       n.id = "blackFridayData";
+//       n.addEventListener("click", () => {
+//         isFromBanner = true;
+//       });
+//     });
+//   } catch (err) {}
+// });
 
 let inputsStepOne = document.querySelectorAll(
   "[app='create_trial_step1'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])"
