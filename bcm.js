@@ -1,12 +1,14 @@
-// blackfriday modal & contact
+// custom modal & contact
+// it's not alway present, since try&catch
+try {
+  let customBanner = document.querySelector("[app='custom_banner']");
 
-let customBanner = document.querySelector("[app='custom_banner']");
-
-customBanner.addEventListener("click", () => {
-  let customModal = document.querySelector("[app='bannerModal']");
-  customModal.classList.add("modal--open");
-  $(document.body).css("overflow", "hidden");
-});
+  customBanner.addEventListener("click", () => {
+    let customModal = document.querySelector("[app='bannerModal']");
+    customModal.classList.add("modal--open");
+    $(document.body).css("overflow", "hidden");
+  });
+} catch (err) {}
 
 let sendBcmForm = document.querySelectorAll("[app='bcm']");
 let sendBcmButton = document.querySelectorAll("[app='bcm-submit']");
