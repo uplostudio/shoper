@@ -1,5 +1,13 @@
 // blackfriday modal & contact
 
+let customBanner = document.querySelector("[app='custom_banner']");
+
+customBanner.addEventListener("click", () => {
+  let customModal = document.querySelector("[app='bannerModal']");
+  customModal.classList.add("modal--open");
+  $(document.body).css("overflow", "hidden");
+});
+
 let sendBcmForm = document.querySelectorAll("[app='bcm']");
 let sendBcmButton = document.querySelectorAll("[app='bcm-submit']");
 // let errorBorderColor = `1px solid #eb4826`;
@@ -78,11 +86,11 @@ sendBcmForm.forEach((n) => {
   });
 });
 
-let banner = document.querySelectorAll("#black-friday-banner");
-banner.forEach((n) => {
-  n.addEventListener("click", () => {
-    let bf = document.querySelector("#black-friday");
-    bf.classList.add("modal--open");
-    $(document.body).css("overflow", "hidden");
-  });
-});
+// let banner = document.querySelectorAll("#black-friday-banner");
+// banner.forEach((n) => {
+//   n.addEventListener("click", () => {
+//     let bf = document.querySelector("#black-friday");
+//     bf.classList.add("modal--open");
+//     $(document.body).css("overflow", "hidden");
+//   });
+// });
