@@ -476,7 +476,7 @@ uncappedSubmit.addEventListener("click", (e) => {
   body.append("email", emailValue);
   body.append("phone", phoneInputValue);
   body.append("accept_agree", privacyTerms.value);
-  body.append("accept-info", overallTerms.value);
+  body.append("accept_info", overallTerms.value);
   body.append("action", "financing_uncapped");
 
   if (
