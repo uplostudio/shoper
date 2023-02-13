@@ -477,6 +477,7 @@ uncappedSubmit.addEventListener("click", (e) => {
   body.append("phone", phoneInputValue);
   body.append("acceptAgree", privacyTerms.value);
   body.append("acceptInfo", overallTerms.value);
+  body.append("action", "financing_uncapped");
 
   if (
     companyValue !== "" &&
@@ -489,7 +490,6 @@ uncappedSubmit.addEventListener("click", (e) => {
   ) {
     fetch(`https://www.shoper.pl/ajax.php`, {
       body,
-      action: "financing_uncapped",
       headers: {
         Accept: "*/*",
       },
