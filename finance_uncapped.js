@@ -388,7 +388,7 @@ for (let key of countriesList) {
   let option = document.createElement("option");
   countrySelect.appendChild(option);
   option.innerHTML = `${key.name_pl}`;
-  option.value = `${key.name_pl}`;
+  option.value = `${key.code}`;
 }
 
 let formNextStepBtn = document.querySelector("[multi='next_step']");
