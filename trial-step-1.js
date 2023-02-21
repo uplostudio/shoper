@@ -16,9 +16,7 @@ var intervalId = window.setTimeout(function () {
   try {
     const tracker = ga.getAll()[0];
     let analyticsId = tracker.get("clientId");
-    analyticsIdInputValue.value = analyticsId;
-    // console.log(analyticsId);
-    return analyticsIdInputValue;
+    return analyticsId;
   } catch (err) {}
 }, 5000);
 
