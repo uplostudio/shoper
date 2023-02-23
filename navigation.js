@@ -3,7 +3,7 @@
 setInterval(function () {
   try {
     let menu = document.querySelector(".nav__menu");
-    let banner = document.querySelector("#top-bar-header");
+    let banner = document.querySelector("[app='custom_banner']");
     bannerHeightString = window.getComputedStyle(banner).height;
     bannerHeightValue = parseInt(bannerHeightString);
 
