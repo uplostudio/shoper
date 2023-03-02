@@ -206,6 +206,7 @@ window.addEventListener("load", () => {
         boxPremium = document.querySelector("#pricebox-premium");
         boxEnterprise = document.querySelector("#pricebox-enterprise");
 
+        console.log(boxStandard);
         // gross & monthly
         if (checkboxPrice.checked && !checkboxYear.checked) {
           boxLabelStandard.textContent = gross;
@@ -279,6 +280,12 @@ window.addEventListener("load", () => {
         boxStandardClone.innerHTML = boxStandard.innerHTML;
         boxPremiumClone.innerHTML = boxPremium.innerHTML;
         boxEnterpriseClone.innerHTML = boxEnterprise.innerHTML;
+
+        let compactCardsGrid = document.querySelector("#compact-cards");
+        let badgesInCompact = compactCardsGrid.querySelectorAll(".badge-new");
+        badgesInCompact.forEach((badge) => {
+          badge.remove();
+        });
       }
       //  event when net/gross clicked
       togglePrice.addEventListener("click", () => {
