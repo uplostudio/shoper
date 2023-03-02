@@ -131,7 +131,7 @@ formTrigger.addEventListener("click", function (e) {
       .then((data) => {
         let status = data.status;
         if (status === "success") {
-          formWrapper.querySelector("form").reset();
+          formWrapper.reset();
           window.location.href = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
         } else {
           formWrapper.style.display = "none";
