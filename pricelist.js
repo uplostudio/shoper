@@ -8,13 +8,9 @@ window.addEventListener("load", () => {
     let cardType = this.parentElement.getAttribute("card");
     this.parentElement.style.display = "grid";
     if (cardType === "enterprise") {
-      document
-        .querySelector("[app='custom_form']")
-        .setAttribute("package", "31");
+      document.querySelector("[app='custom_form']").setAttribute("package", "31");
     } else {
-      document
-        .querySelector("[app='custom_form']")
-        .setAttribute("package", "7");
+      document.querySelector("[app='custom_form']").setAttribute("package", "7");
     }
     $(document.body).css("overflow", "hidden");
   });
@@ -26,21 +22,13 @@ window.addEventListener("load", () => {
   let toggleYear = document.querySelector("[app='yearlyToggle']");
   let checkboxYear = toggleFormYear.querySelector("input[type='checkbox']");
   // promo prices
-  let priceBoxStandard = document.querySelector("[pricebox='standard']")
-    .children[0];
-  let priceBoxPremium = document.querySelector("[pricebox='premium']")
-    .children[0];
-  let priceBoxEnterprise = document.querySelector("[pricebox='enterprise']")
-    .children[0];
+  let priceBoxStandard = document.querySelector("[pricebox='standard']").children[0];
+  let priceBoxPremium = document.querySelector("[pricebox='premium']").children[0];
+  let priceBoxEnterprise = document.querySelector("[pricebox='enterprise']").children[0];
   // clones
-  let priceBoxStandardClone = document.querySelector(
-    "[pricebox='standardClone']"
-  ).children[0];
-  let priceBoxPremiumClone = document.querySelector("[pricebox='premiumClone']")
-    .children[0];
-  let priceBoxEnterpriseClone = document.querySelector(
-    "[pricebox='enterpriseClone']"
-  ).children[0];
+  let priceBoxStandardClone = document.querySelector("[pricebox='standardClone']").children[0];
+  let priceBoxPremiumClone = document.querySelector("[pricebox='premiumClone']").children[0];
+  let priceBoxEnterpriseClone = document.querySelector("[pricebox='enterpriseClone']").children[0];
   // price boxes
   let boxStandard;
   let boxPremium;
@@ -52,18 +40,10 @@ window.addEventListener("load", () => {
   // regular prices
   let priceBoxStandardRegular = document.querySelector("[regular='standard']");
   let priceBoxPremiumRegular = document.querySelector("[regular='premium']");
-  let priceBoxEnterpriseRegular = document.querySelector(
-    "[regular='enterprise']"
-  );
-  let priceBoxStandardRegularMini = document.querySelector(
-    "[regular='standard_mini']"
-  );
-  let priceBoxPremiumRegularMini = document.querySelector(
-    "[regular='premium_mini']"
-  );
-  let priceBoxEnterpriseRegularMini = document.querySelector(
-    "[regular='enterprise_mini']"
-  );
+  let priceBoxEnterpriseRegular = document.querySelector("[regular='enterprise']");
+  let priceBoxStandardRegularMini = document.querySelector("[regular='standard_mini']");
+  let priceBoxPremiumRegularMini = document.querySelector("[regular='premium_mini']");
+  let priceBoxEnterpriseRegularMini = document.querySelector("[regular='enterprise_mini']");
 
   // labels
   let boxLabelStandard = document.querySelector("[pricelabel='standard']");
@@ -126,17 +106,12 @@ window.addEventListener("load", () => {
         },
         success: function (data) {
           formWrapper.querySelector("form").style.display = "none";
-          formWrapper.parentElement.querySelector(
-            ".w-form-done"
-          ).style.display = "block";
+          formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
           formWrapper.querySelector("form").reset();
         },
         error: function (data) {
-          formWrapper.parentElement.querySelector(
-            ".w-form-fail"
-          ).style.display = "block";
-          formWrapper.parentElement.querySelector(".w-form-fail").textContent =
-            "Coś poszło nie tak, spróbuj ponownie.";
+          formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
+          formWrapper.parentElement.querySelector(".w-form-fail").textContent = "Coś poszło nie tak, spróbuj ponownie.";
         },
       });
     } else {
@@ -157,90 +132,55 @@ window.addEventListener("load", () => {
       let promotion = data.promotion;
 
       // Standard Gross 1 month price
-      let standardWholePriceGross = promotion.price.standard[12].month.gross;
-      let standardMainPartGross = standardWholePriceGross
-        .toString()
-        .split(".")[0];
-      let standardSparePartGross = standardWholePriceGross
-        .toString()
-        .split(".")[1];
+      let standardWholePriceGross = regular.standard[1].gross;
+      let standardMainPartGross = standardWholePriceGross.toString().split(".")[0];
+      let standardSparePartGross = standardWholePriceGross.toString().split(".")[1];
+      console.log(standardSparePartGross);
       // Standard Net 1 month price
-      let standardWholePriceNet = promotion.price.standard[12].month.net;
+      let standardWholePriceNet = regular.standard[1].net;
       let standardMainPartNet = standardWholePriceNet.toString().split(".")[0];
       let standardSparePartNet = standardWholePriceNet.toString().split(".")[1];
       // Premium  Gross 1 month price
       let premiumWholePriceGross = regular.premium[1].gross;
-      let premiumMainPartGross = premiumWholePriceGross
-        .toString()
-        .split(".")[0];
-      let premiumSparePartGross = premiumWholePriceGross
-        .toString()
-        .split(".")[1];
+      let premiumMainPartGross = premiumWholePriceGross.toString().split(".")[0];
+      let premiumSparePartGross = premiumWholePriceGross.toString().split(".")[1];
       // Premium  Net 1 month price
       let premiumWholePriceNet = regular.premium[1].net;
       let premiumMainPartNet = premiumWholePriceNet.toString().split(".")[0];
       let premiumSparePartNet = premiumWholePriceNet.toString().split(".")[1];
       // Enterprise Gross 1 month price
       let enterpriseWholePriceGross = regular.enterprise[1].gross;
-      let enterpriseMainPartGross = enterpriseWholePriceGross
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartGross = enterpriseWholePriceGross
-        .toString()
-        .split(".")[1];
+      let enterpriseMainPartGross = enterpriseWholePriceGross.toString().split(".")[0];
+      let enterpriseSparePartGross = enterpriseWholePriceGross.toString().split(".")[1];
       // Enterprise Net 1 month price
       let enterpriseWholePriceNet = regular.enterprise[1].net;
-      let enterpriseMainPartNet = enterpriseWholePriceNet
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartNet = enterpriseWholePriceNet
-        .toString()
-        .split(".")[1];
+      let enterpriseMainPartNet = enterpriseWholePriceNet.toString().split(".")[0];
+      let enterpriseSparePartNet = enterpriseWholePriceNet.toString().split(".")[1];
 
       // Standard Gross year price
-      let standardWholePriceGrossY = regular.standard[12].year.gross;
-      let standardMainPartGrossY = standardWholePriceGrossY
-        .toString()
-        .split(".")[0];
-      let standardSparePartGrossY = standardWholePriceGrossY
-        .toString()
-        .split(".")[1];
+      let standardWholePriceGrossY = promotion.price.standard[12].month.gross;
+      let standardMainPartGrossY = standardWholePriceGrossY.toString().split(".")[0];
+      let standardSparePartGrossY = standardWholePriceGrossY.toString().split(".")[1];
       // Standard Net year price
-      let standardWholePriceNetY = regular.standard[12].year.net;
-      let standardMainPartNetY = standardWholePriceNetY
-        .toString()
-        .split(".")[0];
-      let standardSparePartNetY = standardWholePriceNetY
-        .toString()
-        .split(".")[1];
+      let standardWholePriceNetY = promotion.price.standard[12].month.net;
+      let standardMainPartNetY = standardWholePriceNetY.toString().split(".")[0];
+      let standardSparePartNetY = standardWholePriceNetY.toString().split(".")[1];
       // Premium  Gross year price
-      let premiumWholePriceGrossY = regular.premium[12].year.gross;
-      let premiumMainPartGrossY = premiumWholePriceGrossY
-        .toString()
-        .split(".")[0];
-      let premiumSparePartGrossY = premiumWholePriceGrossY
-        .toString()
-        .split(".")[1];
+      let premiumWholePriceGrossY = regular.premium[12].month.gross;
+      let premiumMainPartGrossY = premiumWholePriceGrossY.toString().split(".")[0];
+      let premiumSparePartGrossY = premiumWholePriceGrossY.toString().split(".")[1];
       // Premium  Net year price
-      let premiumWholePriceNetY = regular.premium[12].year.net;
+      let premiumWholePriceNetY = regular.premium[12].month.net;
       let premiumMainPartNetY = premiumWholePriceNetY.toString().split(".")[0];
       let premiumSparePartNetY = premiumWholePriceNetY.toString().split(".")[1];
       // Enterprise Gross year price
-      let enterpriseWholePriceGrossY = regular.enterprise[12].year.gross;
-      let enterpriseMainPartGrossY = enterpriseWholePriceGrossY
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartGrossY = enterpriseWholePriceGrossY
-        .toString()
-        .split(".")[1];
+      let enterpriseWholePriceGrossY = regular.enterprise[12].month.gross;
+      let enterpriseMainPartGrossY = enterpriseWholePriceGrossY.toString().split(".")[0];
+      let enterpriseSparePartGrossY = enterpriseWholePriceGrossY.toString().split(".")[1];
       // Enterprise Net year price
-      let enterpriseWholePriceNetY = regular.enterprise[12].year.net;
-      let enterpriseMainPartNetY = enterpriseWholePriceNetY
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartNetY = enterpriseWholePriceNetY
-        .toString()
-        .split(".")[1];
+      let enterpriseWholePriceNetY = regular.enterprise[12].month.net;
+      let enterpriseMainPartNetY = enterpriseWholePriceNetY.toString().split(".")[0];
+      let enterpriseSparePartNetY = enterpriseWholePriceNetY.toString().split(".")[1];
       // initial values
       priceBoxStandard.textContent = standardWholePriceNet;
       priceBoxPremium.textContent = premiumWholePriceNet;
@@ -272,7 +212,7 @@ window.addEventListener("load", () => {
           boxLabelPremium.textContent = gross;
           boxLabelEnterprise.textContent = gross;
           priceBoxStandard.textContent = standardMainPartGross;
-          priceBoxStandard.nextElementSibling.children[0].textContent = `,${standardSparePartGross}`;
+          priceBoxStandard.nextElementSibling.children[0].textContent = ``;
           priceBoxPremium.textContent = premiumMainPartGross;
           priceBoxPremium.nextElementSibling.children[0].textContent = `,${premiumSparePartGross}`;
           priceBoxEnterprise.textContent = enterpriseMainPartGross;
@@ -288,11 +228,11 @@ window.addEventListener("load", () => {
           boxLabelStandard.textContent = net;
           boxLabelPremium.textContent = net;
           boxLabelEnterprise.textContent = net;
-          priceBoxStandard.textContent = promotion.price.standard[12].month.net;
+          priceBoxStandard.textContent = standardMainPartNet;
           priceBoxStandard.nextElementSibling.children[0].textContent = ``;
-          priceBoxPremium.textContent = regular.premium[1].net;
+          priceBoxPremium.textContent = premiumMainPartNet;
           priceBoxPremium.nextElementSibling.children[0].textContent = ``;
-          priceBoxEnterprise.textContent = regular.enterprise[1].net;
+          priceBoxEnterprise.textContent = enterpriseMainPartNet;
           priceBoxEnterprise.nextElementSibling.children[0].textContent = ``;
           priceBoxStandardRegular.textContent = "";
           priceBoxPremiumRegular.textContent = "";
@@ -306,9 +246,9 @@ window.addEventListener("load", () => {
           boxLabelPremium.textContent = gross;
           boxLabelEnterprise.textContent = gross;
           priceBoxStandard.textContent = standardMainPartGrossY;
-          priceBoxStandard.nextElementSibling.children[0].textContent = `,${standardSparePartGrossY}`;
+          priceBoxStandard.nextElementSibling.children[0].textContent = ``;
           priceBoxPremium.textContent = premiumMainPartGrossY;
-          priceBoxPremium.nextElementSibling.children[0].textContent = `,${premiumSparePartGrossY}`;
+          priceBoxPremium.nextElementSibling.children[0].textContent = ``;
           priceBoxEnterprise.textContent = enterpriseMainPartGrossY;
           priceBoxEnterprise.nextElementSibling.children[0].textContent = ``;
           priceBoxStandardRegular.textContent = `${standardWholePriceGross}zł`;
@@ -318,15 +258,15 @@ window.addEventListener("load", () => {
           premiumBadge.style.display = "block";
           enterpriseBadge.style.display = "block";
         } else {
-          // gross & yearly
+          // net & yearly
           boxLabelStandard.textContent = net;
           boxLabelPremium.textContent = net;
           boxLabelEnterprise.textContent = net;
-          priceBoxStandard.textContent = standardWholePriceNetY;
+          priceBoxStandard.textContent = standardMainPartNetY;
           priceBoxStandard.nextElementSibling.children[0].textContent = ``;
-          priceBoxPremium.textContent = premiumWholePriceNetY;
+          priceBoxPremium.textContent = premiumMainPartNetY;
           priceBoxPremium.nextElementSibling.children[0].textContent = ``;
-          priceBoxEnterprise.textContent = enterpriseWholePriceNetY;
+          priceBoxEnterprise.textContent = enterpriseMainPartNetY;
           priceBoxEnterprise.nextElementSibling.children[0].textContent = ``;
           priceBoxStandardRegular.textContent = `${standardWholePriceNet}zł`;
           priceBoxPremiumRegular.textContent = `${premiumWholePriceNet}zł`;
@@ -336,9 +276,9 @@ window.addEventListener("load", () => {
           enterpriseBadge.style.display = "block";
         }
         // duplicate values to the compact cards at the bottom
-        boxStandardClone.innerHTML = boxStandard.innerHTML;
-        boxPremiumClone.innerHTML = boxPremium.innerHTML;
-        boxEnterpriseClone.innerHTML = boxEnterprise.innerHTML;
+        // boxStandardClone.innerHTML = boxStandard.innerHTML;
+        // boxPremiumClone.innerHTML = boxPremium.innerHTML;
+        // boxEnterpriseClone.innerHTML = boxEnterprise.innerHTML;
       }
       //  event when net/gross clicked
       togglePrice.addEventListener("click", () => {
