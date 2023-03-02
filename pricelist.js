@@ -135,7 +135,6 @@ window.addEventListener("load", () => {
       let standardWholePriceGross = regular.standard[1].gross;
       let standardMainPartGross = standardWholePriceGross.toString().split(".")[0];
       let standardSparePartGross = standardWholePriceGross.toString().split(".")[1];
-      console.log(standardSparePartGross);
       // Standard Net 1 month price
       let standardWholePriceNet = regular.standard[1].net;
       let standardMainPartNet = standardWholePriceNet.toString().split(".")[0];
@@ -203,9 +202,10 @@ window.addEventListener("load", () => {
       enterpriseBadge.style.display = "none";
 
       function checkValues() {
-        boxStandard = document.querySelector("#box-standard");
-        boxPremium = document.querySelector("#box-premium");
-        boxEnterprise = document.querySelector("#box-enterprise");
+        boxStandard = document.querySelector("#pricebox-standard");
+        boxPremium = document.querySelector("#pricebox-premium");
+        boxEnterprise = document.querySelector("#pricebox-enterprise");
+
         // gross & monthly
         if (checkboxPrice.checked && !checkboxYear.checked) {
           boxLabelStandard.textContent = gross;
@@ -276,9 +276,9 @@ window.addEventListener("load", () => {
           enterpriseBadge.style.display = "block";
         }
         // duplicate values to the compact cards at the bottom
-        // boxStandardClone.innerHTML = boxStandard.innerHTML;
-        // boxPremiumClone.innerHTML = boxPremium.innerHTML;
-        // boxEnterpriseClone.innerHTML = boxEnterprise.innerHTML;
+        boxStandardClone.innerHTML = boxStandard.innerHTML;
+        boxPremiumClone.innerHTML = boxPremium.innerHTML;
+        boxEnterpriseClone.innerHTML = boxEnterprise.innerHTML;
       }
       //  event when net/gross clicked
       togglePrice.addEventListener("click", () => {
