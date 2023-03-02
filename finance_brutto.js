@@ -14,23 +14,23 @@ nipInput.addEventListener("blur", function () {
   checkNipBlur();
 });
 
-phoneInput.addEventListener("blur", checkPhoneBlurTwo);
+phoneInput.addEventListener("blur", function () {
+  checkPhoneBlur();
+});
 
-emailInput.addEventListener("blur", checkMailBlurTwo);
+emailInput.addEventListener("blur", function () {
+  checkEmailBlur();
+});
 
-urlInput.addEventListener("blur", checkUrlBlurTwo);
+urlInput.addEventListener("blur", function () {
+  checkUrlBlur();
+});
 
 // Attach EventListener to submit button
 
 formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
-
-  formWrapper = this.form;
-  console.log(formWrapper);
-  phoneInput = formWrapper.querySelector("[app='phone']");
-  emailInput = formWrapper.querySelector("[app='email']");
-  urlInput = formWrapper.querySelector("[app='url']");
 
   checkNipBlur();
   checkPhoneBlur();
@@ -96,8 +96,8 @@ formTrigger.addEventListener("click", function (e) {
       },
       method: "POST",
     }).then(function (response) {
-      formWrapper.style.display = "none";
-      formWrapper.nextElementSibling.style.display = "block";
+      formWrapper.querySelector("form").style.display = "none";
+      formWrapper.querySelector(".w-form-done").style.display = "block";
     });
   } else {
   }
