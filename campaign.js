@@ -1,110 +1,65 @@
-// $("[app='open_consultation_modal_button']").on("click", function () {
-//   $("[app='campaign_modal']").addClass("modal--open");
-// });
+window.addEventListener("load", () => {
+  $("[app='open_consultation_modal_button']").on("click", function () {
+    $("[app='campaign_modal']").addClass("modal--open");
+  });
 
-// $("[app='consult-submit']").on("click", function (e) {
-//   e.preventDefault();
-//   e.stopPropagation();
+  //  grab form
+  formWrappers = document.querySelectorAll("[app='campaign']");
+  // grab form trigger
 
-//   let form = e.target.form;
-//   let phoneInput = form.querySelector("[app='phone_campaign']");
-//   let emailInput = form.querySelector("[app='email_campaign']");
-//   let urlInput = form.querySelector("[app='url_campaign']");
-//   let urlValue = urlInput.value;
-//   let emailValue = emailInput.value;
-//   let phoneValue = phoneInput.value;
-//   let errorBoxPhone = phoneInput.nextElementSibling;
-//   let errorBoxMail = emailInput.nextElementSibling;
-//   let errorBoxUrl = urlInput.parentNode.nextElementSibling;
+  formWrappers.forEach((n) => {
+    phoneInput = n.querySelector("[app='phone_campaign']");
+    emailInput = n.querySelector("[app='email_campaign']");
+    urlInput = n.querySelector("[app='url_campaign']");
+    formTrigger = n.querySelector("[app='consult-submit']");
+    let action = n.getAttribute("action");
 
-//   function useRegexPhone(phoneValue) {
-//     let regex = /^\d\d\d\d\d\d\d\d\d$/;
-//     return regex.test(phoneValue);
-//   }
+    phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
-//   function useRegexEmail(emailValue) {
-//     let regex =
-//       /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-//     return regex.test(emailValue);
-//   }
+    emailInput.addEventListener("blur", checkMailBlurTwo);
 
-//   function useRegexUrl(urlValue) {
-//     let regex = /[a-zA-Z][a-zA-Z]/gm;
-//     return regex.test(urlValue);
-//   }
+    urlInput.addEventListener("blur", checkUrlBlurTwo);
 
-//   if (phoneValue.value === "") {
-//     phoneInput.style.border = errorBorderColor;
-//     errorBoxPhone.style.display = "flex";
-//   } else if (!useRegexPhone(phoneValue)) {
-//     phoneInput.style.border = errorBorderColor;
-//     errorBoxPhone.style.display = "flex";
-//   } else if (useRegexPhone(phoneValue)) {
-//     phoneInput.style.border = initialBorderColor;
-//     errorBoxPhone.style.display = "none";
-//   }
+    formTrigger.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-//   if (emailValue.value === "") {
-//     emailInput.style.border = errorBorderColor;
-//     errorBoxMail.style.display = "flex";
-//   } else if (!useRegexEmail(emailValue)) {
-//     emailInput.style.border = errorBorderColor;
-//     errorBoxMail.style.display = "flex";
-//   } else if (useRegexEmail(emailValue)) {
-//     emailInput.style.border = initialBorderColor;
-//     errorBoxMail.style.display = "none";
-//   }
+      formWrapper = this.form;
+      phoneInput = formWrapper.querySelector("[app='phone_campaign']");
+      emailInput = formWrapper.querySelector("[app='email_campaign']");
+      urlInput = formWrapper.querySelector("[app='url_campaign']");
 
-//   if (urlValue.value === "") {
-//     urlInput.style.border = errorBorderColor;
-//     errorBoxUrl.style.display = "flex";
-//   } else if (!useRegexUrl(urlValue)) {
-//     urlInput.style.border = errorBorderColor;
-//     errorBoxUrl.style.display = "flex";
-//   } else if (useRegexUrl(urlValue)) {
-//     urlInput.style.border = initialBorderColor;
-//     errorBoxUrl.style.display = "none";
-//   }
+      checkUrlBlur();
+      checkPhoneBlur();
+      checkEmailBlur();
 
-//   const successInfo = form.parentNode.querySelector(".w-form-done");
-//   const errorInfo = form.parentNode.querySelector(".w-form-fail");
-
-//   // console.log(phoneValue, emailValue, urlValue)
-//   //     console.log(useRegexPhone(phoneValue))
-//   //     console.log(useRegexEmail(emailValue))
-//   //     console.log(useRegexUrl(urlValue))
-
-//   if (
-//     useRegexPhone(phoneValue) &&
-//     useRegexEmail(emailValue) &&
-//     useRegexUrl(urlValue)
-//   ) {
-//     $.ajax({
-//       url: "https://www.shoper.pl/ajax.php",
-//       headers: {},
-//       method: "POST",
-//       data: {
-//         action: form.parentNode.getAttribute("action"),
-//         email: emailValue,
-//         phone: phoneValue,
-//         url: urlValue,
-//       },
-//       success: function (data) {
-//         // console.log(data);
-//         if (data.status === 1) {
-//           form.style.display = "none";
-//           successInfo.style.display = "block";
-//           successInfo.textContent =
-//             "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
-//           errorInfo.style.display = "none";
-//         } else {
-//           // console.log(data);
-//           errorInfo.style.display = "block";
-//           errorInfo.textContent =
-//             "Podaj poprawny adres sklepu w formacie nazwasklepu.pl lub www.nazwasklepu.pl";
-//         }
-//       },
-//     });
-//   } else {
-//   }
-// });
+      if (outcomeOne && outcomeTwo && outcomeThree) {
+        $.ajax({
+          url: "https://www.shoper.pl/ajax.php",
+          headers: {},
+          method: "POST",
+          data: {
+            action: action,
+            email: emailValue,
+            phone: phoneInputValue,
+            url: urlValue,
+          },
+          success: function (data) {
+            if (data.status === 1) {
+              n.querySelector("form").style.display = "none";
+              n.parentElement.querySelector(".w-form-done").style.display =
+                "block";
+              n.parentElement.querySelector(".w-form-done").textContent =
+                "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
+              n.querySelector("form").reset();
+            } else {
+              n.parentElement.querySelector(".w-form-fail").style.display =
+                "block";
+            }
+          },
+        });
+      } else {
+      }
+    });
+  });
+});
