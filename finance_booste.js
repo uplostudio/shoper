@@ -18,19 +18,19 @@ lastNameInput.addEventListener("blur", function () {
   checkLastNameBlur();
 });
 
-emailInput.addEventListener("blur", function () {
-  checkEmailBlur();
-});
+emailInput.addEventListener("blur", checkMailBlurTwo);
 
-urlInput.addEventListener("blur", function () {
-  checkUrlBlur();
-});
+urlInput.addEventListener("blur", checkUrlBlurTwo);
 
 // Attach EventListener to submit button
 
 formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
+
+  formWrapper = this.form;
+  emailInput = formWrapper.querySelector("[app='email']");
+  urlInput = formWrapper.querySelector("[app='url']");
 
   checkFirstNameBlur();
   checkLastNameBlur();
@@ -134,8 +134,8 @@ formTrigger.addEventListener("click", function (e) {
           formWrapper.querySelector("form").reset();
           window.location.href = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
         } else {
-          formWrapper.querySelector("form").style.display = "none";
-          formWrapper.querySelector(".w-form-fail").style.display = "block";
+          formWrapper.style.display = "none";
+          formWrapper.nextElementSibling.style.display = "block";
         }
       });
   }
