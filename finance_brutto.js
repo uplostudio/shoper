@@ -14,23 +14,23 @@ nipInput.addEventListener("blur", function () {
   checkNipBlur();
 });
 
-phoneInput.addEventListener("blur", function () {
-  checkPhoneBlur();
-});
+phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
-emailInput.addEventListener("blur", function () {
-  checkEmailBlur();
-});
+emailInput.addEventListener("blur", checkMailBlurTwo);
 
-urlInput.addEventListener("blur", function () {
-  checkUrlBlur();
-});
+urlInput.addEventListener("blur", checkUrlBlurTwo);
 
 // Attach EventListener to submit button
 
 formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
+
+  formWrapper = this.form;
+  console.log(formWrapper);
+  phoneInput = formWrapper.querySelector("[app='phone']");
+  emailInput = formWrapper.querySelector("[app='email']");
+  urlInput = formWrapper.querySelector("[app='url']");
 
   checkNipBlur();
   checkPhoneBlur();
