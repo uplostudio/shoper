@@ -1,66 +1,66 @@
 let gclidInput, gclidValue, fbclidInput, fbclidValue;
 
 // gclid
+try {
+  let regexp = /\?gclid=.*\w/gm;
+  let locationG = window.location.search;
+  let match = locationG.match(regexp);
 
-let regexp = /\?gclid=.*\w/gm;
-let locationG = window.location.search;
-let match = locationG.match(regexp);
-
-if (match !== null) {
-  let splited = match[0].split("=");
-  if (splited[0] !== "") {
-    gclidValue = splited[1].slice(0, -1);
-    localStorage.setItem("gclid", gclidValue);
-    // console.log(gclidValue)
+  if (match !== null) {
+    let splited = match[0].split("=");
+    if (splited[0] !== "") {
+      gclidValue = splited[1].slice(0, -1);
+      localStorage.setItem("gclid", gclidValue);
+      // console.log(gclidValue)
+      gclidInput = document.querySelector("[name='adwords[gclid]']");
+      gclidInput.setAttribute("value", gclidValue);
+    } else if (localStorage.gclid === undefined) {
+      gclidValue = "";
+      gclidInput = document.querySelector("[name='adwords[gclid]']");
+      gclidInput.setAttribute("value", gclidValue);
+    }
+  } else if (localStorage.gclid !== "undefined") {
+    gclidValue = localStorage.gclid;
     gclidInput = document.querySelector("[name='adwords[gclid]']");
     gclidInput.setAttribute("value", gclidValue);
-  } else if (localStorage.gclid === undefined) {
+  }
+
+  if (localStorage.gclid === undefined) {
     gclidValue = "";
     gclidInput = document.querySelector("[name='adwords[gclid]']");
     gclidInput.setAttribute("value", gclidValue);
   }
-} else if (localStorage.gclid !== "undefined") {
-  gclidValue = localStorage.gclid;
-  gclidInput = document.querySelector("[name='adwords[gclid]']");
-  gclidInput.setAttribute("value", gclidValue);
-}
 
-if (localStorage.gclid === undefined) {
-  gclidValue = "";
-  gclidInput = document.querySelector("[name='adwords[gclid]']");
-  gclidInput.setAttribute("value", gclidValue);
-}
+  // fbclid
 
-// fbclid
+  let regexpFb = /\?fbclid=.*\w/gm;
+  let locationGFb = window.location.search;
+  let matchFb = locationGFb.match(regexpFb);
 
-let regexpFb = /\?fbclid=.*\w/gm;
-let locationGFb = window.location.search;
-let matchFb = locationGFb.match(regexpFb);
-
-if (matchFb !== null) {
-  let splited = matchFb[0].split("=");
-  if (splited[0] !== "") {
-    fbclidValue = splited[1].slice(0, -1);
-    localStorage.setItem("fbclid", fbclidValue);
+  if (matchFb !== null) {
+    let splited = matchFb[0].split("=");
+    if (splited[0] !== "") {
+      fbclidValue = splited[1].slice(0, -1);
+      localStorage.setItem("fbclid", fbclidValue);
+      fbclidInput = document.querySelector("[name='adwords[fbclid]']");
+      fbclidInput.setAttribute("value", fbclidValue);
+    } else if (localStorage.fbclid === undefined) {
+      fbclidValue = "";
+      fbclidInput = document.querySelector("[name='adwords[fbclid]']");
+      fbclidInput.setAttribute("value", fbclidValue);
+    }
+  } else if (localStorage.fbclid !== "undefined") {
+    fbclidValue = localStorage.fbclid;
     fbclidInput = document.querySelector("[name='adwords[fbclid]']");
     fbclidInput.setAttribute("value", fbclidValue);
-  } else if (localStorage.fbclid === undefined) {
+  }
+
+  if (localStorage.fbclid === undefined) {
     fbclidValue = "";
     fbclidInput = document.querySelector("[name='adwords[fbclid]']");
     fbclidInput.setAttribute("value", fbclidValue);
   }
-} else if (localStorage.fbclid !== "undefined") {
-  fbclidValue = localStorage.fbclid;
-  fbclidInput = document.querySelector("[name='adwords[fbclid]']");
-  fbclidInput.setAttribute("value", fbclidValue);
-}
-
-if (localStorage.fbclid === undefined) {
-  fbclidValue = "";
-  fbclidInput = document.querySelector("[name='adwords[fbclid]']");
-  fbclidInput.setAttribute("value", fbclidValue);
-}
-
+} catch (err) {}
 // console.log(gclidInput)
 // console.log(localStorage.gclid)
 
@@ -92,7 +92,8 @@ window.addEventListener("beforeunload", () => {
 
 inputsStepTwo.forEach((n) => {
   // Control Blur Step Two
-  n.addEventListener("blur", () => {
+  n.addEventListener("blur", function () {
+    checkPhoneBlurTrialStepTwo(n);
     let data;
     let element = document.querySelector("[data-name='create_trial_step2']");
     let elementId = element.id;
@@ -141,112 +142,90 @@ createTrialStepTwo.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
     // let url = "https://www.shoper.pl/ajax.php";
+    if (result) {
+      $.ajax({
+        url: "https://www.shoper.pl/ajax.php",
+        headers: {},
+        method: "POST",
+        data: {
+          action: "create_trial_step2",
+          phone: n.querySelector("[app='phone']").value,
+          eventName: "formSubmitSuccess",
+          formId: n.querySelector("form").id,
+          gclid: gclidInput.value,
+          fbclid: fbclidInput.value,
+          blackFridayBanner: isFromBanner,
+          analytics_id: analyticsId,
+        },
+        success: function (data) {
+          if (data.status === 1) {
+            // MyTrackEvent Success (Step Two)
+            let errorInfo = n.querySelector(".w-form-fail");
 
-    $.ajax({
-      url: "https://www.shoper.pl/ajax.php",
-      headers: {},
-      method: "POST",
-      data: {
-        action: "create_trial_step2",
-        phone: n.querySelector("[app='phone']").value,
-        eventName: "formSubmitSuccess",
-        formId: n.querySelector("form").id,
-        gclid: gclidInput.value,
-        fbclid: fbclidInput.value,
-        blackFridayBanner: isFromBanner,
-        analytics_id: analyticsId,
-      },
-      success: function (data) {
-        if (data.status === 1) {
-          // MyTrackEvent Success (Step Two)
-          let errorInfo = n.querySelector(".w-form-fail");
+            errorInfo.style.display = "none";
+            if (window.dataLayer) {
+              data = {
+                event: "formSubmitSuccess",
+                eventCategory: "Button modal form sent",
+                formId: n.querySelector("form").id,
+                "shop-id": data.license_id,
+                eventAction: n.querySelector("input[type='submit']").value,
+                eventLabel: window.location.pathname,
+                eventType: n.querySelector("input[type='tel']").value,
+                eventHistory: window.history,
+              };
 
-          errorInfo.style.display = "none";
-          if (window.dataLayer) {
-            data = {
-              event: "formSubmitSuccess",
-              eventCategory: "Button modal form sent",
-              formId: n.querySelector("form").id,
-              "shop-id": data.license_id,
-              eventAction: n.querySelector("input[type='submit']").value,
-              eventLabel: window.location.pathname,
-              eventType: n.querySelector("input[type='tel']").value,
-              eventHistory: window.history,
-            };
+              dataLayer.push(data);
 
-            dataLayer.push(data);
+              data = {
+                event: "myTrackEvent",
+                formId: n.querySelector("form").id,
+                eventCategory: "Button modal form sent",
+                eventAction: n.querySelector("input[type='submit']").value,
+                eventType: n.querySelector("input[type='tel']").value,
+                eventLabel: window.location.pathname,
+              };
 
-            data = {
-              event: "myTrackEvent",
-              formId: n.querySelector("form").id,
-              eventCategory: "Button modal form sent",
-              eventAction: n.querySelector("input[type='submit']").value,
-              eventType: n.querySelector("input[type='tel']").value,
-              eventLabel: window.location.pathname,
-            };
+              dataLayer.push(data);
+              //             console.log(dataLayer);
+            }
+            window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+          } else {
+            //            console.log(data);
+            let errorInfo = n.querySelector(".w-form-fail");
+            errorInfo.children[0].innerHTML =
+              "Coś poszło nie tak. Spróbuj ponownie.";
+            errorInfo.style.display = "block";
+            // MyTrackEvent Error (Step Two)
+            if (window.dataLayer) {
+              data = {
+                event: "formSubmitError",
+                formId: n.querySelector("form").id,
+                eventCategory: "Button modal form error",
+                eventAction: n.querySelector("input[type='submit']").value,
+                eventLabel: window.location.pathname,
+                eventType: n.querySelector("input[type='tel']").value,
+                eventHistory: window.history,
+              };
 
-            dataLayer.push(data);
-            //             console.log(dataLayer);
+              dataLayer.push(data);
+
+              data = {
+                event: "myTrackEvent",
+                formId: n.querySelector("form").id,
+                eventCategory: "Button modal form error",
+                eventAction: n.querySelector("input[type='submit']").value,
+                eventType: n.querySelector("input[type='tel']").value,
+                eventLabel: window.location.pathname,
+              };
+
+              dataLayer.push(data);
+              //             console.log(dataLayer);
+            }
           }
-          window.location.href = "https://www.shoper.pl/zaloz-sklep/";
-        } else {
-          //            console.log(data);
-          let errorInfo = n.querySelector(".w-form-fail");
-          errorInfo.children[0].innerHTML =
-            "Coś poszło nie tak. Spróbuj ponownie.";
-          errorInfo.style.display = "block";
-          // MyTrackEvent Error (Step Two)
-          if (window.dataLayer) {
-            data = {
-              event: "formSubmitError",
-              formId: n.querySelector("form").id,
-              eventCategory: "Button modal form error",
-              eventAction: n.querySelector("input[type='submit']").value,
-              eventLabel: window.location.pathname,
-              eventType: n.querySelector("input[type='tel']").value,
-              eventHistory: window.history,
-            };
-
-            dataLayer.push(data);
-
-            data = {
-              event: "myTrackEvent",
-              formId: n.querySelector("form").id,
-              eventCategory: "Button modal form error",
-              eventAction: n.querySelector("input[type='submit']").value,
-              eventType: n.querySelector("input[type='tel']").value,
-              eventLabel: window.location.pathname,
-            };
-
-            dataLayer.push(data);
-            //             console.log(dataLayer);
-          }
-        }
-      },
-    });
+        },
+      });
+    } else {
+    }
   });
 });
-
-// $("[app='create_trial_step2']").on("submit", function (event) {
-//   event.preventDefault();
-//   event.stopPropagation();
-//   const errorInfo = $(this).find(".w-form-fail");
-//   $.ajax({
-//     url: "https://www.shoper.pl/ajax.php",
-//     headers: {},
-//     method: "POST",
-//     data: {
-//       action: "create_trial_step2",
-//       phone: $(this).find("[app='phone']").val(),
-//     },
-//     success: function (data) {
-//       console.log(data);
-//       if (data.status === 1) {
-//         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
-//       } else {
-//         errorInfo.css("display", "block");
-//         errorInfo.html("Podany numer jest nieprawidłowy");
-//       }
-//     }
-//   });
-// });

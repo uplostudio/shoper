@@ -1,92 +1,56 @@
-$("[app='submit-contact']").on("click", function (e) {
+//  grab form
+formWrapper = document.querySelector("[app='send_contact']");
+// grab form trigger
+formTrigger = formWrapper.querySelector("[app='submit-contact']");
+// grab all input fields from form without checkboxes
+firstNameInput = formWrapper.querySelector("[app='name_contact']");
+phoneInput = formWrapper.querySelector("[app='phone_contact']");
+emailInput = formWrapper.querySelector("[app='email_contact']");
+urlInput = formWrapper.querySelector("[app='url_contact']");
+textArea = formWrapper.querySelector("[app='body_contact']");
+let subjectInput = formWrapper.querySelector("[app='subject_contact']");
+let subjectValue = subjectInput.value;
+let successInfo = formWrapper.querySelector(".w-form-done");
+let errorInfo = formWrapper.querySelector(".w-form-fail");
+
+// Attach EventListeners to inputs
+
+firstNameInput.addEventListener("blur", function () {
+  checkFirstNameBlur();
+});
+
+emailInput.addEventListener("blur", function () {
+  checkEmailBlur();
+});
+
+phoneInput.addEventListener("blur", function () {
+  checkPhoneBlur();
+});
+
+textArea.addEventListener("blur", function () {
+  checkTextAreaBlur();
+});
+
+urlInput.addEventListener("blur", function () {
+  checkUrlBlurRegex();
+});
+
+formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
-  let form = e.target.form;
-  let nameInput = form.querySelector("[app='name_contact']");
-  let nameValue = nameInput.value;
-  let errorBoxName = nameInput.nextElementSibling;
-  let emailInput = form.querySelector("[app='email_contact']");
-  let emailValue = emailInput.value;
-  let errorBoxEmail = emailInput.nextElementSibling;
-  let phoneInput = form.querySelector("[app='phone_contact']");
-  let phoneValue = phoneInput.value;
-  let errorBoxPhone = phoneInput.nextElementSibling;
-  let bodyInput = form.querySelector("[app='body_contact']");
-  let bodyValue = bodyInput.value;
-  let errorBoxBody = bodyInput.nextElementSibling;
-  let urlInput = form.querySelector("[app='url_contact']");
-  let urlValue = urlInput.value;
-  let subjectInput = form.querySelector("[app='subject_contact']");
-  let subjectValue = subjectInput.value;
-  let allInputs = Array.from(form.getElementsByTagName("input"));
-
-  function useRegexName(nameValue) {
-    let regex =
-      /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ð ,.'-]+$/u;
-    return regex.test(nameValue);
-  }
-
-  function useRegexEmail(emailValue) {
-    let regex =
-      /^(([^<>()\[\]\\.,;:\s@"]+(\.[^<>()\[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/;
-    return regex.test(emailValue);
-  }
-
-  function useRegexPhone(phoneValue) {
-    let regex = /^\d\d\d\d\d\d\d\d\d$/;
-    return regex.test(phoneValue);
-  }
-
-  if (nameValue === "") {
-    nameInput.style.border = errorBorderColor;
-    errorBoxName.style.display = "flex";
-  } else if (!useRegexName(nameValue)) {
-    nameInput.style.border = errorBorderColor;
-    errorBoxName.style.display = "flex";
-  } else if (useRegexName(nameValue)) {
-    nameInput.style.border = initialBorderColor;
-    errorBoxName.style.display = "none";
-  }
-
-  if (emailValue === "") {
-    emailInput.style.border = errorBorderColor;
-    errorBoxEmail.style.display = "flex";
-  } else if (!useRegexEmail(emailValue)) {
-    emailInput.style.border = errorBorderColor;
-    errorBoxEmail.style.display = "flex";
-  } else if (useRegexEmail(emailValue)) {
-    emailInput.style.border = initialBorderColor;
-    errorBoxEmail.style.display = "none";
-  }
-
-  if (phoneValue === "") {
-    phoneInput.style.border = errorBorderColor;
-    errorBoxPhone.style.display = "flex";
-  } else if (!useRegexPhone(phoneValue)) {
-    phoneInput.style.border = errorBorderColor;
-    errorBoxPhone.style.display = "flex";
-  } else if (useRegexPhone(phoneValue)) {
-    phoneInput.style.border = initialBorderColor;
-    errorBoxPhone.style.display = "none";
-  }
-
-  if (bodyValue === "") {
-    bodyInput.style.border = errorBorderColor;
-    errorBoxBody.style.display = "flex";
-  } else {
-    bodyInput.style.border = initialBorderColor;
-    errorBoxBody.style.display = "none";
-  }
-
-  const successInfo = document.querySelector(".w-form-done");
-  const errorInfo = document.querySelector(".w-form-fail");
+  checkFirstNameBlur();
+  checkEmailBlur();
+  checkPhoneBlur();
+  checkTextAreaBlur();
+  checkUrlBlurRegex();
 
   if (
-    useRegexName(nameValue) &&
-    useRegexEmail(emailValue) &&
-    useRegexPhone(phoneValue) &&
-    bodyValue !== ""
+    checkFirstNameBlur() &&
+    checkEmailBlur() &&
+    checkPhoneBlur() &&
+    checkTextAreaBlur() &&
+    checkUrlBlurRegex()
   ) {
     $.ajax({
       url: "https://www.shoper.pl/ajax.php",
@@ -94,24 +58,24 @@ $("[app='submit-contact']").on("click", function (e) {
       method: "POST",
       data: {
         action: "send_contact",
-        name: nameValue,
-        phone: phoneValue,
+        name: firstNameValue,
+        phone: phoneInputValue,
         email: emailValue,
         url: urlValue,
         subject: subjectValue,
-        body: bodyValue,
+        body: textArea.value,
       },
       success: function (data) {
         if (data.status === 1) {
-          form.style.display = "none";
-          form.parentElement.querySelector(".w-form-done").style.display =
-            "block";
-          allInputs.forEach((n) => {
-            n.value = "";
-          });
+          formWrapper.querySelector("form").style.display = "none";
+          formWrapper.parentElement.querySelector(
+            ".w-form-done"
+          ).style.display = "block";
+          formWrapper.querySelector("form").reset();
         } else {
-          form.parentElement.querySelector(".w-form-fail").style.display =
-            "block";
+          formWrapper.parentElement.querySelector(
+            ".w-form-fail"
+          ).style.display = "block";
         }
       },
       error: function (data) {},

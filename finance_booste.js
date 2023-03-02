@@ -1,26 +1,53 @@
-$("[app='booste_submit']").on("click", function (e) {
+//  grab form
+formWrapper = document.querySelector("[app='booste_form']");
+// grab form trigger
+formTrigger = formWrapper.querySelector("[app='booste_submit']");
+// grab all input fields from form without checkboxes
+firstNameInput = formWrapper.querySelector("[app='firstName']");
+lastNameInput = formWrapper.querySelector("[app='lastName']");
+emailInput = formWrapper.querySelector("[app='email']");
+urlInput = formWrapper.querySelector("[app='url']");
+
+// Attach EventListeners to inputs
+
+firstNameInput.addEventListener("blur", function () {
+  checkFirstNameBlur();
+});
+
+lastNameInput.addEventListener("blur", function () {
+  checkLastNameBlur();
+});
+
+emailInput.addEventListener("blur", function () {
+  checkEmailBlur();
+});
+
+urlInput.addEventListener("blur", function () {
+  checkUrlBlur();
+});
+
+// Attach EventListener to submit button
+
+formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
-  let form = e.target.form;
+  checkFirstNameBlur();
+  checkLastNameBlur();
+  checkEmailBlur();
+  checkUrlBlur();
 
-  useRegexFirstName(firstNameValue);
-  useRegexLastName(lastNameValue);
-  useRegexEmail(emailValue);
-  useRegexUrl(urlValue);
-
-  checkFirstName(e);
-  checkLastName(e);
-  checkEmail(e);
-  checkUrl(e);
-
-  let shoperTermsEmail = form.querySelector("[name='shoper_terms_email']");
-  let shoperTermsSms = form.querySelector("[name='shoper_terms_sms']");
-  let shoperTermsTel = form.querySelector("[name='shoper_terms_tel']");
-  let acceptAgree = form.querySelector("[name='accept_agree']");
-  let boosteTermsEmail = form.querySelector("[name='booste_terms_email']");
-  let boosteTermsSms = form.querySelector("[name='booste_terms_sms']");
-  let boosteTermsTel = form.querySelector("[name='booste_terms_tel']");
+  let shoperTermsEmail = formWrapper.querySelector(
+    "[name='shoper_terms_email']"
+  );
+  let shoperTermsSms = formWrapper.querySelector("[name='shoper_terms_sms']");
+  let shoperTermsTel = formWrapper.querySelector("[name='shoper_terms_tel']");
+  let acceptAgree = formWrapper.querySelector("[name='accept_agree']");
+  let boosteTermsEmail = formWrapper.querySelector(
+    "[name='booste_terms_email']"
+  );
+  let boosteTermsSms = formWrapper.querySelector("[name='booste_terms_sms']");
+  let boosteTermsTel = formWrapper.querySelector("[name='booste_terms_tel']");
 
   if (!acceptAgree.checked) {
     acceptAgree.parentElement.children[0].style.border = errorBorderColor;
@@ -84,10 +111,10 @@ $("[app='booste_submit']").on("click", function (e) {
   body.append("referer_url", "https://shoper.pl/finansowanie/booste");
 
   if (
-    useRegexFirstName(firstNameValue) &&
-    useRegexLastName(lastNameValue) &&
-    useRegexEmail(emailValue) &&
-    useRegexUrl(urlValue) &&
+    checkFirstNameBlur() &&
+    checkLastNameBlur() &&
+    checkEmailBlur() &&
+    checkUrlBlur() &&
     acceptAgree.checked
   ) {
     fetch(`https://hooks.zapier.com/hooks/catch/492789/bke9mgj/`, {
@@ -104,12 +131,11 @@ $("[app='booste_submit']").on("click", function (e) {
       .then((data) => {
         let status = data.status;
         if (status === "success") {
-          form.reset();
+          formWrapper.querySelector("form").reset();
           window.location.href = `https://app.booste.com/sign-up?firstname=${firstNameValue}&lastname=${lastNameValue}&email=${emailValue}&website=${urlValue}`;
         } else {
-          form.style.display = "none";
-          form.parentElement.querySelector(".w-form-fail").style.display =
-            "block";
+          formWrapper.querySelector("form").style.display = "none";
+          formWrapper.querySelector(".w-form-fail").style.display = "block";
         }
       });
   }
