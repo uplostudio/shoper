@@ -39,36 +39,34 @@ formTrigger.addEventListener("click", function (e) {
 
   let bruttoTerms = formWrapper.querySelector("[name='brutto_terms']");
   let bruttoClause = formWrapper.querySelector("[name='brutto_info_clause']");
-  let shoperPersonalData = formWrapper.querySelector(
-    "[name='shoper_personal_data']"
-  );
+  let shoperPersonalData = formWrapper.querySelector("[name='shoper_personal_data']");
 
   if (!bruttoTerms.checked) {
     bruttoTerms.previousElementSibling.style.border = errorBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "flex";
-    bruttoTerms.value === 0;
+    bruttoTerms.value = 0;
   } else {
     bruttoTerms.previousElementSibling.style.border = initialBorderColor;
     bruttoTerms.parentNode.nextElementSibling.style.display = "none";
-    bruttoTerms.value === 1;
+    bruttoTerms.value = 1;
   }
   if (!bruttoClause.checked) {
     bruttoClause.previousElementSibling.style.border = errorBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "flex";
-    bruttoClause.value === 0;
+    bruttoClause.value = 0;
   } else {
     bruttoClause.previousElementSibling.style.border = initialBorderColor;
     bruttoClause.parentNode.nextElementSibling.style.display = "none";
-    bruttoClause.value === 1;
+    bruttoClause.value = 1;
   }
   if (!shoperPersonalData.checked) {
     shoperPersonalData.previousElementSibling.style.border = errorBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "flex";
-    shoperPersonalData.value === 0;
+    shoperPersonalData.value = 0;
   } else {
     shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
     shoperPersonalData.parentNode.nextElementSibling.style.display = "none";
-    shoperPersonalData.value === 1;
+    shoperPersonalData.value = 1;
   }
 
   const body = new FormData();
@@ -80,15 +78,7 @@ formTrigger.addEventListener("click", function (e) {
   body.append("bruttoClause", bruttoClause.value);
   body.append("shoperPersonalData", shoperPersonalData.value);
 
-  if (
-    checkNipBlur() &&
-    checkPhoneBlur() &&
-    checkEmailBlur() &&
-    checkUrlBlur() &&
-    bruttoTerms.checked &&
-    bruttoClause.checked &&
-    shoperPersonalData.checked
-  ) {
+  if (checkNipBlur() && checkPhoneBlur() && checkEmailBlur() && checkUrlBlur() && bruttoTerms.checked && bruttoClause.checked && shoperPersonalData.checked) {
     fetch(`https://www.shoper.pl/ajax.php`, {
       body,
       headers: {
