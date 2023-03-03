@@ -1282,6 +1282,8 @@ lastNameInput = formWrapper.querySelector("[app='lastName']");
 emailInput = formWrapper.querySelector("[app='email']");
 phoneInput = formWrapper.querySelector("[app='phone']");
 
+formWrapper.setAttribute("action", "financing_uncapped");
+
 let positive = false;
 
 urlInput.addEventListener("blur", function () {
@@ -1346,16 +1348,6 @@ formTrigger.addEventListener("click", (e) => {
     privacyTerms.value = 1;
   }
 
-  if (!overallTerms.checked) {
-    overallTerms.parentElement.children[0].style.border = errorBorderColor;
-    overallTerms.parentElement.parentElement.children[1].style.display = "flex";
-    overallTerms.value = 0;
-  } else {
-    overallTerms.parentElement.children[0].style.border = initialBorderColor;
-    overallTerms.parentElement.parentElement.children[1].style.display = "none";
-    overallTerms.value = 1;
-  }
-
   checkFirstNameBlur();
   checkLastNameBlur();
   checkUrlBlur();
@@ -1375,6 +1367,7 @@ formTrigger.addEventListener("click", (e) => {
   body.append("phone", phoneInputValue);
   body.append("acceptAgree", privacyTerms.value);
   body.append("acceptInfo", overallTerms.value);
+  body.append("action", formWrapper.getAttribute("action"));
 
   if (companyValue !== "" && checkUrlBlur() && checkFirstNameBlur() && checkLastNameBlur() && checkEmailBlur() && checkPhoneBlur() && privacyTerms.checked) {
     fetch(`https://www.shoper.pl/ajax.php`, {
@@ -1397,14 +1390,8 @@ setInterval(function checkFirstStep() {
   let companyValue = companyNameInput.value;
   let urlInput = formWrapper.querySelector("[app='url']");
   let urlValue = urlInput.value;
-  let countryInput = formWrapper.querySelector("[multi='country']");
-  let countryValue = countryInput.value;
-  let monthlyIncomeInput = formWrapper.querySelector("[multi='monthly_euro_income']");
-  let monthlyIncomeValue = monthlyIncomeInput.value;
-  let businessTypeInput = formWrapper.querySelector("[multi='business_activity_type']");
-  let businessTypeValue = businessTypeInput.value;
 
-  if (useRegexUrl(urlValue) && companyValue !== "" && monthlyIncomeInputForCheck.value !== "0" && monthlyIncomeInputForCheck.value !== "30" && countryValue !== "0") {
+  if (useRegexUrl(urlValue) && companyValue !== "" && monthlyIncomeInputForCheck.value !== "30") {
     formNextStepBtn.classList.remove("inactive");
     positive = true;
   } else {
