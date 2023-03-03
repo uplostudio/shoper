@@ -9,8 +9,34 @@ window.addEventListener("load", () => {
     this.parentElement.style.display = "grid";
     if (cardType === "enterprise") {
       document.querySelector("[app='custom_form']").setAttribute("package", "31");
+      document.querySelector("[app='custom_form']").setAttribute("form", "enterprise-form");
+
+      if (window.dataLayer) {
+        data = {
+          event: "myTrackEvent”",
+          eventCategory: "Button modal opened",
+          eventAction: this.textContent,
+          eventLabel: window.location.href,
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+        };
+
+        dataLayer.push(data);
+      }
     } else {
       document.querySelector("[app='custom_form']").setAttribute("package", "7");
+      document.querySelector("[app='custom_form']").setAttribute("form", "premium-form");
+
+      if (window.dataLayer) {
+        data = {
+          event: "myTrackEvent”",
+          eventCategory: "Button modal opened",
+          eventAction: this.textContent,
+          eventLabel: window.location.href,
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+        };
+
+        dataLayer.push(data);
+      }
     }
     $(document.body).css("overflow", "hidden");
   });
@@ -114,7 +140,30 @@ window.addEventListener("load", () => {
           formWrapper.parentElement.querySelector(".w-form-fail").textContent = "Coś poszło nie tak, spróbuj ponownie.";
         },
       });
+
+      if (window.dataLayer) {
+        data = {
+          event: "myTrackEvent”",
+          eventCategory: "Button modal form sent",
+          eventAction: this.value,
+          eventLabel: window.location.href,
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+        };
+
+        dataLayer.push(data);
+      }
     } else {
+      if (window.dataLayer) {
+        data = {
+          event: "myTrackEvent”",
+          eventCategory: "Button modal form error",
+          eventAction: this.value,
+          eventLabel: window.location.href,
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+        };
+
+        dataLayer.push(data);
+      }
     }
   });
 
