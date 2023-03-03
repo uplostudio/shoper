@@ -1348,6 +1348,16 @@ formTrigger.addEventListener("click", (e) => {
     privacyTerms.value = 1;
   }
 
+  if (!overallTerms.checked) {
+    overallTerms.parentElement.children[0].style.border = errorBorderColor;
+    overallTerms.parentElement.parentElement.children[1].style.display = "flex";
+    overallTerms.value = 0;
+  } else {
+    overallTerms.parentElement.children[0].style.border = initialBorderColor;
+    overallTerms.parentElement.parentElement.children[1].style.display = "none";
+    overallTerms.value = 1;
+  }
+
   checkFirstNameBlur();
   checkLastNameBlur();
   checkUrlBlur();
