@@ -1390,8 +1390,14 @@ setInterval(function checkFirstStep() {
   let companyValue = companyNameInput.value;
   let urlInput = formWrapper.querySelector("[app='url']");
   let urlValue = urlInput.value;
+  let countryInput = formWrapper.querySelector("[multi='country']");
+  let countryValue = countryInput.value;
+  let monthlyIncomeInput = formWrapper.querySelector("[multi='monthly_euro_income']");
+  let monthlyIncomeValue = monthlyIncomeInput.value;
+  let businessTypeInput = formWrapper.querySelector("[multi='business_activity_type']");
+  let businessTypeValue = businessTypeInput.value;
 
-  if (useRegexUrl(urlValue) && companyValue !== "" && monthlyIncomeInputForCheck.value !== "30") {
+  if (useRegexUrl(urlValue) && companyValue !== "" && monthlyIncomeInputForCheck.value !== "0" && monthlyIncomeInputForCheck.value !== "30" && countryValue !== "0") {
     formNextStepBtn.classList.remove("inactive");
     positive = true;
   } else {
