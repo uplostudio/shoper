@@ -1,8 +1,6 @@
 let countrySelect = document.querySelector("#country");
 
-let monthlyIncomeInputForCheck = document.querySelector(
-  "[multi='monthly_euro_income']"
-);
+let monthlyIncomeInputForCheck = document.querySelector("[multi='monthly_euro_income']");
 
 monthlyIncomeInputForCheck.addEventListener("change", function () {
   if (monthlyIncomeInputForCheck.value === "30") {
@@ -1329,13 +1327,9 @@ formTrigger.addEventListener("click", (e) => {
   // first step
   let countryInput = formWrapper.querySelector("[multi='country']");
   let countryValue = countryInput.value;
-  let monthlyIncomeInput = formWrapper.querySelector(
-    "[multi='monthly_euro_income']"
-  );
+  let monthlyIncomeInput = formWrapper.querySelector("[multi='monthly_euro_income']");
   let monthlyIncomeValue = monthlyIncomeInput.value;
-  let businessTypeInput = formWrapper.querySelector(
-    "[multi='business_activity_type']"
-  );
+  let businessTypeInput = formWrapper.querySelector("[multi='business_activity_type']");
   let businessTypeValue = businessTypeInput.value;
   // second step
 
@@ -1350,6 +1344,16 @@ formTrigger.addEventListener("click", (e) => {
     privacyTerms.parentElement.children[0].style.border = initialBorderColor;
     privacyTerms.parentElement.parentElement.children[1].style.display = "none";
     privacyTerms.value = 1;
+  }
+
+  if (!overallTerms.checked) {
+    overallTerms.parentElement.children[0].style.border = errorBorderColor;
+    overallTerms.parentElement.parentElement.children[1].style.display = "flex";
+    overallTerms.value = 0;
+  } else {
+    overallTerms.parentElement.children[0].style.border = initialBorderColor;
+    overallTerms.parentElement.parentElement.children[1].style.display = "none";
+    overallTerms.value = 1;
   }
 
   checkFirstNameBlur();
@@ -1372,15 +1376,7 @@ formTrigger.addEventListener("click", (e) => {
   body.append("acceptAgree", privacyTerms.value);
   body.append("acceptInfo", overallTerms.value);
 
-  if (
-    companyValue !== "" &&
-    checkUrlBlur() &&
-    checkFirstNameBlur() &&
-    checkLastNameBlur() &&
-    checkEmailBlur() &&
-    checkPhoneBlur() &&
-    privacyTerms.checked
-  ) {
+  if (companyValue !== "" && checkUrlBlur() && checkFirstNameBlur() && checkLastNameBlur() && checkEmailBlur() && checkPhoneBlur() && privacyTerms.checked) {
     fetch(`https://www.shoper.pl/ajax.php`, {
       body,
       action: "financing_uncapped",
@@ -1403,22 +1399,12 @@ setInterval(function checkFirstStep() {
   let urlValue = urlInput.value;
   let countryInput = formWrapper.querySelector("[multi='country']");
   let countryValue = countryInput.value;
-  let monthlyIncomeInput = formWrapper.querySelector(
-    "[multi='monthly_euro_income']"
-  );
+  let monthlyIncomeInput = formWrapper.querySelector("[multi='monthly_euro_income']");
   let monthlyIncomeValue = monthlyIncomeInput.value;
-  let businessTypeInput = formWrapper.querySelector(
-    "[multi='business_activity_type']"
-  );
+  let businessTypeInput = formWrapper.querySelector("[multi='business_activity_type']");
   let businessTypeValue = businessTypeInput.value;
 
-  if (
-    useRegexUrl(urlValue) &&
-    companyValue !== "" &&
-    monthlyIncomeInputForCheck.value !== "0" &&
-    monthlyIncomeInputForCheck.value !== "30" &&
-    countryValue !== "0"
-  ) {
+  if (useRegexUrl(urlValue) && companyValue !== "" && monthlyIncomeInputForCheck.value !== "0" && monthlyIncomeInputForCheck.value !== "30" && countryValue !== "0") {
     formNextStepBtn.classList.remove("inactive");
     positive = true;
   } else {
