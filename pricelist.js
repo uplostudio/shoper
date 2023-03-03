@@ -21,6 +21,7 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
+        console.log(dataLayer);
       }
     } else {
       document.querySelector("[app='custom_form']").setAttribute("package", "7");
@@ -36,6 +37,7 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
+        console.log(dataLayer);
       }
     }
     $(document.body).css("overflow", "hidden");
@@ -109,6 +111,30 @@ window.addEventListener("load", () => {
     checkEmailBlur();
     checkPhoneBlur();
 
+    if (!checkEmailBlur() && window.dataLayer) {
+      data = {
+        event: "myTrackEvent”",
+        eventCategory: "errorFormEvent",
+        eventValue: "",
+        eventLabel: "email",
+      };
+
+      dataLayer.push(data);
+      console.log(dataLayer);
+    }
+
+    if (!checkPhoneBlur() && window.dataLayer) {
+      data = {
+        event: "myTrackEvent”",
+        eventCategory: "errorFormEvent",
+        eventValue: "",
+        eventLabel: "phone",
+      };
+
+      dataLayer.push(data);
+      console.log(dataLayer);
+    }
+
     const body = new FormData();
     body.append("action", formWrapper.getAttribute("action"));
     body.append("type", formWrapper.getAttribute("type"));
@@ -151,6 +177,7 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
+        console.log(dataLayer);
       }
     } else {
       if (window.dataLayer) {
@@ -163,6 +190,7 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
+        console.log(dataLayer);
       }
     }
   });
