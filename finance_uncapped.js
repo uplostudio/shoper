@@ -1382,7 +1382,6 @@ formTrigger.addEventListener("click", (e) => {
   if (companyValue !== "" && checkUrlBlur() && checkFirstNameBlur() && checkLastNameBlur() && checkEmailBlur() && checkPhoneBlur() && privacyTerms.checked) {
     fetch(`https://www.shoper.pl/ajax.php`, {
       body,
-      action: "financing_uncapped",
       headers: {
         Accept: "*/*",
       },
