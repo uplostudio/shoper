@@ -1366,17 +1366,17 @@ formTrigger.addEventListener("click", (e) => {
   checkEmailBlur();
 
   const body = new FormData();
-  body.append("companyName", companyValue);
+  body.append("company_name", companyValue);
   body.append("url", urlValue);
   body.append("country", countryValue);
-  body.append("monthlyEuroIncome", monthlyIncomeValue);
-  body.append("BusinessActivityType", businessTypeValue);
-  body.append("firstName", firstNameValue);
-  body.append("lastName", lastNameValue);
+  body.append("monthly_euro_income", monthlyIncomeValue);
+  body.append("business_activity_type", businessTypeValue);
+  body.append("first_name", firstNameValue);
+  body.append("last_name", lastNameValue);
   body.append("email", emailValue);
   body.append("phone", phoneInputValue);
-  body.append("acceptAgree", privacyTerms.value);
-  body.append("acceptInfo", overallTerms.value);
+  body.append("accept_agree", privacyTerms.value);
+  body.append("accept_info", overallTerms.value);
   body.append("action", formWrapper.getAttribute("action"));
 
   if (companyValue !== "" && checkUrlBlur() && checkFirstNameBlur() && checkLastNameBlur() && checkEmailBlur() && checkPhoneBlur() && privacyTerms.checked) {
