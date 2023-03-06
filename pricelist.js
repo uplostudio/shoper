@@ -37,7 +37,6 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
-        console.log(dataLayer);
       }
     }
     $(document.body).css("overflow", "hidden");
