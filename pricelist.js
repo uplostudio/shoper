@@ -125,7 +125,7 @@ window.addEventListener("load", () => {
 
     if (!checkPhoneBlur() && window.dataLayer) {
       data = {
-        event: "myTrackEvent”",
+        event: "myTrackEvent",
         eventCategory: "errorFormEvent",
         eventValue: "",
         eventLabel: "phone",
@@ -169,7 +169,7 @@ window.addEventListener("load", () => {
 
       if (window.dataLayer) {
         data = {
-          event: "myTrackEvent”",
+          event: "myTrackEvent",
           eventCategory: "Button modal form sent",
           eventAction: this.value,
           eventLabel: window.location.href,
@@ -182,7 +182,7 @@ window.addEventListener("load", () => {
     } else {
       if (window.dataLayer) {
         data = {
-          event: "myTrackEvent”",
+          event: "myTrackEvent",
           eventCategory: "Button modal form error",
           eventAction: this.value,
           eventLabel: window.location.href,
