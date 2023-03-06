@@ -113,7 +113,7 @@ window.addEventListener("load", () => {
 
     if (!checkEmailBlur() && window.dataLayer) {
       data = {
-        event: "myTrackEvent”",
+        event: "myTrackEvent",
         eventCategory: "errorFormEvent",
         eventValue: "",
         eventLabel: "email",
