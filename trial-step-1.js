@@ -10,16 +10,10 @@ var intervalId = window.setTimeout(function () {
   } catch (err) {}
 }, 2000);
 
-let trialStepOneEmailInputs = document.querySelectorAll(
-  "[app='create_trial_step1'] [app='email']"
-);
+let trialStepOneEmailInputs = document.querySelectorAll("[app='create_trial_step1'] [app='email']");
 emailInput = document.querySelector("[app='email']");
-let trialOpenButton = document.querySelectorAll(
-  "[app='open_trial_modal_button']"
-);
-let trialStepOneModal = document.querySelector(
-  "[app='create_trial_step1_modal']"
-);
+let trialOpenButton = document.querySelectorAll("[app='open_trial_modal_button']");
+let trialStepOneModal = document.querySelector("[app='create_trial_step1_modal']");
 
 // beforeunload
 // formAbandon
@@ -94,7 +88,6 @@ trialStepOneEmailInputs.forEach((n) => {
       };
 
       dataLayer.push(data);
-      //       console.log(dataLayer);
     }
   });
 });
@@ -107,9 +100,6 @@ createTrialStepOne.forEach((el) => {
     e.stopPropagation();
 
     let form = e.target.form;
-    // let emailInput = form.querySelector("[app='email']");
-    // let emailValue = emailInput.value;
-
     if (result) {
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
@@ -130,15 +120,14 @@ createTrialStepOne.forEach((el) => {
             trialStepOneModal.classList.remove("modal--open");
             let trialDomain = document.querySelector("[app='trial-domain']");
             trialDomain.innerHTML = data.host;
-            document
-              .querySelector("[modal='create_trial_step2']")
-              .classList.add("modal--open");
+            document.querySelector("[modal='create_trial_step2']").classList.add("modal--open");
             $(document.body).css("overflow", "hidden");
+
             if (window.dataLayer) {
               data = {
                 event: "trial_EmailSubmitted",
                 "shop-id": data.shop_id,
-                formId: e.target.form.id,
+                formId: form.parentElement.getAttribute("app"),
                 email: emailValue,
               };
 
@@ -146,7 +135,7 @@ createTrialStepOne.forEach((el) => {
 
               data = {
                 eventName: "formSubmitSuccess",
-                formId: e.target.form.id,
+                formId: form.parentElement.getAttribute("app"),
                 eventCategory: "Button form sent",
                 eventLabel: window.location.pathname,
                 eventType: emailValue,
@@ -157,27 +146,23 @@ createTrialStepOne.forEach((el) => {
 
               data = {
                 event: "myTrackEvent",
-                formId: e.target.form.id,
+                formId: form.parentElement.getAttribute("app"),
                 eventCategory: "Button form sent",
-                eventAction: e.target.form.querySelector("input[type='submit']")
-                  .value,
+                eventAction: e.target.form.querySelector("input[type='submit']").value,
                 eventType: emailValue,
                 eventLabel: window.location.pathname,
               };
 
               dataLayer.push(data);
-              //       console.log(dataLayer);
             }
           } else {
             // MyTrackEvent Error (Step One)
             if (window.dataLayer) {
               data = {
                 eventName: "formSubmitError",
-                formId: e.target.form.id,
+                formId: form.parentElement.getAttribute("app"),
                 eventCategory: "Button form error",
-                // eventAction: n.querySelector("input[type='submit']:nth-child(1)").value,
-                eventAction: e.target.form.querySelector("input[type='submit']")
-                  .value,
+                eventAction: e.target.form.querySelector("input[type='submit']").value,
                 eventLabel: window.location.pathname,
                 eventType: emailValue,
                 eventHistory: window.history,
@@ -187,16 +172,14 @@ createTrialStepOne.forEach((el) => {
 
               data = {
                 event: "myTrackEvent",
-                formId: e.target.form.id,
+                formId: form.parentElement.getAttribute("app"),
                 eventCategory: "Button form error",
-                eventAction: e.target.form.querySelector("input[type='submit']")
-                  .value,
+                eventAction: e.target.form.querySelector("input[type='submit']").value,
                 eventType: emailValue,
                 eventLabel: window.location.pathname,
               };
 
               dataLayer.push(data);
-              //             console.log(dataLayer);
             }
           }
         },
