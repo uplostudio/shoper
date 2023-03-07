@@ -8,11 +8,9 @@ Webflow.push(function () {
   const oldPriceYear = "[app='promo_title_old']";
   const newPriceYear = "[app='promo_title_new']";
 
-  try {
-    const percentDiscount = document.querySelector("[hero='percentDiscount']");
-    const regularPrice = document.querySelector("[hero='regularPrice']");
-    const promotionPrice = document.querySelector("[hero='promotionPrice']");
-  } catch (err) {}
+  const percentDiscount = document.querySelector("[hero='percentDiscount']");
+  const regularPrice = document.querySelector("[hero='regularPrice']");
+  const promotionPrice = document.querySelector("[hero='promotionPrice']");
 
   $.ajax({
     url: "https://www.shoper.pl/ajax.php",
@@ -27,13 +25,11 @@ Webflow.push(function () {
       let yearlyStandardPrice = data.package.price.total;
       let yearlyPromoPrice = data.package.price_promo.total;
 
-      try {
-        // Hero Section Offer On Home Page
+      // Hero Section Offer On Home Page
 
-        percentDiscount.textContent = `-${discountPercentage}%`;
-        regularPrice.textContent = `${yearlyStandardPrice}`;
-        promotionPrice.textContent = `${yearlyPromoPrice} zł / pierwszy rok`;
-      } catch (err) {}
+      percentDiscount.textContent = `-${discountPercentage}%`;
+      regularPrice.textContent = `${yearlyStandardPrice}`;
+      promotionPrice.textContent = `${yearlyPromoPrice} zł / pierwszy rok`;
 
       document.title = `Sklep internetowy - Załóż sklep online z Shoper od ${monthlyPromotion} zł / miesiąc`;
 
