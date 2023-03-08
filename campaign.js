@@ -45,17 +45,21 @@ window.addEventListener("load", () => {
             url: urlValue,
           },
           success: function (data) {
-            if (data.status === 1) {
-              n.querySelector("form").style.display = "none";
-              n.parentElement.querySelector(".w-form-done").style.display =
-                "block";
-              n.parentElement.querySelector(".w-form-done").textContent =
-                "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
+            if (data.status === 1 && formWrapper.parentElement.hasAttribute("notification")) {
+              n.parentElement.querySelector(".w-form-fail").style.background = "#4faf3f";
+              n.parentElement.querySelector(".w-form-fail").style.display = "block";
+              n.parentElement.querySelector(".w-form-fail").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
               n.querySelector("form").reset();
             } else {
-              n.parentElement.querySelector(".w-form-fail").style.display =
-                "block";
+              n.querySelector("form").style.display = "none";
+              n.parentElement.querySelector(".w-form-done").style.display = "block";
+              n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
+              n.querySelector("form").reset();
             }
+          },
+          error: function () {
+            n.parentElement.querySelector(".w-form-fail").style.display = "block";
+            n.parentElement.querySelector(".w-form-fail").style.background = "#ff2c00";
           },
         });
       } else {
