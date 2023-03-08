@@ -3,7 +3,7 @@
 setInterval(function () {
   try {
     let menu = document.querySelector(".nav__menu");
-    let banner = document.querySelector(".banner__vday.v3");
+    let banner = document.querySelector(".banner__vday.v4");
     bannerHeightString = window.getComputedStyle(banner).height;
     bannerHeightValue = parseInt(bannerHeightString);
 
@@ -181,9 +181,7 @@ setInterval(function () {
     const burger = $(".nav__burger-inner");
     closeAllDropdowns();
     if (navState === false) {
-      const wrapper = $("<div>")
-        .addClass("nav__mobile-menu-wrapper")
-        .attr("data-sh-state", "temp");
+      const wrapper = $("<div>").addClass("nav__mobile-menu-wrapper").attr("data-sh-state", "temp");
       $nav_menu.children().wrapAll(wrapper);
       $nav_menu.addClass(navDirective).attr("data-sh-state", "open");
       burger.children().each(function () {
@@ -214,15 +212,11 @@ setInterval(function () {
 
   function toggleNavDropdown(target) {
     const targetIndex = target.attr("data-sh-index");
-    const tempDropdownIndex = $(`[data-sh-dropdown="${targetIndex}"]`).attr(
-      "data-sh-dropdown"
-    );
+    const tempDropdownIndex = $(`[data-sh-dropdown="${targetIndex}"]`).attr("data-sh-dropdown");
 
     if (dropdownState === false) {
       if (checkIfMobile()) {
-        $('[data-sh-index="0"]')
-          .find(".nav__dropdown-list")
-          .addClass(dropdownDirective);
+        $('[data-sh-index="0"]').find(".nav__dropdown-list").addClass(dropdownDirective);
         $(`[data-sh-dropdown="${targetIndex}"]`).addClass(dropdownDirective);
         $(".nav__logo-wrapper").addClass(dropdownDirective);
         $(".nav__tab-back").addClass(dropdownDirective);
@@ -242,9 +236,7 @@ setInterval(function () {
         $(this).removeClass(dropdownDirective);
       });
       if (checkIfMobile()) {
-        $('[data-sh-index="0"]')
-          .find(".nav__dropdown-list")
-          .removeClass(dropdownDirective);
+        $('[data-sh-index="0"]').find(".nav__dropdown-list").removeClass(dropdownDirective);
         $(`[data-sh-dropdown="${targetIndex}"]`).removeClass(dropdownDirective);
         $(".nav__logo-wrapper").removeClass(dropdownDirective);
         $(".nav__tab-back").removeClass(dropdownDirective);
@@ -274,17 +266,9 @@ setInterval(function () {
         $(bindGroup).each(function () {
           $(this).addClass(tabDirective);
         });
-        $(`.nav__dropdown-tab[data-tab-group=${bindGroup}]`).addClass(
-          tabDirective
-        );
-        target
-          .closest(".nav__dropdown-list-wrapper.type-two")
-          .find(".nav__dropdown-content-left.type-two")
-          .addClass(tabDirective);
-        target
-          .closest(".nav__dropdown-list-wrapper.type-two")
-          .find(".nav__dropdown-content-right.type-two")
-          .addClass(tabDirective);
+        $(`.nav__dropdown-tab[data-tab-group=${bindGroup}]`).addClass(tabDirective);
+        target.closest(".nav__dropdown-list-wrapper.type-two").find(".nav__dropdown-content-left.type-two").addClass(tabDirective);
+        target.closest(".nav__dropdown-list-wrapper.type-two").find(".nav__dropdown-content-right.type-two").addClass(tabDirective);
         tabState = true;
         tabLevel = 2;
         return;
@@ -307,17 +291,9 @@ setInterval(function () {
     $(bindGroup).each(function () {
       $(this).toggleClass(tabDirective);
     });
-    $(`.nav__dropdown-tab[data-tab-group=${bindGroup}]`).toggleClass(
-      tabDirective
-    );
-    target
-      .closest(".nav__dropdown-list-wrapper.type-two")
-      .find(".nav__dropdown-content-left.type-two")
-      .toggleClass(tabDirective);
-    target
-      .closest(".nav__dropdown-list-wrapper.type-two")
-      .find(".nav__dropdown-content-right.type-two")
-      .toggleClass(tabDirective);
+    $(`.nav__dropdown-tab[data-tab-group=${bindGroup}]`).toggleClass(tabDirective);
+    target.closest(".nav__dropdown-list-wrapper.type-two").find(".nav__dropdown-content-left.type-two").toggleClass(tabDirective);
+    target.closest(".nav__dropdown-list-wrapper.type-two").find(".nav__dropdown-content-right.type-two").toggleClass(tabDirective);
   }
 
   initNav();
