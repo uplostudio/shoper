@@ -478,20 +478,20 @@ window.addEventListener("load", () => {
   accordionFirstChild[1].click();
 });
 
-$.ajax({
-  url: "https://www.shoper.pl/ajax.php",
-  headers: {},
-  method: "POST",
-  data: {
-    action: "get_promotion",
-  },
-  success: function (data) {
-    // header
-    let headerPercentage = document.querySelector("[header='percentage']");
-    let discountPercentage = data.package.discount;
-    headerPercentage.textContent = `${discountPercentage}%`;
-  },
-  error: function () {
-    // console.log("error");
-  },
-});
+// $.ajax({
+//   url: "https://www.shoper.pl/ajax.php",
+//   headers: {},
+//   method: "POST",
+//   data: {
+//     action: "get_promotion",
+//   },
+//   success: function (data) {
+//     // header
+//     let headerPercentage = document.querySelector("[header='percentage']");
+//     let discountPercentage = data.package.discount;
+//     headerPercentage.textContent = `${discountPercentage}%`;
+//   },
+//   error: function () {
+//     // console.log("error");
+//   },
+// });
