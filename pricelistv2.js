@@ -53,6 +53,9 @@ window.addEventListener("load", () => {
     }
     $(document.body).css("overflow", "hidden");
   });
+  // header
+  let headerPercentage = document.querySelector("[header='percentage']");
+
   // form + checkbox
   let toggleForm = document.querySelector("[app='toggle_form']");
   let togglePrice = document.querySelector("[app='toggle_button']");
@@ -455,4 +458,20 @@ window.addEventListener("load", () => {
   });
 
   accordionFirstChild[1].click();
+});
+
+$.ajax({
+  url: "https://www.shoper.pl/ajax.php",
+  headers: {},
+  method: "POST",
+  data: {
+    action: "get_promotion",
+  },
+  success: function (data) {
+    let discountPercentage = data.package.discount;
+    headerPercentage.textContent = `${discountPercentage}`;
+  },
+  error: function () {
+    // console.log("error");
+  },
 });
