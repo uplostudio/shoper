@@ -336,13 +336,13 @@ window.addEventListener("load", () => {
         .toString()
         .split(".")[1];
       // initial values
-      priceBoxStandard.textContent = standardWholePriceNet;
-      priceBoxPremium.textContent = premiumWholePriceNet;
-      priceBoxEnterprise.textContent = enterpriseWholePriceNet;
+      priceBoxStandard.textContent = standardWholePriceNetY;
+      priceBoxPremium.textContent = premiumWholePriceNetY;
+      priceBoxEnterprise.textContent = enterpriseWholePriceNetY;
 
-      priceBoxStandardClone.textContent = standardWholePriceNet;
-      priceBoxPremiumClone.textContent = premiumWholePriceNet;
-      priceBoxEnterpriseClone.textContent = enterpriseWholePriceNet;
+      priceBoxStandardClone.textContent = standardWholePriceNetY;
+      priceBoxPremiumClone.textContent = premiumWholePriceNetY;
+      priceBoxEnterpriseClone.textContent = enterpriseWholePriceNetY;
 
       priceBoxStandardRegular.textContent = "";
       priceBoxPremiumRegular.textContent = "";
