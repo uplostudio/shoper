@@ -356,6 +356,26 @@ window.addEventListener("load", () => {
       premiumBadge.style.display = "none";
       enterpriseBadge.style.display = "none";
 
+      let standardWholePriceGrossComma = standardWholePriceGross.replace(
+        ".",
+        ","
+      );
+      let premiumWholePriceGrossComma = premiumWholePriceGross.replace(
+        ".",
+        ","
+      );
+      let enterpriseWholePriceGrossComma = enterpriseWholePriceGross.replace(
+        ".",
+        ","
+      );
+
+      let standardWholePriceNetComma = standardWholePriceNet.replace(".", ",");
+      let premiumWholePriceNetComma = premiumWholePriceNet.replace(".", ",");
+      let enterpriseWholePriceNetComma = enterpriseWholePriceNet.replace(
+        ".",
+        ","
+      );
+
       function checkValues() {
         boxStandard = document.querySelector("#pricebox-standard");
         boxPremium = document.querySelector("#pricebox-premium");
@@ -405,9 +425,9 @@ window.addEventListener("load", () => {
           priceBoxPremium.nextElementSibling.children[0].textContent = `,${premiumSparePartGrossY}`;
           priceBoxEnterprise.textContent = enterpriseMainPartGrossY;
           priceBoxEnterprise.nextElementSibling.children[0].textContent = ``;
-          priceBoxStandardRegular.textContent = `${standardWholePriceGross} zł`;
-          priceBoxPremiumRegular.textContent = `${premiumWholePriceGross} zł`;
-          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceGross} zł`;
+          priceBoxStandardRegular.textContent = `${standardWholePriceGrossComma} zł`;
+          priceBoxPremiumRegular.textContent = `${premiumWholePriceGrossComma} zł`;
+          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceGrossComma} zł`;
           standardBadge.style.display = "block";
           premiumBadge.style.display = "block";
           enterpriseBadge.style.display = "block";
@@ -422,9 +442,9 @@ window.addEventListener("load", () => {
           priceBoxPremium.nextElementSibling.children[0].textContent = ``;
           priceBoxEnterprise.textContent = enterpriseMainPartNetY;
           priceBoxEnterprise.nextElementSibling.children[0].textContent = ``;
-          priceBoxStandardRegular.textContent = `${standardWholePriceNet} zł`;
-          priceBoxPremiumRegular.textContent = `${premiumWholePriceNet} zł`;
-          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceNet} zł`;
+          priceBoxStandardRegular.textContent = `${standardWholePriceNetComma} zł`;
+          priceBoxPremiumRegular.textContent = `${premiumWholePriceNetComma} zł`;
+          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceNetComma} zł`;
           standardBadge.style.display = "block";
           premiumBadge.style.display = "block";
           enterpriseBadge.style.display = "block";
