@@ -53,8 +53,6 @@ window.addEventListener("load", () => {
     }
     $(document.body).css("overflow", "hidden");
   });
-  // header
-  let headerPercentage = document.querySelector("[header='percentage']");
 
   // form + checkbox
   let toggleForm = document.querySelector("[app='toggle_form']");
@@ -468,8 +466,10 @@ $.ajax({
     action: "get_promotion",
   },
   success: function (data) {
+    // header
+    let headerPercentage = document.querySelector("[header='percentage']");
     let discountPercentage = data.package.discount;
-    headerPercentage.textContent = `${discountPercentage}`;
+    headerPercentage.textContent = `${discountPercentage}%`;
   },
   error: function () {
     // console.log("error");
