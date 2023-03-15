@@ -475,7 +475,7 @@ window.addEventListener("load", () => {
     error: function (err) {},
   });
 
-  // accordionFirstChild[1].click();
+  accordionFirstChild[1].click();
 });
 
 // $.ajax({
