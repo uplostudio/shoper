@@ -11,7 +11,7 @@ formWrappers.forEach((n) => {
   emailInput = n.querySelector("[app='email_campaign']");
   urlInput = n.querySelector("[app='url_campaign']");
   formTrigger = n.querySelector("[app='consult-submit']");
-  let action = n.getAttribute("action");
+  let action = n.parentElement.getAttribute("action");
 
   phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
