@@ -13,6 +13,8 @@ formWrappers.forEach((n) => {
   formTrigger = n.querySelector("[app='consult-submit']");
   let action = n.getAttribute("action");
 
+  console.log(action);
+
   phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
   emailInput.addEventListener("blur", checkMailBlurTwo);
