@@ -14,6 +14,8 @@ window.addEventListener("load", () => {
   } catch (err) {}
 });
 
+// remove sites from intercom
+
 window.addEventListener("load", () => {
   let subpage = window.location.pathname;
   let body = document.querySelector("body");

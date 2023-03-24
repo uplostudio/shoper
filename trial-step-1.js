@@ -126,6 +126,7 @@ createTrialStepOne.forEach((el) => {
             if (window.dataLayer) {
               data = {
                 event: "trial_EmailSubmitted",
+                client_id: data.client_id,
                 "shop-id": data.shop_id,
                 formId: form.parentElement.getAttribute("app"),
                 email: emailValue,
