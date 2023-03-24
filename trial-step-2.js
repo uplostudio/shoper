@@ -186,7 +186,7 @@ createTrialStepTwo.forEach((n) => {
               dataLayer.push(data);
               //             console.log(dataLayer);
             }
-            // window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+            window.location.href = "https://www.shoper.pl/zaloz-sklep/";
           } else {
             //            console.log(data);
             let errorInfo = n.querySelector(".w-form-fail");
