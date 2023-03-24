@@ -163,7 +163,7 @@ createTrialStepTwo.forEach((n) => {
               data = {
                 event: "formSubmitSuccess",
                 eventCategory: "Button modal form sent",
-                client_id: data.client_id,
+                client_id: client_id,
                 formId: n.querySelector("form").id,
                 "shop-id": data.license_id,
                 eventAction: n.querySelector("input[type='submit']").value,
@@ -186,7 +186,7 @@ createTrialStepTwo.forEach((n) => {
               dataLayer.push(data);
               //             console.log(dataLayer);
             }
-            window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+            // window.location.href = "https://www.shoper.pl/zaloz-sklep/";
           } else {
             //            console.log(data);
             let errorInfo = n.querySelector(".w-form-fail");

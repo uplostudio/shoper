@@ -1,6 +1,7 @@
 let analyticsId;
 let analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
 let isFromBanner = false;
+let client_id;
 
 var intervalId = window.setTimeout(function () {
   try {
@@ -111,6 +112,8 @@ createTrialStepOne.forEach((el) => {
           analytics_id: analyticsId,
         },
         success: function (data) {
+          client_id = data.client_id;
+
           if (data.code === 2 || data.code === 3) {
             let errorInfo = form.parentElement.querySelector(".w-form-fail");
             errorInfo.children[0].innerHTML =
@@ -126,7 +129,7 @@ createTrialStepOne.forEach((el) => {
             if (window.dataLayer) {
               data = {
                 event: "trial_EmailSubmitted",
-                client_id: data.client_id,
+                client_id: client_id,
                 "shop-id": data.shop_id,
                 formId: form.parentElement.getAttribute("app"),
                 email: emailValue,
