@@ -29,6 +29,17 @@ window.addEventListener("load", () => {
       checkEmailBlur();
 
       if (outcomeOne && outcomeTwo) {
+        if (window.dataLayer) {
+          data = {
+            event: "myTrackEvent",
+            eventCategory: "Button modal form sent",
+            eventAction: formTrigger.value,
+            eventLabel: window.location.pathname,
+          };
+
+          dataLayer.push(data);
+        }
+
         $.ajax({
           url: "https://www.shoper.pl/ajax.php",
           headers: {},
@@ -41,18 +52,25 @@ window.addEventListener("load", () => {
           success: function (data) {
             if (data.status === 1) {
               n.querySelector("form").style.display = "none";
-              n.parentElement.querySelector(".w-form-done").style.display =
-                "block";
-              n.parentElement.querySelector(".w-form-done").textContent =
-                "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
+              n.parentElement.querySelector(".w-form-done").style.display = "block";
+              n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
               n.querySelector("form").reset();
             } else {
-              n.parentElement.querySelector(".w-form-fail").style.display =
-                "block";
+              n.parentElement.querySelector(".w-form-fail").style.display = "block";
             }
           },
         });
       } else {
+        if (window.dataLayer) {
+          data = {
+            event: "myTrackEvent",
+            eventCategory: "Button modal form error",
+            eventAction: formTrigger.value,
+            eventLabel: window.location.pathname,
+          };
+
+          dataLayer.push(data);
+        }
       }
     });
   });
