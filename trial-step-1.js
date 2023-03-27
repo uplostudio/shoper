@@ -6,7 +6,7 @@ let client_id;
 var intervalId = window.setTimeout(function () {
   try {
     const tracker = ga.getAll()[0];
-    let analyticsId = tracker.get("clientId");
+    analyticsId = tracker.get("clientId");
     return analyticsId;
   } catch (err) {}
 }, 2000);
