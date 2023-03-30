@@ -28,7 +28,7 @@ formWrappers.forEach((n) => {
     emailInput = formWrapper.querySelector("[app='email']");
     urlInput = formWrapper.querySelector("[app='url']");
 
-    checkUrlBlurNonRequired();
+    checkUrlBlurTwoNonRequired();
     checkPhoneBlur();
     checkEmailBlur();
 

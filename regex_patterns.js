@@ -382,5 +382,27 @@ function checkUrlBlurTwo() {
     return true;
   }
 }
+function checkUrlBlurTwoNonRequired() {
+  urlValue = this.value;
+  let errorBoxUrl = this.nextElementSibling;
+  if (urlValue === "") {
+    this.style.border = errorBorderColor;
+    errorBoxUrl.style.display = "none";
+    // errorBoxUrl.children[1].textContent = "To pole jest wymagane";
+    outcomeThree = true;
+    return false;
+  } else if (!useRegexUrl(urlValue)) {
+    this.style.border = errorBorderColor;
+    errorBoxUrl.style.display = "flex";
+    errorBoxUrl.children[1].textContent = "Podaj poprawne dane";
+    outcomeThree = false;
+    return false;
+  } else if (useRegexUrl(urlValue)) {
+    this.style.border = initialBorderColor;
+    errorBoxUrl.style.display = "none";
+    outcomeThree = true;
+    return true;
+  }
+}
 
 /* Functions end here */
