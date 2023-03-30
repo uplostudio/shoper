@@ -38,7 +38,7 @@ formWrappers.forEach((n) => {
           action: action,
           email: emailValue,
           phone: phoneInputValue,
-          url: urlValue,
+          url: urlInput.value,
           form_name: action,
           thulium_id: 52,
           zapier: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS8zb2gxc29nLw==",
