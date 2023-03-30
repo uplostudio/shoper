@@ -386,7 +386,7 @@ function checkUrlBlurTwoNonRequired() {
   urlValue = this.value;
   let errorBoxUrl = this.nextElementSibling;
   if (urlValue === "") {
-    this.style.border = errorBorderColor;
+    this.style.border = initialBorderColor;
     errorBoxUrl.style.display = "none";
     // errorBoxUrl.children[1].textContent = "To pole jest wymagane";
     outcomeThree = true;
