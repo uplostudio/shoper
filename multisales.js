@@ -17,7 +17,7 @@ formWrappers.forEach((n) => {
 
   emailInput.addEventListener("blur", checkMailBlurTwo);
 
-  urlInput.addEventListener("blur", checkUrlBlurNonRequired);
+  urlInput.addEventListener("blur", checkUrlBlurTwoNonRequired);
 
   formTrigger.addEventListener("click", function (e) {
     e.preventDefault();
@@ -28,7 +28,7 @@ formWrappers.forEach((n) => {
     emailInput = formWrapper.querySelector("[app='email']");
     urlInput = formWrapper.querySelector("[app='url']");
 
-    checkUrlBlurTwoNonRequired();
+    checkUrlBlurNonRequired();
     checkPhoneBlur();
     checkEmailBlur();
 
