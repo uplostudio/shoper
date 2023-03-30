@@ -17,7 +17,7 @@ formWrappers.forEach((n) => {
 
   emailInput.addEventListener("blur", checkMailBlurTwo);
 
-  urlInput.addEventListener("blur", checkUrlBlurTwo);
+  urlInput.addEventListener("blur", checkUrlBlurNonRequired);
 
   formTrigger.addEventListener("click", function (e) {
     e.preventDefault();

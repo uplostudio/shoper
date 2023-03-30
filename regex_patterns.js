@@ -236,6 +236,25 @@ function checkUrlBlur() {
     return true;
   }
 }
+function checkUrlBlurNonRequired() {
+  urlValue = urlInput.value;
+  let errorBoxUrl = urlInput.nextElementSibling;
+  if (urlValue === "") {
+    urlInput.style.border = initialBorderColor;
+    errorBoxUrl.style.display = "none";
+    // errorBoxUrl.children[1].textContent = "To pole jest wymagane";
+    return true;
+  } else if (!useRegexUrl(urlValue)) {
+    urlInput.style.border = errorBorderColor;
+    errorBoxUrl.style.display = "flex";
+    errorBoxUrl.children[1].textContent = "Podaj poprawne dane";
+    return false;
+  } else if (useRegexUrl(urlValue)) {
+    urlInput.style.border = initialBorderColor;
+    errorBoxUrl.style.display = "none";
+    return true;
+  }
+}
 
 function checkHostBlur() {
   hostValue = hostInput.value;
