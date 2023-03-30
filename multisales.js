@@ -17,8 +17,6 @@ formWrappers.forEach((n) => {
 
   emailInput.addEventListener("blur", checkMailBlurTwo);
 
-  urlInput.addEventListener("blur", checkUrlBlurTwoNonRequired);
-
   formTrigger.addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
@@ -28,11 +26,10 @@ formWrappers.forEach((n) => {
     emailInput = formWrapper.querySelector("[app='email']");
     urlInput = formWrapper.querySelector("[app='url']");
 
-    checkUrlBlurNonRequired();
     checkPhoneBlur();
     checkEmailBlur();
 
-    if (outcomeOne && outcomeTwo && outcomeThree) {
+    if (outcomeOne && outcomeTwo) {
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
