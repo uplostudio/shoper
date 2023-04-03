@@ -12,6 +12,7 @@ formWrappers.forEach((n) => {
   urlInput = n.querySelector("[app='url']");
   formTrigger = n.querySelector("[app='form_lp-submit']");
   let action = n.getAttribute("action");
+  let name = n.children[0].getAttribute("data-name");
 
   phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
@@ -39,9 +40,9 @@ formWrappers.forEach((n) => {
           email: emailValue,
           phone: phoneInputValue,
           url: urlInput.value,
-          form_name: action,
-          thulium_id: 52,
-          zapier: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS8zb2gxc29nLw==",
+          form_name: name,
+          thulium_id: 54,
+          zapier: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS8zM2xobWtjLw==",
           fbclid: fbclidValue,
           gclid: gclidValue,
         },
