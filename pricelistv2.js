@@ -8,12 +8,8 @@ window.addEventListener("load", () => {
     let cardType = this.parentElement.getAttribute("card");
     this.parentElement.style.display = "grid";
     if (cardType === "enterprise") {
-      document
-        .querySelector("[app='custom_form']")
-        .setAttribute("package", "31");
-      document
-        .querySelector("[app='custom_form']")
-        .setAttribute("form", "enterprise-form");
+      document.querySelector("[app='custom_form']").setAttribute("package", "31");
+      document.querySelector("[app='custom_form']").setAttribute("form", "enterprise-form");
 
       if (window.dataLayer) {
         data = {
@@ -21,21 +17,15 @@ window.addEventListener("load", () => {
           eventCategory: "Button modal opened",
           eventAction: this.textContent,
           eventLabel: window.location.href,
-          eventType: document
-            .querySelector("[app='custom_form']")
-            .getAttribute("form"),
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
         };
 
         dataLayer.push(data);
         console.log(dataLayer);
       }
     } else {
-      document
-        .querySelector("[app='custom_form']")
-        .setAttribute("package", "7");
-      document
-        .querySelector("[app='custom_form']")
-        .setAttribute("form", "premium-form");
+      document.querySelector("[app='custom_form']").setAttribute("package", "7");
+      document.querySelector("[app='custom_form']").setAttribute("form", "premium-form");
 
       if (window.dataLayer) {
         data = {
@@ -43,9 +33,7 @@ window.addEventListener("load", () => {
           eventCategory: "Button modal opened",
           eventAction: this.textContent,
           eventLabel: window.location.href,
-          eventType: document
-            .querySelector("[app='custom_form']")
-            .getAttribute("form"),
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
         };
 
         dataLayer.push(data);
@@ -62,21 +50,13 @@ window.addEventListener("load", () => {
   let toggleYear = document.querySelector("[app='yearlyToggle']");
   let checkboxYear = toggleFormYear.querySelector("input[type='checkbox']");
   // promo prices
-  let priceBoxStandard = document.querySelector("[pricebox='standard']")
-    .children[0];
-  let priceBoxPremium = document.querySelector("[pricebox='premium']")
-    .children[0];
-  let priceBoxEnterprise = document.querySelector("[pricebox='enterprise']")
-    .children[0];
+  let priceBoxStandard = document.querySelector("[pricebox='standard']").children[0];
+  let priceBoxPremium = document.querySelector("[pricebox='premium']").children[0];
+  let priceBoxEnterprise = document.querySelector("[pricebox='enterprise']").children[0];
   // clones
-  let priceBoxStandardClone = document.querySelector(
-    "[pricebox='standardClone']"
-  ).children[0];
-  let priceBoxPremiumClone = document.querySelector("[pricebox='premiumClone']")
-    .children[0];
-  let priceBoxEnterpriseClone = document.querySelector(
-    "[pricebox='enterpriseClone']"
-  ).children[0];
+  let priceBoxStandardClone = document.querySelector("[pricebox='standardClone']").children[0];
+  let priceBoxPremiumClone = document.querySelector("[pricebox='premiumClone']").children[0];
+  let priceBoxEnterpriseClone = document.querySelector("[pricebox='enterpriseClone']").children[0];
   // price boxes
   let boxStandard;
   let boxPremium;
@@ -88,18 +68,10 @@ window.addEventListener("load", () => {
   // regular prices
   let priceBoxStandardRegular = document.querySelector("[regular='standard']");
   let priceBoxPremiumRegular = document.querySelector("[regular='premium']");
-  let priceBoxEnterpriseRegular = document.querySelector(
-    "[regular='enterprise']"
-  );
-  let priceBoxStandardRegularMini = document.querySelector(
-    "[regular='standard_mini']"
-  );
-  let priceBoxPremiumRegularMini = document.querySelector(
-    "[regular='premium_mini']"
-  );
-  let priceBoxEnterpriseRegularMini = document.querySelector(
-    "[regular='enterprise_mini']"
-  );
+  let priceBoxEnterpriseRegular = document.querySelector("[regular='enterprise']");
+  let priceBoxStandardRegularMini = document.querySelector("[regular='standard_mini']");
+  let priceBoxPremiumRegularMini = document.querySelector("[regular='premium_mini']");
+  let priceBoxEnterpriseRegularMini = document.querySelector("[regular='enterprise_mini']");
 
   // labels
   let boxLabelStandard = document.querySelector("[pricelabel='standard']");
@@ -112,9 +84,7 @@ window.addEventListener("load", () => {
   let enterpriseBadge = document.querySelector("[enterprise='badge']");
 
   // accordion first child
-  let accordionFirstChild = document.querySelectorAll(
-    "[accordion='firstChild']"
-  );
+  let accordionFirstChild = document.querySelectorAll("[accordion='firstChild']");
 
   let net = "netto miesięcznie";
   let gross = "brutto miesięcznie";
@@ -191,17 +161,12 @@ window.addEventListener("load", () => {
         },
         success: function (data) {
           formWrapper.querySelector("form").style.display = "none";
-          formWrapper.parentElement.querySelector(
-            ".w-form-done"
-          ).style.display = "block";
+          formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
           formWrapper.querySelector("form").reset();
         },
         error: function (data) {
-          formWrapper.parentElement.querySelector(
-            ".w-form-fail"
-          ).style.display = "block";
-          formWrapper.parentElement.querySelector(".w-form-fail").textContent =
-            "Coś poszło nie tak, spróbuj ponownie.";
+          formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
+          formWrapper.parentElement.querySelector(".w-form-fail").textContent = "Coś poszło nie tak, spróbuj ponownie.";
         },
       });
 
@@ -211,9 +176,7 @@ window.addEventListener("load", () => {
           eventCategory: "Button modal form sent",
           eventAction: this.value,
           eventLabel: window.location.href,
-          eventType: document
-            .querySelector("[app='custom_form']")
-            .getAttribute("form"),
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
         };
 
         dataLayer.push(data);
@@ -226,9 +189,7 @@ window.addEventListener("load", () => {
           eventCategory: "Button modal form error",
           eventAction: this.value,
           eventLabel: window.location.href,
-          eventType: document
-            .querySelector("[app='custom_form']")
-            .getAttribute("form"),
+          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
         };
 
         dataLayer.push(data);
@@ -247,94 +208,59 @@ window.addEventListener("load", () => {
       action: "get_prices_list",
     },
     success: function (data) {
+      document.querySelector(".pricelist__toggle").style.opacity = 1;
       let regular = data.price;
       let promotion = data.promotion;
 
       // Standard Gross 1 month price
       let standardWholePriceGross = regular.standard[1].gross;
-      let standardMainPartGross = standardWholePriceGross
-        .toString()
-        .split(".")[0];
-      let standardSparePartGross = standardWholePriceGross
-        .toString()
-        .split(".")[1];
+      let standardMainPartGross = standardWholePriceGross.toString().split(".")[0];
+      let standardSparePartGross = standardWholePriceGross.toString().split(".")[1];
       // Standard Net 1 month price
       let standardWholePriceNet = regular.standard[1].net;
       let standardMainPartNet = standardWholePriceNet.toString().split(".")[0];
       let standardSparePartNet = standardWholePriceNet.toString().split(".")[1];
       // Premium  Gross 1 month price
       let premiumWholePriceGross = regular.premium[1].gross;
-      let premiumMainPartGross = premiumWholePriceGross
-        .toString()
-        .split(".")[0];
-      let premiumSparePartGross = premiumWholePriceGross
-        .toString()
-        .split(".")[1];
+      let premiumMainPartGross = premiumWholePriceGross.toString().split(".")[0];
+      let premiumSparePartGross = premiumWholePriceGross.toString().split(".")[1];
       // Premium  Net 1 month price
       let premiumWholePriceNet = regular.premium[1].net;
       let premiumMainPartNet = premiumWholePriceNet.toString().split(".")[0];
       let premiumSparePartNet = premiumWholePriceNet.toString().split(".")[1];
       // Enterprise Gross 1 month price
       let enterpriseWholePriceGross = regular.enterprise[1].gross;
-      let enterpriseMainPartGross = enterpriseWholePriceGross
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartGross = enterpriseWholePriceGross
-        .toString()
-        .split(".")[1];
+      let enterpriseMainPartGross = enterpriseWholePriceGross.toString().split(".")[0];
+      let enterpriseSparePartGross = enterpriseWholePriceGross.toString().split(".")[1];
       // Enterprise Net 1 month price
       let enterpriseWholePriceNet = regular.enterprise[1].net;
-      let enterpriseMainPartNet = enterpriseWholePriceNet
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartNet = enterpriseWholePriceNet
-        .toString()
-        .split(".")[1];
+      let enterpriseMainPartNet = enterpriseWholePriceNet.toString().split(".")[0];
+      let enterpriseSparePartNet = enterpriseWholePriceNet.toString().split(".")[1];
 
       // Standard Gross year price
       let standardWholePriceGrossY = promotion.price.standard[12].month.gross;
-      let standardMainPartGrossY = standardWholePriceGrossY
-        .toString()
-        .split(".")[0];
-      let standardSparePartGrossY = standardWholePriceGrossY
-        .toString()
-        .split(".")[1];
+      let standardMainPartGrossY = standardWholePriceGrossY.toString().split(".")[0];
+      let standardSparePartGrossY = standardWholePriceGrossY.toString().split(".")[1];
       // Standard Net year price
       let standardWholePriceNetY = promotion.price.standard[12].month.net;
-      let standardMainPartNetY = standardWholePriceNetY
-        .toString()
-        .split(".")[0];
-      let standardSparePartNetY = standardWholePriceNetY
-        .toString()
-        .split(".")[1];
+      let standardMainPartNetY = standardWholePriceNetY.toString().split(".")[0];
+      let standardSparePartNetY = standardWholePriceNetY.toString().split(".")[1];
       // Premium  Gross year price
       let premiumWholePriceGrossY = regular.premium[12].month.gross;
-      let premiumMainPartGrossY = premiumWholePriceGrossY
-        .toString()
-        .split(".")[0];
-      let premiumSparePartGrossY = premiumWholePriceGrossY
-        .toString()
-        .split(".")[1];
+      let premiumMainPartGrossY = premiumWholePriceGrossY.toString().split(".")[0];
+      let premiumSparePartGrossY = premiumWholePriceGrossY.toString().split(".")[1];
       // Premium  Net year price
       let premiumWholePriceNetY = regular.premium[12].month.net;
       let premiumMainPartNetY = premiumWholePriceNetY.toString().split(".")[0];
       let premiumSparePartNetY = premiumWholePriceNetY.toString().split(".")[1];
       // Enterprise Gross year price
       let enterpriseWholePriceGrossY = regular.enterprise[12].month.gross;
-      let enterpriseMainPartGrossY = enterpriseWholePriceGrossY
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartGrossY = enterpriseWholePriceGrossY
-        .toString()
-        .split(".")[1];
+      let enterpriseMainPartGrossY = enterpriseWholePriceGrossY.toString().split(".")[0];
+      let enterpriseSparePartGrossY = enterpriseWholePriceGrossY.toString().split(".")[1];
       // Enterprise Net year price
       let enterpriseWholePriceNetY = regular.enterprise[12].month.net;
-      let enterpriseMainPartNetY = enterpriseWholePriceNetY
-        .toString()
-        .split(".")[0];
-      let enterpriseSparePartNetY = enterpriseWholePriceNetY
-        .toString()
-        .split(".")[1];
+      let enterpriseMainPartNetY = enterpriseWholePriceNetY.toString().split(".")[0];
+      let enterpriseSparePartNetY = enterpriseWholePriceNetY.toString().split(".")[1];
       // initial values
       priceBoxStandard.textContent = standardWholePriceNetY;
       priceBoxPremium.textContent = premiumWholePriceNetY;
@@ -356,25 +282,13 @@ window.addEventListener("load", () => {
       premiumBadge.style.display = "none";
       enterpriseBadge.style.display = "none";
 
-      let standardWholePriceGrossComma = standardWholePriceGross.replace(
-        ".",
-        ","
-      );
-      let premiumWholePriceGrossComma = premiumWholePriceGross.replace(
-        ".",
-        ","
-      );
-      let enterpriseWholePriceGrossComma = enterpriseWholePriceGross.replace(
-        ".",
-        ","
-      );
+      let standardWholePriceGrossComma = standardWholePriceGross.replace(".", ",");
+      let premiumWholePriceGrossComma = premiumWholePriceGross.replace(".", ",");
+      let enterpriseWholePriceGrossComma = enterpriseWholePriceGross.replace(".", ",");
 
       let standardWholePriceNetComma = standardWholePriceNet.replace(".", ",");
       let premiumWholePriceNetComma = premiumWholePriceNet.replace(".", ",");
-      let enterpriseWholePriceNetComma = enterpriseWholePriceNet.replace(
-        ".",
-        ","
-      );
+      let enterpriseWholePriceNetComma = enterpriseWholePriceNet.replace(".", ",");
 
       function checkValues() {
         boxStandard = document.querySelector("#pricebox-standard");
