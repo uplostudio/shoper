@@ -27,9 +27,11 @@ Webflow.push(function () {
 
       // Hero Section Offer On Home Page
 
-      percentDiscount.textContent = `-${discountPercentage}%`;
-      regularPrice.textContent = `${yearlyStandardPrice}`;
-      promotionPrice.textContent = `${yearlyPromoPrice} zł / pierwszy rok`;
+      try {
+        percentDiscount.textContent = `-${discountPercentage}%`;
+        regularPrice.textContent = `${yearlyStandardPrice}`;
+        promotionPrice.textContent = `${yearlyPromoPrice} zł / pierwszy rok`;
+      } catch (er) {}
 
       document.title = `Sklep internetowy - Załóż sklep online z Shoper od ${monthlyPromotion} zł / miesiąc`;
 
