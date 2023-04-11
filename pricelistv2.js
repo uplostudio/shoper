@@ -396,14 +396,14 @@ window.addEventListener("load", () => {
         checkValues();
       });
       toggleYear.click();
+
+      loaderItems = document.querySelectorAll(".loader-xl");
+
+      loaderItems.forEach((n) => {
+        n.style.display = "none";
+      });
     },
     error: function (err) {},
-  });
-
-  loaderItems = document.querySelectorAll(".loader-xl");
-
-  loaderItems.forEach((n) => {
-    n.style.display = "none";
   });
 
   accordionFirstChild[1].click();
