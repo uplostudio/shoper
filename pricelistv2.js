@@ -1,7 +1,5 @@
 // if user uses back/forward buttons
 
-loaderItems = document.querySelectorAll(".loader-xl");
-
 const observer = new PerformanceObserver((list) => {
   list.getEntries().forEach((entry) => {
     if (entry.type === "back_forward") {
@@ -401,6 +399,8 @@ window.addEventListener("load", () => {
     },
     error: function (err) {},
   });
+
+  loaderItems = document.querySelectorAll(".loader-xl");
 
   loaderItems.forEach((n) => {
     n.style.display = "none";
