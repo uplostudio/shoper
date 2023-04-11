@@ -386,9 +386,6 @@ window.addEventListener("load", () => {
         // badgesInCompact.forEach((badge) => {
         //   badge.remove();
         // });
-        loaderItems.forEach((n) => {
-          n.style.display = "none";
-        });
       }
       //  event when net/gross clicked
       togglePrice.addEventListener("click", () => {
@@ -403,6 +400,10 @@ window.addEventListener("load", () => {
       toggleYear.click();
     },
     error: function (err) {},
+  });
+
+  loaderItems.forEach((n) => {
+    n.style.display = "none";
   });
 
   accordionFirstChild[1].click();
