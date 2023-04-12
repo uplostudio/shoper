@@ -79,7 +79,6 @@ window.addEventListener("beforeunload", () => {
     };
 
     dataLayer.push(data);
-    //       console.log(dataLayer);
   }
 });
 
@@ -119,7 +118,6 @@ inputsStepTwo.forEach((n) => {
       };
 
       dataLayer.push(data);
-      //       console.log(dataLayer);
     }
   });
 });
@@ -132,7 +130,6 @@ createTrialStepTwo.forEach((n) => {
   n.addEventListener("submit", (e) => {
     e.preventDefault();
     e.stopPropagation();
-    // let url = "https://www.shoper.pl/ajax.php";
     if (result) {
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
@@ -143,8 +140,8 @@ createTrialStepTwo.forEach((n) => {
           phone: n.querySelector("[app='phone']").value,
           eventName: "formSubmitSuccess",
           formId: n.querySelector("form").id,
-          gclid: gclidInput.value,
-          fbclid: fbclidInput.value,
+          "adwords[gclid]": gclidInput.value,
+          "adwords[fbclid]": fbclidInput.value,
           blackFridayBanner: isFromBanner,
           analytics_id: analyticsId,
         },
