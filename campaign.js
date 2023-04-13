@@ -44,6 +44,8 @@ formWrappers.forEach((n) => {
           email: emailValue,
           phone: phoneInputValue,
           url: urlValue,
+          thulium_id: this.closest("form").getAttribute("thulium_id"),
+          zapier: this.closest("form").getAttribute("zapier"),
         },
         success: function (data) {
           // notification attribute goes in ms ads form
