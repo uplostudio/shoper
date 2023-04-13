@@ -13,13 +13,11 @@ formWrappers.forEach((n) => {
   formTrigger = n.querySelector("[app='consult-submit']");
   let action = n.getAttribute("action");
 
-  console.log(action);
-
   phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
   emailInput.addEventListener("blur", checkMailBlurTwo);
 
-  urlInput.addEventListener("blur", checkUrlBlurTwo);
+  urlInput.addEventListener("blur", checkUrlBlurTwoNonRequired);
 
   formTrigger.addEventListener("click", function (e) {
     e.preventDefault();
@@ -30,7 +28,7 @@ formWrappers.forEach((n) => {
     emailInput = formWrapper.querySelector("[app='email_campaign']");
     urlInput = formWrapper.querySelector("[app='url_campaign']");
 
-    checkUrlBlur();
+    checkUrlBlurNonRequired();
     checkPhoneBlur();
     checkEmailBlur();
 
