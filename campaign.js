@@ -33,6 +33,16 @@ formWrappers.forEach((n) => {
     checkEmailBlur();
 
     if (outcomeOne && outcomeTwo && outcomeThree) {
+      if (window.dataLayer) {
+        data = {
+          event: "myTrackEvent",
+          eventCategory: "Button modal form sent",
+          eventAction: formTrigger.value,
+          eventLabel: window.location.pathname,
+        };
+
+        dataLayer.push(data);
+      }
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
@@ -66,6 +76,16 @@ formWrappers.forEach((n) => {
         },
       });
     } else {
+      if (window.dataLayer) {
+        data = {
+          event: "myTrackEvent",
+          eventCategory: "Button modal form error",
+          eventAction: formTrigger.value,
+          eventLabel: window.location.pathname,
+        };
+
+        dataLayer.push(data);
+      }
     }
   });
 });
