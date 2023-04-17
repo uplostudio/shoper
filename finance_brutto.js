@@ -82,7 +82,7 @@ formTrigger.addEventListener("click", function (e) {
   body.append("action", formWrapper.getAttribute("action"));
 
   if (checkNipBlur() && checkPhoneBlur() && checkEmailBlur() && checkUrlBlur() && bruttoTerms.checked && bruttoClause.checked && shoperPersonalData.checked) {
-    loader.style.display = "block";
+    // loader.style.display = "block";
     fetch(`https://www.shoper.pl/ajax.php`, {
       body,
       headers: {
@@ -90,11 +90,11 @@ formTrigger.addEventListener("click", function (e) {
       },
       method: "POST",
     }).then(function (response) {
-      loader.style.display = "none";
+      // loader.style.display = "none";
       formWrapper.querySelector("form").style.display = "none";
       formWrapper.querySelector(".w-form-done").style.display = "block";
     });
   } else {
-    loader.style.display = "none";
+    // loader.style.display = "none";
   }
 });

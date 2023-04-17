@@ -33,7 +33,7 @@ formWrappers.forEach((n) => {
     checkEmailBlur();
 
     if (outcomeOne && outcomeTwo && outcomeThree) {
-      loader.style.display = "block";
+      // loader.style.display = "block";
       if (window.dataLayer) {
         data = {
           event: "myTrackEvent",
@@ -58,7 +58,7 @@ formWrappers.forEach((n) => {
         },
         success: function (data) {
           // notification attribute goes in ms ads form
-          loader.style.display = "none";
+          // loader.style.display = "none";
           if (data.status === 1 && formWrapper.parentElement.hasAttribute("notification")) {
             n.parentElement.querySelector(".w-form-fail").style.background = "#4faf3f";
             n.parentElement.querySelector(".w-form-fail").style.display = "block";
@@ -72,7 +72,7 @@ formWrappers.forEach((n) => {
           }
         },
         error: function () {
-          loader.style.display = "none";
+          // loader.style.display = "none";
           n.parentElement.querySelector(".w-form-fail").style.display = "block";
           n.parentElement.querySelector(".w-form-fail").style.background = "#ff2c00";
         },

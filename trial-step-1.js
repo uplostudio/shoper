@@ -165,7 +165,7 @@ createTrialStepOne.forEach((el) => {
     loader = el.querySelector(".loading-in-button");
 
     if (result) {
-      loader.style.display = "block";
+      // loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
@@ -187,13 +187,13 @@ createTrialStepOne.forEach((el) => {
             errorInfo.children[0].innerHTML =
               "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie.";
             errorInfo.style.display = "block";
-            loader.style.display = "none";
+            // loader.style.display = "none";
           } else if (data.code === 1 || data.status === 1) {
             trialStepOneModal.classList.remove("modal--open");
             let trialDomain = document.querySelector("[app='trial-domain']");
             trialDomain.innerHTML = data.host;
             document.querySelector("[modal='create_trial_step2']").classList.add("modal--open");
-            loader.style.display = "none";
+            // loader.style.display = "none";
             $(document.body).css("overflow", "hidden");
 
             if (window.dataLayer) {

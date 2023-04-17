@@ -143,7 +143,7 @@ window.addEventListener("load", () => {
     body.append("phone", emailValue);
 
     if (checkEmailBlur() && checkPhoneBlur()) {
-      loader.style.display = "block";
+      // loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},

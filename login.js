@@ -39,7 +39,7 @@ try {
     }
 
     if (checkHostBlur()) {
-      loader.style.display = "block";
+      // loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
@@ -53,7 +53,7 @@ try {
           if (data.status === 1) {
             window.location.href = data.redirect;
           } else {
-            loader.style.display = "none";
+            // loader.style.display = "none";
             formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
             formWrapper.parentElement.querySelector(".w-form-fail").textContent = "Podaj poprawny adres sklepu lub domeny roboczej";
           }
