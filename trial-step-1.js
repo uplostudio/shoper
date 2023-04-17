@@ -189,6 +189,7 @@ createTrialStepOne.forEach((el) => {
             errorInfo.style.display = "block";
             // loader.style.display = "none";
           } else if (data.code === 1 || data.status === 1) {
+            form = el.closest("form");
             trialStepOneModal.classList.remove("modal--open");
             let trialDomain = document.querySelector("[app='trial-domain']");
             trialDomain.innerHTML = data.host;
@@ -222,7 +223,7 @@ createTrialStepOne.forEach((el) => {
                 event: "myTrackEvent",
                 formId: form.parentElement.getAttribute("app"),
                 eventCategory: "Button form sent",
-                eventAction: e.target.form.querySelector("input[type='submit']").value,
+                eventAction: form.querySelector("[app='submit-step-one']").textContent,
                 eventType: emailValue,
                 eventLabel: window.location.pathname,
               };
@@ -236,7 +237,7 @@ createTrialStepOne.forEach((el) => {
                 eventName: "formSubmitError",
                 formId: form.parentElement.getAttribute("app"),
                 eventCategory: "Button form error",
-                eventAction: e.target.form.querySelector("input[type='submit']").value,
+                eventAction: form.querySelector("[app='submit-step-one']").textContent,
                 eventLabel: window.location.pathname,
                 eventType: emailValue,
                 eventHistory: window.history,
@@ -248,7 +249,7 @@ createTrialStepOne.forEach((el) => {
                 event: "myTrackEvent",
                 formId: form.parentElement.getAttribute("app"),
                 eventCategory: "Button form error",
-                eventAction: e.target.form.querySelector("input[type='submit']").value,
+                eventAction: form.querySelector("[app='submit-step-one']").textContent,
                 eventType: emailValue,
                 eventLabel: window.location.pathname,
               };
