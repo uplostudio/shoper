@@ -69,6 +69,9 @@ createTrialStepTwo.forEach((n) => {
   n.addEventListener("submit", (e) => {
     e.preventDefault();
     e.stopPropagation();
+
+    // loader = n.querySelector(".loading-in-button");
+
     if (result) {
       // loader.style.display = "block";
       $.ajax({

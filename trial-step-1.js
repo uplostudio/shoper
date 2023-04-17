@@ -162,7 +162,7 @@ createTrialStepOne.forEach((el) => {
     e.stopPropagation();
     let form = e.target.form;
 
-    loader = el.querySelector(".loading-in-button");
+    // loader = el.querySelector(".loading-in-button");
 
     if (result) {
       // loader.style.display = "block";

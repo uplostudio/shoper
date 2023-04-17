@@ -23,6 +23,8 @@ try {
     e.preventDefault();
     e.stopPropagation();
 
+    // loader = this.querySelector(".loading-in-button");
+
     checkHostBlur();
 
     let rawValue = hostInput.value;

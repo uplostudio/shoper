@@ -22,6 +22,8 @@ formWrappers.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
 
+    // loader = this.querySelector(".loading-in-button");
+
     formWrapper = this.form;
     phoneInput = formWrapper.querySelector("[app='phone']");
     emailInput = formWrapper.querySelector("[app='email']");

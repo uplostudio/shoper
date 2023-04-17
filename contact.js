@@ -39,6 +39,8 @@ formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
+  // loader = this.querySelector(".loading-in-button");
+
   checkFirstNameBlur();
   checkEmailBlur();
   checkPhoneBlur();
