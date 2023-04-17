@@ -31,6 +31,7 @@ formWrappers.forEach((n) => {
     checkEmailBlur();
 
     if (outcomeOne && outcomeTwo) {
+      loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
@@ -48,11 +49,13 @@ formWrappers.forEach((n) => {
         },
         success: function (data) {
           if (data.status === 1) {
+            loader.style.display = "none";
             n.querySelector("form").style.display = "none";
             n.parentElement.querySelector(".w-form-done").style.display = "block";
             n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
             n.querySelector("form").reset();
           } else {
+            loader.style.display = "none";
             n.parentElement.querySelector(".w-form-fail").style.display = "block";
           }
         },

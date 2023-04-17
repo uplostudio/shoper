@@ -39,7 +39,7 @@ window.addEventListener("load", () => {
 
           dataLayer.push(data);
         }
-
+        loader.style.display = "block";
         $.ajax({
           url: "https://www.shoper.pl/ajax.php",
           headers: {},
@@ -51,11 +51,13 @@ window.addEventListener("load", () => {
           },
           success: function (data) {
             if (data.status === 1) {
+              loader.style.display = "none";
               n.querySelector("form").style.display = "none";
               n.parentElement.querySelector(".w-form-done").style.display = "block";
               n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
               n.querySelector("form").reset();
             } else {
+              loader.style.display = "none";
               n.parentElement.querySelector(".w-form-fail").style.display = "block";
             }
           },

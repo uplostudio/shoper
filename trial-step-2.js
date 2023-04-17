@@ -70,6 +70,7 @@ createTrialStepTwo.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
     if (result) {
+      loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
@@ -88,8 +89,8 @@ createTrialStepTwo.forEach((n) => {
           if (data.status === 1) {
             // MyTrackEvent Success (Step Two)
             let errorInfo = n.querySelector(".w-form-fail");
-
             errorInfo.style.display = "none";
+            loader.style.display = "none";
             if (window.dataLayer) {
               data = {
                 event: "formSubmitSuccess",
@@ -123,6 +124,7 @@ createTrialStepTwo.forEach((n) => {
             let errorInfo = n.querySelector(".w-form-fail");
             errorInfo.children[0].innerHTML = "Coś poszło nie tak. Spróbuj ponownie.";
             errorInfo.style.display = "block";
+            loader.style.display = "none";
             // MyTrackEvent Error (Step Two)
             if (window.dataLayer) {
               data = {
