@@ -40,7 +40,7 @@ formWrappers.forEach((n) => {
         data = {
           event: "myTrackEvent",
           eventCategory: "Button modal form sent",
-          eventAction: formTrigger.value,
+          eventAction: e.target.value,
           eventLabel: window.location.pathname,
         };
 
@@ -84,7 +84,7 @@ formWrappers.forEach((n) => {
         data = {
           event: "myTrackEvent",
           eventCategory: "Button modal form error",
-          eventAction: formTrigger.value,
+          eventAction: e.target.value,
           eventLabel: window.location.pathname,
         };
 
