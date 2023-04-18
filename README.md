@@ -245,3 +245,15 @@ The intent is that each form is built the same way, using the same attributes ne
 | `[app='url']`       | -                                                                          |
 | `[app='nip']`       | 9 digits only. No letters, no special characters.                          |
 | `[app='company']`   | -                                                                          |
+
+
+### Build scripts 
+
+```
+1. Install Node.js and npm on your local system.
+2. Run the command npm install in the main folder of the repository.
+3. Two scripts are available:
+- gulp watch - for development work
+- gulp build - for preparing a production build
+4. All scripts are located in the dist folder.
+```
