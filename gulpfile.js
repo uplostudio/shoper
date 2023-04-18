@@ -3,9 +3,12 @@ const concat = require( 'gulp-concat' );
 const minifyJs = require( 'gulp-uglify' );
 const sourcemaps = require('gulp-sourcemaps');
 
+const paths = {
+    src: '*.js',
+};
 
 const watchJS = () => {
-    return gulp.src( '*.js' )
+    return gulp.src( [paths.src, '!gulpfile.js'] )
     .pipe(sourcemaps.init())
         .pipe( concat( 'app.js' ) )
     .pipe(sourcemaps.write(''))
@@ -17,7 +20,7 @@ const watch = () => {
 }
 
 const build = () => {
-    return gulp.src( '*.js' )
+    return gulp.src( [paths.src, '!gulpfile.js'] )
     .pipe( minifyJs() )
     .pipe( concat( 'app.min.js' ) )
     .pipe( gulp.dest( 'dist/') );
