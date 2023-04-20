@@ -6,6 +6,11 @@ $("[app='open_login_modal_button']").on("click", function () {
 try {
   //  grab form
   formWrapper = document.querySelector("[app='login']");
+
+  formWrapper.addEventListener("click", (e) => {
+    e.preventDefault();
+  });
+
   // grab form trigger
   formTrigger = formWrapper.querySelector("[app='login_submit']");
   // grab all input fields from form without checkboxes
@@ -24,6 +29,7 @@ try {
     e.stopPropagation();
 
     formWrapper = e.target.closest("form");
+
     loader = formWrapper.querySelector(".loading-in-button");
 
     checkHostBlur();
