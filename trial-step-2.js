@@ -71,7 +71,6 @@ createTrialStepTwo.forEach((n) => {
     e.stopPropagation();
 
     let form = e.target.closest("form");
-    console.log(form);
     let formParent = form.parentElement;
 
     loader = form.querySelector(".loading-in-button");
@@ -95,7 +94,7 @@ createTrialStepTwo.forEach((n) => {
         success: function (data) {
           if (data.status === 1) {
             // MyTrackEvent Success (Step Two)
-            let errorInfo = e.target.closest(".w-form-fail");
+            let errorInfo = formParent.querySelector(".w-form-fail");
             errorInfo.style.display = "none";
             loader.style.display = "none";
             if (window.dataLayer) {
