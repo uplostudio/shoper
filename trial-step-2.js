@@ -70,7 +70,7 @@ createTrialStepTwo.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
 
-    let form = n.closest("form");
+    let form = e.target.closest("form");
     let formParent = form.parentElement;
 
     loader = form.querySelector(".loading-in-button");
