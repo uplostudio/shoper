@@ -61,16 +61,17 @@ inputsStepTwo.forEach((n) => {
   });
 });
 
-let createTrialStepTwo = document.querySelectorAll("[app='create_trial_step2']");
+let createTrialStepTwo = document.querySelectorAll("[app='submit-step-two']");
 
 // On submit actions start here
 
 createTrialStepTwo.forEach((n) => {
-  n.addEventListener("click", (e) => {
+  n.addEventListener("click", function (e) {
     e.preventDefault();
     e.stopPropagation();
 
-    let form = this.closest("form");
+    let form = e.target.closest("form");
+    console.log(form);
     let formParent = form.parentElement;
 
     loader = form.querySelector(".loading-in-button");
