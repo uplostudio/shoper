@@ -66,7 +66,7 @@ let createTrialStepTwo = document.querySelectorAll("[app='create_trial_step2']")
 // On submit actions start here
 
 createTrialStepTwo.forEach((n) => {
-  n.addEventListener("submit", (e) => {
+  n.addEventListener("click", (e) => {
     e.preventDefault();
     e.stopPropagation();
 
