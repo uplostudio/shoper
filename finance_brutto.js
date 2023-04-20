@@ -34,7 +34,8 @@ formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
-  // loader = this.querySelector(".loading-in-button");
+  formWrapper = e.target.closest("form");
+  loader = formWrapper.querySelector(".loading-in-button");
 
   checkNipBlur();
   checkPhoneBlur();
@@ -74,17 +75,17 @@ formTrigger.addEventListener("click", function (e) {
   }
 
   const body = new FormData();
-  body.append("nip", nipValue);
+  body.append("nipValue", nipValue);
   body.append("url", urlValue);
   body.append("phone", phoneInputValue);
   body.append("email", emailValue);
-  body.append("brutto_terms", bruttoTerms.value);
-  body.append("brutto_info_clause", bruttoClause.value);
-  body.append("shoper_personal_data", shoperPersonalData.value);
+  body.append("bruttoTerms", bruttoTerms.value);
+  body.append("bruttoClause", bruttoClause.value);
+  body.append("shoperPersonalData", shoperPersonalData.value);
   body.append("action", formWrapper.getAttribute("action"));
 
   if (checkNipBlur() && checkPhoneBlur() && checkEmailBlur() && checkUrlBlur() && bruttoTerms.checked && bruttoClause.checked && shoperPersonalData.checked) {
-    // loader.style.display = "block";
+    loader.style.display = "block";
     fetch(`https://www.shoper.pl/ajax.php`, {
       body,
       headers: {
@@ -92,11 +93,10 @@ formTrigger.addEventListener("click", function (e) {
       },
       method: "POST",
     }).then(function (response) {
-      // loader.style.display = "none";
+      loader.style.display = "none";
       formWrapper.querySelector("form").style.display = "none";
       formWrapper.querySelector(".w-form-done").style.display = "block";
     });
   } else {
-    // loader.style.display = "none";
   }
 });

@@ -4,17 +4,18 @@ let analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
 let isFromBanner = false;
 let client_id;
 let loader;
+let splited;
 
 // gclid
 
-regexp = /(?<gclid>(?<=gclid=).*?(?=&|\\s|$))/gm;
+regexp = /[?&]gclid=([^&]+)/gm;
 locationG = window.location.search;
 match = locationG.match(regexp);
 
 if (match !== null) {
-  let splited = match[0].split("=");
-  if (splited[0] !== "") {
-    gclidValue = match[0];
+  splited = match[0].split("=");
+  if (splited.length > 0) {
+    gclidValue = splited[1];
     localStorage.setItem("gclid", gclidValue);
     gclidInput = document.querySelector("[name='adwords[gclid]']");
     gclidInput.setAttribute("value", gclidValue);
@@ -37,13 +38,13 @@ if (localStorage.gclid === undefined) {
 
 // fbclid
 
-regexpFb = /(?<fbclid>(?<=fbclid=).*?(?=&|\\s|$))/gm;
+regexpFb = /[?&]fbclid=([^&]+)/gm;
 locationGFb = window.location.search;
 matchFb = locationGFb.match(regexpFb);
 if (matchFb !== null) {
-  let splited = matchFb[0].split("=");
-  if (splited[0] !== "") {
-    fbclidValue = matchFb[0];
+  splited = matchFb[0].split("=");
+  if (splited.length > 0) {
+    fbclidValue = splited[1];
     localStorage.setItem("fbclid", fbclidValue);
     fbclidInput = document.querySelector("[name='adwords[fbclid]']");
     fbclidInput.setAttribute("value", fbclidValue);
@@ -162,10 +163,10 @@ createTrialStepOne.forEach((el) => {
     e.stopPropagation();
     let form = e.target.form;
 
-    // loader = el.querySelector(".loading-in-button");
+    loader = el.querySelector(".loading-in-button");
 
     if (result) {
-      // loader.style.display = "block";
+      loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
@@ -187,14 +188,14 @@ createTrialStepOne.forEach((el) => {
             errorInfo.children[0].innerHTML =
               "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie.";
             errorInfo.style.display = "block";
-            // loader.style.display = "none";
+            loader.style.display = "none";
           } else if (data.code === 1 || data.status === 1) {
             form = el.closest("form");
             trialStepOneModal.classList.remove("modal--open");
             let trialDomain = document.querySelector("[app='trial-domain']");
             trialDomain.innerHTML = data.host;
             document.querySelector("[modal='create_trial_step2']").classList.add("modal--open");
-            // loader.style.display = "none";
+            loader.style.display = "none";
             $(document.body).css("overflow", "hidden");
 
             if (window.dataLayer) {

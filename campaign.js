@@ -2,6 +2,9 @@ $("[app='open_consultation_modal_button']").on("click", function () {
   $("[app='campaign_modal']").addClass("modal--open");
 });
 
+// this prevents from form not being sent properly without clicking first on the url input field
+outcomeThree = true;
+
 //  grab form
 formWrappers = document.querySelectorAll("[app='campaign']");
 // grab form trigger
@@ -23,9 +26,8 @@ formWrappers.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // loader = this.querySelector(".loading-in-button");
-
-    formWrapper = this.form;
+    formWrapper = e.target.closest("form");
+    loader = formWrapper.querySelector(".loading-in-button");
     phoneInput = formWrapper.querySelector("[app='phone_campaign']");
     emailInput = formWrapper.querySelector("[app='email_campaign']");
     urlInput = formWrapper.querySelector("[app='url_campaign']");
@@ -35,7 +37,7 @@ formWrappers.forEach((n) => {
     checkEmailBlur();
 
     if (outcomeOne && outcomeTwo && outcomeThree) {
-      // loader.style.display = "block";
+      loader.style.display = "block";
       if (window.dataLayer) {
         data = {
           event: "myTrackEvent",
@@ -60,7 +62,7 @@ formWrappers.forEach((n) => {
         },
         success: function (data) {
           // notification attribute goes in ms ads form
-          // loader.style.display = "none";
+          loader.style.display = "none";
           if (data.status === 1 && formWrapper.parentElement.hasAttribute("notification")) {
             n.parentElement.querySelector(".w-form-fail").style.background = "#4faf3f";
             n.parentElement.querySelector(".w-form-fail").style.display = "block";
@@ -74,7 +76,7 @@ formWrappers.forEach((n) => {
           }
         },
         error: function () {
-          // loader.style.display = "none";
+          loader.style.display = "none";
           n.parentElement.querySelector(".w-form-fail").style.display = "block";
           n.parentElement.querySelector(".w-form-fail").style.background = "#ff2c00";
         },

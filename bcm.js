@@ -30,13 +30,14 @@ formTrigger.addEventListener("click", function (e) {
   e.preventDefault();
   e.stopPropagation();
 
-  // loader = this.querySelector(".loading-in-button");
+  formWrapper = e.target.closest("form");
+  loader = formWrapper.querySelector(".loading-in-button");
 
   checkEmailBlur();
   checkPhoneBlur();
 
   if (checkEmailBlur() && checkPhoneBlur()) {
-    // loader.style.display = "block";
+    loader.style.display = "block";
     $.ajax({
       url: "https://www.shoper.pl/ajax.php",
       headers: {},
@@ -49,13 +50,13 @@ formTrigger.addEventListener("click", function (e) {
         email: emailValue,
       },
       success: function (data) {
-        // loader.style.display = "none";
+        loader.style.display = "none";
         formWrapper.querySelector("form").style.display = "none";
         formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
         formWrapper.querySelector("form").reset();
       },
       error: function (data) {
-        // loader.style.display = "none";
+        loader.style.display = "none";
         formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
         formWrapper.parentElement.querySelector(".w-form-fail").textContent = "Coś poszło nie tak, spróbuj ponownie.";
       },

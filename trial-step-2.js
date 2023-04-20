@@ -70,19 +70,22 @@ createTrialStepTwo.forEach((n) => {
     e.preventDefault();
     e.stopPropagation();
 
-    // loader = n.querySelector(".loading-in-button");
+    let form = n.closest("form");
+    let formParent = form.parentElement;
+
+    loader = form.querySelector(".loading-in-button");
 
     if (result) {
-      // loader.style.display = "block";
+      loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
         method: "POST",
         data: {
           action: "create_trial_step2",
-          phone: n.querySelector("[app='phone']").value,
+          phone: form.querySelector("[app='phone']").value,
           eventName: "formSubmitSuccess",
-          formId: n.querySelector("form").id,
+          formId: form.id,
           "adwords[gclid]": gclidInput.value,
           "adwords[fbclid]": fbclidInput.value,
           blackFridayBanner: isFromBanner,
@@ -91,19 +94,19 @@ createTrialStepTwo.forEach((n) => {
         success: function (data) {
           if (data.status === 1) {
             // MyTrackEvent Success (Step Two)
-            let errorInfo = n.querySelector(".w-form-fail");
+            let errorInfo = e.target.closest(".w-form-fail");
             errorInfo.style.display = "none";
-            // loader.style.display = "none";
+            loader.style.display = "none";
             if (window.dataLayer) {
               data = {
                 event: "formSubmitSuccess",
                 eventCategory: "Button modal form sent",
                 client_id: client_id,
-                formId: n.querySelector("form").id,
+                formId: form.id,
                 "shop-id": data.license_id,
-                eventAction: n.querySelector("input[type='submit']").value,
+                eventAction: n.textContent,
                 eventLabel: window.location.pathname,
-                eventType: n.querySelector("input[type='tel']").value,
+                eventType: form.querySelector("input[type='tel']").value,
                 eventHistory: window.history,
               };
 
@@ -111,10 +114,10 @@ createTrialStepTwo.forEach((n) => {
 
               data = {
                 event: "myTrackEvent",
-                formId: n.querySelector("form").id,
+                formId: form.id,
                 eventCategory: "Button modal form sent",
-                eventAction: n.querySelector("input[type='submit']").value,
-                eventType: n.querySelector("input[type='tel']").value,
+                eventAction: n.textContent,
+                eventType: form.querySelector("input[type='tel']").value,
                 eventLabel: window.location.pathname,
               };
 
@@ -124,19 +127,19 @@ createTrialStepTwo.forEach((n) => {
             window.location.href = "https://www.shoper.pl/zaloz-sklep/";
           } else {
             //            console.log(data);
-            let errorInfo = n.querySelector(".w-form-fail");
+            let errorInfo = formParent.querySelector(".w-form-fail");
             errorInfo.children[0].innerHTML = "Coś poszło nie tak. Spróbuj ponownie.";
             errorInfo.style.display = "block";
-            // loader.style.display = "none";
+            loader.style.display = "none";
             // MyTrackEvent Error (Step Two)
             if (window.dataLayer) {
               data = {
                 event: "formSubmitError",
-                formId: n.querySelector("form").id,
+                formId: form.id,
                 eventCategory: "Button modal form error",
-                eventAction: n.querySelector("input[type='submit']").value,
+                eventAction: n.textContent,
                 eventLabel: window.location.pathname,
-                eventType: n.querySelector("input[type='tel']").value,
+                eventType: form.querySelector("input[type='tel']").value,
                 eventHistory: window.history,
               };
 
@@ -144,10 +147,10 @@ createTrialStepTwo.forEach((n) => {
 
               data = {
                 event: "myTrackEvent",
-                formId: n.querySelector("form").id,
+                formId: form.id,
                 eventCategory: "Button modal form error",
-                eventAction: n.querySelector("input[type='submit']").value,
-                eventType: n.querySelector("input[type='tel']").value,
+                eventAction: n.textContent,
+                eventType: form.querySelector("input[type='tel']").value,
                 eventLabel: window.location.pathname,
               };
 

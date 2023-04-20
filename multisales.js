@@ -23,8 +23,8 @@ formWrappers.forEach((n) => {
     e.stopPropagation();
 
     // loader = this.querySelector(".loading-in-button");
-
-    formWrapper = this.form;
+    formWrapper = e.target.closest("form");
+    loader = formWrapper.querySelector(".loading-in-button");
     phoneInput = formWrapper.querySelector("[app='phone']");
     emailInput = formWrapper.querySelector("[app='email']");
     urlInput = formWrapper.querySelector("[app='url']");
@@ -33,7 +33,7 @@ formWrappers.forEach((n) => {
     checkEmailBlur();
 
     if (outcomeOne && outcomeTwo) {
-      // loader.style.display = "block";
+      loader.style.display = "block";
       $.ajax({
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
@@ -51,13 +51,13 @@ formWrappers.forEach((n) => {
         },
         success: function (data) {
           if (data.status === 1) {
-            // loader.style.display = "none";
+            loader.style.display = "none";
             n.querySelector("form").style.display = "none";
             n.parentElement.querySelector(".w-form-done").style.display = "block";
             n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
             n.querySelector("form").reset();
           } else {
-            // loader.style.display = "none";
+            loader.style.display = "none";
             n.parentElement.querySelector(".w-form-fail").style.display = "block";
           }
         },
