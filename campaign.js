@@ -1,3 +1,5 @@
+let url;
+
 $("[app='open_consultation_modal_button']").on("click", function () {
   $("[app='campaign_modal']").addClass("modal--open");
 });
@@ -48,8 +50,15 @@ formWrappers.forEach((n) => {
 
         dataLayer.push(data);
       }
+
+      if (window.location.pathname === "/shoper-rekomendacje") {
+        url = "https://hooks.zapier.com/hooks/catch/492789/32z68mh/";
+      } else {
+        url = "https://www.shoper.pl/ajax.php";
+      }
+
       $.ajax({
-        url: "https://www.shoper.pl/ajax.php",
+        url: url,
         headers: {},
         method: "POST",
         data: {
