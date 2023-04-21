@@ -51,7 +51,7 @@ formWrappers.forEach((n) => {
         dataLayer.push(data);
       }
 
-      if (window.location.pathname === "/shoper-rekomendacje") {
+      if (window.location.pathname === "/shoper-rekomendacje/") {
         url = "https://hooks.zapier.com/hooks/catch/492789/32z68mh/";
       } else {
         url = "https://www.shoper.pl/ajax.php";
