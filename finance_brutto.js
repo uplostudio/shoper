@@ -94,8 +94,8 @@ formTrigger.addEventListener("click", function (e) {
       method: "POST",
     }).then(function (response) {
       loader.style.display = "none";
-      formWrapper.querySelector("form").style.display = "none";
-      formWrapper.querySelector(".w-form-done").style.display = "block";
+      formWrapper.parentElement.querySelector("form").style.display = "none";
+      formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
     });
   } else {
   }
