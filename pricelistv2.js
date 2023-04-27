@@ -178,7 +178,7 @@ window.addEventListener("load", () => {
           loader.style.display = "none";
           formWrapper.parentElement.querySelector("form").style.display = "none";
           formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
-          formWrapper.querySelector("form").reset();
+          formWrapper.parentElement.querySelector("form").reset();
         },
         error: function (data) {
           loader.style.display = "none";
