@@ -137,7 +137,7 @@ window.addEventListener("load", () => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
+      // console.log(dataLayer);
     }
 
     if (!checkPhoneBlur() && window.dataLayer) {
@@ -149,16 +149,16 @@ window.addEventListener("load", () => {
       };
 
       dataLayer.push(data);
-      console.log(dataLayer);
+      // console.log(dataLayer);
     }
 
-    const body = new FormData();
-    body.append("action", formWrapper.getAttribute("action"));
-    body.append("type", formWrapper.getAttribute("type"));
-    body.append("source_id", formWrapper.getAttribute("source_id"));
-    body.append("package", formWrapper.getAttribute("package"));
-    body.append("email", phoneInputValue);
-    body.append("phone", emailValue);
+    // const body = new FormData();
+    // body.append("action", formWrapper.parentElement.getAttribute("action"));
+    // body.append("type", formWrapper.parentElement.getAttribute("type"));
+    // body.append("source_id", formWrapper.parentElement.getAttribute("source_id"));
+    // body.append("package", formWrapper.parentElement.getAttribute("package"));
+    // body.append("email", phoneInputValue);
+    // body.append("phone", emailValue);
 
     if (checkEmailBlur() && checkPhoneBlur()) {
       loader.style.display = "block";
@@ -167,10 +167,10 @@ window.addEventListener("load", () => {
         headers: {},
         method: "POST",
         data: {
-          action: formWrapper.getAttribute("action"),
-          type: formWrapper.getAttribute("type"),
-          source_id: formWrapper.getAttribute("source_id"),
-          package: formWrapper.getAttribute("package"),
+          action: formWrapper.parentElement.getAttribute("action"),
+          type: formWrapper.parentElement.getAttribute("type"),
+          source_id: formWrapper.parentElement.getAttribute("source_id"),
+          package: formWrapper.parentElement.getAttribute("package"),
           phone: phoneInputValue,
           email: emailValue,
         },
@@ -197,7 +197,7 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
-        console.log(dataLayer);
+        // console.log(dataLayer);
       }
     } else {
       if (window.dataLayer) {
@@ -210,7 +210,7 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
-        console.log(dataLayer);
+        // console.log(dataLayer);
       }
     }
   });
