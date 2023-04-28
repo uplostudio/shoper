@@ -1,21 +1,21 @@
 // caculate menu height based on black friday's banner
 
-setInterval(function () {
-  try {
-    let menu = document.querySelector(".nav__menu");
-    let banner = document.querySelector("[data-app='custom-banner']");
-    bannerHeightString = window.getComputedStyle(banner).height;
-    bannerHeightValue = parseInt(bannerHeightString);
+// setInterval(function () {
+//   try {
+//     let menu = document.querySelector(".nav__menu");
+//     let banner = document.querySelector("[data-app='custom-banner']");
+//     bannerHeightString = window.getComputedStyle(banner).height;
+//     bannerHeightValue = parseInt(bannerHeightString);
 
-    if (window.innerWidth <= 991 && window.scrollY < 30) {
-      menu.style.height = `${window.innerHeight - bannerHeightValue}px`;
-    } else {
-      return;
-    }
-  } catch (e) {
-    return;
-  }
-}, 100);
+//     if (window.innerWidth <= 991 && window.scrollY < 30) {
+//       menu.style.height = `${window.innerHeight - bannerHeightValue}px`;
+//     } else {
+//       return;
+//     }
+//   } catch (e) {
+//     return;
+//   }
+// }, 100);
 
 (function () {
   const $nav = $(".nav");
@@ -179,8 +179,10 @@ setInterval(function () {
 
   function toggleNav(event) {
     const burger = $(".nav__burger-inner");
+    $('[data-app="custom-banner"]').css("display", "flex");
     closeAllDropdowns();
     if (navState === false) {
+      $('[data-app="custom-banner"]').css("display", "none");
       const wrapper = $("<div>").addClass("nav__mobile-menu-wrapper").attr("data-sh-state", "temp");
       $nav_menu.children().wrapAll(wrapper);
       $nav_menu.addClass(navDirective).attr("data-sh-state", "open");
@@ -196,6 +198,7 @@ setInterval(function () {
     }
 
     if (navState === true) {
+      $('[data-app="custom-banner"]').css("display", "flex");
       $('[data-sh-state="temp"]').children().unwrap();
       $nav_menu.removeClass(navDirective).attr("data-sh-state", "closed");
       burger.children().each(function () {
