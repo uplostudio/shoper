@@ -74,13 +74,13 @@ formTrigger.addEventListener("click", function (e) {
   }
 
   const body = new FormData();
-  body.append("nipValue", nipValue);
+  body.append("nip", nipValue);
   body.append("url", urlValue);
   body.append("phone", phoneInputValue);
   body.append("email", emailValue);
-  body.append("bruttoTerms", bruttoTerms.value);
-  body.append("bruttoClause", bruttoClause.value);
-  body.append("shoperPersonalData", shoperPersonalData.value);
+  body.append("brutto_terms", bruttoTerms.value);
+  body.append("brutto_info_clause", bruttoClause.value);
+  body.append("shoper_personal_data", shoperPersonalData.value);
   body.append("action", formWrapper.getAttribute("action"));
 
   if (checkNipBlur() && checkPhoneBlur() && checkEmailBlur() && checkUrlBlur() && bruttoTerms.checked && bruttoClause.checked && shoperPersonalData.checked) {
