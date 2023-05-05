@@ -26,8 +26,6 @@ urlInput.addEventListener("blur", function () {
   checkUrlBlur();
 });
 
-formWrapper.setAttribute("action", "loan_decision_contact");
-
 // Attach EventListener to submit button
 
 formTrigger.addEventListener("click", function (e) {
@@ -35,6 +33,7 @@ formTrigger.addEventListener("click", function (e) {
   e.stopPropagation();
 
   formWrapper = e.target.closest("form");
+  formWrapper.setAttribute("action", "loan_decision_contact");
   loader = formWrapper.querySelector(".loading-in-button");
 
   checkNipBlur();
