@@ -6,6 +6,14 @@ let client_id;
 let loader;
 let splited;
 
+// Prevent forms from being sent when user hits enter
+
+document.addEventListener("keydown", function (event) {
+  if (event.key === "Enter") {
+    event.preventDefault();
+  }
+});
+
 // gclid
 
 regexp = /[?&]gclid=([^&]+)/gm;
