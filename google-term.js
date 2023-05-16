@@ -8,6 +8,7 @@ window.addEventListener("load", () => {
     emailInput = n.querySelector("[app='email_campaign']");
     phoneInput = n.querySelector("[app='phone_campaign']");
     urlInput = n.querySelector("[app='url_contact']");
+    nipInput = formWrapper.querySelector("[app='nipNumber']");
     let companyNameInput = n.querySelector("[app='company_name']");
     formTrigger = n.querySelector("[app='submit-terms']");
     let action = n.getAttribute("action");
