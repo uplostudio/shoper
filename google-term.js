@@ -1,5 +1,6 @@
 //  grab form
 formWrapper = document.querySelector("[app='google-terms']");
+let action = formWrapper.getAttribute("action");
 // grab form trigger
 formTrigger = formWrapper.querySelector("[app='submit-terms']");
 // grab all input fields from form without checkboxes
@@ -54,7 +55,9 @@ formTrigger.addEventListener("click", function (e) {
     AdsTerms.value = 1;
   }
 
-  if (checkFirstNameBlur() && checkEmailBlur() && checkPhoneBlur() && checkUrlBlurRegexRequired() && AdsTerms.checked) {
+  console.log(AdsTerms.value);
+
+  if (checkFirstNameBlur() && checkEmailBlur() && checkPhoneBlur() && checkUrlBlurRegexRequired() && AdsTerms.value === "1") {
     loader.style.display = "block";
     $.ajax({
       url: "https://www.shoper.pl/ajax.php",
@@ -68,7 +71,7 @@ formTrigger.addEventListener("click", function (e) {
         url: urlValue,
         nip: nipInput.value,
         company_name: companyNameInput.value,
-        accept_agree: AdsTerms,
+        accept_agree: AdsTerms.value,
         zapier: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS8zNm93N3I5Lw",
       },
       success: function (data) {
