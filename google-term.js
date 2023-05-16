@@ -53,7 +53,7 @@ window.addEventListener("load", () => {
         AdsTerms.value = 1;
       }
 
-      if (checkFirstNameBlur() && checkPhoneBlur() && checkEmailBlur() && checkUrlBlurRegex() && AdsTerms.checked) {
+      if (checkFirstNameBlur() && checkPhoneBlur() && checkEmailBlur() && AdsTerms.checked) {
         loader.style.display = "block";
         $.ajax({
           url: "https://www.shoper.pl/ajax.php",
