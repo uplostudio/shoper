@@ -1,15 +1,15 @@
 window.addEventListener("load", () => {
   //  grab form
-  formWrappers = document.querySelectorAll("[app='google- terms']");
+  formWrappers = document.querySelectorAll("[app='google-terms']");
   // grab form trigger
 
   formWrappers.forEach((n) => {
-    firstNameInput = formWrapper.querySelector("[app='name_contact']");
+    firstNameInput = n.querySelector("[app='name_contact']");
     emailInput = n.querySelector("[app='email_campaign']");
     phoneInput = n.querySelector("[app='phone_campaign']");
-    urlInput = formWrapper.querySelector("[app='url_contact']");
-    let companyNameInput = formWrapper.querySelector("[app='company_name']");
-    formTrigger = n.querySelector("[app='migration-submit']");
+    urlInput = n.querySelector("[app='url_contact']");
+    let companyNameInput = n.querySelector("[app='company_name']");
+    formTrigger = n.querySelector("[app='submit-terms']");
     let action = n.getAttribute("action");
 
     firstNameInput.addEventListener("blur", function () {
