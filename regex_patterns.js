@@ -295,6 +295,26 @@ function checkUrlBlurRegex() {
     return true;
   }
 }
+function checkUrlBlurRegexRequired() {
+  urlValue = urlInput.value;
+  let errorBoxUrl = urlInput.nextElementSibling;
+
+  if (urlValue === "") {
+    urlInput.style.border = errorBorderColor;
+    errorBoxUrl.style.display = "flex";
+    errorBoxUrl.children[1].textContent = "To pole jest wymagane";
+    return false;
+  } else if (!useRegexUrl(urlValue)) {
+    urlInput.style.border = errorBorderColor;
+    errorBoxUrl.style.display = "flex";
+    errorBoxUrl.children[1].textContent = "Podaj poprawne dane";
+    return false;
+  } else if (useRegexUrl(urlValue)) {
+    urlInput.style.border = initialBorderColor;
+    errorBoxUrl.style.display = "none";
+    return true;
+  }
+}
 
 function checkTextAreaBlur() {
   textAreaValue = textArea.value;

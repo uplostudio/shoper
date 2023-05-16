@@ -25,7 +25,7 @@ window.addEventListener("load", () => {
     });
 
     urlInput.addEventListener("blur", function () {
-      checkUrlBlurRegex();
+      checkUrlBlurRegexRequired();
     });
 
     formTrigger.addEventListener("click", function (e) {
@@ -39,7 +39,7 @@ window.addEventListener("load", () => {
       checkFirstNameBlur();
       checkEmailBlur();
       checkPhoneBlur();
-      checkUrlBlurRegex();
+      checkUrlBlurRegexRequired();
 
       let AdsTerms = formWrapper.querySelector("[name='terms']");
 
