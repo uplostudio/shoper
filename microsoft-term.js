@@ -55,8 +55,6 @@ formTrigger.addEventListener("click", function (e) {
     AdsTerms.value = 1;
   }
 
-  console.log(AdsTerms.value);
-
   if (checkFirstNameBlur() && checkEmailBlur() && checkPhoneBlur() && checkUrlBlurRegexRequired() && AdsTerms.value === "1") {
     loader.style.display = "block";
     $.ajax({
