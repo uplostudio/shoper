@@ -17,6 +17,7 @@ formWrappers.forEach((n) => {
   urlInput = n.querySelector("[app='url_campaign']");
   formTrigger = n.querySelector("[app='consult-submit']");
   let action = n.getAttribute("action");
+  let subject = n.getAttribute("subject");
 
   phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
@@ -66,6 +67,7 @@ formWrappers.forEach((n) => {
           email: emailValue,
           phone: phoneInputValue,
           url: urlValue,
+          subject: subject,
           thulium_id: this.closest("form").getAttribute("thulium_id"),
           zapier: this.closest("form").getAttribute("zapier"),
         },
