@@ -72,6 +72,7 @@ formTrigger.addEventListener("click", function (e) {
         accept_agree: AdsTerms.value,
         terms_url: "https://www.shoper.pl/static/regulaminy/regulamin-microsoft-advert-z.pdf",
         zapier: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS8zNm9neWNqLw==",
+        name_service: "Microsoft Ads",
       },
       success: function (data) {
         if (data.status === 1) {
