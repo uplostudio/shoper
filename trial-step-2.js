@@ -22,6 +22,14 @@ window.addEventListener("beforeunload", () => {
 });
 
 inputsStepTwo.forEach((n) => {
+  n.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      this.blur();
+      const submitTrigger = this.form.querySelector("[app='submit-step-two']");
+      submitTrigger.click();
+    }
+  });
   // Control Blur Step Two
   n.addEventListener("blur", function () {
     checkPhoneBlurTrialStepTwo(n);
@@ -67,8 +75,8 @@ let createTrialStepTwo = document.querySelectorAll("[app='submit-step-two']");
 
 createTrialStepTwo.forEach((n) => {
   n.addEventListener("click", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+    // e.preventDefault();
+    // e.stopPropagation();
 
     let form = e.target.closest("form");
     let formParent = form.parentElement;
