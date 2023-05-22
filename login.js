@@ -22,6 +22,15 @@ try {
     checkHostBlur();
   });
 
+  hostInput.addEventListener("keydown", function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      this.blur();
+      const submitTrigger = this.form.querySelector("[app='login-submit']");
+      submitTrigger.click();
+    }
+  });
+
   // Attach EventListener to submit button
 
   formTrigger.addEventListener("click", function (e) {
