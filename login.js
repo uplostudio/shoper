@@ -26,7 +26,7 @@ try {
     if (e.key === "Enter") {
       e.preventDefault();
       this.blur();
-      const submitTrigger = this.form.querySelector("[app='login-submit']");
+      const submitTrigger = this.form.querySelector("[app='login_submit']");
       submitTrigger.click();
     }
   });
