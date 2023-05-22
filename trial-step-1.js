@@ -195,84 +195,73 @@ createTrialStepOne.forEach((el) => {
           "adwords[fbclid]": fbclidInput.value,
         },
         success: function (data) {
-          client_id = data.client_id;
-
-          if (data.code === 2 || data.code === 3) {
-            form = el.closest("form");
-            let errorInfo = form.parentElement.querySelector(".w-form-fail");
-            console.log(form);
-            errorInfo.children[0].innerHTML =
-              "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie.";
+          console.log(data);
+          const client_id = data.client_id;
+          form = el.closest("form");
+          let errorInfo = form.parentElement.querySelector(".w-form-fail");
+          const errorMessages = {
+            2: "Próbujesz uruchomić więcej niż jedną wersję testową sklepu w zbyt krótkim czasie. Odczekaj kilka minut, zanim zrobisz to ponownie.",
+            3: "Próbujesz uruchomić więcej niż jedną wersję testową sklepu w zbyt krótkim czasie. Odczekaj co najmniej godzinę, zanim zrobisz to ponownie.",
+            4: "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie.",
+          };
+          if (errorMessages[data.code]) {
+            errorInfo.children[0].innerHTML = errorMessages[data.code];
             errorInfo.style.display = "block";
             loader.style.display = "none";
           } else if (data.code === 1 || data.status === 1) {
+            console.log(data);
             form = el.closest("form");
             trialStepOneModal.classList.remove("modal--open");
-            let trialDomain = document.querySelector("[app='trial-domain']");
+            const trialDomain = document.querySelector("[app='trial-domain']");
             trialDomain.innerHTML = data.host;
             document.querySelector("[modal='create_trial_step2']").classList.add("modal--open");
             loader.style.display = "none";
             $(document.body).css("overflow", "hidden");
 
-            if (window.dataLayer) {
-              data = {
-                event: "trial_EmailSubmitted",
-                client_id: client_id,
-                "shop-id": data.shop_id,
-                formId: form.parentElement.getAttribute("app"),
-                email: emailValue,
-              };
+            dataLayer.push({
+              event: "trial_EmailSubmitted",
+              client_id,
+              "shop-id": data.shop_id,
+              formId: form.parentElement.getAttribute("app"),
+              email: emailValue,
+            });
 
-              dataLayer.push(data);
+            dataLayer.push({
+              eventName: "formSubmitSuccess",
+              formId: form.parentElement.getAttribute("app"),
+              eventCategory: "Button form sent",
+              eventLabel: window.location.pathname,
+              eventType: emailValue,
+              eventHistory: window.history,
+            });
 
-              data = {
-                eventName: "formSubmitSuccess",
-                formId: form.parentElement.getAttribute("app"),
-                eventCategory: "Button form sent",
-                eventLabel: window.location.pathname,
-                eventType: emailValue,
-                eventHistory: window.history,
-              };
-
-              dataLayer.push(data);
-
-              data = {
-                event: "myTrackEvent",
-                formId: form.parentElement.getAttribute("app"),
-                eventCategory: "Button form sent",
-                eventAction: form.querySelector("[app='submit-step-one']").textContent,
-                eventType: emailValue,
-                eventLabel: window.location.pathname,
-              };
-
-              dataLayer.push(data);
-            }
+            dataLayer.push({
+              event: "myTrackEvent",
+              formId: form.parentElement.getAttribute("app"),
+              eventCategory: "Button form sent",
+              eventAction: form.querySelector("[app='submit-step-one']").textContent,
+              eventType: emailValue,
+              eventLabel: window.location.pathname,
+            });
           } else {
-            // MyTrackEvent Error (Step One)
-            if (window.dataLayer) {
-              data = {
-                eventName: "formSubmitError",
-                formId: form.parentElement.getAttribute("app"),
-                eventCategory: "Button form error",
-                eventAction: form.querySelector("[app='submit-step-one']").textContent,
-                eventLabel: window.location.pathname,
-                eventType: emailValue,
-                eventHistory: window.history,
-              };
+            dataLayer.push({
+              eventName: "formSubmitError",
+              formId: form.parentElement.getAttribute("app"),
+              eventCategory: "Button form error",
+              eventAction: form.querySelector("[app='submit-step-one']").textContent,
+              eventLabel: window.location.pathname,
+              eventType: emailValue,
+              eventHistory: window.history,
+            });
 
-              dataLayer.push(data);
-
-              data = {
-                event: "myTrackEvent",
-                formId: form.parentElement.getAttribute("app"),
-                eventCategory: "Button form error",
-                eventAction: form.querySelector("[app='submit-step-one']").textContent,
-                eventType: emailValue,
-                eventLabel: window.location.pathname,
-              };
-
-              dataLayer.push(data);
-            }
+            dataLayer.push({
+              event: "myTrackEvent",
+              formId: form.parentElement.getAttribute("app"),
+              eventCategory: "Button form error",
+              eventAction: form.querySelector("[app='submit-step-one']").textContent,
+              eventType: emailValue,
+              eventLabel: window.location.pathname,
+            });
           }
         },
       });
