@@ -17,21 +17,21 @@ window.addEventListener("load", () => {
 // remove sites from intercom
 
 window.addEventListener("load", () => {
-  let subpage = window.location.pathname;
-  let body = document.querySelector("body");
+  const excludedSubpages = [
+    "/rodo",
+    "/rodo/",
+    "/zmien-oprogramowanie-sklepu",
+    "/zmien-oprogramowanie-sklepu/",
+    "/regulamin-kampanii/microsoft-advert/",
+    "/regulamin-kampanii/google-ads/",
+  ];
 
-  if (
-    subpage !== "/rodo" &&
-    subpage !== "/rodo/" &&
-    subpage !== "/zmien-oprogramowanie-sklepu" &&
-    subpage !== "/zmien-oprogramowanie-sklepu/" &&
-    suboage !== "/regulamin-kampanii/microsoft-advert/" &&
-    subpage !== "/regulamin-kampanii/google-ads/"
-  ) {
-    let intercomSrc = "https://shoper-web.netlify.app/intercom.js";
-    let intercomScript = document.createElement("script");
-    intercomScript.src = intercomSrc;
+  const subpage = window.location.pathname;
+  const body = document.querySelector("body");
+  const intercomScript = document.createElement("script");
+
+  if (!excludedSubpages.includes(subpage)) {
+    intercomScript.src = "https://shoper-web.netlify.app/intercom.js";
     body.append(intercomScript);
-  } else {
   }
 });
