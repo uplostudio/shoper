@@ -19,6 +19,20 @@ let phoneInputValue,
 let errorBorderColor = `1px solid #eb4826`;
 let initialBorderColor = `1px solid #898989`;
 
+function createEnterKeydownHandler(inputElement, submitTriggerElement) {
+  return function (e) {
+    if (e.key === "Enter") {
+      e.preventDefault();
+      inputElement.blur();
+      submitTriggerElement.click();
+    }
+  };
+}
+
+phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, submitTrigger));
+emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, submitTrigger));
+urlInput.addEventListener("keydown", createEnterKeydownHandler(urlInput, submitTrigger));
+
 /* Regexes start here */
 
 function useRegexFirstName(firstNameValue) {

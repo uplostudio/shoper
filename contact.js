@@ -15,6 +15,12 @@ let errorInfo = formWrapper.querySelector(".w-form-fail");
 
 // Attach EventListeners to inputs
 
+firstNameInput.addEventListener("keydown", createEnterKeydownHandler(firstNameInput, formTrigger));
+phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
+emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
+urlInput.addEventListener("keydown", createEnterKeydownHandler(urlInput, formTrigger));
+textArea.addEventListener("keydown", createEnterKeydownHandler(textArea, formTrigger));
+
 firstNameInput.addEventListener("blur", function () {
   checkFirstNameBlur();
 });

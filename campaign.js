@@ -4,15 +4,6 @@ $("[app='open_consultation_modal_button']").on("click", function () {
   $("[app='campaign_modal']").addClass("modal--open");
 });
 
-function handleEnterKeydown(e) {
-  if (e.key === "Enter") {
-    e.preventDefault();
-    this.blur();
-    const submitTrigger = this.form.querySelector("[app='consult-submit']");
-    submitTrigger.click();
-  }
-}
-
 // this prevents from form not being sent properly without clicking first on the url input field
 outcomeThree = true;
 
@@ -28,9 +19,9 @@ formWrappers.forEach((n) => {
   let action = n.getAttribute("action");
   let subject = n.getAttribute("subject");
 
-  phoneInput.addEventListener("keydown", handleEnterKeydown);
-  emailInput.addEventListener("keydown", handleEnterKeydown);
-  urlInput.addEventListener("keydown", handleEnterKeydown);
+  phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
+  emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
+  urlInput.addEventListener("keydown", createEnterKeydownHandler(urlInput, formTrigger));
 
   phoneInput.addEventListener("blur", checkPhoneBlurTwo);
   emailInput.addEventListener("blur", checkMailBlurTwo);
