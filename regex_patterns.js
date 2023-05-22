@@ -29,10 +29,6 @@ function createEnterKeydownHandler(inputElement, submitTriggerElement) {
   };
 }
 
-phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, submitTrigger));
-emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, submitTrigger));
-urlInput.addEventListener("keydown", createEnterKeydownHandler(urlInput, submitTrigger));
-
 /* Regexes start here */
 
 function useRegexFirstName(firstNameValue) {
