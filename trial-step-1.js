@@ -195,7 +195,6 @@ createTrialStepOne.forEach((el) => {
           "adwords[fbclid]": fbclidInput.value,
         },
         success: function (data) {
-          console.log(data);
           const client_id = data.client_id;
           form = el.closest("form");
           let errorInfo = form.parentElement.querySelector(".w-form-fail");
@@ -209,7 +208,6 @@ createTrialStepOne.forEach((el) => {
             errorInfo.style.display = "block";
             loader.style.display = "none";
           } else if (data.code === 1 || data.status === 1) {
-            console.log(data);
             form = el.closest("form");
             trialStepOneModal.classList.remove("modal--open");
             const trialDomain = document.querySelector("[app='trial-domain']");
