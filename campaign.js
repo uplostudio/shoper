@@ -79,12 +79,12 @@ formWrappers.forEach((n) => {
           if (data.status === 1 && formWrapper.parentElement.hasAttribute("notification")) {
             n.parentElement.querySelector(".w-form-fail").style.background = "#4faf3f";
             n.parentElement.querySelector(".w-form-fail").style.display = "block";
-            n.parentElement.querySelector(".w-form-fail").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
+            // n.parentElement.querySelector(".w-form-fail").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
             n.querySelector("form").reset();
           } else {
             n.querySelector("form").style.display = "none";
             n.parentElement.querySelector(".w-form-done").style.display = "block";
-            n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
+            // n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
             n.querySelector("form").reset();
           }
         },
