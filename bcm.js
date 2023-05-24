@@ -16,8 +16,8 @@ formTrigger = formWrapper.querySelector("[app='bcm-submit']");
 phoneInput = formWrapper.querySelector("[app='phone_campaign']");
 emailInput = formWrapper.querySelector("[app='email_campaign']");
 
-phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
-emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
+// phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
+// emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
 
 // Attach EventListeners to inputs
 
