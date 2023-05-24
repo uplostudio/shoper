@@ -14,6 +14,10 @@ formWrappers.forEach((n) => {
   let action = n.getAttribute("action");
   let name = n.children[0].getAttribute("data-name");
 
+  phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
+  emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
+  urlInput.addEventListener("keydown", createEnterKeydownHandler(urlInput, formTrigger));
+
   phoneInput.addEventListener("blur", checkPhoneBlurTwo);
 
   emailInput.addEventListener("blur", checkMailBlurTwo);
