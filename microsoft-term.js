@@ -13,6 +13,13 @@ nipInput = formWrapper.querySelector("[app='nipNumber']");
 let successInfo = formWrapper.querySelector(".w-form-done");
 let errorInfo = formWrapper.querySelector(".w-form-fail");
 
+firstNameInput.addEventListener("keydown", createEnterKeydownHandler(firstNameInput, formTrigger));
+emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
+phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
+urlInput.addEventListener("keydown", createEnterKeydownHandler(urlInput, formTrigger));
+companyNameInput.addEventListener("keydown", createEnterKeydownHandler(companyNameInput, formTrigger));
+nipInput.addEventListener("keydown", createEnterKeydownHandler(nipInput, formTrigger));
+
 // Attach EventListeners to inputs
 
 firstNameInput.addEventListener("blur", function () {
