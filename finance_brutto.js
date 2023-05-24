@@ -8,6 +8,11 @@ phoneInput = formWrapper.querySelector("[app='phone']");
 emailInput = formWrapper.querySelector("[app='email']");
 urlInput = formWrapper.querySelector("[app='url']");
 
+emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
+nipInput.addEventListener("keydown", createEnterKeydownHandler(nipInput, formTrigger));
+phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
+urlInput.addEventListener("keydown", createEnterKeydownHandler(urlInput, formTrigger));
+
 // Attach EventListeners to inputs
 
 nipInput.addEventListener("blur", function () {
