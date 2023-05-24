@@ -8,11 +8,11 @@ let splited;
 
 // Prevent forms from being sent when user hits enter
 
-document.addEventListener("keydown", function (event) {
-  if (event.key === "Enter") {
-    event.preventDefault();
-  }
-});
+// document.addEventListener("keydown", function (event) {
+//   if (event.key === "Enter") {
+//     event.preventDefault();
+//   }
+// });
 
 // gclid
 
