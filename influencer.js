@@ -2,7 +2,7 @@
 outcomeThree = true;
 
 //  grab form
-formWrappers = document.querySelectorAll("[app='campaign']");
+formWrappers = document.querySelectorAll("[app='influencer']");
 // grab form trigger
 
 formWrappers.forEach((n) => {
