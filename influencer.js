@@ -36,6 +36,38 @@ formWrappers.forEach((n) => {
     checkPhoneBlur();
     checkEmailBlur();
 
+    let createTerms = formWrapper.querySelectorAll("[name='create_or_move_shop']")[0];
+    let moveTerms = formWrapper.querySelector("[name='create_or_move_shop']")[1];
+    let cooperateTerms = formWrapper.querySelector("[name='want_to_cooperate_with_shops']");
+
+    if (!createTerms.checked) {
+      // createTerms.previousElementSibling.style.border = errorBorderColor;
+      //   bruttocreateTermserms.parentNode.nextElementSibling.style.display = "flex";
+      createTerms.value = 0;
+    } else {
+      // createTerms.previousElementSibling.style.border = initialBorderColor;
+      // createTerms.parentNode.nextElementSibling.style.display = "none";
+      createTerms.value = 1;
+    }
+    if (!moveTerms.checked) {
+      //   bruttoClause.previousElementSibling.style.border = errorBorderColor;
+      //   bruttoClause.parentNode.nextElementSibling.style.display = "flex";
+      moveTerms.value = 0;
+    } else {
+      //   bruttoClause.previousElementSibling.style.border = initialBorderColor;
+      //   bruttoClause.parentNode.nextElementSibling.style.display = "none";
+      moveTerms.value = 1;
+    }
+    if (!cooperateTerms.checked) {
+      //   shoperPersonalData.previousElementSibling.style.border = errorBorderColor;
+      //   shoperPersonalData.parentNode.nextElementSibling.style.display = "flex";
+      cooperateTerms.value = 0;
+    } else {
+      //   shoperPersonalData.previousElementSibling.style.border = initialBorderColor;
+      //   shoperPersonalData.parentNode.nextElementSibling.style.display = "none";
+      cooperateTerms.value = 1;
+    }
+
     if (outcomeOne && outcomeTwo && outcomeThree) {
       loader.style.display = "block";
 
@@ -48,6 +80,9 @@ formWrappers.forEach((n) => {
           email: emailValue,
           phone: phoneInputValue,
           name_account: urlValue,
+          create_or_move_shop: createTerms.value,
+          create_or_move_shop: moveTerms.value,
+          want_to_cooperate_with_shops: cooperateTerms.value,
         },
         success: function (data) {
           // notification attribute goes in ms ads form
