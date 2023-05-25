@@ -1,3 +1,11 @@
+$("[data-app='open_create_shop']").on("click", function () {
+  $("[data-app='create-shop']").addClass("modal--open");
+});
+
+$("[data-app='open_cooperate']").on("click", function () {
+  $("[data-app='cooperate']").addClass("modal--open");
+});
+
 // this prevents from form not being sent properly without clicking first on the url input field
 outcomeThree = true;
 
