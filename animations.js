@@ -12,7 +12,7 @@ $(".nav__burger-inner").on("click", function () {
 });
 
 //close modal
-$(".modal__close, .modal__close-area").on("click", function () {
+$(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", function () {
   $(".modal--open").removeClass("modal--open");
   $(document.body).css("overflow", "auto");
   isFromBanner = false;
@@ -26,11 +26,7 @@ try {
   // get the sticky element
   const stickyElm = document.querySelector(".nav-secondary");
 
-  const observer = new IntersectionObserver(
-    ([e]) =>
-      e.target.classList.toggle("is-pinned", e.boundingClientRect.top < 0),
-    { threshold: [1] }
-  );
+  const observer = new IntersectionObserver(([e]) => e.target.classList.toggle("is-pinned", e.boundingClientRect.top < 0), { threshold: [1] });
 
   observer.observe(stickyElm);
 } catch (err) {
