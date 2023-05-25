@@ -1,5 +1,3 @@
-let url;
-
 // this prevents from form not being sent properly without clicking first on the url input field
 outcomeThree = true;
 
