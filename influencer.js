@@ -90,7 +90,7 @@ formTrigger.addEventListener("click", function (e) {
           // n.parentElement.querySelector(".w-form-fail").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
           formWrapper.querySelector("form").reset();
         } else {
-          formWrapper.querySelector("form").style.display = "none";
+          formWrapper.parentElement.querySelector("form").style.display = "none";
           formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
           // n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
           formWrapper.querySelector("form").reset();
