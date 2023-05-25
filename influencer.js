@@ -34,7 +34,7 @@ formTrigger.addEventListener("click", function (e) {
   checkEmailBlur();
 
   let createTerms = formWrapper.querySelectorAll("[name='create_or_move_shop']")[0];
-  let moveTerms = formWrapper.querySelector("[name='create_or_move_shop']")[1];
+  let moveTerms = formWrapper.querySelectorAll("[name='create_or_move_shop']")[1];
   let cooperateTerms = formWrapper.querySelector("[name='want_to_cooperate_with_shops']");
 
   if (!createTerms.checked) {
