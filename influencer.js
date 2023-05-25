@@ -89,6 +89,7 @@ formWrappers.forEach((n) => {
           create_or_move_shop: createTerms.value,
           create_or_move_shop: moveTerms.value,
           want_to_cooperate_with_shops: cooperateTerms.value,
+          zapier: "aHR0cHM6Ly9ob29rcy56YXBpZXIuY29tL2hvb2tzL2NhdGNoLzQ5Mjc4OS8zNmVjaWxxLw==",
         },
         success: function (data) {
           // notification attribute goes in ms ads form
