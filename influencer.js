@@ -78,7 +78,7 @@ formWrappers.forEach((n) => {
       loader.style.display = "block";
 
       $.ajax({
-        url: url,
+        url: "https://www.shoper.pl/ajax.php",
         headers: {},
         method: "POST",
         data: {
