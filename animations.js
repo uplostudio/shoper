@@ -12,11 +12,36 @@ $(".nav__burger-inner").on("click", function () {
 });
 
 //close modal
+// $(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", function () {
+//   $(".modal--open").removeClass("modal--open");
+//   $(document.body).css("overflow", "auto");
+//   isFromBanner = false;
+// });
+
+//close modal
 $(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", function () {
   $(".modal--open").removeClass("modal--open");
   $(document.body).css("overflow", "auto");
   isFromBanner = false;
+  if ($(".checkbox-multi.is-trigger").length) {
+    $(".checkbox-multi.is-trigger").each(function () {
+      if ($(this).hasClass("w--redirected-checked")) {
+        $(".checkbox-multi.is-trigger").removeClass("w--redirected-checked");
+        return false;
+      }
+    });
+  }
 });
+
+$("[fs-formsubmit-element='reset']").on("click", function () {
+  $(".checkbox-multi.is-trigger").each(function () {
+    if ($(this).hasClass("w--redirected-checked")) {
+      $(".checkbox-multi.is-trigger").removeClass("w--redirected-checked");
+      return false;
+    }
+  });
+});
+
 $(".show-in-editor").each(function () {
   $(this).removeClass("show-in-editor");
 });
