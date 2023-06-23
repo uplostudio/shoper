@@ -25,6 +25,7 @@ window.addEventListener("load", () => {
     "/regulamin-kampanii/microsoft-advert/",
     "/regulamin-kampanii/google-ads/",
     "/oferta-shoper-plus/",
+    "/oferta-symfonia/",
   ];
 
   const subpage = window.location.pathname;
