@@ -23,6 +23,7 @@ $(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click",
   $(".modal--open").removeClass("modal--open");
   $(document.body).css("overflow", "auto");
   isFromBanner = false;
+  formLocation = "";
   if ($(".checkbox-multi.is-trigger").length) {
     $(".checkbox-multi.is-trigger").each(function () {
       if ($(this).hasClass("w--redirected-checked")) {

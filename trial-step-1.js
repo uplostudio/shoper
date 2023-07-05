@@ -2,6 +2,7 @@ let gclidInput, gclidValue, fbclidInput, fbclidValue, regexp, regexpFb, location
 let analyticsId;
 let analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
 let isFromBanner = false;
+let formLocation = "";
 let client_id;
 let loader;
 let splited;
