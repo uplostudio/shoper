@@ -7,6 +7,13 @@ let client_id;
 let loader;
 let splited;
 
+// the green banner from home
+const greenBanner = document.querySelector("[data-ga='true']");
+greenBanner.addEventListener("click", () => {
+  formLocation = "baner-promo";
+  console.log(formLocation);
+});
+
 // Prevent forms from being sent when user hits enter
 
 // document.addEventListener("keydown", function (event) {
@@ -233,6 +240,12 @@ createTrialStepOne.forEach((el) => {
               eventType: emailValue,
               eventHistory: window.history,
             });
+
+            if (formLocation !== "") {
+              dataLayer.push({
+                formLocation: formLocation,
+              });
+            }
 
             dataLayer.push({
               event: "myTrackEvent",
