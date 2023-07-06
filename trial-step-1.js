@@ -6,13 +6,13 @@ let formLocation = "";
 let client_id;
 let loader;
 let splited;
-
-// the green banner from home
-const greenBanner = document.querySelector("[data-ga='true']");
-greenBanner.addEventListener("click", () => {
-  formLocation = "baner-promo";
-  console.log(formLocation);
-});
+try {
+  // the green banner from home
+  const greenBanner = document.querySelector("[data-ga='true']");
+  greenBanner.addEventListener("click", () => {
+    formLocation = "baner-promo";
+  });
+} catch (err) {}
 
 // Prevent forms from being sent when user hits enter
 
