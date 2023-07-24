@@ -101,122 +101,124 @@ window.addEventListener("load", () => {
   let gross = "brutto miesięcznie";
 
   //  grab form
-  formWrapper = document.querySelector("[app='custom_form']");
-  // grab form trigger
-  formTrigger = formWrapper.querySelector("[app='bcm-submit']");
-  // grab all input fields from form without checkboxes
-  phoneInput = formWrapper.querySelector("[app='phone_campaign']");
-  emailInput = formWrapper.querySelector("[app='email_campaign']");
+  if ( document.querySelector("[app='custom_form']") ) {
+    formWrapper = document.querySelector("[app='custom_form']");
+    // grab form trigger
+    formTrigger = formWrapper.querySelector("[app='bcm-submit']");
+    // grab all input fields from form without checkboxes
+    phoneInput = formWrapper.querySelector("[app='phone_campaign']");
+    emailInput = formWrapper.querySelector("[app='email_campaign']");
 
-  phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
-  emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
+    phoneInput.addEventListener("keydown", createEnterKeydownHandler(phoneInput, formTrigger));
+    emailInput.addEventListener("keydown", createEnterKeydownHandler(emailInput, formTrigger));
 
-  // Attach EventListeners to inputs
+    // Attach EventListeners to inputs
 
-  emailInput.addEventListener("blur", function () {
-    checkEmailBlur();
-  });
+    emailInput.addEventListener("blur", function () {
+      checkEmailBlur();
+    });
 
-  phoneInput.addEventListener("blur", function () {
-    checkPhoneBlur();
-  });
+    phoneInput.addEventListener("blur", function () {
+      checkPhoneBlur();
+    });
 
-  formTrigger.addEventListener("click", function (e) {
-    e.preventDefault();
-    e.stopPropagation();
+    formTrigger.addEventListener("click", function (e) {
+      e.preventDefault();
+      e.stopPropagation();
 
-    formWrapper = e.target.closest("form");
-    loader = formWrapper.querySelector(".loading-in-button");
+      formWrapper = e.target.closest("form");
+      loader = formWrapper.querySelector(".loading-in-button");
 
-    checkEmailBlur();
-    checkPhoneBlur();
+      checkEmailBlur();
+      checkPhoneBlur();
 
-    if (!checkEmailBlur() && window.dataLayer) {
-      data = {
-        event: "myTrackEvent",
-        eventCategory: "errorFormEvent",
-        eventValue: "",
-        eventLabel: "email",
-      };
-
-      dataLayer.push(data);
-      // console.log(dataLayer);
-    }
-
-    if (!checkPhoneBlur() && window.dataLayer) {
-      data = {
-        event: "myTrackEvent",
-        eventCategory: "errorFormEvent",
-        eventValue: "",
-        eventLabel: "phone",
-      };
-
-      dataLayer.push(data);
-      // console.log(dataLayer);
-    }
-
-    // const body = new FormData();
-    // body.append("action", formWrapper.parentElement.getAttribute("action"));
-    // body.append("type", formWrapper.parentElement.getAttribute("type"));
-    // body.append("source_id", formWrapper.parentElement.getAttribute("source_id"));
-    // body.append("package", formWrapper.parentElement.getAttribute("package"));
-    // body.append("email", phoneInputValue);
-    // body.append("phone", emailValue);
-
-    if (checkEmailBlur() && checkPhoneBlur()) {
-      loader.style.display = "block";
-      $.ajax({
-        url: "https://www.shoper.pl/ajax.php",
-        headers: {},
-        method: "POST",
-        data: {
-          action: formWrapper.parentElement.getAttribute("action"),
-          type: formWrapper.parentElement.getAttribute("type"),
-          source_id: formWrapper.parentElement.getAttribute("source_id"),
-          package: formWrapper.parentElement.getAttribute("package"),
-          phone: phoneInputValue,
-          email: emailValue,
-        },
-        success: function (data) {
-          loader.style.display = "none";
-          formWrapper.parentElement.querySelector("form").style.display = "none";
-          formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
-          formWrapper.parentElement.querySelector("form").reset();
-        },
-        error: function (data) {
-          loader.style.display = "none";
-          formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
-          formWrapper.parentElement.querySelector(".w-form-fail").textContent = "Coś poszło nie tak, spróbuj ponownie.";
-        },
-      });
-
-      if (window.dataLayer) {
+      if (!checkEmailBlur() && window.dataLayer) {
         data = {
           event: "myTrackEvent",
-          eventCategory: "Button modal form sent",
-          eventAction: this.value,
-          eventLabel: window.location.href,
-          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+          eventCategory: "errorFormEvent",
+          eventValue: "",
+          eventLabel: "email",
         };
 
         dataLayer.push(data);
         // console.log(dataLayer);
       }
-    } else {
-      if (window.dataLayer) {
+
+      if (!checkPhoneBlur() && window.dataLayer) {
         data = {
           event: "myTrackEvent",
-          eventCategory: "Button modal form error",
-          eventAction: this.value,
-          eventLabel: window.location.href,
-          eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+          eventCategory: "errorFormEvent",
+          eventValue: "",
+          eventLabel: "phone",
         };
 
         dataLayer.push(data);
         // console.log(dataLayer);
       }
-    }
-  });
+
+      // const body = new FormData();
+      // body.append("action", formWrapper.parentElement.getAttribute("action"));
+      // body.append("type", formWrapper.parentElement.getAttribute("type"));
+      // body.append("source_id", formWrapper.parentElement.getAttribute("source_id"));
+      // body.append("package", formWrapper.parentElement.getAttribute("package"));
+      // body.append("email", phoneInputValue);
+      // body.append("phone", emailValue);
+
+      if (checkEmailBlur() && checkPhoneBlur()) {
+        loader.style.display = "block";
+        $.ajax({
+          url: "https://www.shoper.pl/ajax.php",
+          headers: {},
+          method: "POST",
+          data: {
+            action: formWrapper.parentElement.getAttribute("action"),
+            type: formWrapper.parentElement.getAttribute("type"),
+            source_id: formWrapper.parentElement.getAttribute("source_id"),
+            package: formWrapper.parentElement.getAttribute("package"),
+            phone: phoneInputValue,
+            email: emailValue,
+          },
+          success: function (data) {
+            loader.style.display = "none";
+            formWrapper.parentElement.querySelector("form").style.display = "none";
+            formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
+            formWrapper.parentElement.querySelector("form").reset();
+          },
+          error: function (data) {
+            loader.style.display = "none";
+            formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
+            formWrapper.parentElement.querySelector(".w-form-fail").textContent = "Coś poszło nie tak, spróbuj ponownie.";
+          },
+        });
+
+        if (window.dataLayer) {
+          data = {
+            event: "myTrackEvent",
+            eventCategory: "Button modal form sent",
+            eventAction: this.value,
+            eventLabel: window.location.href,
+            eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+          };
+
+          dataLayer.push(data);
+          // console.log(dataLayer);
+        }
+      } else {
+        if (window.dataLayer) {
+          data = {
+            event: "myTrackEvent",
+            eventCategory: "Button modal form error",
+            eventAction: this.value,
+            eventLabel: window.location.href,
+            eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+          };
+
+          dataLayer.push(data);
+          // console.log(dataLayer);
+        }
+      }
+    });
+  }
 
   // fetch
 
