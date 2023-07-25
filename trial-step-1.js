@@ -195,6 +195,9 @@ createTrialStepOne.forEach((el) => {
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
         method: "POST",
+        xhrFields: {
+          withCredentials: true
+        },       
         data: {
           action: "create_trial_step1",
           email: emailValue,

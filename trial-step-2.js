@@ -89,6 +89,9 @@ createTrialStepTwo.forEach((n) => {
         url: "https://www.shoper.pl/ajax.php",
         headers: {},
         method: "POST",
+        xhrFields: {
+          withCredentials: true
+        },       
         data: {
           action: "create_trial_step2",
           phone: form.querySelector("[app='phone']").value,
