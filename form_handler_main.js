@@ -78,10 +78,6 @@ function handleBlur(event) {
   validateInput(event.target);
 }
 
-// enter event added to each input
-// try to send form (click submit button)
-// when pushing enter
-
 document.querySelectorAll("input").forEach((input) => {
   const submitButton = input.closest("form").querySelector("[data-form='submit']");
 
@@ -102,9 +98,6 @@ function validateForm(formElement) {
 
   return errors;
 }
-
-// get all Inputs, all attrbiutes from form
-// create an AJAX request
 
 function sendFormDataToURL(urlN, formElement, form, loader) {
   const formData = new FormData();
@@ -223,7 +216,6 @@ function pushDataToDataLayer(formElement, eventCategory) {
 
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(data);
-  console.log(window.dataLayer);
 }
 
 function successResponse(formElement) {
