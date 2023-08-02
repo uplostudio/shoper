@@ -195,12 +195,13 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   }
 
   const inputElements = formElement.querySelectorAll("#phone");
-  let countryValues = [];
-  let marketplaceValues = [];
   inputElements.forEach((inputElement) => {
     let inputValue = iti.getNumber();
     const inputName = inputElement.getAttribute("data-form");
     formData.append(inputName, inputValue);
+    formData.append("analytics_id", analyticsId);
+    formData.append("adwords[gclid]", gclidInput.value);
+    formData.append("adwords[fbclid]", fbclidInput.value);
   });
 
   $.ajax({
@@ -303,62 +304,3 @@ function errorResponse(formElement) {
     window.dataLayer.push(data);
   }
 }
-
-let debug = false;
-
-if (debug) {
-  // Step 1: Create an input field
-  const inputField = document.createElement("input");
-
-  inputField.setAttribute("type", "text");
-
-  // Step 2: Get the country list and append the input field as the first child
-  const flagContainer = document.querySelector(".iti__flag-container");
-  const countryList = document.querySelector(".iti__country-list");
-  flagContainer.insertBefore(inputField, flagContainer.lastChild);
-
-  // Step 3: Add event listener to the input field for filtering
-  inputField.addEventListener("input", function () {
-    const searchTerm = inputField.value.trim().toLowerCase();
-
-    // Loop through each <li> element in the country list
-    Array.from(countryList.children).forEach(function (country) {
-      const countryName = country.textContent.toLowerCase();
-
-      // Show or hide the element based on the filter
-      if (countryName.includes(searchTerm)) {
-        country.style.display = "block";
-      } else {
-        country.style.display = "none";
-      }
-    });
-  });
-
-  // Step 4: Add event listener to prevent default behavior when clicking on the input field
-  inputField.addEventListener("click", function (event) {
-    event.preventDefault();
-    event.stopPropagation();
-  });
-}
-
-$(document).ready(function () {
-  $("form").on("click", ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags", function () {
-    // Check if the window width is below 992 pixels
-    if ($(window).width() < 992) {
-      // Find the .iti.iti--container element
-      var container = $(".iti.iti--container");
-      // Check if the container exists and is not already a child of the clicked element
-      if (container.length && !container.parent().is(this)) {
-        // Set the CSS properties for the container
-        container.css({
-          top: "48px",
-          left: "0",
-          position: "absolute",
-          height: "50svh",
-        });
-        // Append it as the second child of the clicked element
-        $(this).append(container);
-      }
-    }
-  });
-});
