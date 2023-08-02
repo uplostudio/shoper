@@ -206,7 +206,7 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
       }
       successResponse(formElement);
       $(form).parent().hide();
-      $(form).parent().next().show();
+      //   $(form).parent().next().show();
     },
     error: function () {
       errorResponse(formElement);
