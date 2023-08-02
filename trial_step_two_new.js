@@ -39,7 +39,7 @@ inputsStepTwo.forEach((n) => {
         controlValue: n.value,
       };
 
-      dataLayer.push(data);
+      window.dataLayer.push(data);
     }
   });
   // Control Focus Step Two
@@ -57,7 +57,7 @@ inputsStepTwo.forEach((n) => {
         controlValue: n.value,
       };
 
-      dataLayer.push(data);
+      window.dataLayer.push(data);
     }
   });
 });
@@ -81,8 +81,6 @@ const validationPatterns = [
   },
 ];
 
-// attributes we don't need when AJAX
-
 const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id"];
 
 const urlN = "https://www.shoper.pl/ajax.php";
@@ -92,12 +90,26 @@ function createEnterKeydownHandler(inputElement, submitTriggerElement) {
     if (e.key === "Enter") {
       e.preventDefault();
       inputElement.blur();
+      validateInput(inputElement);
       submitTriggerElement.click();
     }
   };
 }
 
-// run valication for each input
+function processForm(input, required, value, error) {
+  const parentElement = $(input).parent()[0];
+  if (required && value === "") {
+    $(parentElement).siblings("[data-toast='required']").toggleClass("show", true);
+    $(parentElement).siblings("[data-toast='regex']").toggleClass("show", false);
+    $(input).toggleClass("error", true);
+  } else {
+    $(parentElement).siblings("[data-toast='required']").toggleClass("show", false);
+    $(parentElement)
+      .siblings("[data-toast='regex']")
+      .toggleClass("show", error !== null);
+    $(input).toggleClass("error", error !== null);
+  }
+}
 
 function validateInput(input) {
   const countryCode = iti.getSelectedCountryData().iso2;
@@ -106,7 +118,7 @@ function validateInput(input) {
   const required = input.required;
   const type = input.getAttribute("data-type");
 
-  error = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
+  let error = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
 
   if (countryCode === "pl" && !error && value !== "" && required) {
     const pattern = validationPatterns.find((p) => p.type === type)?.pattern;
@@ -115,23 +127,7 @@ function validateInput(input) {
     }
   }
 
-  function processForm() {
-    var input = $("#phone");
-    var parentElement = input.parent()[0];
-    if (required && value === "") {
-      $(parentElement).siblings("[data-toast='required']").toggleClass("show", true);
-      $(parentElement).siblings("[data-toast='regex']").toggleClass("show", false);
-      input.addClass("error");
-    } else {
-      $(parentElement).siblings("[data-toast='required']").toggleClass("show", false);
-      $(parentElement)
-        .siblings("[data-toast='regex']")
-        .toggleClass("show", error !== null);
-      $(input).toggleClass("error", error !== null);
-    }
-  }
-
-  processForm();
+  processForm(input, required, value, error);
 
   return error;
 }
@@ -139,10 +135,6 @@ function validateInput(input) {
 function handleBlur(event) {
   validateInput(event.target);
 }
-
-// enter event added to each input
-// try to send form (click submit button)
-// when pushing enter
 
 const trialStepTwoForm = document.querySelector("[data-action='create_trial_step2']");
 
@@ -166,9 +158,6 @@ function validateForm(formElement) {
 
   return errors;
 }
-
-// get all Inputs, all attrbiutes from form
-// create an AJAX request
 
 function sendFormDataToURL(urlN, formElement, form, loader) {
   const formData = new FormData();
@@ -205,8 +194,6 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       }
       successResponse(formElement);
-      //   $(form).parent().hide();
-      //   $(form).parent().next().show();
     },
     error: function () {
       errorResponse(formElement);
@@ -215,7 +202,6 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   });
 }
 
-// send data, if no errros
 function handleSubmitClick(e) {
   e.preventDefault();
   const form = this;
@@ -226,7 +212,6 @@ function handleSubmitClick(e) {
   }
 }
 
-// send data trigger
 $("[data-form='submit_trial_step_two']").click(handleSubmitClick);
 
 $(document).ready(function () {
