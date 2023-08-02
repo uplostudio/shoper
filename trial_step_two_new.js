@@ -83,7 +83,7 @@ const validationPatterns = [
 
 // attributes we don't need when AJAX
 
-const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "eventname", "formid"];
+const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id"];
 
 const urlN = "https://www.shoper.pl/ajax.php";
 
