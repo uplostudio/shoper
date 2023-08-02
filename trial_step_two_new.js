@@ -189,7 +189,7 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
     formData.append(inputName, inputValue);
   });
 
-  formData.append("analytics_id", analyticsId);
+  formData.append("analyticsId", analyticsId);
   formData.append("adwords[gclid]", gclidInput.value);
   formData.append("adwords[fbclid]", fbclidInput.value);
 
