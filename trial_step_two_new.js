@@ -71,6 +71,7 @@ var iti = window.intlTelInput(input, {
   autoInsertDialCode: false,
   nationalMode: false,
   separateDialCode: true,
+  autoPlaceholder: "off",
   initialCountry: "pl",
 });
 
