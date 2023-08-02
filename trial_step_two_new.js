@@ -62,7 +62,7 @@ inputsStepTwo.forEach((n) => {
   });
 });
 
-let error;
+let errorT;
 
 var input = document.querySelector("#phone-trial");
 var iti = window.intlTelInput(input, {
@@ -97,18 +97,18 @@ function createEnterKeydownHandler(inputElement, submitTriggerElement) {
   };
 }
 
-function processForm(input, required, value, error) {
+function processForm(input, required, value, errorT) {
   const parentElement = $(input).parent()[0];
   if (required && value === "") {
     $(parentElement).siblings("[data-toast='required']").toggleClass("show", true);
     $(parentElement).siblings("[data-toast='regex']").toggleClass("show", false);
-    $(input).toggleClass("error", true);
+    $(input).toggleClass("errorT", true);
   } else {
     $(parentElement).siblings("[data-toast='required']").toggleClass("show", false);
     $(parentElement)
       .siblings("[data-toast='regex']")
-      .toggleClass("show", error !== null);
-    $(input).toggleClass("error", error !== null);
+      .toggleClass("show", errorT !== null);
+    $(input).toggleClass("errorT", errorT !== null);
   }
 }
 
@@ -119,18 +119,18 @@ function validateInput(input) {
   const required = input.required;
   const type = input.getAttribute("data-type");
 
-  let error = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
+  let errorT = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
 
-  if (countryCode === "pl" && !error && value !== "" && required) {
+  if (countryCode === "pl" && !errorT && value !== "" && required) {
     const pattern = validationPatterns.find((p) => p.type === type)?.pattern;
     if (pattern && !pattern.test(value)) {
-      error = `${name} nie jest wypełnione prawidłowo`;
+      errorT = `${name} nie jest wypełnione prawidłowo`;
     }
   }
 
-  processForm(input, required, value, error);
+  processForm(input, required, value, errorT);
 
-  return error;
+  return errorT;
 }
 
 function handleBlur(event) {
@@ -149,15 +149,15 @@ trialStepTwoForm.querySelectorAll("input").forEach((input) => {
 function validateForm(formElement) {
   const inputs = formElement.querySelectorAll("input");
 
-  let errors = 0;
+  let errorTs = 0;
 
   inputs.forEach((input) => {
     if (validateInput(input)) {
-      errors++;
+      errorTs++;
     }
   });
 
-  return errors;
+  return errorTs;
 }
 
 function sendFormDataToURL(urlN, formElement, form, loader) {
@@ -196,9 +196,9 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
       }
       successResponse(formElement);
     },
-    error: function () {
-      errorResponse(formElement);
-      $(formElement).siblings(".error-message").show();
+    errorT: function () {
+      errorTResponse(formElement);
+      $(formElement).siblings(".errorT-message").show();
     },
   });
 }
@@ -252,13 +252,13 @@ function successResponse(formElement) {
   }
 }
 
-function errorResponse(formElement) {
+function errorTResponse(formElement) {
   let data;
   if (window.dataLayer) {
     data = {
-      event: "formSubmitError",
+      event: "formSubmiterrorT",
       formId: $(formElement).attr("id"),
-      eventCategory: "Button modal form error",
+      eventCategory: "Button modal form errorT",
       eventAction: $(formElement).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
@@ -270,7 +270,7 @@ function errorResponse(formElement) {
     data = {
       event: "myTrackEvent",
       formId: $(formElement).attr("id"),
-      eventCategory: "Button modal form error",
+      eventCategory: "Button modal form errorT",
       eventAction: $(formElement).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
