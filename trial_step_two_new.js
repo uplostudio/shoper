@@ -71,19 +71,7 @@ var iti = window.intlTelInput(input, {
   autoInsertDialCode: false,
   nationalMode: false,
   separateDialCode: true,
-  initialCountry: "auto",
-  geoIpLookup: function (callback) {
-    fetch("https://ipapi.co/json")
-      .then(function (res) {
-        return res.json();
-      })
-      .then(function (data) {
-        callback(data.country_code);
-      })
-      .catch(function () {
-        callback("pl");
-      });
-  },
+  initialCountry: "pl",
 });
 
 const validationPatterns = [
@@ -95,7 +83,7 @@ const validationPatterns = [
 
 // attributes we don't need when AJAX
 
-const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "eventName", "formId"];
+const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "eventname", "formid"];
 
 const urlN = "https://www.shoper.pl/ajax.php";
 
