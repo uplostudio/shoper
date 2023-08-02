@@ -1,5 +1,67 @@
 // this code is for trial step 2 with international number library
 
+const inputsStepTwo = document.querySelectorAll("[data-action='create_trial_step2'] input:not([type='radio']):not([type='checkbox']):not([type='password']):not([type='submit'])");
+
+window.addEventListener("beforeunload", () => {
+  inputsStepTwo.forEach((n) => {
+    inputVals = n.value;
+    let element = document.querySelector("[data-action='create_trial_step2']");
+    elementId = element.getAttribute("data-formId");
+
+    inputValsArr.push(inputVals);
+    inputValsArrFiltered = inputValsArr.filter((el) => el.length > 1);
+  });
+
+  if (inputValsArrFiltered.length > 0 && window.dataLayer) {
+    data = {
+      event: "formAbandon",
+      formId: elementId,
+      eventHistory: window.history,
+    };
+
+    window.dataLayer.push(data);
+  }
+});
+
+inputsStepTwo.forEach((n) => {
+  // Control Blur Step Two
+  n.addEventListener("blur", function () {
+    let data;
+    let element = document.querySelector("[data-action='create_trial_step2']");
+    elementId = element.getAttribute("data-formId");
+
+    if (window.dataLayer) {
+      data = {
+        event: "controlBlur",
+        formId: elementId,
+        controlName: n.getAttribute("data-action"),
+        controlType: n.type,
+        controlValue: n.value,
+      };
+
+      dataLayer.push(data);
+    }
+  });
+  // Control Focus Step Two
+  n.addEventListener("focus", () => {
+    let data;
+    let element = document.querySelector("[data-action='create_trial_step2']");
+    elementId = element.getAttribute("data-formId");
+
+    if (window.dataLayer) {
+      data = {
+        event: "controlFocus",
+        formId: elementId,
+        controlName: n.getAttribute("data-action"),
+        controlType: n.type,
+        controlValue: n.value,
+      };
+
+      dataLayer.push(data);
+    }
+  });
+});
+
 let error;
 
 var input = document.querySelector("#phone");
