@@ -205,7 +205,7 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       }
       successResponse(formElement);
-      $(form).parent().hide();
+      //   $(form).parent().hide();
       //   $(form).parent().next().show();
     },
     error: function () {
