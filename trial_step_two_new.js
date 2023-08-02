@@ -84,7 +84,7 @@ const validationPatternsTrial = [
 
 const omittedAtributesTrial = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id"];
 
-const urlN = "https://www.shoper.pl/ajax.php";
+const urlNTrial = "https://www.shoper.pl/ajax.php";
 
 function createEnterKeydownHandler(inputElement, submitTriggerElement) {
   return function (e) {
@@ -160,7 +160,7 @@ function validateForm(formElement) {
   return errorTs;
 }
 
-function sendFormDataToURL(urlN, formElement, form, loader) {
+function sendFormDataToURL(urlNTrial, formElement, form, loader) {
   const formData = new FormData();
 
   const attributes = formElement.attributes;
@@ -185,7 +185,7 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
 
   $.ajax({
     type: "POST",
-    url: urlN,
+    url: urlNTrial,
     data: formData,
     processData: false,
     contentType: false,
@@ -209,7 +209,7 @@ function handleSubmitClick(e) {
   const formElement = this.closest("form");
   const loader = $(this).find(".loading-in-button");
   if (validateForm(formElement) === 0) {
-    sendFormDataToURL(urlN, formElement, form, loader);
+    sendFormDataToURL(urlNTrial, formElement, form, loader);
   }
 }
 
