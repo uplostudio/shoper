@@ -172,7 +172,7 @@ function sendFormDataToURL(urlNTrial, formElement, form, loader) {
     }
   }
 
-  const inputElementsTrial = formElement.querySelectorAll("#phone");
+  const inputElementsTrial = formElement.querySelectorAll("#phone-trial");
   inputElementsTrial.forEach((inputElement) => {
     let inputValue = iti.getNumber();
     const inputName = inputElement.getAttribute("data-form");
