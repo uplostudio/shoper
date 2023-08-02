@@ -199,10 +199,11 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
     let inputValue = iti.getNumber();
     const inputName = inputElement.getAttribute("data-form");
     formData.append(inputName, inputValue);
-    formData.append("analytics_id", analyticsId);
-    formData.append("adwords[gclid]", gclidInput.value);
-    formData.append("adwords[fbclid]", fbclidInput.value);
   });
+
+  formData.append("analytics_id", analyticsId);
+  formData.append("adwords[gclid]", gclidInput.value);
+  formData.append("adwords[fbclid]", fbclidInput.value);
 
   $.ajax({
     type: "POST",
