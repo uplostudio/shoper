@@ -64,7 +64,7 @@ inputsStepTwo.forEach((n) => {
 
 let error;
 
-var input = document.querySelector("#phone");
+var input = document.querySelector("#phone-trial");
 var iti = window.intlTelInput(input, {
   utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
   preferredCountries: ["pl", "de", "ie", "us", "gb", "nl"],
