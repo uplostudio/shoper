@@ -75,14 +75,14 @@ var iti = window.intlTelInput(input, {
   initialCountry: "pl",
 });
 
-const validationPatterns = [
+const validationPatternsTrial = [
   {
     type: "phone",
     pattern: /^\d\d\d\d\d\d\d\d\d$/,
   },
 ];
 
-const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id"];
+const omittedAtributesTrial = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id"];
 
 const urlN = "https://www.shoper.pl/ajax.php";
 
@@ -122,7 +122,7 @@ function validateInput(input) {
   let errorT = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
 
   if (countryCode === "pl" && !errorT && value !== "" && required) {
-    const pattern = validationPatterns.find((p) => p.type === type)?.pattern;
+    const pattern = validationPatternsTrial.find((p) => p.type === type)?.pattern;
     if (pattern && !pattern.test(value)) {
       errorT = `${name} nie jest wypełnione prawidłowo`;
     }
@@ -167,13 +167,13 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   for (let i = 0; i < attributes.length; i++) {
     const attributeName = attributes[i].name.replace("data-", "");
     const attributeValue = attributes[i].value;
-    if (attributeValue !== "" && !omittedAtributes.includes(attributeName)) {
+    if (attributeValue !== "" && !omittedAtributesTrial.includes(attributeName)) {
       formData.append(attributeName, attributeValue);
     }
   }
 
-  const inputElements = formElement.querySelectorAll("#phone");
-  inputElements.forEach((inputElement) => {
+  const inputElementsTrial = formElement.querySelectorAll("#phone");
+  inputElementsTrial.forEach((inputElement) => {
     let inputValue = iti.getNumber();
     const inputName = inputElement.getAttribute("data-form");
     formData.append(inputName, inputValue);
