@@ -226,6 +226,7 @@ $(document).ready(function () {
   $("form").on("click", ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags", function () {
     // Check if the window width is below 992 pixels
     if ($(window).width() < 992) {
+      console.log("test");
       // Find the .iti.iti--container element
       var container = $(".iti.iti--container");
       // Check if the container exists and is not already a child of the clicked element
