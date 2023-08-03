@@ -237,6 +237,7 @@ $(document).ready(function () {
           left: "0",
           position: "absolute",
           height: "50svh",
+          "overflow-y": "auto",
         });
         // Append it as the second child of the clicked element
         $(this).append(container);
