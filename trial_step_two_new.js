@@ -222,6 +222,28 @@ $(document).ready(function () {
   regexElement.insertAfter(".iti--show-flags");
 });
 
+$(document).ready(function () {
+  $("form").on("click", ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags", function () {
+    // Check if the window width is below 992 pixels
+    if ($(window).width() < 992) {
+      // Find the .iti.iti--container element
+      var container = $(".iti.iti--container");
+      // Check if the container exists and is not already a child of the clicked element
+      if (container.length && !container.parent().is(this)) {
+        // Set the CSS properties for the container
+        container.css({
+          top: "48px",
+          left: "0",
+          position: "absolute",
+          height: "50svh",
+        });
+        // Append it as the second child of the clicked element
+        $(this).append(container);
+      }
+    }
+  });
+});
+
 function successResponse(formElement) {
   let data;
   if (window.dataLayer) {
