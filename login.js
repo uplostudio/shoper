@@ -2,6 +2,7 @@
 
 $("[app='open_login_modal_button']").on("click", function () {
   $("[app='login_modal'").addClass("modal--open");
+  $(document.body).toggleClass("overflow-hidden", true);
 });
 try {
   //  grab form
