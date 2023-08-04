@@ -2,6 +2,7 @@ let url;
 
 $("[app='open_consultation_modal_button']").on("click", function () {
   $("[app='campaign_modal']").addClass("modal--open");
+  $(document.body).toggleClass("overflow-hidden", true);
 });
 
 // this prevents from form not being sent properly without clicking first on the url input field
