@@ -21,7 +21,7 @@ $(".nav__burger-inner").on("click", function () {
 //close modal
 $(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", function () {
   $(".modal--open").removeClass("modal--open");
-  $(document.body).css("overflow", "auto");
+  $(document.body).toggleClass("overflow-hidden", false);
   isFromBanner = false;
   formLocation = "";
   if ($(".checkbox-multi.is-trigger").length) {
