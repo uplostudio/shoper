@@ -63,7 +63,7 @@ window.addEventListener("beforeunload", formAbandonHandler);
 trialOpenButton.forEach((n) => {
   n.addEventListener("click", () => {
     trialStepOneModal.classList.add("modal--open");
-    $(document.body).css("overflow", "hidden");
+    $(document.body).toggleClass("overflow-hidden", true);
   });
 });
 
