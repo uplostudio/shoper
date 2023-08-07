@@ -10,7 +10,7 @@ const validationPatterns = [
   },
   {
     type: "phone",
-    pattern: /^\d\d\d\d\d\d\d\d\d$/,
+    pattern: /^\d{9}$/,
   },
   {
     type: "text",
@@ -18,7 +18,7 @@ const validationPatterns = [
   },
   {
     type: "nip",
-    pattern: /^\d\d\d\d\d\d\d\d\d\d$/,
+    pattern: /^\d{10}$/,
   },
   {
     type: "url",
@@ -42,13 +42,20 @@ function createEnterKeydownHandler(inputElement, submitTriggerElement) {
   };
 }
 
+/*
+    WF domyślnie obsługuje accessibility szkoda że nie wykorzystujemy wbudowanej logiki w przeglądarkę dla formularzy, zmusza to nas do pisania dodatkowego kodu.
+*/
+
 // run valication for each input
 
 function validateInput(input) {
-  const name = input.getAttribute("data-form");
-  const value = input.value;
-  const required = input.required;
-  const type = input.getAttribute("data-type");
+  const name = $(input).data("form");
+
+  const value = $(input).val();
+
+  const required = $(input).prop("required");
+
+  const type = $(input).data("type");
 
   error = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
 
@@ -78,20 +85,23 @@ function handleBlur(event) {
   validateInput(event.target);
 }
 
-document.querySelectorAll("input").forEach((input) => {
-  const submitButton = input.closest("form").querySelector("[data-form='submit']");
+$("input").each(function () {
+  const input = $(this);
+  const submitButton = input.closest("form").find("[data-form='submit']");
 
-  input.addEventListener("blur", handleBlur);
-  input.addEventListener("keydown", createEnterKeydownHandler(input, submitButton));
+  input.on("blur", handleBlur);
+  input.on("keydown", function () {
+    createEnterKeydownHandler(input, submitButton);
+  });
 });
 
 function validateForm(formElement) {
-  const inputs = formElement.querySelectorAll("input");
+  const inputs = $(formElement).find("input, textarea");
 
   let errors = 0;
 
-  inputs.forEach((input) => {
-    if (validateInput(input)) {
+  $("input").each(function () {
+    if (validateInput($(this))) {
       errors++;
     }
   });
@@ -102,26 +112,31 @@ function validateForm(formElement) {
 function sendFormDataToURL(urlN, formElement, form, loader) {
   const formData = new FormData();
 
-  const attributes = formElement.attributes;
-  for (let i = 0; i < attributes.length; i++) {
-    const attributeName = attributes[i].name.replace("data-", "");
-    const attributeValue = attributes[i].value;
+  $.each($(formElement)[0].attributes, function (index, attribute) {
+    const attributeName = attribute.name.replace("data-", "");
+    const attributeValue = attribute.value;
     if (attributeValue !== "" && !omittedAtributes.includes(attributeName)) {
       formData.append(attributeName, attributeValue);
     }
-  }
+  });
 
-  const inputElements = formElement.querySelectorAll("input, textarea");
+  const inputElements = $(formElement).find("input, textarea");
   let countryValues = [];
   let marketplaceValues = [];
-  inputElements.forEach((inputElement) => {
-    let inputValue = inputElement.value;
-    const inputName = inputElement.getAttribute("data-form");
-    if (inputElement.type === "checkbox") {
-      inputValue = inputElement.nextElementSibling.textContent.replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "").trim();
-      if (inputName === "country" && inputElement.checked) {
+  $(inputElements).each(function () {
+    let inputValue = $(this).val();
+    const inputName = $(this).data("form");
+
+    if ($(this).attr("type") === "checkbox") {
+      inputValue = $(this)
+        .next()
+        .text()
+        .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
+        .trim();
+
+      if (inputName === "country" && $(this).prop("checked")) {
         countryValues.push(inputValue);
-      } else if (inputName === "marketplace" && inputElement.checked) {
+      } else if (inputName === "marketplace" && $(this).prop("checked")) {
         marketplaceValues.push(inputValue);
       }
     } else if (inputValue !== "") {
@@ -129,43 +144,47 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
     }
   });
 
-  if (countryValues.length > 0) {
-    formData.append("country", countryValues);
+  function appendValues(formData, countryValues, marketplaceValues) {
+    if (countryValues.length > 0) {
+      formData.append("country", countryValues);
+    }
+
+    if (marketplaceValues.length > 0) {
+      formData.append("marketplace", marketplaceValues);
+    }
   }
 
-  if (marketplaceValues.length > 0) {
-    formData.append("marketplace", marketplaceValues);
-  }
-
-  $.ajax({
-    type: "POST",
-    url: urlN,
-    data: formData,
-    processData: false,
-    contentType: false,
-    success: function (data) {
-      loader.show();
-      if (formData.has("host")) {
-        if (data.status === 1) {
-          $(formElement).siblings(".error-message").hide();
-          loader.hide();
-          window.location.href = data.redirect;
-          return;
-        } else {
-          loader.hide();
-          $(formElement).siblings(".error-message").show();
-          return;
+  function makeAjaxRequest(urlN, formData, formElement, loader, form) {
+    $.ajax({
+      type: "POST",
+      url: urlN,
+      data: formData,
+      processData: false,
+      contentType: false,
+      success: function (data) {
+        loader.show();
+        if (formData.has("host")) {
+          if (data.status === 1) {
+            $(formElement).siblings(".error-message").hide();
+            loader.hide();
+            window.location.href = data.redirect;
+            return;
+          } else {
+            loader.hide();
+            $(formElement).siblings(".error-message").show();
+            return;
+          }
         }
-      }
-      successResponse(formElement);
-      $(form).parent().hide();
-      $(form).parent().next().show();
-    },
-    error: function () {
-      errorResponse(formElement);
-      $(formElement).siblings(".error-message").show();
-    },
-  });
+        successResponse(formElement);
+        $(form).parent().hide();
+        $(form).parent().next().show();
+      },
+      error: function () {
+        errorResponse(formElement);
+        $(formElement).siblings(".error-message").show();
+      },
+    });
+  }
 }
 
 // send data, if no errros
@@ -197,7 +216,7 @@ $("[fs-formsubmit-element='reset']").on("click", function () {
 });
 
 function pushDataToDataLayer(formElement, eventCategory) {
-  if (formElement.getAttribute("data-layer") !== "true") {
+  if ($(formElement).data("layer") !== "true") {
     return;
   }
 
