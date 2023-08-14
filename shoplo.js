@@ -1,5 +1,21 @@
 $(document).ready(function () {
-    
+
+    const messages = {
+        'pl': {
+            'required': 'To pole jest wymagane',
+            'required_checkbox': 'To pole musi zostać zaznaczone',
+            'email': 'Podaj poprawny adres e-mail',
+            'phone': 'Minimum 9 cyfr',
+            'text': 'Min. 3 znaki',
+        }, 
+        'en': {
+            'required': 'This field is required',
+            'required_checkbox': 'This box must be checked',
+            'email': 'Please enter a valid email address',
+            'phone': 'Minimum 9 digits',
+            'text': 'Minimum 3 characters',
+        }
+    };
     // Function which get all fields form form and save to one object data
     
     function bindDataFromForm(form) {
@@ -58,7 +74,7 @@ $(document).ready(function () {
       let fieldValue = $(field).val();
       const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
       if ( !emailRegex.test(fieldValue ) ) {
-        setErrorField( "Podaj poprawny adres e-mail", field );
+        setErrorField( messages[$('html').attr('lang')].email, field );
       }
     }
 
@@ -68,7 +84,7 @@ $(document).ready(function () {
       let fieldValue = $(field).val();
       const phoneRegex = /^\d{9,15}$/;
       if ( !phoneRegex.test(fieldValue ) ) {
-        setErrorField( "Minimum 9 cyfr", field );
+        setErrorField( messages[$('html').attr('lang')].phone, field );
       }
     }
 
@@ -77,7 +93,7 @@ $(document).ready(function () {
     function valideFieldText(field) {
       let fieldValue = $(field).val();
       if ( fieldValue.length <= 2 ) {
-        setErrorField( "Min. 3 znaki", field );
+        setErrorField( messages[$('html').attr('lang')].text, field );
       }
     }
 
@@ -85,10 +101,10 @@ $(document).ready(function () {
 
     function validRequired( field ) {
         if ( !$( field ).attr('type') !== "checkbox" && $( field ).val().length == 0 ) {
-            setErrorField( "To pole jest wymagane", field );
+            setErrorField( messages[$('html').attr('lang')].required, field );
         }
         if ( $( field ).attr('type') === "checkbox" && !$( field ).prop( 'checked' ) ) {
-            setErrorField( 'To pole musi zostać zaznaczone', field );
+            setErrorField( messages[$('html').attr('lang')].required_checkbox, field );
         }
 
     }
