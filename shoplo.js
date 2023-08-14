@@ -88,7 +88,7 @@ $(document).ready(function () {
             setErrorField( "To pole jest wymagane", field );
         }
         if ( $( field ).attr('type') === "checkbox" && !$( field ).prop( 'checked' ) ) {
-            setErrorField( 'To pole musi zostaÄ zaznaczone', field );
+            setErrorField( 'To pole musi zostać zaznaczone', field );
         }
 
     }
