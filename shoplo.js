@@ -158,7 +158,7 @@ $(document).ready(function () {
             var formData = bindDataFromForm($(form));
 
             $.ajax({
-                url: "https://www.webmad.pl/test.php",
+                url: "https://www.shoper.pl/ajax.php",
                 headers: {},
                 method: "POST",
                 data: formData,
