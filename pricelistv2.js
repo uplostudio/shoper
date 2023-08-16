@@ -1,3 +1,7 @@
+const currency = {
+  'pl': 'zł',
+  'en': 'PLN'
+}
 // if user uses back/forward buttons
 
 const observer = new PerformanceObserver((list) => {
@@ -97,8 +101,14 @@ window.addEventListener("load", () => {
   // accordion first child
   let accordionFirstChild = document.querySelectorAll("[accordion='firstChild']");
 
-  let net = "netto miesięcznie";
-  let gross = "brutto miesięcznie";
+  let net = {
+    'pl': "netto miesięcznie",
+    'en': "net monthly"
+  };
+  let gross = {
+    'pl': "brutto miesięcznie",
+    'en': "gross monthly"
+  }
 
   //  grab form
   if ( document.querySelector("[app='custom_form']") ) {
@@ -318,9 +328,9 @@ window.addEventListener("load", () => {
         boxEnterprise = document.querySelector("#pricebox-enterprise");
         // gross & monthly
         if (checkboxPrice.checked && !checkboxYear.checked) {
-          boxLabelStandard.textContent = gross;
-          boxLabelPremium.textContent = gross;
-          boxLabelEnterprise.textContent = gross;
+          boxLabelStandard.textContent = gross[$('html').attr('lang')];;
+          boxLabelPremium.textContent = gross[$('html').attr('lang')];;
+          boxLabelEnterprise.textContent = gross[$('html').attr('lang')];;
           priceBoxStandard.textContent = standardMainPartGross;
           priceBoxStandard.nextElementSibling.children[0].textContent = ``;
           priceBoxPremium.textContent = premiumMainPartGross;
@@ -335,9 +345,9 @@ window.addEventListener("load", () => {
           enterpriseBadge.style.display = "none";
           // net & monthly
         } else if (!checkboxPrice.checked && !checkboxYear.checked) {
-          boxLabelStandard.textContent = net;
-          boxLabelPremium.textContent = net;
-          boxLabelEnterprise.textContent = net;
+          boxLabelStandard.textContent = net[$('html').attr('lang')];
+          boxLabelPremium.textContent = net[$('html').attr('lang')];
+          boxLabelEnterprise.textContent = net[$('html').attr('lang')];
           priceBoxStandard.textContent = standardMainPartNet;
           priceBoxStandard.nextElementSibling.children[0].textContent = ``;
           priceBoxPremium.textContent = premiumMainPartNet;
@@ -352,35 +362,35 @@ window.addEventListener("load", () => {
           enterpriseBadge.style.display = "none";
           // gross & yearly
         } else if (checkboxPrice.checked && checkboxYear.checked) {
-          boxLabelStandard.textContent = gross;
-          boxLabelPremium.textContent = gross;
-          boxLabelEnterprise.textContent = gross;
+          boxLabelStandard.textContent = gross[$('html').attr('lang')];;
+          boxLabelPremium.textContent = gross[$('html').attr('lang')];;
+          boxLabelEnterprise.textContent = gross[$('html').attr('lang')];;
           priceBoxStandard.textContent = standardMainPartGrossY;
           priceBoxStandard.nextElementSibling.children[0].textContent = `,${standardSparePartGrossY}`;
           priceBoxPremium.textContent = premiumMainPartGrossY;
           priceBoxPremium.nextElementSibling.children[0].textContent = `,${premiumSparePartGrossY}`;
           priceBoxEnterprise.textContent = enterpriseMainPartGrossY;
           priceBoxEnterprise.nextElementSibling.children[0].textContent = ``;
-          priceBoxStandardRegular.textContent = `${standardWholePriceGrossComma} zł`;
-          priceBoxPremiumRegular.textContent = `${premiumWholePriceGrossComma} zł`;
-          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceGrossComma} zł`;
+          priceBoxStandardRegular.textContent = `${standardWholePriceGrossComma} ${currency[$('html').attr('lang')]}`;
+          priceBoxPremiumRegular.textContent = `${premiumWholePriceGrossComma} ${currency[$('html').attr('lang')]}`;
+          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceGrossComma} ${currency[$('html').attr('lang')]}`;
           standardBadge.style.display = "block";
           premiumBadge.style.display = "block";
           enterpriseBadge.style.display = "block";
         } else {
           // net & yearly
-          boxLabelStandard.textContent = net;
-          boxLabelPremium.textContent = net;
-          boxLabelEnterprise.textContent = net;
+          boxLabelStandard.textContent = net[$('html').attr('lang')];;
+          boxLabelPremium.textContent = net[$('html').attr('lang')];;
+          boxLabelEnterprise.textContent = net[$('html').attr('lang')];;
           priceBoxStandard.textContent = standardMainPartNetY;
           priceBoxStandard.nextElementSibling.children[0].textContent = ``;
           priceBoxPremium.textContent = premiumMainPartNetY;
           priceBoxPremium.nextElementSibling.children[0].textContent = ``;
           priceBoxEnterprise.textContent = enterpriseMainPartNetY;
           priceBoxEnterprise.nextElementSibling.children[0].textContent = ``;
-          priceBoxStandardRegular.textContent = `${standardWholePriceNetComma} zł`;
-          priceBoxPremiumRegular.textContent = `${premiumWholePriceNetComma} zł`;
-          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceNetComma} zł`;
+          priceBoxStandardRegular.textContent = `${standardWholePriceNetComma} ${currency[$('html').attr('lang')]}`;
+          priceBoxPremiumRegular.textContent = `${premiumWholePriceNetComma} ${currency[$('html').attr('lang')]}`;
+          priceBoxEnterpriseRegular.textContent = `${enterpriseWholePriceNetComma} ${currency[$('html').attr('lang')]}`;
           standardBadge.style.display = "block";
           premiumBadge.style.display = "block";
           enterpriseBadge.style.display = "block";
