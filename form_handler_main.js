@@ -1,6 +1,5 @@
 let originalTrigger;
 let error;
-dataLayer = window.dataLayer || [];
 // validation patterns
 
 const validationPatterns = [
