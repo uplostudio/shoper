@@ -18,10 +18,12 @@ let inputValsArrFiltered;
 // gclid
 const urlSearchParams = new URLSearchParams(window.location.search);
 let gclidValue = urlSearchParams.get("gclid") ?? "";
+let storedGclid = localStorage.getItem("gclid");
 
-if (gclidInput) {
-  gclidInput.setAttribute("value", gclidValue);
-} else {
+if (gclidValue) {
+  if (storedGclid !== gclidValue) {
+    localStorage.setItem("gclid", gclidValue);
+  }
 }
 
 // fbclid
