@@ -15,26 +15,25 @@ let inputVals;
 let inputValsArr = [];
 let inputValsArrFiltered;
 
-// gclid
 const urlSearchParams = new URLSearchParams(window.location.search);
 // gclid
+let gclidValue = urlSearchParams.get("gclid") || "";
 let storedGclid = localStorage.getItem("gclid");
-let gclidValue = storedGclid ? storedGclid : urlSearchParams.get("gclid") || "";
 
 if (gclidValue) {
-  if (storedGclid !== gclidValue) {
-    localStorage.setItem("gclid", gclidValue);
-  }
+  localStorage.setItem("gclid", gclidValue);
+} else if (storedGclid) {
+  gclidValue = storedGclid;
 }
 
 // fbclid
+let fbclidValue = urlSearchParams.get("fbclid") || "";
 let storedFbclid = localStorage.getItem("fbclid");
-let fbclidValue = storedFbclid ? storedFbclid : urlSearchParams.get("fbclid") || "";
 
 if (fbclidValue) {
-  if (storedFbclid !== fbclidValue) {
-    localStorage.setItem("fbclid", fbclidValue);
-  }
+  localStorage.setItem("fbclid", fbclidValue);
+} else if (storedFbclid) {
+  fbclidValue = storedFbclid;
 }
 
 const intervalId = window.setTimeout(function () {
