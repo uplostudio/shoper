@@ -26,6 +26,7 @@ window.addEventListener("load", () => {
     "/regulamin-kampanii/google-ads/",
     "/oferta-shoper-plus/",
     "/oferta-symfonia/",
+    "/oferta-sklep-polaczony-z-allegro/",
   ];
 
   const subpage = window.location.pathname;
