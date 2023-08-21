@@ -123,21 +123,20 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   const inputElements = $(formElement).find("input, textarea");
   let countryValues = [];
   let marketplaceValues = [];
-  $(inputElements).each(function () {
-    let inputValue = $(this).val();
-    const inputName = $(this).data("form");
+  inputElements.forEach((inputElement) => {
+    let inputValue = inputElement.value;
+    const inputName = inputElement.getAttribute("data-form");
 
-    if ($(this).attr("type") === "checkbox") {
-      inputValue = $(this)
-        .next()
-        .text()
-        .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
-        .trim();
-
-      if (inputName === "country" && $(this).prop("checked")) {
+    if (inputElement.type === "checkbox") {
+      inputValue = inputElement.nextElementSibling.textContent.replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "").trim();
+      if (inputName === "country" && inputElement.checked) {
         countryValues.push(inputValue);
-      } else if (inputName === "marketplace" && $(this).prop("checked")) {
+      } else if (inputName === "marketplace" && inputElement.checked) {
         marketplaceValues.push(inputValue);
+      }
+    } else if (inputElement.type === "radio") {
+      if (inputElement.checked) {
+        formData.append(inputName, inputValue);
       }
     } else if (inputValue !== "") {
       formData.append(inputName, inputValue);
