@@ -17,8 +17,9 @@ let inputValsArrFiltered;
 
 // gclid
 const urlSearchParams = new URLSearchParams(window.location.search);
-let gclidValue = urlSearchParams.get("gclid") ?? "";
+// gclid
 let storedGclid = localStorage.getItem("gclid");
+let gclidValue = storedGclid ? storedGclid : urlSearchParams.get("gclid") || "";
 
 if (gclidValue) {
   if (storedGclid !== gclidValue) {
@@ -27,8 +28,8 @@ if (gclidValue) {
 }
 
 // fbclid
-let fbclidValue = urlSearchParams.get("fbclid") ?? "";
 let storedFbclid = localStorage.getItem("fbclid");
+let fbclidValue = storedFbclid ? storedFbclid : urlSearchParams.get("fbclid") || "";
 
 if (fbclidValue) {
   if (storedFbclid !== fbclidValue) {
