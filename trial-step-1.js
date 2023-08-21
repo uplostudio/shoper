@@ -28,10 +28,12 @@ if (gclidValue) {
 
 // fbclid
 let fbclidValue = urlSearchParams.get("fbclid") ?? "";
+let storedFbclid = localStorage.getItem("fbclid");
 
-if (fbclidInput) {
-  fbclidInput.setAttribute("value", fbclidValue);
-} else {
+if (fbclidValue) {
+  if (storedFbclid !== fbclidValue) {
+    localStorage.setItem("fbclid", fbclidValue);
+  }
 }
 
 const intervalId = window.setTimeout(function () {
