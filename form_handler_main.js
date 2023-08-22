@@ -41,12 +41,6 @@ function createEnterKeydownHandler(inputElement, submitTriggerElement) {
   };
 }
 
-/*
-    WF domyślnie obsługuje accessibility szkoda że nie wykorzystujemy wbudowanej logiki w przeglądarkę dla formularzy, zmusza to nas do pisania dodatkowego kodu.
-*/
-
-// run valication for each input
-
 function validateInput(input) {
   const name = $(input).data("form");
 
@@ -89,8 +83,8 @@ $("input").each(function () {
   const submitButton = input.closest("form").find("[data-form='submit']");
 
   input.on("blur", handleBlur);
-  input.on("keydown", function () {
-    createEnterKeydownHandler(input, submitButton);
+  input.on("keydown", function (e) {
+    createEnterKeydownHandler(input, submitButton)(e);
   });
 });
 
@@ -99,7 +93,7 @@ function validateForm(formElement) {
 
   let errors = 0;
 
-  $("input").each(function () {
+  inputs.each(function () {
     if (validateInput($(this))) {
       errors++;
     }
@@ -122,19 +116,30 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   const inputElements = $(formElement).find("input, textarea");
   let countryValues = [];
   let marketplaceValues = [];
-  inputElements.forEach((inputElement) => {
-    let inputValue = inputElement.value;
-    const inputName = inputElement.getAttribute("data-form");
+  let createOrMoveShopValues = [];
+  // declare the new array
 
-    if (inputElement.type === "checkbox") {
-      inputValue = inputElement.nextElementSibling.textContent.replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "").trim();
-      if (inputName === "country" && inputElement.checked) {
+  inputElements.each(function () {
+    let inputElement = $(this);
+    let inputValue = inputElement.val();
+    const inputName = inputElement.attr("data-form");
+
+    if (inputElement.attr("type") === "checkbox") {
+      inputValue = inputElement
+        .next()
+        .text()
+        .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
+        .trim();
+
+      if (inputName === "country" && inputElement.is(":checked")) {
         countryValues.push(inputValue);
-      } else if (inputName === "marketplace" && inputElement.checked) {
+      } else if (inputName === "marketplace" && inputElement.is(":checked")) {
         marketplaceValues.push(inputValue);
+      } else if (inputName.startsWith("create_or_move_shop") && inputElement.is(":checked")) {
+        createOrMoveShopValues.push(inputValue);
       }
-    } else if (inputElement.type === "radio") {
-      if (inputElement.checked) {
+    } else if (inputElement.attr("type") === "radio") {
+      if (inputElement.is(":checked")) {
         formData.append(inputName, inputValue);
       }
     } else if (inputValue !== "") {
@@ -142,47 +147,51 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
     }
   });
 
-  function appendValues(formData, countryValues, marketplaceValues) {
-    if (countryValues.length > 0) {
-      formData.append("country", countryValues);
-    }
+  function appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues) {
+    countryValues.forEach((value) => {
+      formData.append("country", value);
+    });
 
-    if (marketplaceValues.length > 0) {
-      formData.append("marketplace", marketplaceValues);
-    }
-  }
+    marketplaceValues.forEach((value) => {
+      formData.append("marketplace", value);
+    });
 
-  function makeAjaxRequest(urlN, formData, formElement, loader, form) {
-    $.ajax({
-      type: "POST",
-      url: urlN,
-      data: formData,
-      processData: false,
-      contentType: false,
-      success: function (data) {
-        loader.show();
-        if (formData.has("host")) {
-          if (data.status === 1) {
-            $(formElement).siblings(".error-message").hide();
-            loader.hide();
-            window.location.href = data.redirect;
-            return;
-          } else {
-            loader.hide();
-            $(formElement).siblings(".error-message").show();
-            return;
-          }
-        }
-        successResponse(formElement);
-        $(form).parent().hide();
-        $(form).parent().next().show();
-      },
-      error: function () {
-        errorResponse(formElement);
-        $(formElement).siblings(".error-message").show();
-      },
+    createOrMoveShopValues.forEach((value, i) => {
+      formData.append(`create_or_move_shop[${i}]`, value);
     });
   }
+
+  appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues);
+
+  $.ajax({
+    type: "POST",
+    url: urlN,
+    data: formData,
+    processData: false,
+    contentType: false,
+    success: function (data) {
+      loader.show();
+      if (formData.has("host")) {
+        if (data.status === 1) {
+          $(formElement).siblings(".error-message").hide();
+          loader.hide();
+          window.location.href = data.redirect;
+          return;
+        } else {
+          loader.hide();
+          $(formElement).siblings(".error-message").show();
+          return;
+        }
+      }
+      successResponse(formElement);
+      $(form).parent().hide();
+      $(form).parent().next().show();
+    },
+    error: function () {
+      errorResponse(formElement);
+      $(formElement).siblings(".error-message").show();
+    },
+  });
 }
 
 // send data, if no errros
