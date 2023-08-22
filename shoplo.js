@@ -163,9 +163,8 @@ $(document).ready(function () {
                 method: "POST",
                 data: formData,
                 success: function (data) {
-                  let response = $.parseJSON( data );
-                  if ( response.message ) {
-                    $(form).next().find('div').text( response.message );
+                  if ( data.message ) {
+                    $(form).next().find('div').text( data.message );
                   }
 
                   $(document).trigger('submitSuccess', form );
