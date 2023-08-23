@@ -36,7 +36,6 @@ window.addEventListener("load", () => {
         };
 
         dataLayer.push(data);
-        console.log(dataLayer);
       }
     } else {
       document.querySelector("[app='custom_form']").setAttribute("package", "7");
