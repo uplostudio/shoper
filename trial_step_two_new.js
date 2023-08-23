@@ -191,7 +191,7 @@ function sendFormDataToURL(urlNTrial, formElement, form, loader) {
     contentType: false,
     success: function (data) {
       loader.show();
-      successResponse(formElement);
+      successResponse(formElement, data.shop_id, data.client_id );
       if (data.status === 1) {
         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       }
