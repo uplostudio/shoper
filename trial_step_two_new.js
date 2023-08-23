@@ -263,7 +263,7 @@ function successResponse(formElement) {
     data = {
       event: "formSubmitSuccess",
       eventCategory: "Button modal form sent",
-      // client_id: client_id,
+      client_id,
       formId: $(formElement).attr("id"),
       "shop-id": data.license_id,
       eventAction: $(formElement).find("#label").text(),
