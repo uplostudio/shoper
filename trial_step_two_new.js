@@ -191,7 +191,7 @@ function sendFormDataToURL(urlNTrial, formElement, form, loader) {
     contentType: false,
     success: function (data) {
       loader.show();
-      successResponse(formElement, data.shop_id, data.client_id );
+      successResponse( formElement );
       if (data.status === 1) {
         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       }
@@ -246,7 +246,7 @@ $(document).ready(function () {
   });
 });
 
-function successResponse(formElement, shop_id, client_id) {
+function successResponse(formElement) {
   let data;
   if (window.dataLayer) {
     data = {
@@ -263,14 +263,22 @@ function successResponse(formElement, shop_id, client_id) {
     data = {
       event: "formSubmitSuccess",
       eventCategory: "Button modal form sent",
-      client_id,
       formId: $(formElement).attr("id"),
-      "shop-id": shop_id,
       eventAction: $(formElement).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
       eventHistory: window.history,
     };
+
+    var trialEmailSubmitted = dataLayer.find( element => element['shop-id'] );
+      if ( trialEmailSubmitted ) {
+        Object.assign( data, { 'shop-id': trialEmailSubmitted['shop-id'] } );
+      }
+
+      trialEmailSubmitted = dataLayer.find( element => element['client_id'] );
+      if ( trialEmailSubmitted ) {
+        Object.assign( data, { 'client_id': trialEmailSubmitted['client_id'] } );
+      }
 
     window.dataLayer.push(data);
   }
