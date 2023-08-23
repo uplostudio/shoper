@@ -246,7 +246,7 @@ $(document).ready(function () {
   });
 });
 
-function successResponse(formElement) {
+function successResponse(formElement, shop_id, client_id) {
   let data;
   if (window.dataLayer) {
     data = {
@@ -265,7 +265,7 @@ function successResponse(formElement) {
       eventCategory: "Button modal form sent",
       client_id,
       formId: $(formElement).attr("id"),
-      "shop-id": data.license_id,
+      "shop-id": shop_id,
       eventAction: $(formElement).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
@@ -280,7 +280,7 @@ function errorTResponse(formElement) {
   let data;
   if (window.dataLayer) {
     data = {
-      event: "formSubmiterrorT",
+      event: "formSubmiterror",
       formId: $(formElement).attr("id"),
       eventCategory: "Button modal form errorT",
       eventAction: $(formElement).find("#label").text(),
