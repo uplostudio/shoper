@@ -149,11 +149,11 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
 
   function appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues) {
     countryValues.forEach((value) => {
-      formData.append("country", value);
+      formData.append(`country[${i}]`, value);
     });
 
     marketplaceValues.forEach((value) => {
-      formData.append("marketplace", value);
+      formData.append(`marketplace[${i}]`, value);
     });
 
     createOrMoveShopValues.forEach((value, i) => {
