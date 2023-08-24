@@ -163,8 +163,6 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
 
   appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues);
 
-  appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues);
-
   $.ajax({
     type: "POST",
     url: urlN,
