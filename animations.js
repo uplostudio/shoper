@@ -1,7 +1,5 @@
 let lineAnimationTime = 1000;
-if (window.location.pathname === "/webflow-development-landing") {
-  lineAnimationTime = 2500;
-}
+
 setTimeout(() => {
   $("#line-load-animate").addClass("animate");
 }, lineAnimationTime);
@@ -10,13 +8,6 @@ setTimeout(() => {
 $(".nav__burger-inner").on("click", function () {
   $("body").toggleClass("overflow-hidden");
 });
-
-//close modal
-// $(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", function () {
-//   $(".modal--open").removeClass("modal--open");
-//   $(document.body).css("overflow", "auto");
-//   isFromBanner = false;
-// });
 
 //close modal
 $(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", function () {
