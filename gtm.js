@@ -1,7 +1,3 @@
-// without this, dataLayer sometimes gets 'undefined'
-
-window.dataLayer = window.dataLayer || [];
-
 window.addEventListener("load", () => {
   try {
     let gtmBanner = document.querySelector("#top-bar-header");

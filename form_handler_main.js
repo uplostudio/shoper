@@ -240,7 +240,6 @@ function pushDataToDataLayer(formElement, eventCategory) {
     data.lead_offer = leadOfferText;
   }
 
-  window.dataLayer = window.dataLayer || [];
   window.dataLayer.push(data);
 }
 
