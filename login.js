@@ -1,6 +1,6 @@
 // Required Attributes: form[app='login'], input[app='host']
 
-$("[data-app='open_login_modal_button']").on("click", function () {
+$("[data-data-app='open_login_modal_button']").on("click", function () {
   $("[data-app='login_modal'").addClass("modal--open");
   $(document.body).toggleClass("overflow-hidden", true);
 });
