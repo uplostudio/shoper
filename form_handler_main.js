@@ -148,11 +148,11 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   });
 
   function appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues) {
-    countryValues.forEach((value) => {
+    countryValues.forEach((value, i) => {
       formData.append(`country[${i}]`, value);
     });
 
-    marketplaceValues.forEach((value) => {
+    marketplaceValues.forEach((value, i) => {
       formData.append(`marketplace[${i}]`, value);
     });
 
