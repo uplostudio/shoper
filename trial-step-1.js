@@ -76,7 +76,7 @@ trialStepOneEmailInputs.forEach((n) => {
     if (e.key === "Enter") {
       e.preventDefault();
       this.blur();
-      const submitTrigger = this.form.querySelector("[app='submit-step-one']");
+      const submitTrigger = this.form.querySelector("[data-app='submit-step-one']");
       submitTrigger.click();
     }
   });
@@ -110,7 +110,7 @@ trialStepOneEmailInputs.forEach((n) => {
   });
 });
 
-const createTrialStepOne = document.querySelectorAll("[app='submit-step-one']");
+const createTrialStepOne = document.querySelectorAll("[data-app='submit-step-one']");
 
 const handleFormSubmitSuccess = (data, form, client_id) => {
   const errorInfo = form.parentElement.querySelector(".w-form-fail");
@@ -127,7 +127,7 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
     trialStepOneModal.classList.remove("modal--open");
     const trialDomain = document.querySelector("[app='trial-domain']");
     trialDomain.innerHTML = data.host;
-    document.querySelector("[modal='create_trial_step2']").classList.add("modal--open");
+    document.querySelector("[data-modal='create_trial_step2']").classList.add("modal--open");
     loader.style.display = "none";
     $(document.body).css("overflow", "hidden");
 
@@ -152,7 +152,7 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
       event: "myTrackEvent",
       formId: form.parentElement.getAttribute("app"),
       eventCategory: "Button form sent",
-      eventAction: form.querySelector("[app='submit-step-one']").textContent,
+      eventAction: form.querySelector("[data-app='submit-step-one']").textContent,
       eventType: emailValue,
       eventLabel: window.location.pathname,
     });
@@ -161,7 +161,7 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
       eventName: "formSubmitError",
       formId: form.parentElement.getAttribute("app"),
       eventCategory: "Button form error",
-      eventAction: form.querySelector("[app='submit-step-one']").textContent,
+      eventAction: form.querySelector("[data-app='submit-step-one']").textContent,
       eventLabel: window.location.pathname,
       eventType: emailValue,
       eventHistory: window.history,
@@ -171,7 +171,7 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
       event: "myTrackEvent",
       formId: form.parentElement.getAttribute("app"),
       eventCategory: "Button form error",
-      eventAction: form.querySelector("[app='submit-step-one']").textContent,
+      eventAction: form.querySelector("[data-app='submit-step-one']").textContent,
       eventType: emailValue,
       eventLabel: window.location.pathname,
     });

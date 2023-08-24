@@ -61,16 +61,11 @@ Globally
 1. Button `[app='open_consultation_modal_button']` to open popup
 2. Symbol `modal_campaign`
 3. Form `[app='campaign']` (already setup in Webflow Symbol)
-4. Inputs:
-   `[app='email_campaign']`
-   `[app='phone_campaign']`
-   `[app='url_campaign']` (already setup in Webflow Symbol)
+4. Inputs: `[app='email_campaign']` `[app='phone_campaign']` `[app='url_campaign']` (already setup in Webflow Symbol)
 5. Adding in the footer one of campaign actions: `send_sc_offer` `send_mail` `send_mail_allegro`
 
 ```js
-document
-  .querySelector("[app='campaign']")
-  .setAttribute("action", "send_sc_offer");
+document.querySelector("[app='campaign']").setAttribute("action", "send_sc_offer");
 ```
 
 ## contact.js
@@ -86,12 +81,7 @@ Contact Page
 ### Requires:
 
 1. Form `[app='send_contact']`
-2. Inputs:
-   `[app='email_campaign']`
-   `[app='phone_campaign']`
-   `[app='url_campaign']`
-   `[app='subject_contact']`
-   `[app='body_contact']`
+2. Inputs: `[app='email_campaign']` `[app='phone_campaign']` `[app='url_campaign']` `[app='subject_contact']` `[app='body_contact']`
 3. Adding in the footer script
 
 ```js
@@ -110,11 +100,10 @@ Globally
 
 ### Requires:
 
-1. Button `[app='open_login_modal_button']` to open popup
+1. Button `[data-app='open_login_modal_button']` to open popup
 2. Symbol `modal_login_and_trialstep1`
 3. Form `[app='login']` (already setup in Webflow Symbol)
-4. Inputs:
-   `[app='host']` (already setup in Webflow Symbol)
+4. Inputs: `[app='host']` (already setup in Webflow Symbol)
 5. Adding in the footer text which will appear in Modal/Popup
 
 ```js
@@ -147,10 +136,7 @@ Home Page
 
 ### Requires:
 
-1. Text elements:
-   `[app='promo_time']`
-   `[app='promo_price']`
-   `[app='promo_title']`
+1. Text elements: `[app='promo_time']` `[app='promo_price']` `[app='promo_title']`
 2. Adding in the footer script
 
 ```js
@@ -177,8 +163,7 @@ If modal is being used:
 If it's a new form:
 
 3. Form `[app='create_trial_step1']`
-4. Inputs:
-   `[app='email']`
+4. Inputs: `[app='email']`
 
 ## trial-step-2.js
 
@@ -197,8 +182,7 @@ If modal is being used:
 1. Create Trial Step 1
 2. Symbol `modal_trial-step-2`
 3. Form `[app='create_trial_step2']` (Already set up in Webflow Symbol)
-4. Inputs:
-   `[app='phone']`(Already set up in Webflow Symbol)
+4. Inputs: `[app='phone']`(Already set up in Webflow Symbol)
 
 ## regex_patterns.js /work in progress/
 
