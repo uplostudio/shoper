@@ -1,9 +1,9 @@
 // Required Attributes: form[app='login'], input[app='host']
 
-$("[data-app='open_login_modal_button']").on("click", function () {
-  $("[data-app='login_modal'").addClass("modal--open");
-  $(document.body).toggleClass("overflow-hidden", true);
-});
+// $("[data-app='open_login_modal_button']").on("click", function () {
+//   $("[data-app='login_modal'").addClass("modal--open");
+//   $(document.body).toggleClass("overflow-hidden", true);
+// });
 try {
   //  grab form
   formWrapper = document.querySelector("[app='login']");
