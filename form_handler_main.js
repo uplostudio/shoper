@@ -148,18 +148,20 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   });
 
   function appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues) {
-    countryValues.forEach((value, i) => {
-      formData.append(`country[${i}]`, value);
-    });
+    if (countryValues.length) {
+      formData.append("country", JSON.stringify(countryValues));
+    }
 
-    marketplaceValues.forEach((value, i) => {
-      formData.append(`marketplace[${i}]`, value);
-    });
+    if (marketplaceValues.length) {
+      formData.append("marketplace", JSON.stringify(marketplaceValues));
+    }
 
     createOrMoveShopValues.forEach((value, i) => {
       formData.append(`create_or_move_shop[${i}]`, value);
     });
   }
+
+  appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues);
 
   appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues);
 
