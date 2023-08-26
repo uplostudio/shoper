@@ -117,6 +117,8 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
 
   let outputValues = {};
 
+  let dataActionLoanValue = $(formElement).attr("data-action") === "loan_decision_contact";
+
   inputElements.each(function () {
     let inputElement = $(this);
     let inputValue = inputElement.val();
@@ -127,24 +129,29 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
 
       // Handle checkboxes and radio buttons
       if (inputType === "checkbox" || inputType === "radio") {
-        if (inputElement.is(":checked")) {
+        if (dataActionLoanValue) {
+          inputValue = inputElement.is(":checked") ? "1" : "0";
+        } else if (inputElement.is(":checked")) {
           inputValue = inputElement
             .next()
             .text()
             .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
             .trim();
+        } else {
+          // Continue to the next iteration if checkbox/radio not checked
+          return;
+        }
 
-          // Add to existing array or create a new one
-          if (outputValues.hasOwnProperty(inputName) && Array.isArray(outputValues[inputName])) {
-            outputValues[inputName].push(inputValue);
-          } else if (outputValues.hasOwnProperty(inputName)) {
-            outputValues[inputName] = [outputValues[inputName], inputValue];
-          } else {
-            outputValues[inputName] = inputValue;
-          }
+        // Add to existing array or create a new one
+        if (outputValues.hasOwnProperty(inputName) && Array.isArray(outputValues[inputName])) {
+          outputValues[inputName].push(inputValue);
+        } else if (outputValues.hasOwnProperty(inputName)) {
+          outputValues[inputName] = [outputValues[inputName], inputValue];
+        } else {
+          outputValues[inputName] = inputValue;
         }
       } else if (inputValue !== "") {
-        formData.append(inputName, inputValue);
+        outputValues[inputName] = inputValue;
       }
     } else if (inputElement.is("select")) {
       // If multiple selections for a field exist, create an array, otherwise store as a single value
