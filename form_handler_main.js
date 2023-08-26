@@ -114,10 +114,8 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
   });
 
   const inputElements = $(formElement).find("input, textarea, select");
-  let countryValues = [];
-  let marketplaceValues = [];
-  let createOrMoveShopValues = [];
-  let selectValues = [];
+
+  let outputValues = {};
 
   inputElements.each(function () {
     let inputElement = $(this);
@@ -125,54 +123,42 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
     const inputName = inputElement.attr("data-form");
 
     if (inputElement.is("input")) {
-      if (inputElement.attr("type") === "checkbox") {
-        inputValue = inputElement
-          .next()
-          .text()
-          .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
-          .trim();
+      const inputType = inputElement.attr("type");
 
-        if (inputName === "country" && inputElement.is(":checked")) {
-          countryValues.push(inputValue);
-        } else if (inputName === "marketplace" && inputElement.is(":checked")) {
-          marketplaceValues.push(inputValue);
-        } else if (inputName.startsWith("create_or_move_shop") && inputElement.is(":checked")) {
-          createOrMoveShopValues.push(inputValue);
-        }
-      } else if (inputElement.attr("type") === "radio") {
+      // Handle checkboxes and radio buttons
+      if (inputType === "checkbox" || inputType === "radio") {
         if (inputElement.is(":checked")) {
-          formData.append(inputName, inputValue);
+          inputValue = inputElement
+            .next()
+            .text()
+            .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
+            .trim();
+
+          if (!outputValues.hasOwnProperty(inputName)) {
+            outputValues[inputName] = [];
+          }
+
+          outputValues[inputName].push(inputValue);
         }
       } else if (inputValue !== "") {
         formData.append(inputName, inputValue);
       }
     } else if (inputElement.is("select")) {
-      selectValues.push({
-        name: inputName,
-        value: inputValue,
-      });
+      if (!outputValues.hasOwnProperty(inputName)) {
+        outputValues[inputName] = [];
+      }
+
+      outputValues[inputName].push(inputValue);
     }
   });
 
-  function appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues, selectValues) {
-    if (countryValues.length) {
-      formData.append("country", JSON.stringify(countryValues));
+  Object.keys(outputValues).forEach((inputName) => {
+    if (Array.isArray(outputValues[inputName])) {
+      formData.append(inputName, JSON.stringify(outputValues[inputName]));
+    } else {
+      formData.append(inputName, outputValues[inputName]);
     }
-
-    if (marketplaceValues.length) {
-      formData.append("marketplace", JSON.stringify(marketplaceValues));
-    }
-
-    createOrMoveShopValues.forEach((value, i) => {
-      formData.append(`create_or_move_shop[${i}]`, value);
-    });
-
-    selectValues.forEach(({ name, value }) => {
-      formData.append(name, value);
-    });
-  }
-
-  appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues, selectValues);
+  });
 
   $.ajax({
     type: "POST",
