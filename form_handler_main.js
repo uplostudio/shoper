@@ -113,41 +113,48 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
     }
   });
 
-  const inputElements = $(formElement).find("input, textarea");
+  const inputElements = $(formElement).find("input, textarea, select");
   let countryValues = [];
   let marketplaceValues = [];
   let createOrMoveShopValues = [];
-  // declare the new array
+  let selectValues = [];
 
   inputElements.each(function () {
     let inputElement = $(this);
     let inputValue = inputElement.val();
     const inputName = inputElement.attr("data-form");
 
-    if (inputElement.attr("type") === "checkbox") {
-      inputValue = inputElement
-        .next()
-        .text()
-        .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
-        .trim();
+    if (inputElement.is("input")) {
+      if (inputElement.attr("type") === "checkbox") {
+        inputValue = inputElement
+          .next()
+          .text()
+          .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
+          .trim();
 
-      if (inputName === "country" && inputElement.is(":checked")) {
-        countryValues.push(inputValue);
-      } else if (inputName === "marketplace" && inputElement.is(":checked")) {
-        marketplaceValues.push(inputValue);
-      } else if (inputName.startsWith("create_or_move_shop") && inputElement.is(":checked")) {
-        createOrMoveShopValues.push(inputValue);
-      }
-    } else if (inputElement.attr("type") === "radio") {
-      if (inputElement.is(":checked")) {
+        if (inputName === "country" && inputElement.is(":checked")) {
+          countryValues.push(inputValue);
+        } else if (inputName === "marketplace" && inputElement.is(":checked")) {
+          marketplaceValues.push(inputValue);
+        } else if (inputName.startsWith("create_or_move_shop") && inputElement.is(":checked")) {
+          createOrMoveShopValues.push(inputValue);
+        }
+      } else if (inputElement.attr("type") === "radio") {
+        if (inputElement.is(":checked")) {
+          formData.append(inputName, inputValue);
+        }
+      } else if (inputValue !== "") {
         formData.append(inputName, inputValue);
       }
-    } else if (inputValue !== "") {
-      formData.append(inputName, inputValue);
+    } else if (inputElement.is("select")) {
+      selectValues.push({
+        name: inputName,
+        value: inputValue,
+      });
     }
   });
 
-  function appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues) {
+  function appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues, selectValues) {
     if (countryValues.length) {
       formData.append("country", JSON.stringify(countryValues));
     }
@@ -159,9 +166,13 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
     createOrMoveShopValues.forEach((value, i) => {
       formData.append(`create_or_move_shop[${i}]`, value);
     });
+
+    selectValues.forEach(({ name, value }) => {
+      formData.append(name, value);
+    });
   }
 
-  appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues);
+  appendValues(formData, countryValues, marketplaceValues, createOrMoveShopValues, selectValues);
 
   $.ajax({
     type: "POST",
