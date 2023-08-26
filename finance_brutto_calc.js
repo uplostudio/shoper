@@ -1,17 +1,16 @@
-$(document).ready(function () {
-  let bruttoForm = $("#wf-form-brutto-form");
-  let slider = $("#brutto_slider")[0];
-  let totalCost = $("[app='total_cost']");
-  let repaymentAmmount = $("[app='repayment_amount']");
-  let monthlyCost = $("[app='monthly_cost']");
-  let rrso = $("[app='annual_percentage_rate_of_charge']");
-  let installmentRadios = $("input[name='installment_amount']");
-  let manualInput = $("input[name='manual-input']");
+window.addEventListener("load", () => {
+  let bruttoForm = document.querySelector("#wf-form-brutto-form");
+  var slider = document.getElementById("brutto_slider");
+  let totalCost = document.querySelector("[app='total_cost']");
+  let repaymentAmmount = document.querySelector("[app='repayment_amount']");
+  let monthlyCost = document.querySelector("[app='monthly_cost']");
+  let rrso = document.querySelector("[app='annual_percentage_rate_of_charge']");
+  let installmentRadios = document.querySelectorAll("input[name='installment_amount']");
+  let manualInput = document.querySelector("input[name='manual-input']");
   let amountValue = 5000;
-
   installmentRadios[4].checked = true;
 
-  bruttoForm.on("submit", function (e) {
+  bruttoForm.addEventListener("submit", (e) => {
     e.preventDefault();
     e.stopPropagation();
   });
@@ -30,54 +29,25 @@ $(document).ready(function () {
     },
   });
 
-  let stepSliderValueElement = $("#slider-step-value");
+  let stepSliderValueElement = document.getElementById("slider-step-value");
 
   slider.noUiSlider.on("update", function (values, handle) {
-    // Removed redundant steps since jQuery and fetch API supports promises by default
-    updateValues(values[handle]);
-  });
+    stepSliderValueElement.innerHTML = `${values[handle]} zł`;
+    manualInput.value = values[handle];
+    amountValue = values[handle];
+    let installmentPeriod = document.querySelector('input[name="installment_amount"]:checked').value;
 
-  bruttoForm.on("change", function () {
-    // Removed redundant steps since jQuery and fetch API supports promises by default
-    updateValues(amountValue);
-  });
-
-  manualInput.on("change", function (e) {
-    if (manualInput.val() < 5000 || manualInput.val() > 50000) {
-      manualInput.next().css("display", "flex");
-    } else {
-      manualInput.next().css("display", "none");
-    }
-
-    slider.noUiSlider.set(manualInput.val());
-    stepSliderValueElement.html(`${manualInput.val()} zł`);
-
-    // Removed redundant steps since jQuery and fetch API supports promises by default
-    updateValues(manualInput.val());
-  });
-
-  function checkLowest() {
-    if (manualInput.val() < 5000 || manualInput.val() > 50000) {
-      manualInput.next().css("display", "flex");
-    } else {
-      manualInput.next().css("display", "none");
-    }
-  }
-
-  setInterval(checkLowest, 100);
-
-  // Function to Reduce Redundant HTTP request
-  function updateValues(amount) {
-    amountValue = amount;
-    let installmentPeriod = $('input[name="installment_amount"]:checked').val();
-
-    $.ajax({
-      url: `https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`,
+    fetch(`https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`, {
       headers: {
         Accept: "*/*",
       },
       method: "GET",
-      success: function (data) {
+    })
+      .then((response) => {
+        return response.json();
+      })
+      .then((data) => {
+        // console.log(data)
         let obj = data.purchase_simulation.results;
         let picked = Object.fromEntries(Object.entries(obj).filter(([key]) => key.includes(`${installmentPeriod}`)));
         let pickedByPeriod = picked[`${installmentPeriod}`];
@@ -86,11 +56,87 @@ $(document).ready(function () {
         let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
         let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
 
-        totalCost.html(`${roundedTotalCost} zł`);
-        repaymentAmmount.html(`${roundedRepaymentAmount} zł`);
-        monthlyCost.html(`${roundedMonthlyCost} zł`);
-        rrso.html(`${rrsoVal} %`);
-      },
-    });
+        totalCost.innerHTML = `${roundedTotalCost} zł`;
+        repaymentAmmount.innerHTML = `${roundedRepaymentAmount} zł`;
+        monthlyCost.innerHTML = `${roundedMonthlyCost} zł`;
+        rrso.innerHTML = `${rrsoVal} %`;
+      });
+  });
+
+  bruttoForm.addEventListener("change", () => {
+    try {
+      let installmentPeriod = document.querySelector('input[name="installment_amount"]:checked').value;
+      fetch(`https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`, {
+        headers: {
+          Accept: "*/*",
+        },
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let obj = data.purchase_simulation.results;
+          let picked = Object.fromEntries(Object.entries(obj).filter(([key]) => key.includes(`${installmentPeriod}`)));
+          let pickedByPeriod = picked[`${installmentPeriod}`];
+          let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
+          let roundedRepaymentAmount = Math.round(pickedByPeriod.repayment_amount);
+          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
+          let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
+
+          totalCost.innerHTML = `${roundedTotalCost} zł`;
+          repaymentAmmount.innerHTML = `${roundedRepaymentAmount} zł`;
+          monthlyCost.innerHTML = `${roundedMonthlyCost} zł`;
+          rrso.innerHTML = `${rrsoVal} %`;
+        });
+    } catch (err) {}
+  });
+
+  manualInput.addEventListener("change", (e) => {
+    if (manualInput.value < 5000 || manualInput.value > 50000) {
+      manualInput.nextElementSibling.style.display = "flex";
+    } else {
+      manualInput.nextElementSibling.style.display = "none";
+    }
+    slider.noUiSlider.set(manualInput.value);
+    stepSliderValueElement.innerHTML = `${manualInput.value} zł`;
+    try {
+      let installmentPeriod = document.querySelector('input[name="installment_amount"]:checked').value;
+
+      fetch(`https://www.brutto.pl/api/v3/simulation/purchase?partner=e8694f3a-45fe-5fa6-bb74-ccc1e8f16d32&currency=PLN&amount=${amountValue}`, {
+        headers: {
+          Accept: "*/*",
+        },
+        method: "GET",
+      })
+        .then((response) => {
+          return response.json();
+        })
+        .then((data) => {
+          let obj = data.purchase_simulation.results;
+          let picked = Object.fromEntries(Object.entries(obj).filter(([key]) => key.includes(`${installmentPeriod}`)));
+          let pickedByPeriod = picked[`${installmentPeriod}`];
+
+          let roundedTotalCost = Math.round(pickedByPeriod.total_cost);
+          let roundedRepaymentAmount = Math.round(pickedByPeriod.repayment_amount);
+          let roundedMonthlyCost = Math.round(pickedByPeriod.monthly_cost);
+          let rrsoVal = pickedByPeriod.annual_percentage_rate_of_charge;
+
+          totalCost.innerHTML = `${roundedTotalCost} zł`;
+          repaymentAmmount.innerHTML = `${roundedRepaymentAmount} zł`;
+          monthlyCost.innerHTML = `${roundedMonthlyCost} zł`;
+          rrso.innerHTML = `${rrsoVal} %`;
+        });
+    } catch (err) {}
+  });
+
+  function checkLowest() {
+    if (manualInput.value < 5000 || manualInput.value > 50000) {
+      manualInput.nextElementSibling.style.display = "flex";
+    } else {
+      manualInput.nextElementSibling.style.display = "none";
+    }
   }
+
+  setInterval(checkLowest, 100);
 });
