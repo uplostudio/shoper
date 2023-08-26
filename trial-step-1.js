@@ -2,9 +2,9 @@ const gclidInput = document.querySelector("[name='adwords[gclid]']");
 const fbclidInput = document.querySelector("[name='adwords[fbclid]']");
 const analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
 const trialStepOneEmailInputs = document.querySelectorAll("[app='create_trial_step1'] [app='email']");
-emailInput = document.querySelector("[app='email']");
-const trialOpenButton = document.querySelectorAll("[app='open_trial_modal_button']");
-const trialStepOneModal = document.querySelector("[app='create_trial_step1_modal']");
+emailInput = document.querySelector("[data-app='email']");
+const trialOpenButton = document.querySelectorAll("[data-app='open_trial_modal_button']");
+const trialStepOneModal = document.querySelector("[data-app='create_trial_step1_modal']");
 let client_id;
 let loader;
 let elementId;
@@ -52,8 +52,8 @@ const formAbandonHandler = () => {
     .map((n) => n.value)
     .filter((el) => el.length > 1);
   if (inputValsArr.length > 0) {
-    const element = document.querySelector("[app='create_trial_step1']");
-    const elementId = element.getAttribute("app");
+    const element = document.querySelector("[data-app='create_trial_step1']");
+    const elementId = element.getAttribute("data-app");
     const data = {
       event: "formAbandon",
       formId: elementId,
@@ -84,12 +84,12 @@ trialStepOneEmailInputs.forEach((n) => {
   n.addEventListener("blur", function () {
     checkEmailBlurTrialStepOne(n);
 
-    const element = document.querySelector("[app='create_trial_step1']");
-    const elementId = element.getAttribute("app");
+    const element = document.querySelector("[data-app='create_trial_step1']");
+    const elementId = element.getAttribute("data-app");
     const data = {
       event: "controlBlur",
       formId: elementId,
-      controlName: n.getAttribute("app"),
+      controlName: n.getAttribute("data-app"),
       controlType: n.type,
       controlValue: n.value,
     };
@@ -98,11 +98,11 @@ trialStepOneEmailInputs.forEach((n) => {
   // Control Focus Step One
   n.addEventListener("focus", () => {
     const element = document.querySelector("[app='create_trial_step1']");
-    const elementId = element.getAttribute("app");
+    const elementId = element.getAttribute("data-app");
     const data = {
       event: "controlFocus",
       formId: elementId,
-      controlName: n.getAttribute("app"),
+      controlName: n.getAttribute("data-app"),
       controlType: n.type,
       controlValue: n.value,
     };
@@ -135,13 +135,13 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
       event: "trial_EmailSubmitted",
       client_id,
       "shop-id": data.shop_id,
-      formId: form.parentElement.getAttribute("app"),
+      formId: form.parentElement.getAttribute("data-app"),
       email: emailValue,
     });
 
     dataLayer.push({
       eventName: "formSubmitSuccess",
-      formId: form.parentElement.getAttribute("app"),
+      formId: form.parentElement.getAttribute("data-app"),
       eventCategory: "Button form sent",
       eventLabel: window.location.pathname,
       eventType: emailValue,
@@ -150,7 +150,7 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
 
     dataLayer.push({
       event: "myTrackEvent",
-      formId: form.parentElement.getAttribute("app"),
+      formId: form.parentElement.getAttribute("data-app"),
       eventCategory: "Button form sent",
       eventAction: form.querySelector("[data-app='submit-step-one']").textContent,
       eventType: emailValue,
@@ -159,7 +159,7 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
   } else {
     dataLayer.push({
       eventName: "formSubmitError",
-      formId: form.parentElement.getAttribute("app"),
+      formId: form.parentElement.getAttribute("data-app"),
       eventCategory: "Button form error",
       eventAction: form.querySelector("[data-app='submit-step-one']").textContent,
       eventLabel: window.location.pathname,
@@ -169,7 +169,7 @@ const handleFormSubmitSuccess = (data, form, client_id) => {
 
     dataLayer.push({
       event: "myTrackEvent",
-      formId: form.parentElement.getAttribute("app"),
+      formId: form.parentElement.getAttribute("data-app"),
       eventCategory: "Button form error",
       eventAction: form.querySelector("[data-app='submit-step-one']").textContent,
       eventType: emailValue,
