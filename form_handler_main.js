@@ -134,21 +134,27 @@ function sendFormDataToURL(urlN, formElement, form, loader) {
             .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
             .trim();
 
-          if (!outputValues.hasOwnProperty(inputName)) {
-            outputValues[inputName] = [];
+          // Add to existing array or create a new one
+          if (outputValues.hasOwnProperty(inputName) && Array.isArray(outputValues[inputName])) {
+            outputValues[inputName].push(inputValue);
+          } else if (outputValues.hasOwnProperty(inputName)) {
+            outputValues[inputName] = [outputValues[inputName], inputValue];
+          } else {
+            outputValues[inputName] = inputValue;
           }
-
-          outputValues[inputName].push(inputValue);
         }
       } else if (inputValue !== "") {
         formData.append(inputName, inputValue);
       }
     } else if (inputElement.is("select")) {
-      if (!outputValues.hasOwnProperty(inputName)) {
-        outputValues[inputName] = [];
+      // If multiple selections for a field exist, create an array, otherwise store as a single value
+      if (outputValues.hasOwnProperty(inputName) && Array.isArray(outputValues[inputName])) {
+        outputValues[inputName].push(inputValue);
+      } else if (outputValues.hasOwnProperty(inputName)) {
+        outputValues[inputName] = [outputValues[inputName], inputValue];
+      } else {
+        outputValues[inputName] = inputValue;
       }
-
-      outputValues[inputName].push(inputValue);
     }
   });
 
