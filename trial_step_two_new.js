@@ -192,7 +192,7 @@ function sendFormDataToURLTrial(urlNTrial, formElementTrial, form, loader) {
     contentType: false,
     success: function (data) {
       loader.show();
-      successResponse(formElementTrial);
+      successResponseT(formElementTrial);
       if (data.status === 1) {
         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       }
@@ -246,7 +246,7 @@ $(document).ready(function () {
   });
 });
 
-function successResponse(formElementTrial, shop_id, client_id) {
+function successResponseT(formElementTrial, shop_id, client_id) {
   let data;
   if (window.dataLayer) {
     data = {
