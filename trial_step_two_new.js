@@ -194,7 +194,7 @@ function sendFormDataToURLTrial(urlNTrial, formElementTrial, form, loader) {
       loader.show();
       successResponse(formElementTrial);
       if (data.status === 1) {
-        // window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+        window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       }
     },
     errorT: function () {
