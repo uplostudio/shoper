@@ -71,7 +71,7 @@ const DataLayerGatherers = {
     });
   },
 
-  pushFormSubmitSuccessData: function (formId, eventType, eventHistory) {
+  pushFormSubmitSuccessData: function (formId, eventType) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       eventName: "formSubmitSuccess",
@@ -79,7 +79,7 @@ const DataLayerGatherers = {
       eventCategory: "Button form sent",
       eventLabel: window.location.pathname,
       eventType: eventType,
-      eventHistory: eventHistory,
+      eventHistory: window.history,
     });
   },
 
@@ -95,7 +95,7 @@ const DataLayerGatherers = {
     });
   },
 
-  pushTrackEventError: function (formId, eventAction, eventType, eventHistory) {
+  pushTrackEventError: function (formId, eventAction, eventType) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       eventName: "formSubmitError",
@@ -104,7 +104,7 @@ const DataLayerGatherers = {
       eventAction: eventAction,
       eventLabel: window.location.pathname,
       eventType: eventType,
-      eventHistory: eventHistory,
+      eventHistory: window.history,
     });
   },
   pushSubmitError: function (formId, eventAction, eventType) {

@@ -108,11 +108,11 @@ $(document).ready(function () {
 
             DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $("#create_trial_step1").attr("data-action"), emailField.val());
 
-            DataLayerGatherers.pushFormSubmitSuccessData($("#create_trial_step1").attr("data-action"), emailField.val(), window.history);
+            DataLayerGatherers.pushFormSubmitSuccessData($("#create_trial_step1").attr("data-action"), emailField.val());
 
             DataLayerGatherers.pushTrackEventData($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
           } else {
-            DataLayerGatherers.pushTrackEventError($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val(), window.history);
+            DataLayerGatherers.pushTrackEventError($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
 
             DataLayerGatherers.pushSubmitError($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
           }
