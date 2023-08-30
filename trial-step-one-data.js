@@ -1,6 +1,6 @@
 const DataLayerGatherers = {
   formAbandonEvent: function () {
-    const $formContainer = $('[data-action="create_trial_step1"]');
+    const $formContainer = $('[data-action="create_trial_step1"], [data-action="create_trial_step2"]');
 
     let isFormModified = false;
 
@@ -31,7 +31,7 @@ const DataLayerGatherers = {
   },
 
   controlBlur: function () {
-    const $formContainer = $('[data-action="create_trial_step1"]');
+    const $formContainer = $('[data-action="create_trial_step1"], [data-action="create_trial_step2"]');
 
     $formContainer.find("input").on("blur", function () {
       window.dataLayer = window.dataLayer || [];
@@ -46,7 +46,7 @@ const DataLayerGatherers = {
   },
 
   controlFocus: function () {
-    const $formContainer = $('[data-action="create_trial_step1"]');
+    const $formContainer = $('[data-action="create_trial_step1"], [data-action="create_trial_step2"]');
 
     $formContainer.find("input").on("focus", function () {
       window.dataLayer = window.dataLayer || [];
