@@ -91,13 +91,13 @@ function createEnterKeydownHandler(inputElement, submitTriggerElement) {
     if (e.key === "Enter") {
       e.preventDefault();
       inputElement.blur();
-      validateInput(inputElement);
+      validateInputTrial(inputElement);
       submitTriggerElement.click();
     }
   };
 }
 
-function processForm(input, required, value, errorT) {
+function processFormTrial(input, required, value, errorT) {
   const parentElement = $(input).parent()[0];
   if (required && value === "") {
     $(parentElement).siblings("[data-toast='required']").toggleClass("show", true);
@@ -112,9 +112,10 @@ function processForm(input, required, value, errorT) {
   }
 }
 
-function validateInput(input) {
+function validateInputTrial(input) {
   const countryCode = iti.getSelectedCountryData().iso2;
   const name = input.getAttribute("data-form");
+  console.log(name);
   const value = input.value;
   const required = input.required;
   const type = input.getAttribute("data-type");
@@ -128,13 +129,13 @@ function validateInput(input) {
     }
   }
 
-  processForm(input, required, value, errorT);
+  processFormTrial(input, required, value, errorT);
 
   return errorT;
 }
 
 function handleBlur(event) {
-  validateInput(event.target);
+  validateInputTrial(event.target);
 }
 
 const trialStepTwoForm = document.querySelector("[data-action='create_trial_step2']");
@@ -146,13 +147,13 @@ trialStepTwoForm.querySelectorAll("input").forEach((input) => {
   input.addEventListener("keydown", createEnterKeydownHandler(input, submitButton));
 });
 
-function validateForm(formElement) {
-  const inputs = formElement.querySelectorAll("input");
+function validateFormTrial(formElementTrial) {
+  const inputsTrial = formElementTrial.querySelectorAll("input");
 
   let errorTs = 0;
 
-  inputs.forEach((input) => {
-    if (validateInput(input)) {
+  inputsTrial.forEach((input) => {
+    if (validateInputTrial(input)) {
       errorTs++;
     }
   });
@@ -160,10 +161,10 @@ function validateForm(formElement) {
   return errorTs;
 }
 
-function sendFormDataToURL(urlNTrial, formElement, form, loader) {
+function sendFormDataToURLTrial(urlNTrial, formElementTrial, form, loader) {
   const formData = new FormData();
 
-  const attributes = formElement.attributes;
+  const attributes = formElementTrial.attributes;
   for (let i = 0; i < attributes.length; i++) {
     const attributeName = attributes[i].name.replace("data-", "");
     const attributeValue = attributes[i].value;
@@ -172,7 +173,7 @@ function sendFormDataToURL(urlNTrial, formElement, form, loader) {
     }
   }
 
-  const inputElementsTrial = formElement.querySelectorAll("#phone-trial");
+  const inputElementsTrial = formElementTrial.querySelectorAll("#phone-trial");
   inputElementsTrial.forEach((inputElement) => {
     let inputValue = iti.getNumber();
     const inputName = inputElement.getAttribute("data-form");
@@ -191,29 +192,29 @@ function sendFormDataToURL(urlNTrial, formElement, form, loader) {
     contentType: false,
     success: function (data) {
       loader.show();
-      successResponse( formElement );
+      successResponseT(formElementTrial);
       if (data.status === 1) {
         window.location.href = "https://www.shoper.pl/zaloz-sklep/";
       }
     },
     errorT: function () {
-      errorTResponse(formElement);
-      $(formElement).siblings(".errorT-message").show();
+      errorTResponse(formElementTrial);
+      $(formElementTrial).siblings(".errorT-message").show();
     },
   });
 }
 
-function handleSubmitClick(e) {
+function handleSubmitClickTrial(e) {
   e.preventDefault();
   const form = this;
-  const formElement = this.closest("form");
+  const formElementTrial = this.closest("form");
   const loader = $(this).find(".loading-in-button");
-  if (validateForm(formElement) === 0) {
-    sendFormDataToURL(urlNTrial, formElement, form, loader);
+  if (validateFormTrial(formElementTrial) === 0) {
+    sendFormDataToURLTrial(urlNTrial, formElementTrial, form, loader);
   }
 }
 
-$("[data-form='submit_trial_step_two']").click(handleSubmitClick);
+$("[data-form='submit_trial_step_two']").click(handleSubmitClickTrial);
 
 $(document).ready(function () {
   var regexElement = $("[data-toast='regex']");
@@ -226,7 +227,6 @@ $(document).ready(function () {
   $("form").on("click", ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags", function () {
     // Check if the window width is below 992 pixels
     if ($(window).width() < 992) {
-      console.log("test");
       // Find the .iti.iti--container element
       var container = $(".iti.iti--container");
       // Check if the container exists and is not already a child of the clicked element
@@ -246,14 +246,14 @@ $(document).ready(function () {
   });
 });
 
-function successResponse(formElement) {
+function successResponseT(formElementTrial, shop_id, client_id) {
   let data;
   if (window.dataLayer) {
     data = {
       event: "myTrackEvent",
-      formId: $(formElement).attr("id"),
+      formId: $(formElementTrial).attr("id"),
       eventCategory: "Button modal form sent",
-      eventAction: $(formElement).find("#label").text(),
+      eventAction: $(formElementTrial).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
     };
@@ -263,35 +263,27 @@ function successResponse(formElement) {
     data = {
       event: "formSubmitSuccess",
       eventCategory: "Button modal form sent",
-      formId: $(formElement).attr("id"),
-      eventAction: $(formElement).find("#label").text(),
+      client_id,
+      formId: $(formElementTrial).attr("id"),
+      "shop-id": shop_id,
+      eventAction: $(formElementTrial).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
       eventHistory: window.history,
     };
 
-    var trialEmailSubmitted = dataLayer.find( element => element['shop-id'] );
-      if ( trialEmailSubmitted ) {
-        Object.assign( data, { 'shop-id': trialEmailSubmitted['shop-id'] } );
-      }
-
-      trialEmailSubmitted = dataLayer.find( element => element['client_id'] );
-      if ( trialEmailSubmitted ) {
-        Object.assign( data, { 'client_id': trialEmailSubmitted['client_id'] } );
-      }
-
     window.dataLayer.push(data);
   }
 }
 
-function errorTResponse(formElement) {
+function errorTResponse(formElementTrial) {
   let data;
   if (window.dataLayer) {
     data = {
       event: "formSubmiterror",
-      formId: $(formElement).attr("id"),
+      formId: $(formElementTrial).attr("id"),
       eventCategory: "Button modal form errorT",
-      eventAction: $(formElement).find("#label").text(),
+      eventAction: $(formElementTrial).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
       eventHistory: window.history,
@@ -301,9 +293,9 @@ function errorTResponse(formElement) {
 
     data = {
       event: "myTrackEvent",
-      formId: $(formElement).attr("id"),
+      formId: $(formElementTrial).attr("id"),
       eventCategory: "Button modal form errorT",
-      eventAction: $(formElement).find("#label").text(),
+      eventAction: $(formElementTrial).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
     };
