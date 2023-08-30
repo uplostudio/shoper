@@ -70,6 +70,54 @@ const DataLayerGatherers = {
       email: email,
     });
   },
+
+  pushFormSubmitSuccessData: function (formId, eventType, eventHistory) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      eventName: "formSubmitSuccess",
+      formId: formId,
+      eventCategory: "Button form sent",
+      eventLabel: window.location.pathname,
+      eventType: eventType,
+      eventHistory: eventHistory,
+    });
+  },
+
+  pushTrackEventData: function (formId, eventAction, eventType) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "myTrackEvent",
+      formId: formId,
+      eventCategory: "Button form sent",
+      eventAction: eventAction,
+      eventType: eventType,
+      eventLabel: window.location.pathname,
+    });
+  },
+
+  pushTrackEventError: function (formId, eventAction, eventType, eventHistory) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      eventName: "formSubmitError",
+      formId: formId,
+      eventCategory: "Button form error",
+      eventAction: eventAction,
+      eventLabel: window.location.pathname,
+      eventType: eventType,
+      eventHistory: eventHistory,
+    });
+  },
+  pushSubmitError: function (formId, eventAction, eventType) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      eventName: "myTrackEvent",
+      formId: formId,
+      eventCategory: "Button form error",
+      eventAction: eventAction,
+      eventLabel: window.location.pathname,
+      eventType: eventType,
+    });
+  },
 };
 
 $(document).ready(function () {

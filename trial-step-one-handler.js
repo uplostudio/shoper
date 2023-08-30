@@ -108,51 +108,13 @@ $(document).ready(function () {
 
             DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $("#create_trial_step1").attr("data-action"), emailField.val());
 
-            // window.dataLayer.push({
-            //   event: "trial_EmailSubmitted",
-            //   client_id: window.myGlobals.clientId,
-            //   "shop-id": window.myGlobals.shopId,
-            //   formId: $("#create_trial_step1").attr("data-action"),
-            //   email: emailField.val(),
-            // });
+            DataLayerGatherers.pushFormSubmitSuccessData($("#create_trial_step1").attr("data-action"), emailField.val(), window.history);
 
-            window.dataLayer.push({
-              eventName: "formSubmitSuccess",
-              formId: $("#create_trial_step1").attr("data-action"),
-              eventCategory: "Button form sent",
-              eventLabel: window.location.pathname,
-              eventType: emailField.val(),
-              eventHistory: window.history,
-            });
-
-            window.dataLayer.push({
-              event: "myTrackEvent",
-              formId: $("#create_trial_step1").attr("data-action"),
-              eventCategory: "Button form sent",
-              eventAction: $("#create_trial_step1").find("#label").text(),
-              eventType: emailField.val(),
-              eventLabel: window.location.pathname,
-            });
+            DataLayerGatherers.pushTrackEventData($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
           } else {
-            window.dataLayer.push({
-              eventName: "formSubmitError",
-              formId: $("#create_trial_step1").attr("data-action"),
-              eventCategory: "Button form error",
-              eventAction: $("#create_trial_step1").find("#label").text(),
-              eventLabel: window.location.pathname,
-              eventType: emailField.val(),
-              eventHistory: window.history,
-            });
+            DataLayerGatherers.pushTrackEventError($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val(), window.history);
 
-            window.dataLayer.push({
-              event: "myTrackEvent",
-              formId: $("#create_trial_step1").attr("data-action"),
-              eventCategory: "Button form error",
-              eventAction: $("#create_trial_step1").find("#label").text(),
-
-              eventType: emailField.val(),
-              eventLabel: window.location.pathname,
-            });
+            DataLayerGatherers.pushSubmitError($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
           }
         },
         error: function (data) {
