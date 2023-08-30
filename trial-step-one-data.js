@@ -2,8 +2,6 @@ const DataLayerGatherers = {
   formAbandonEvent: function () {
     const $formContainer = $('[data-action="create_trial_step1"]');
 
-    console.log("abandon");
-
     let isFormModified = false;
 
     $formContainer.find("input").on("input", function () {
@@ -20,6 +18,8 @@ const DataLayerGatherers = {
             eventHistory: window.history,
           });
 
+          console.log(window.dataLayer);
+
           isFormModified = false;
         }
       }
@@ -30,15 +30,39 @@ const DataLayerGatherers = {
     });
   },
 
-  // Add other dataLayer gathering functions as needed
-  // anotherDataLayerEvent: function() {...},
-  // someOtherDataLayerEvent: function() {...},
+  controlBlur: function () {
+    const $formContainer = $('[data-action="create_trial_step1"]');
+
+    $formContainer.find("input").on("blur", function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "controlBlur",
+        formId: $formContainer.attr("data-action"),
+        controlName: $(this).attr("data-form"),
+        controlType: $(this).attr("type"),
+        controlValue: $(this).val(),
+      });
+    });
+  },
+
+  controlFocus: function () {
+    const $formContainer = $('[data-action="create_trial_step1"]');
+
+    $formContainer.find("input").on("focus", function () {
+      window.dataLayer = window.dataLayer || [];
+      window.dataLayer.push({
+        event: "controlFocus",
+        formId: $formContainer.attr("data-action"),
+        controlName: $(this).attr("data-form"),
+        controlType: $(this).attr("type"),
+        controlValue: $(this).val(),
+      });
+    });
+  },
 };
 
 $(document).ready(function () {
   DataLayerGatherers.formAbandonEvent();
-
-  // Call other dataLayer gathering functions
-  // DataLayerGatherers.anotherDataLayerEvent();
-  // DataLayerGatherers.someOtherDataLayerEvent();
+  DataLayerGatherers.controlBlur();
+  DataLayerGatherers.controlFocus();
 });
