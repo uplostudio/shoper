@@ -25,7 +25,7 @@ $(document).ready(function () {
     }
   });
 
-  const phoneField = $('[data-action="create_trial_step2"] [data-type="phone"]');
+  const phoneField = $('[data-action="create_trial_step2"] [data-type="phone"]')[0];
 
   // iti initialization
   var iti = window.intlTelInput(phoneField, {
