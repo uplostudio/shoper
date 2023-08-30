@@ -1,7 +1,7 @@
 const gclidInput = document.querySelector("[name='adwords[gclid]']");
 const fbclidInput = document.querySelector("[name='adwords[fbclid]']");
 const analyticsIdInputValue = document.querySelector("[name='analitycs_id']");
-const trialStepOneEmailInputs = document.querySelectorAll("[app='create_trial_step1'] [app='email']");
+const trialStepOneEmailInputs = document.querySelectorAll("[data-app='create_trial_step1'] [data-app='email']");
 emailInput = document.querySelector("[data-app='email']");
 const trialOpenButton = document.querySelectorAll("[data-app='open_trial_modal_button']");
 const trialStepOneModal = document.querySelector("[data-app='create_trial_step1_modal']");
@@ -97,7 +97,7 @@ trialStepOneEmailInputs.forEach((n) => {
   });
   // Control Focus Step One
   n.addEventListener("focus", () => {
-    const element = document.querySelector("[app='create_trial_step1']");
+    const element = document.querySelector("[data-app='create_trial_step1']");
     const elementId = element.getAttribute("data-app");
     const data = {
       event: "controlFocus",
