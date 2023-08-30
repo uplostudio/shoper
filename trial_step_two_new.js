@@ -40,7 +40,7 @@ $(document).ready(function () {
 
   function setupValidation() {
     phoneField.on("blur", function () {
-      state.errors = validatePhone(this, state.errors, state.emailRegex);
+      state.errors = validatePhone(this, state.errors, state.phoneRegex);
     });
 
     phoneField.on("keydown", function (e) {
