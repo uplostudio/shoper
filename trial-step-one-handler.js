@@ -106,13 +106,15 @@ $(document).ready(function () {
           if (data.status === 1) {
             $('[data-app="create_trial_step1_modal"]').addClass("modal--open");
 
-            window.dataLayer.push({
-              event: "trial_EmailSubmitted",
-              client_id: window.myGlobals.clientId,
-              "shop-id": window.myGlobals.shopId,
-              formId: $("#create_trial_step1").attr("data-action"),
-              email: emailField.val(),
-            });
+            DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $("#create_trial_step1").attr("data-action"), emailField.val());
+
+            // window.dataLayer.push({
+            //   event: "trial_EmailSubmitted",
+            //   client_id: window.myGlobals.clientId,
+            //   "shop-id": window.myGlobals.shopId,
+            //   formId: $("#create_trial_step1").attr("data-action"),
+            //   email: emailField.val(),
+            // });
 
             window.dataLayer.push({
               eventName: "formSubmitSuccess",

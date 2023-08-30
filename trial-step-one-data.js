@@ -59,6 +59,17 @@ const DataLayerGatherers = {
       });
     });
   },
+
+  pushEmailSubmittedData: function (clientId, shopId, formId, email) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "trial_EmailSubmitted",
+      client_id: clientId,
+      "shop-id": shopId,
+      formId: formId,
+      email: email,
+    });
+  },
 };
 
 $(document).ready(function () {
