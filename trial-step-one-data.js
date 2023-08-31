@@ -132,6 +132,29 @@ const DataLayerGatherers = {
       eventType: eventType,
     });
   },
+  pushTrackEventErrorModal: function (formId, eventAction, eventType) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      eventName: "formSubmitError",
+      formId: formId,
+      eventCategory: "Button modal form error",
+      eventAction: eventAction,
+      eventLabel: window.location.pathname,
+      eventType: eventType,
+      eventHistory: window.history,
+    });
+  },
+  pushSubmitErrorModal: function (formId, eventAction, eventType) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      eventName: "myTrackEvent",
+      formId: formId,
+      eventCategory: "Button modal form error",
+      eventAction: eventAction,
+      eventLabel: window.location.pathname,
+      eventType: eventType,
+    });
+  },
 };
 
 $(document).ready(function () {

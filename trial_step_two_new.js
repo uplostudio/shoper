@@ -101,9 +101,9 @@ $(document).ready(function () {
         },
         error: function (data) {
           console.log("Error: Something went wrong");
-          DataLayerGatherers.pushTrackEventError($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
+          DataLayerGatherers.pushTrackEventErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
 
-          DataLayerGatherers.pushSubmitError($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
+          DataLayerGatherers.pushSubmitErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
           wFormFail.show();
         },
       });
