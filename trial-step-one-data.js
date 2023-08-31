@@ -94,6 +94,20 @@ const DataLayerGatherers = {
       eventLabel: window.location.pathname,
     });
   },
+  pushTrackEventDataModal: function (formId, eventAction, eventType, client_id, shopId) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "formSubmitSuccess",
+      eventCategory: "Button modal form sent",
+      client_id: client_id,
+      formId: formId,
+      "shop-id": shopId,
+      eventAction: eventAction,
+      eventLabel: window.location.pathname,
+      eventType: eventType,
+      eventHistory: window.history,
+    });
+  },
 
   pushTrackEventError: function (formId, eventAction, eventType) {
     window.dataLayer = window.dataLayer || [];

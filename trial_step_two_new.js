@@ -85,7 +85,13 @@ $(document).ready(function () {
           "adwords[fbclid]": localStorage.getItem("fbclid"),
         },
         success: function (data) {
-          DataLayerGatherers.pushFormSubmitSuccessData($("#create_trial_step2").attr("data-action"), iti.getNumber());
+          DataLayerGatherers.pushTrackEventDataModal(
+            window.myGlobals.clientId,
+            $("#create_trial_step2").attr("data-action"),
+            window.myGlobals.shopId,
+            $("#create_trial_step2").find("#label").text(),
+            iti.getNumber()
+          );
 
           DataLayerGatherers.pushTrackEventData($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
 
