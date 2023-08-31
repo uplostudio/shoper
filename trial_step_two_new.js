@@ -76,8 +76,6 @@ $(document).ready(function () {
       $.ajax({
         type: "POST",
         url: "https://www.shoper.pl/ajax.php",
-        processData: false,
-        contentType: false,
         data: {
           action: $("#create_trial_step2").attr("data-action"),
           phone: iti.getNumber(),
