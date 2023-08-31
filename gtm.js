@@ -1,19 +1,19 @@
-window.addEventListener("load", () => {
-  try {
-    let gtmBanner = document.querySelector("#top-bar-header");
+// window.addEventListener("load", () => {
+//   try {
+//     let gtmBanner = document.querySelector("#top-bar-header");
 
-    gtmBanner.addEventListener("click", () => {
-      let bf = document.querySelector("[app='blackFriday']");
-      bf.classList.add("modal--open");
-      $(document.body).css("overflow", "hidden");
-    });
-  } catch (err) {}
-});
+//     gtmBanner.addEventListener("click", () => {
+//       let bf = document.querySelector("[app='blackFriday']");
+//       bf.classList.add("modal--open");
+//       $(document.body).css("overflow", "hidden");
+//     });
+//   } catch (err) {}
+// });
 
 // remove sites from intercom
 
-window.addEventListener("load", () => {
-  const excludedSubpages = [
+$(function () {
+  var excludedSubpages = [
     "/rodo",
     "/rodo/",
     "/zmien-oprogramowanie-sklepu",
@@ -25,12 +25,9 @@ window.addEventListener("load", () => {
     "/oferta-sklep-polaczony-z-allegro/",
   ];
 
-  const subpage = window.location.pathname;
-  const body = document.querySelector("body");
-  const intercomScript = document.createElement("script");
+  var subpage = window.location.pathname;
 
-  if (!excludedSubpages.includes(subpage)) {
-    intercomScript.src = "https://shoper-web.netlify.app/intercom.js";
-    body.append(intercomScript);
+  if ($.inArray(subpage, excludedSubpages) === -1) {
+    $("body").append('<script src="https://shoper-web.netlify.app/intercom.js"></script>');
   }
 });
