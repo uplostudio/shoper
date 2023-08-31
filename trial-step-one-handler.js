@@ -42,16 +42,26 @@ $(document).ready(function () {
   }
 
   function setupValidation() {
-    const emailField = $('[data-action="create_trial_step1"] [data-type="email"]');
-    emailField.on("blur", function () {
-      state.errors = validateEmail(this, state.errors, state.emailRegex);
-    });
+    const emailFields = $('[data-action="create_trial_step1"] [data-type="email"]');
+    emailFields.each(function () {
+      let emailField = $(this);
+      emailField.on("blur", function () {
+        state.errors = validateEmail(this, state.errors, state.emailRegex);
+      });
 
-    emailField.on("keydown", function (e) {
-      if (e.which === 13) {
-        emailField.trigger("blur");
-        onSubmitClick(e);
-      }
+      emailField.on("keydown", function (e) {
+        if (e.which === 13) {
+          emailField.trigger("blur");
+          onSubmitClick(e, emailField);
+        }
+      });
+
+      emailField
+        .closest("form")
+        .find('[data-form="submit-step-one"]')
+        .on("click", function (e) {
+          onSubmitClick(e, emailField);
+        });
     });
   }
 
@@ -69,18 +79,17 @@ $(document).ready(function () {
     return errors;
   }
 
-  function onSubmitClick(e) {
+  function onSubmitClick(e, emailField) {
     state.errors = [];
+    let form = emailField.closest("form");
+    const wFormFail = form.find(".w-form-fail")[0];
+    emailField.trigger("blur");
 
     const statusMessages = {
       2: "Próbujesz uruchomić więcej niż jedną wersję testową sklepu w zbyt krótkim czasie. Odczekaj co najmniej godzinę, zanim zrobisz to ponownie.",
       3: "Próbujesz uruchomić więcej niż jedną wersję testową sklepu w zbyt krótkim czasie. Odczekaj kilka minut, zanim zrobisz to ponownie.",
       4: "Uruchomiłeś co najmniej cztery wersje testowe sklepu w zbyt krótkim czasie. Odczekaj 24h od ostatniej udanej próby, zanim zrobisz to ponownie.",
     };
-
-    let emailField = $('[data-action="create_trial_step1"] [data-type="email"]');
-    emailField.trigger("blur");
-    const wFormFail = $('[data-app="create_trial_step1"]').find(".w-form-fail")[0];
 
     if (state.errors.length === 0) {
       $.ajax({
