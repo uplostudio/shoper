@@ -61,7 +61,7 @@ $(document).ready(function () {
       emailField.on("keydown", function (e) {
         if (e.which === 13) {
           emailField.trigger("blur");
-          onSubmitClick(emailField, form);
+          onSubmitClick(e, emailField, form);
         }
       });
 
@@ -69,7 +69,7 @@ $(document).ready(function () {
         .closest("form")
         .find('[data-form="submit-step-one"]')
         .on("click", function (e) {
-          onSubmitClick(emailField, form);
+          onSubmitClick(e, emailField, form);
         });
     });
   }
@@ -88,7 +88,7 @@ $(document).ready(function () {
     return errors;
   }
 
-  function onSubmitClick(emailField, form) {
+  function onSubmitClick(e, emailField, form) {
     state.errors = [];
     const wFormFail = form.find(".w-form-fail")[0];
 
@@ -152,8 +152,8 @@ $(document).ready(function () {
   $('[data-form="submit-step-one"]').each(function () {
     const form = $(this).closest("form");
     const emailField = form.find('[data-type="email"]');
-    $(this).on("click", function () {
-      onSubmitClick(emailField, form);
+    $(this).on("click", function (e) {
+      onSubmitClick(e, emailField, form);
     });
   });
 
