@@ -1,6 +1,6 @@
 $(document).ready(function () {
   $("[data-app='open_trial_modal_button']").on("click", function () {
-    $("[data-app='create_trial_step1_modal']").show();
+    $("[data-app='create_trial_step1_modal']").addClass("modal--open");
     $("body").addClass("overflow-hidden");
   });
 });
