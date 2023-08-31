@@ -23,33 +23,42 @@ $(document).ready(function () {
     }
   });
 
-  const phoneField = $('[data-action="create_trial_step2"] [data-type="phone"]').get(0);
-
-  // iti initialization
-  var iti = window.intlTelInput(phoneField, {
-    utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
-    preferredCountries: ["pl", "de", "ie", "us", "gb", "nl"],
-    autoInsertDialCode: false,
-    nationalMode: false,
-    separateDialCode: true,
-    autoPlaceholder: "off",
-    initialCountry: "pl",
-  });
-
   function setupValidation() {
-    $(phoneField).on("blur", function () {
-      state.errors = validatePhone(this, state.errors, state.phoneRegex);
-    });
+    const phoneFields = $('[data-action="create_trial_step2"] [data-type="phone"]');
+    phoneFields.each(function () {
+      let phoneField = $(this);
 
-    $(phoneField).on("keydown", function (e) {
-      if (e.which === 13) {
-        $(this).trigger("blur");
-        onSubmitClick(e);
-      }
+      var iti = window.intlTelInput(phoneField.get(0), {
+        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+        preferredCountries: ["pl", "de", "ie", "us", "gb", "nl"],
+        autoInsertDialCode: false,
+        nationalMode: false,
+        separateDialCode: true,
+        autoPlaceholder: "off",
+        initialCountry: "pl",
+      });
+
+      phoneField.on("blur", function () {
+        state.errors = validatePhone(this, state.errors, state.phoneRegex, iti);
+      });
+
+      phoneField.on("keydown", function (e) {
+        if (e.which === 13) {
+          $(this).trigger("blur");
+          onSubmitClick(e, phoneField, iti);
+        }
+      });
+
+      phoneField
+        .closest("form")
+        .find('[data-form="submit_trial_step_two"]')
+        .on("click", function (e) {
+          onSubmitClick(e, phoneField, iti);
+        });
     });
   }
 
-  function validatePhone(field, errors, phoneRegex) {
+  function validatePhone(field, errors, phoneRegex, iti) {
     const countryCode = iti.getSelectedCountryData().iso2;
     let phone = iti.getNumber();
     console.log(phone);
@@ -67,19 +76,19 @@ $(document).ready(function () {
     return errors;
   }
 
-  function onSubmitClick(e) {
-    let phoneField = $('[data-action="create_trial_step2"] [data-type="phone"]');
-    phoneField.trigger("blur");
-    const wFormFail = $('[data-app="create_trial_step2"]').find(".w-form-fail");
+  function onSubmitClick(e, phoneField, iti) {
+    let form = phoneField.closest("form");
+    const wFormFail = form.find(".w-form-fail");
 
+    phoneField.trigger("blur");
     if (state.errors.length === 0) {
       $.ajax({
         type: "POST",
         url: "https://www.shoper.pl/ajax.php",
         data: {
-          action: $("#create_trial_step2").attr("data-action"),
+          action: form.find("#create_trial_step2").attr("data-action"),
           phone: iti.getNumber(),
-          formid: $("#create_trial_step2").attr("data-action"),
+          formid: form.find("#create_trial_step2").attr("data-action"),
           eventname: "formSubmitSuccess",
           "adwords[gclid]": localStorage.getItem("gclid"),
           "adwords[fbclid]": localStorage.getItem("fbclid"),
@@ -87,13 +96,13 @@ $(document).ready(function () {
         success: function (data) {
           DataLayerGatherers.pushTrackEventDataModal(
             window.myGlobals.clientId,
-            $("#create_trial_step2").attr("data-action"),
+            form.find("#create_trial_step2").attr("data-action"),
             window.myGlobals.shopId,
-            $("#create_trial_step2").find("#label").text(),
+            form.find("#create_trial_step2").find("#label").text(),
             iti.getNumber()
           );
 
-          DataLayerGatherers.pushTrackEventData($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
+          DataLayerGatherers.pushTrackEventData(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
 
           if (data.status === 1) {
             console.log("Here should be redirection");
@@ -101,9 +110,13 @@ $(document).ready(function () {
         },
         error: function (data) {
           console.log("Error: Something went wrong");
-          DataLayerGatherers.pushTrackEventErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
+          DataLayerGatherers.pushTrackEventErrorModal(
+            form.find("#create_trial_step2").attr("data-action"),
+            form.find("#create_trial_step2").find("#label").text(),
+            iti.getNumber()
+          );
 
-          DataLayerGatherers.pushSubmitErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
+          DataLayerGatherers.pushSubmitErrorModal(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
           wFormFail.show();
         },
       });
@@ -114,8 +127,4 @@ $(document).ready(function () {
   }
 
   setupValidation();
-
-  $('[data-form="submit_trial_step_two"]').on("click", function (e) {
-    onSubmitClick(e);
-  });
 });
