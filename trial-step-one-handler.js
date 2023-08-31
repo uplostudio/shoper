@@ -1,3 +1,10 @@
+$(document).ready(function () {
+  $("[data-app='open_trial_modal_button']").on("click", function () {
+    $("[data-app='create_trial_step1_modal']").show();
+    $("body").addClass("overflow-hidden");
+  });
+});
+
 window.myGlobals = {
   clientId: null,
   host: null,

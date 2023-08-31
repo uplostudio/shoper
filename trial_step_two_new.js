@@ -61,7 +61,6 @@ $(document).ready(function () {
   function validatePhone(field, errors, phoneRegex, iti) {
     const countryCode = iti.getSelectedCountryData().iso2;
     let phone = iti.getNumber();
-    console.log(phone);
     $(field).removeClass("error");
     $("[data-toast]").removeClass("error").css("display", "none");
 
@@ -106,11 +105,11 @@ $(document).ready(function () {
           DataLayerGatherers.pushTrackEventData(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
 
           if (data.status === 1) {
-            console.log("Here should be redirection");
+            // console.log("Here should be redirection");
           }
         },
         error: function (data) {
-          console.log("Error: Something went wrong");
+          // console.log("Error: Something went wrong");
           DataLayerGatherers.pushTrackEventErrorModal(
             form.find("#create_trial_step2").attr("data-action"),
             form.find("#create_trial_step2").find("#label").text(),
@@ -123,7 +122,6 @@ $(document).ready(function () {
       });
     } else {
       e.preventDefault();
-      console.log(state.errors);
     }
   }
 
