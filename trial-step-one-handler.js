@@ -90,8 +90,7 @@ $(document).ready(function () {
 
   function onSubmitClick(e, emailField, form) {
     state.errors = [];
-    const wFormFail = form.find(".w-form-fail")[0];
-
+    const wFormFail = form.next().next();
     $(emailField).trigger("blur");
 
     const statusMessages = {
@@ -112,8 +111,6 @@ $(document).ready(function () {
           analyticsId: window.myGlobals.analyticsId,
         },
         success: function (data) {
-          // const email = $(emailField).val();
-
           if (data.client_id) window.myGlobals.clientId = data.client_id;
           if (data.host) window.myGlobals.host = data.host;
           if (data.shop_id) window.myGlobals.shopId = data.shop_id;
