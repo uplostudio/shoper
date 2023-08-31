@@ -102,7 +102,7 @@ $(document).ready(function () {
           email: emailField.val(),
           "adwords[gclid]": state.gclidValue,
           "adwords[fbclid]": state.fbclidValue,
-          analyticsId: state.analyticsId,
+          analyticsId: window.myGlobals.analyticsId,
         },
         success: function (data) {
           if (data.client_id) window.myGlobals.clientId = data.client_id;
