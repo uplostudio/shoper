@@ -112,7 +112,7 @@ $(document).ready(function () {
           analyticsId: window.myGlobals.analyticsId,
         },
         success: function (data) {
-          const email = $(emailField).val();
+          // const email = $(emailField).val();
 
           if (data.client_id) window.myGlobals.clientId = data.client_id;
           if (data.host) window.myGlobals.host = data.host;
@@ -124,8 +124,8 @@ $(document).ready(function () {
           }
 
           if (data.status === 1) {
+            $("[data-app='create_trial_step1_modal']").removeClass("modal--open");
             $('[data-modal="create_trial_step2"]').addClass("modal--open");
-            //refresh
 
             DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $("#create_trial_step1").attr("data-action"), emailField.val());
 
