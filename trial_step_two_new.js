@@ -79,7 +79,8 @@ $(document).ready(function () {
         data: {
           action: $("#create_trial_step2").attr("data-action"),
           phone: iti.getNumber(),
-
+          formid: $("#create_trial_step2").attr("data-action"),
+          eventname: "formSubmitSuccess",
           "adwords[gclid]": localStorage.getItem("gclid"),
           "adwords[fbclid]": localStorage.getItem("fbclid"),
         },
