@@ -86,9 +86,9 @@ $(document).ready(function () {
         type: "POST",
         url: "https://www.shoper.pl/ajax.php",
         data: {
-          action: form.find("#create_trial_step2").attr("data-action"),
+          action: "create_trial_step2",
           phone: iti.getNumber(),
-          formid: form.find("#create_trial_step2").attr("data-action"),
+          formid: "create_trial_step2",
           eventname: "formSubmitSuccess",
           "adwords[gclid]": localStorage.getItem("gclid"),
           "adwords[fbclid]": localStorage.getItem("fbclid"),
