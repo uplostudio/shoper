@@ -1,31 +1,29 @@
 $(document).ready(function () {
   let state = {
     errors: [],
-    phoneRegex: new RegExp("/^ddddddddd$/"),
+    phoneRegex: new RegExp("^\\+48\\d{9}$"),
   };
+
   // form's additional styling
   $("form").on("click", ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags", function () {
-    // Check if the window width is below 992 pixels
     if ($(window).width() < 992) {
-      // Find the .iti.iti--container element
       var container = $(".iti.iti--container");
-      // Check if the container exists and is not already a child of the clicked element
       if (container.length && !container.parent().is(this)) {
-        // Set the CSS properties for the container
         container.css({
           top: "48px",
           left: "0",
           position: "absolute",
-          height: "50svh",
+          height: "50vh",
+          // Changing from 50svh to 50vh
           "overflow-y": "auto",
         });
-        // Append it as the second child of the clicked element
+
         $(this).append(container);
       }
     }
   });
 
-  const phoneField = $('[data-action="create_trial_step2"] [data-type="phone"]')[0];
+  const phoneField = $('[data-action="create_trial_step2"] [data-type="phone"]').get(0);
 
   // iti initialization
   var iti = window.intlTelInput(phoneField, {
@@ -39,13 +37,13 @@ $(document).ready(function () {
   });
 
   function setupValidation() {
-    phoneField.on("blur", function () {
+    $(phoneField).on("blur", function () {
       state.errors = validatePhone(this, state.errors, state.phoneRegex);
     });
 
-    phoneField.on("keydown", function (e) {
+    $(phoneField).on("keydown", function (e) {
       if (e.which === 13) {
-        phoneField.trigger("blur");
+        $(this).trigger("blur");
         onSubmitClick(e);
       }
     });
@@ -53,20 +51,16 @@ $(document).ready(function () {
 
   function validatePhone(field, errors, phoneRegex) {
     const countryCode = iti.getSelectedCountryData().iso2;
-
-    // Exit function early if the country code isn't "pl"
-    if (countryCode !== "pl") {
-      return errors;
-    }
-
-    let phone = $(field).val();
+    let phone = iti.getNumber();
+    console.log(phone);
     $(field).removeClass("error");
+    $("[data-toast]").removeClass("error").css("display", "none");
 
     if (!phone) {
-      $(field).addClass("error").next(".for-empty").show();
+      $('[data-toast="required"]').addClass("error").css("display", "flex");
       errors.push("Phone is required.");
-    } else if (!phoneRegex.test(phone)) {
-      $(field).addClass("error").next(".for-invalid").show();
+    } else if (countryCode === "pl" && !phoneRegex.test(phone)) {
+      $('[data-toast="regex"]').addClass("error").css("display", "flex");
       errors.push("Phone is invalid.");
     }
 
@@ -74,21 +68,22 @@ $(document).ready(function () {
   }
 
   function onSubmitClick(e) {
-    state.errors = [];
-
     let phoneField = $('[data-action="create_trial_step2"] [data-type="phone"]');
     phoneField.trigger("blur");
-    const wFormFail = $('[data-app="create_trial_step2"]').find(".w-form-fail")[0];
+    const wFormFail = $('[data-app="create_trial_step2"]').find(".w-form-fail");
 
     if (state.errors.length === 0) {
       $.ajax({
         type: "POST",
         url: "https://www.shoper.pl/ajax.php",
+        processData: false,
+        contentType: false,
         data: {
           action: $("#create_trial_step2").attr("data-action"),
           phone: iti.getNumber(),
-          "adwords[gclid]": state.gclidValue,
-          "adwords[fbclid]": state.fbclidValue,
+
+          "adwords[gclid]": localStorage.getItem("gclid"),
+          "adwords[fbclid]": localStorage.getItem("fbclid"),
         },
         success: function (data) {
           DataLayerGatherers.pushFormSubmitSuccessData($("#create_trial_step2").attr("data-action"), iti.getNumber());
@@ -104,7 +99,7 @@ $(document).ready(function () {
           DataLayerGatherers.pushTrackEventError($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
 
           DataLayerGatherers.pushSubmitError($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
-          $(wFormFail).show();
+          wFormFail.show();
         },
       });
     } else {
@@ -113,7 +108,6 @@ $(document).ready(function () {
     }
   }
 
-  updateAnalytics();
   setupValidation();
 
   $('[data-form="submit_trial_step_two"]').on("click", function (e) {
