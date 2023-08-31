@@ -144,6 +144,7 @@ $(document).ready(function () {
   setupValidation();
 
   $('[data-form="submit-step-one"]').on("click", function (e) {
-    onSubmitClick(e);
+    let emailField = $('[data-action="create_trial_step1"] [data-type="email"]');
+    onSubmitClick(e, emailField);
   });
 });
