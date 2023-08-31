@@ -2,6 +2,7 @@ window.myGlobals = {
   clientId: null,
   host: null,
   shopId: null,
+  analyticsId: null,
 };
 
 $(document).ready(function () {
@@ -36,6 +37,7 @@ $(document).ready(function () {
       try {
         const tracker = ga.getAll()[0];
         state.analyticsId = tracker.get("clientId");
+        window.myGlobals.analyticsId = state.analyticsId;
         $("[name='analytics_id']").val(state.analyticsId);
       } catch (err) {}
     }, 2000);
