@@ -94,7 +94,7 @@ const DataLayerGatherers = {
       eventLabel: window.location.pathname,
     });
   },
-  pushTrackEventDataModal: function (formId, eventAction, eventType, client_id, shopId) {
+  pushTrackEventDataModal: function (client_id, formId, shopId, eventAction, eventType) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: "formSubmitSuccess",
