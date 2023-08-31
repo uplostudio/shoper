@@ -3,16 +3,14 @@ $(document).ready(function () {
     $("[data-app='create_trial_step1_modal']").addClass("modal--open");
     $("body").addClass("overflow-hidden");
   });
-});
 
-window.myGlobals = {
-  clientId: null,
-  host: null,
-  shopId: null,
-  analyticsId: null,
-};
+  window.myGlobals = {
+    clientId: null,
+    host: null,
+    shopId: null,
+    analyticsId: null,
+  };
 
-$(document).ready(function () {
   let state = {
     errors: [],
     analyticsId: "",
@@ -51,9 +49,11 @@ $(document).ready(function () {
   }
 
   function setupValidation() {
-    const emailFields = $('[data-action="create_trial_step1"] [data-type="email"]');
-    emailFields.each(function () {
-      let emailField = $(this);
+    const forms = $('[data-action="create_trial_step1"]');
+    forms.each(function () {
+      const form = $(this);
+      const emailField = form.find('[data-type="email"]');
+
       emailField.on("blur", function () {
         state.errors = validateEmail(this, state.errors, state.emailRegex);
       });
@@ -61,7 +61,7 @@ $(document).ready(function () {
       emailField.on("keydown", function (e) {
         if (e.which === 13) {
           emailField.trigger("blur");
-          onSubmitClick(e, emailField);
+          onSubmitClick(emailField, form);
         }
       });
 
@@ -69,7 +69,7 @@ $(document).ready(function () {
         .closest("form")
         .find('[data-form="submit-step-one"]')
         .on("click", function (e) {
-          onSubmitClick(e, emailField);
+          onSubmitClick(emailField, form);
         });
     });
   }
@@ -88,11 +88,11 @@ $(document).ready(function () {
     return errors;
   }
 
-  function onSubmitClick(e, emailField) {
+  function onSubmitClick(emailField, form) {
     state.errors = [];
-    let form = emailField.closest("form");
     const wFormFail = form.find(".w-form-fail")[0];
-    emailField.trigger("blur");
+
+    $(emailField).trigger("blur");
 
     const statusMessages = {
       2: "Próbujesz uruchomić więcej niż jedną wersję testową sklepu w zbyt krótkim czasie. Odczekaj co najmniej godzinę, zanim zrobisz to ponownie.",
@@ -106,12 +106,14 @@ $(document).ready(function () {
         url: "https://www.shoper.pl/ajax.php",
         data: {
           action: $("#create_trial_step1").attr("data-action"),
-          email: emailField.val(),
+          email: $(emailField).val(),
           "adwords[gclid]": state.gclidValue,
           "adwords[fbclid]": state.fbclidValue,
           analyticsId: window.myGlobals.analyticsId,
         },
         success: function (data) {
+          const email = $(emailField).val();
+
           if (data.client_id) window.myGlobals.clientId = data.client_id;
           if (data.host) window.myGlobals.host = data.host;
           if (data.shop_id) window.myGlobals.shopId = data.shop_id;
@@ -147,11 +149,14 @@ $(document).ready(function () {
     }
   }
 
+  $('[data-form="submit-step-one"]').each(function () {
+    const form = $(this).closest("form");
+    const emailField = form.find('[data-type="email"]');
+    $(this).on("click", function () {
+      onSubmitClick(emailField, form);
+    });
+  });
+
   updateAnalytics();
   setupValidation();
-
-  $('[data-form="submit-step-one"]').on("click", function (e) {
-    let emailField = $('[data-action="create_trial_step1"] [data-type="email"]');
-    onSubmitClick(e, emailField);
-  });
 });
