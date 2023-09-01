@@ -207,6 +207,8 @@ window.addEventListener("load", () => {
             eventAction: this.value,
             eventLabel: window.location.href,
             eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
+            client_id: client_id,
+            "shop-id": data.license_id,
           };
 
           dataLayer.push(data);
