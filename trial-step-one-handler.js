@@ -9,6 +9,7 @@ $(document).ready(function () {
     host: null,
     shopId: null,
     analyticsId: null,
+    licenseId: null,
   };
 
   let state = {

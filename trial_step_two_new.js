@@ -105,7 +105,8 @@ $(document).ready(function () {
           DataLayerGatherers.pushTrackEventData(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
 
           if (data.status === 1) {
-            // console.log("Here should be redirection");
+            if (data.license_id) window.myGlobals.licenseId = data.license_id;
+            console.log("Here should be redirection");
           }
         },
         error: function (data) {
