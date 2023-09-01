@@ -102,7 +102,7 @@ $(document).ready(function () {
     if (state.errors.length === 0) {
       $.ajax({
         type: "POST",
-        url: "https://www.shoper.pl/ajax.php",
+        url: "https://sanbox.shoper.pl/ajax.php",
         data: {
           action: $("#create_trial_step1").attr("data-action"),
           email: $(emailField).val(),
