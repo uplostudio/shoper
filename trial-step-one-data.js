@@ -8,7 +8,7 @@ window.myGlobals = {
 };
 
 window.myGlobals.URL = window.location.href.includes("sandbox") ? "https://sandbox.shoper.pl/ajax.php" : "https://www.shoper.pl/ajax.php";
-console.log(`Current endpoint: {$window.myGlobals.URL}`);
+console.log(`Current endpoint: ${window.myGlobals.URL}`);
 
 const DataLayerGatherers = {
   formAbandonEvent: function () {
