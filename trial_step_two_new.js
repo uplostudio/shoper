@@ -91,7 +91,7 @@ $(document).ready(function () {
           eventname: "formSubmitSuccess",
           "adwords[gclid]": localStorage.getItem("gclid"),
           "adwords[fbclid]": localStorage.getItem("fbclid"),
-          analyticsId: window.myGlobals.analyticsId,
+          analytics_id: window.myGlobals.analyticsId,
         },
         success: function (data) {
           DataLayerGatherers.pushTrackEventDataModal(
