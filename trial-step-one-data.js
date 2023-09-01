@@ -1,3 +1,15 @@
+window.myGlobals = {
+  clientId: null,
+  host: null,
+  shopId: null,
+  analyticsId: null,
+  licenseId: null,
+  URL: null,
+};
+
+window.myGlobals.URL = window.location.href.includes("sandbox") ? "https://sandbox.shoper.pl/ajax.php" : "https://www.shoper.pl/ajax.php";
+console.log(window.myGlobals.URl);
+
 const DataLayerGatherers = {
   formAbandonEvent: function () {
     const $formContainer = $('[data-action="create_trial_step1"], [data-action="create_trial_step2"]');
