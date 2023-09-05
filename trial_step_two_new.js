@@ -263,14 +263,22 @@ function successResponseT(formElementTrial, shop_id, client_id) {
     data = {
       event: "formSubmitSuccess",
       eventCategory: "Button modal form sent",
-      client_id,
       formId: $(formElementTrial).attr("id"),
-      "shop-id": shop_id,
       eventAction: $(formElementTrial).find("#label").text(),
       eventLabel: window.location.pathname,
       eventType: iti.getNumber(),
       eventHistory: window.history,
     };
+
+    var trialEmailSubmitted = dataLayer.find((element) => element["shop-id"]);
+    if (trialEmailSubmitted) {
+      Object.assign(data, { "shop-id": trialEmailSubmitted["shop-id"] });
+    }
+
+    trialEmailSubmitted = dataLayer.find((element) => element["client_id"]);
+    if (trialEmailSubmitted) {
+      Object.assign(data, { client_id: trialEmailSubmitted["client_id"] });
+    }
 
     window.dataLayer.push(data);
   }
