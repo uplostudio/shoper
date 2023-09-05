@@ -95,7 +95,7 @@ $(document).ready(function () {
     if (state.errors.length === 0) {
       $.ajax({
         type: "POST",
-        url: URL,
+        url: window.myGlobals.URL,
         data: {
           action: $("#create_trial_step1").attr("data-action"),
           email: $(emailField).val(),

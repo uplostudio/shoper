@@ -100,7 +100,7 @@ function validateForm(formElement) {
   return errors;
 }
 
-function sendFormDataToURL(URL, formElement, form, loader) {
+function sendFormDataToURL(formElement, form, loader) {
   const formData = new FormData();
 
   $.each($(formElement)[0].attributes, function (index, attribute) {
