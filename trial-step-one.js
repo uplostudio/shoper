@@ -93,6 +93,7 @@ $(document).ready(function () {
     };
 
     if (state.errors.length === 0) {
+      const loader = form.find(".loading-in-button");
       $.ajax({
         type: "POST",
         url: window.myGlobals.URL,
@@ -102,6 +103,9 @@ $(document).ready(function () {
           "adwords[gclid]": state.gclidValue,
           "adwords[fbclid]": state.fbclidValue,
           analyticsId: window.myGlobals.analyticsId,
+        },
+        beforeSend: function () {
+          loader.show(); // Show loader
         },
         success: function (data) {
           if (data.client_id) window.myGlobals.clientId = data.client_id;
@@ -131,6 +135,9 @@ $(document).ready(function () {
         error: function (data) {
           console.log("Error: Something went wrong");
           $(wFormFail).hide();
+        },
+        complete: function () {
+          loader.hide(); // Hide loader
         },
       });
     } else {
