@@ -209,7 +209,7 @@ function handleSubmitClick(e) {
   const formElement = this.closest("form");
   const loader = $(this).find(".loading-in-button");
   if (validateForm(formElement) === 0) {
-    sendFormDataToURL(urlN, formElement, form, loader);
+    sendFormDataToURL(formElement, form, loader);
   }
 }
 
