@@ -173,7 +173,7 @@ function sendFormDataToURL(URL, formElement, form, loader) {
 
   $.ajax({
     type: "POST",
-    url: URL,
+    url: window.myGlobals.URL,
     data: formData,
     processData: false,
     contentType: false,
