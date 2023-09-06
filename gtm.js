@@ -27,6 +27,7 @@ window.addEventListener("load", () => {
     "/oferta-shoper-plus/",
     "/oferta-symfonia/",
     "/oferta-sklep-polaczony-z-allegro/",
+    "/sprzedaz-wielokanalowa/",
   ];
 
   const subpage = window.location.pathname;
