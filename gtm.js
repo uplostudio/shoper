@@ -16,9 +16,11 @@ window.addEventListener("load", () => {
 
 // remove sites from intercom
 
-$(window).on("load", function () {
+$(document).ready(function () {
   const excludedSubpages = [
+    "/rodo",
     "/rodo/",
+    "/zmien-oprogramowanie-sklepu",
     "/zmien-oprogramowanie-sklepu/",
     "/regulamin-kampanii/microsoft-advert/",
     "/regulamin-kampanii/google-ads/",
@@ -29,13 +31,16 @@ $(window).on("load", function () {
   ];
 
   let subpage = window.location.pathname;
-  // Ensure subpage always ends with '/'
-  if (!subpage.endsWith("/")) {
-    subpage += "/";
-  }
 
-  if (!excludedSubpages.some((path) => subpage.startsWith(path))) {
-    let intercomScript = $("<script>", { src: "https://shoper-web.netlify.app/intercom.js" });
+  // Normalize paths to remove any trailing slashes
+  subpage = subpage.endsWith("/") ? subpage.slice(0, -1) : subpage;
+  const normalizedExcludedSubpages = $.map(excludedSubpages, (path) => (path.endsWith("/") ? path.slice(0, -1) : path));
+
+  const intercomScript = $("<script></script>");
+  intercomScript.attr("src", "https://shoper-web.netlify.app/intercom.js");
+
+  if (!normalizedExcludedSubpages.some((path) => subpage.startsWith(path))) {
     $("body").append(intercomScript);
+    console.log(subpage);
   }
 });
