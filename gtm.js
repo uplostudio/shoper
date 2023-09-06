@@ -41,6 +41,5 @@ $(document).ready(function () {
 
   if (!normalizedExcludedSubpages.some((path) => subpage.startsWith(path))) {
     $("body").append(intercomScript);
-    console.log(subpage);
   }
 });
