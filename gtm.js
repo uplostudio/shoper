@@ -16,11 +16,9 @@ window.addEventListener("load", () => {
 
 // remove sites from intercom
 
-window.addEventListener("load", () => {
+$(window).on("load", function () {
   const excludedSubpages = [
-    "/rodo",
     "/rodo/",
-    "/zmien-oprogramowanie-sklepu",
     "/zmien-oprogramowanie-sklepu/",
     "/regulamin-kampanii/microsoft-advert/",
     "/regulamin-kampanii/google-ads/",
@@ -30,12 +28,14 @@ window.addEventListener("load", () => {
     "/sprzedaz-wielokanalowa/",
   ];
 
-  const subpage = window.location.pathname;
-  const body = document.querySelector("body");
-  const intercomScript = document.createElement("script");
+  let subpage = window.location.pathname;
+  // Ensure subpage always ends with '/'
+  if (!subpage.endsWith("/")) {
+    subpage += "/";
+  }
 
-  if (!excludedSubpages.includes(subpage)) {
-    intercomScript.src = "https://shoper-web.netlify.app/intercom.js";
-    body.append(intercomScript);
+  if (!excludedSubpages.some((path) => subpage.startsWith(path))) {
+    let intercomScript = $("<script>", { src: "https://shoper-web.netlify.app/intercom.js" });
+    $("body").append(intercomScript);
   }
 });
