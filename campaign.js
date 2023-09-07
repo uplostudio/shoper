@@ -78,21 +78,21 @@ formWrappers.forEach((n) => {
           // notification attribute goes in ms ads form
           loader.style.display = "none";
           if (data.status === 1 && formWrapper.parentElement.hasAttribute("notification")) {
-            n.parentElement.querySelector(".w-form-fail").style.background = "#4faf3f";
-            n.parentElement.querySelector(".w-form-fail").style.display = "block";
+            formWrapper.parentElement.querySelector(".w-form-fail").style.background = "#4faf3f";
+            formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
             // n.parentElement.querySelector(".w-form-fail").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
-            n.querySelector("form").reset();
+            formWrapper.reset();
           } else {
-            n.querySelector("form").style.display = "none";
-            n.parentElement.querySelector(".w-form-done").style.display = "block";
+            formWrapper.style.display = "none";
+            formWrapper.parentElement.querySelector(".w-form-done").style.display = "block";
             // n.parentElement.querySelector(".w-form-done").textContent = "Sprawdź wiadomość, którą właśnie od nas otrzymałeś!";
-            n.querySelector("form").reset();
+            formWrapper.reset();
           }
         },
         error: function () {
           loader.style.display = "none";
-          n.parentElement.querySelector(".w-form-fail").style.display = "block";
-          n.parentElement.querySelector(".w-form-fail").style.background = "#ff2c00";
+          formWrapper.parentElement.querySelector(".w-form-fail").style.display = "block";
+          formWrapper.parentElement.querySelector(".w-form-fail").style.background = "#ff2c00";
         },
       });
     } else {
