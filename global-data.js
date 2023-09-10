@@ -120,6 +120,26 @@ const DataLayerGatherers = {
       eventHistory: window.history,
     });
   },
+  pushTrackEventDataModalRegular: function (formId, eventAction) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "myTrackEvent",
+      eventCategory: "Button modal form sent",
+      formId: formId,
+      eventAction: eventAction,
+      eventLabel: window.location.pathname,
+    });
+  },
+  pushTrackEventDataModalRegularError: function (formId, eventAction) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "myTrackEvent",
+      eventCategory: "Button modal form error",
+      formId: formId,
+      eventAction: eventAction,
+      eventLabel: window.location.pathname,
+    });
+  },
 
   pushTrackEventError: function (formId, eventAction, eventType) {
     window.dataLayer = window.dataLayer || [];

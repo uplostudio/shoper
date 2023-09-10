@@ -191,12 +191,22 @@ function sendFormDataToURL(formElement, form, loader) {
           return;
         }
       }
-      successResponse(formElement);
+
+      if ($(formElement).data("layer") !== "true") {
+        return;
+      } else {
+        DataLayerGatherers.pushTrackEventDataModalRegular($(formElement).attr("data-action"), $(formElement).attr("data-action"));
+      }
+
       $(form).parent().hide();
       $(form).parent().next().show();
     },
     error: function () {
-      errorResponse(formElement);
+      if ($(formElement).data("layer") !== "true") {
+        return;
+      } else {
+        DataLayerGatherers.pushTrackEventDataModalRegularError($(formElement).attr("data-action"), $(formElement).attr("data-action"));
+      }
       $(formElement).siblings(".error-message").show();
     },
   });
@@ -230,18 +240,7 @@ $("[fs-formsubmit-element='reset']").on("click", function () {
   $(".loading-in-button").hide();
 });
 
-function pushDataToDataLayer(formElement, eventCategory) {
-  if ($(formElement).data("layer") !== "true") {
-    return;
-  }
-
-  const data = {
-    event: "myTrackEvent",
-    eventCategory: eventCategory,
-    eventAction: $(formElement).find("#label").text(),
-    eventLabel: window.location.pathname,
-  };
-
+// function pushDataToDataLayer(formElement, eventCategory) {
   const leadOfferText = $(originalTrigger).attr("data-lead_offer");
 
   if (leadOfferText) {
@@ -249,12 +248,3 @@ function pushDataToDataLayer(formElement, eventCategory) {
   }
 
   window.dataLayer.push(data);
-}
-
-function successResponse(formElement) {
-  pushDataToDataLayer(formElement, "Button modal form sent");
-}
-
-function errorResponse(formElement) {
-  pushDataToDataLayer(formElement, "Button modal form error");
-}
