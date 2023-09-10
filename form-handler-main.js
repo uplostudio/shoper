@@ -241,10 +241,10 @@ $("[fs-formsubmit-element='reset']").on("click", function () {
 });
 
 // function pushDataToDataLayer(formElement, eventCategory) {
-  const leadOfferText = $(originalTrigger).attr("data-lead_offer");
+//   const leadOfferText = $(originalTrigger).attr("data-lead_offer");
 
-  if (leadOfferText) {
-    data.lead_offer = leadOfferText;
-  }
+//   if (leadOfferText) {
+//     data.lead_offer = leadOfferText;
+//   }
 
-  window.dataLayer.push(data);
+//   window.dataLayer.push(data);
