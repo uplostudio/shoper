@@ -22,6 +22,16 @@ function setPrice(fields, prices, isGross, isYearly) {
   $("[data-field='label']").text(labelText);
 }
 
+function populateDiscounts(response) {
+  const standardDiscount = response.price.standard.discount;
+  const premiumDiscount = response.price.premium.discount;
+  const enterpriseDiscount = response.price.enterprise.discount;
+
+  $("[data-field='promotion_discount']").text(premiumDiscount + "% taniej");
+  $("[data-field='standard_discount']").text(standardDiscount + "% taniej");
+  $("[data-field='enterprise_discount']").text(enterpriseDiscount + "% taniej");
+}
+
 $.ajax({
   url: "https://www.shoper.pl/ajax.php",
   data: {
@@ -34,6 +44,7 @@ $.ajax({
     const fields = ["promotion", "standard", "standard_onetime", "premium", "premium_onetime", "enterprise", "enterprise_onetime"];
 
     fields.forEach((field) => {
+      populateDiscounts(response);
       if (field === "promotion") {
         originalPrices[field] = {
           monthnet: parseFloat(response.promotion.price.standard["12"].month.net),
@@ -86,5 +97,6 @@ $.ajax({
       isYearly = !isYearly;
       setPrice(fields, originalPrices, isGross, isYearly);
     });
+    $("[data-field='loader']").css("display", "none");
   },
 });
