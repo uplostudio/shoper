@@ -177,16 +177,23 @@ function sendFormDataToURL(formElement, form, loader) {
     data: formData,
     processData: false,
     contentType: false,
-    success: function (data) {
+    beforeSend: function () {
+      // Show loader before sending
       loader.show();
+    },
+    complete: function () {
+      // Hide loader when request is complete
+      loader.hide();
+    },
+    success: function (data) {
+      $(form).parent().hide();
+      $(form).parent().next().show();
       if (formData.has("host")) {
         if (data.status === 1) {
           $(formElement).siblings(".error-message").hide();
-          loader.hide();
           window.location.href = data.redirect;
           return;
         } else {
-          loader.hide();
           $(formElement).siblings(".error-message").show();
           return;
         }
@@ -197,9 +204,6 @@ function sendFormDataToURL(formElement, form, loader) {
       } else {
         DataLayerGatherers.pushTrackEventDataModalRegular($(formElement).attr("data-action"), $(formElement).attr("data-action"));
       }
-
-      $(form).parent().hide();
-      $(form).parent().next().show();
     },
     error: function () {
       if ($(formElement).data("layer") !== "true") {
