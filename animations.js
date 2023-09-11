@@ -9,8 +9,8 @@ $(".nav__burger-inner").on("click", function () {
   $("body").toggleClass("overflow-hidden");
 });
 
-//close modal
-$(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", function () {
+// Defining the modal close logic in a function
+function closeModal() {
   $(".modal--open").removeClass("modal--open");
   $(document.body).toggleClass("overflow-hidden", false);
   isFromBanner = false;
@@ -22,6 +22,16 @@ $(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click",
         return false;
       }
     });
+  }
+}
+
+// Attach the function to existing click events
+$(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", closeModal);
+
+// Attach the function to 'keyup' event for the ESC key
+$(document).on("keyup", function (e) {
+  if (e.which === 27) {
+    closeModal();
   }
 });
 
