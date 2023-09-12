@@ -28,6 +28,7 @@ $(document).ready(function () {
     "/oferta-symfonia/",
     "/oferta-sklep-polaczony-z-allegro/",
     "/sprzedaz-wielokanalowa/",
+    "/sklep-internetowy-abonament/",
   ];
 
   let subpage = window.location.pathname;
