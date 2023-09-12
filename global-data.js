@@ -7,7 +7,7 @@ window.myGlobals = {
   URL: null,
 };
 
-window.myGlobals.URL = window.location.href === "https://www.sandbox-shoper.pl" ? "https://www.shoper.pl/ajax.php" : "https://sandbox.shoper.pl/ajax.php";
+window.myGlobals.URL = window.location.host === "sandbox-webflow.shoper.pl" ? "https://www.shoper.pl/ajax.php" : "https://sandbox.shoper.pl/ajax.php";
 
 // window.myGlobals.URL = "https://sandbox.shoper.pl/ajax.php";
 console.log(`Current endpoint: ${window.myGlobals.URL}`);
