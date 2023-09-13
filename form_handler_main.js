@@ -223,7 +223,7 @@ $("[fs-formsubmit-element='reset']").on("click", function () {
 });
 
 function pushDataToDataLayer(formElement, eventCategory) {
-  if ($(formElement).data("layer") !== "true") {
+  if ($(formElement).data("layer") !== true) {
     return;
   }
 
