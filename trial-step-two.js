@@ -106,7 +106,7 @@ $(document).ready(function () {
 
           if (data.status === 1) {
             if (data.license_id) window.myGlobals.licenseId = data.license_id;
-            console.log("Here should be redirection");
+            window.location.href = "https://www.shoper.pl/zaloz-sklep/";
           }
         },
         error: function (data) {
