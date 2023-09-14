@@ -119,6 +119,7 @@ $(document).ready(function () {
 
           if (data.status === 1) {
             $("[data-app='create_trial_step1_modal']").removeClass("modal--open");
+            $("[data-app='trial-domain']").text(window.myGlobals.host);
             $('[data-modal="create_trial_step2"]').addClass("modal--open");
 
             DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $("#create_trial_step1").attr("data-action"), emailField.val());
