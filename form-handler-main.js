@@ -114,7 +114,7 @@ function validateForm(formElement) {
 function sendFormDataToURL(formElement, form, loader) {
   const formData = new FormData();
 
-  $.each($(formElement)[0].attributes, function (attribute) {
+  $.each($(formElement)[0].attributes, function (index, attribute) {
     const attributeName = attribute.name.replace("data-", "");
     const attributeValue = attribute.value;
     if (attributeValue !== "" && !omittedAtributes.includes(attributeName)) {
