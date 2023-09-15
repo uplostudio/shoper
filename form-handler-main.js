@@ -27,7 +27,7 @@ const validationPatterns = [
 
 // attributes we don't need when AJAX
 
-const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id"];
+const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "autocomplete"];
 
 function createEnterKeydownHandler(inputElement, submitTriggerElement) {
   return function (e) {
@@ -197,8 +197,7 @@ function sendFormDataToURL(formElement, form, loader) {
       loader.hide();
     },
     success: function (data) {
-      $(form).parent().hide();
-      $(form).parent().next().show();
+      console.log(data);
       if (formData.has("host")) {
         if (data.status === 1) {
           $(formElement).siblings(".error-message").hide();
@@ -208,6 +207,11 @@ function sendFormDataToURL(formElement, form, loader) {
           $(formElement).siblings(".error-message").show();
           return;
         }
+      }
+
+      if (data.status !== 0) {
+        $(form).parent().hide();
+        $(form).parent().next().show();
       }
 
       if ($(formElement).data("layer") !== "true") {
