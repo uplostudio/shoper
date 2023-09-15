@@ -114,7 +114,7 @@ function validateForm(formElement) {
 function sendFormDataToURL(formElement, form, loader) {
   const formData = new FormData();
 
-  $.each($(formElement)[0].attributes, function (index, attribute) {
+  $.each($(formElement)[0].attributes, function (attribute) {
     const attributeName = attribute.name.replace("data-", "");
     const attributeValue = attribute.value;
     if (attributeValue !== "" && !omittedAtributes.includes(attributeName)) {
@@ -125,7 +125,7 @@ function sendFormDataToURL(formElement, form, loader) {
   const inputElements = $(formElement).find("input, textarea, select");
 
   let outputValues = {};
-
+  // elements put in this array will convert any checkboxes values to 1 or 0 when AJAX
   let checkboxBinary = ["loan_decision_contact", "external_ads_terms"].includes($(formElement).attr("data-action"));
 
   inputElements.each(function () {
@@ -249,8 +249,16 @@ $("[data-form='submit']").click(handleSubmitClick);
 $("[data-app^='open_']").on("click", function () {
   originalTrigger = $(this);
   const triggerName = originalTrigger.data("app").replace(/^open_|_modal_button$/g, "");
-  $(`[data-app='${triggerName}']`).addClass("modal--open");
+  const modalElement = $(`[data-app='${triggerName}']`);
+
+  modalElement.addClass("modal--open");
   $(document.body).toggleClass("overflow-hidden", true);
+
+  const form = modalElement.find("form:first"); // find the first form
+  if (form.length > 0) {
+    // if form exists
+    form.find(":input:enabled:visible:first").focus(); // focus on the first input of the form
+  }
 });
 
 // reset or close formsubmit
