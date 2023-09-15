@@ -126,7 +126,7 @@ function sendFormDataToURL(formElement, form, loader) {
 
   let outputValues = {};
 
-  let dataActionLoanValue = $(formElement).attr("data-action") === "loan_decision_contact";
+  let checkboxBinary = ["loan_decision_contact", "external_ads_terms"].includes($(formElement).attr("data-action"));
 
   inputElements.each(function () {
     let inputElement = $(this);
@@ -138,7 +138,7 @@ function sendFormDataToURL(formElement, form, loader) {
 
       // Handle checkboxes and radio buttons
       if (inputType === "checkbox" || inputType === "radio") {
-        if (dataActionLoanValue) {
+        if (checkboxBinary) {
           inputValue = inputElement.is(":checked") ? "1" : "0";
         } else if (inputElement.is(":checked")) {
           inputValue = inputElement
