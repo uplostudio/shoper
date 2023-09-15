@@ -73,15 +73,26 @@ function validateInput(input) {
 }
 
 function handleBlur(event) {
-  validateInput(event.target);
+  // Only if the field was touched run validation
+  if ($(event.target).data("touched")) {
+    validateInput(event.target);
+  }
 }
 
 $("input").each(function () {
   const input = $(this);
   const submitButton = input.closest("form").find("[data-form='submit']");
 
+  // Add touched data to false on creation
+  input.data("touched", false);
+
   input.on("blur", handleBlur);
+
   input.on("keydown", function (e) {
+    // On first keydown (excluding Tab), set touched data to true
+    if (!input.data("touched") && e.keyCode !== 9) {
+      input.data("touched", true);
+    }
     createEnterKeydownHandler(input, submitButton)(e);
   });
 });
