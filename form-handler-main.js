@@ -122,7 +122,7 @@ function sendFormDataToURL(formElement, form, loader) {
     }
   });
 
-  const inputElements = $(formElement).find("input, textarea, select");
+  const inputElements = $(formElement).find("input:not([type=submit]), textarea, select");
 
   let outputValues = {};
   // elements put in this array will convert any checkboxes values to 1 or 0 when AJAX
@@ -162,7 +162,7 @@ function sendFormDataToURL(formElement, form, loader) {
       } else if (inputValue !== "") {
         outputValues[inputName] = inputValue;
       }
-    } else if (inputElement.is("select")) {
+    } else if (inputElement.is("textarea") || inputElement.is("select")) {
       // If multiple selections for a field exist, create an array, otherwise store as a single value
       if (outputValues.hasOwnProperty(inputName) && Array.isArray(outputValues[inputName])) {
         outputValues[inputName].push(inputValue);
@@ -210,8 +210,8 @@ function sendFormDataToURL(formElement, form, loader) {
       }
 
       if (data.status !== 0) {
-        $(form).parent().hide();
-        $(form).parent().next().show();
+        $(formElement).hide();
+        $(formElement).next().show();
       }
 
       if ($(formElement).data("layer") !== "true") {
