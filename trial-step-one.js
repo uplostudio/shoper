@@ -47,11 +47,22 @@ $(document).ready(function () {
       const form = $(this);
       const emailField = form.find('[data-type="email"]');
 
+      // Add "touched" data to false on creation
+      emailField.data("touched", false);
+
       emailField.on("blur", function () {
-        state.errors = validateEmail(this, state.errors, state.emailRegex);
+        // Only if the field was touched run validation
+        if ($(this).data("touched")) {
+          state.errors = validateEmail(this, state.errors, state.emailRegex);
+        }
       });
 
       emailField.on("keydown", function (e) {
+        // On first keydown (excluding Tab), set touched data to true
+        if (!$(this).data("touched") && e.which !== 9) {
+          $(this).data("touched", true);
+        }
+
         if (e.which === 13) {
           emailField.trigger("blur");
           onSubmitClick(e, emailField, form);

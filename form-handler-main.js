@@ -29,15 +29,15 @@ const validationPatterns = [
 
 const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "autocomplete", "layer"];
 
-function createEnterKeydownHandler(inputElement, submitTriggerElement) {
-  return function (e) {
-    if (e.key === "Enter") {
-      e.preventDefault();
-      inputElement.blur();
-      submitTriggerElement.click();
-    }
-  };
-}
+// function createEnterKeydownHandler(inputElement, submitTriggerElement) {
+//   return function (e) {
+//     if (e.key === "Enter") {
+//       e.preventDefault();
+//       inputElement.blur();
+//       submitTriggerElement.click();
+//     }
+//   };
+// }
 
 function validateInput(input) {
   const name = $(input).data("form");
@@ -93,7 +93,7 @@ $("input").each(function () {
     if (!input.data("touched") && e.keyCode !== 9) {
       input.data("touched", true);
     }
-    createEnterKeydownHandler(input, submitButton)(e);
+    // createEnterKeydownHandler(input, submitButton)(e);
   });
 });
 
