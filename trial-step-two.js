@@ -81,6 +81,7 @@ $(document).ready(function () {
     const wFormFail = form.find(".w-form-fail");
 
     phoneField.trigger("blur");
+    const loader = form.find(".loading-in-button");
     if (state.errors.length === 0) {
       $.ajax({
         type: "POST",
@@ -93,6 +94,9 @@ $(document).ready(function () {
           "adwords[gclid]": localStorage.getItem("gclid"),
           "adwords[fbclid]": localStorage.getItem("fbclid"),
           analytics_id: window.myGlobals.analyticsId,
+        },
+        beforeSend: function () {
+          loader.show(); // Show loader
         },
         success: function (data) {
           DataLayerGatherers.pushTrackEventDataModal(
@@ -120,6 +124,9 @@ $(document).ready(function () {
 
           DataLayerGatherers.pushSubmitErrorModal(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
           wFormFail.show();
+        },
+        complete: function () {
+          loader.hide(); // Hide loader
         },
       });
     } else {
