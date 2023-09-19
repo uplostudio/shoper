@@ -41,31 +41,39 @@ const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-for
 
 function validateInput(input) {
   const name = $(input).data("form");
-  const value = $(input).val();
-  const required = $(input).prop("required");
   const type = $(input).data("type");
+  const value = type === "checkbox" ? $(input).prop("checked") : $(input).val();
+  const required = $(input).prop("required");
+  let error = required ? (value === false || value === "" ? `${name} - jest wymagane` : null) : null;
 
-  error = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
-
-  if (value !== "") {
+  if (value !== "" && value !== false) {
     const pattern = validationPatterns.find((p) => p.type === type)?.pattern;
     if (pattern && !pattern.test(value)) {
       error = `${name} nie jest wypełnione prawidłowo`;
     }
   }
 
-  if (required && value === "") {
-    $(input).next().next().toggleClass("show", true);
-    $(input).next().toggleClass("show", false);
-    $(input).addClass("error");
+  if (required && (value === "" || value === false)) {
+    if (type === "checkbox") {
+      $(input).prev(".form-checkbox-icon").addClass("error");
+      $(input).parent().next().css("display", "flex");
+    } else {
+      $(input).next().next().css("display", "flex");
+      $(input).next().css("display", "none");
+      $(input).addClass("error");
+    }
   } else {
-    $(input).next().next().toggleClass("show", false);
-    $(input)
-      .next()
-      .toggleClass("show", error !== null);
-    $(input).toggleClass("error", error !== null);
+    if (type === "checkbox") {
+      $(input).prev(".form-checkbox-icon").removeClass("error");
+      $(input).parent().next().css("display", "none");
+    } else {
+      $(input).next().next().css("display", "none");
+      $(input)
+        .next()
+        .css("display", error !== null ? "flex" : "none");
+      $(input).toggleClass("error", error !== null);
+    }
   }
-
   return error;
 }
 
