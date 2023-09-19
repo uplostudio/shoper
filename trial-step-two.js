@@ -76,6 +76,7 @@ $(document).ready(function () {
   }
 
   function onSubmitClick(e, phoneField, iti) {
+    e.preventDefault();
     let form = phoneField.closest("form");
     const wFormFail = form.find(".w-form-fail");
 
