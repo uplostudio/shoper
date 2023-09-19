@@ -197,11 +197,11 @@ function sendFormDataToURL(formElement, form, loader) {
       console.log(data);
       if (formData.has("host")) {
         if (data.status === 1) {
-          $(formElement).siblings(".error-message").hide();
+          $(formElement).siblings(".error-admin").hide();
           window.location.href = data.redirect;
           return;
         } else {
-          $(formElement).siblings(".error-message").show();
+          $(formElement).siblings(".error-admin").show();
           return;
         }
       }
