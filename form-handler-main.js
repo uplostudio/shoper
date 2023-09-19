@@ -41,16 +41,13 @@ const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-for
 
 function validateInput(input) {
   const name = $(input).data("form");
-
   const value = $(input).val();
-
   const required = $(input).prop("required");
-
   const type = $(input).data("type");
 
   error = required ? (value === "" ? `${name} - jest wymagane` : null) : null;
 
-  if (!error && value !== "" && required) {
+  if (value !== "") {
     const pattern = validationPatterns.find((p) => p.type === type)?.pattern;
     if (pattern && !pattern.test(value)) {
       error = `${name} nie jest wypełnione prawidłowo`;
