@@ -166,6 +166,7 @@ $(document).ready(function () {
     $(this).on("click", function (e) {
       // e.preventDefault();
       // e.stopPropagation();
+      //
       onSubmitClick(e, emailField, form);
     });
   });
