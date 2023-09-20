@@ -59,6 +59,7 @@ $(document).ready(function () {
   }
 
   function validatePhone(field, errors, phoneRegex, iti) {
+    errors = [];
     const countryCode = iti.getSelectedCountryData().iso2;
     let phone = iti.getNumber();
     $(field).removeClass("error");
