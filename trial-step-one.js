@@ -94,6 +94,7 @@ $(document).ready(function () {
 
   function onSubmitClick(e, emailField, form) {
     e.preventDefault();
+    e.stopPropagation();
     state.errors = [];
     const wFormFail = form.next().next();
     $(emailField).trigger("blur");
@@ -163,7 +164,8 @@ $(document).ready(function () {
     const form = $(this).closest("form");
     const emailField = form.find('[data-type="email"]');
     $(this).on("click", function (e) {
-      e.preventDefault()
+      e.preventDefault();
+      e.stopPropagation();
       onSubmitClick(e, emailField, form);
     });
   });
