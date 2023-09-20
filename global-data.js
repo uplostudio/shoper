@@ -31,8 +31,6 @@ const DataLayerGatherers = {
             eventHistory: window.history,
           });
 
-          console.log(window.dataLayer);
-
           isFormModified = false;
         }
       }

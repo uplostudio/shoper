@@ -68,13 +68,6 @@ $(document).ready(function () {
           onSubmitClick(e, emailField, form);
         }
       });
-
-      // emailField
-      //   .closest("form")
-      //   .find('[data-form="submit-step-one"]')
-      //   .on("click", function (e) {
-      //     onSubmitClick(e, emailField, form);
-      //   });
     });
   }
 
