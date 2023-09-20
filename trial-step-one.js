@@ -163,6 +163,7 @@ $(document).ready(function () {
     const form = $(this).closest("form");
     const emailField = form.find('[data-type="email"]');
     $(this).on("click", function (e) {
+      e.preventDefault()
       onSubmitClick(e, emailField, form);
     });
   });
