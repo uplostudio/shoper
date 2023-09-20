@@ -94,7 +94,7 @@ $(document).ready(function () {
 
   function onSubmitClick(e, emailField, form) {
     e.preventDefault();
-    e.stopPropagation();
+    // e.stopPropagation();
     state.errors = [];
     const wFormFail = form.next().next();
     $(emailField).trigger("blur");
