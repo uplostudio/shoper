@@ -76,12 +76,10 @@ $(document).ready(function () {
   }
 
   function onSubmitClick(e, phoneField, iti) {
-    e.preventDefault();
     let form = phoneField.closest("form");
     const wFormFail = form.find(".w-form-fail");
 
     phoneField.trigger("blur");
-    const loader = form.find(".loading-in-button");
     if (state.errors.length === 0) {
       $.ajax({
         type: "POST",
@@ -94,9 +92,6 @@ $(document).ready(function () {
           "adwords[gclid]": localStorage.getItem("gclid"),
           "adwords[fbclid]": localStorage.getItem("fbclid"),
           analytics_id: window.myGlobals.analyticsId,
-        },
-        beforeSend: function () {
-          loader.show(); // Show loader
         },
         success: function (data) {
           DataLayerGatherers.pushTrackEventDataModal(
@@ -111,7 +106,7 @@ $(document).ready(function () {
 
           if (data.status === 1) {
             if (data.license_id) window.myGlobals.licenseId = data.license_id;
-            window.location.href = data.redirect;
+            window.location.href = "https://www.shoper.pl/zaloz-sklep/";
           }
         },
         error: function (data) {
@@ -124,9 +119,6 @@ $(document).ready(function () {
 
           DataLayerGatherers.pushSubmitErrorModal(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
           wFormFail.show();
-        },
-        complete: function () {
-          loader.hide(); // Hide loader
         },
       });
     } else {
