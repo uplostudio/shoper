@@ -156,9 +156,7 @@ $(document).ready(function () {
   $('[data-form="submit-step-one"]').each(function () {
     const form = $(this).closest("form");
     const emailField = form.find('[data-type="email"]');
-    $(this).on("submit", function (e) {
-      e.preventDefault();
-      e.stopPropagation();
+    $(this).on("click", function (e) {
       onSubmitClick(e, emailField, form);
     });
   });
