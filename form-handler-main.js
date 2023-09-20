@@ -65,7 +65,9 @@ function validateInput(input) {
   } else {
     if (type === "checkbox") {
       $(input).prev(".form-checkbox-icon").removeClass("error");
-      $(input).parent().next().css("display", "none");
+      if ($(input).parent().next('[class*="error-wrapper"]').length) {
+        $(input).parent().next().css("display", "none");
+      }
     } else {
       $(input).next().next().css("display", "none");
       $(input)
