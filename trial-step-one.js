@@ -158,6 +158,7 @@ $(document).ready(function () {
     const emailField = form.find('[data-type="email"]');
     $(this).on("submit", function (e) {
       e.preventDefault();
+      e.stopPropagation();
       onSubmitClick(e, emailField, form);
     });
   });
