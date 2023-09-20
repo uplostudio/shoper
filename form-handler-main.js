@@ -188,7 +188,7 @@ function sendFormDataToURL(formElement, form, loader) {
       formData.append(inputName, outputValues[inputName]);
     }
   });
-
+  const loader = $(formElement).find(".loading-in-button");
   $.ajax({
     type: "POST",
     url: window.myGlobals.URL,
@@ -243,9 +243,8 @@ function handleSubmitClick(e) {
   e.preventDefault();
   const form = this;
   const formElement = this.closest("form");
-  const loader = $(this).find(".loading-in-button");
   if (validateForm(formElement) === 0) {
-    sendFormDataToURL(formElement, form, loader);
+    sendFormDataToURL(formElement, form);
   }
 }
 
