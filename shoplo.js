@@ -198,13 +198,13 @@ $(document).ready(function () {
 
     $(document).on('submitSuccess', function( e, form ) {
 
-      sendDataLayer( 'myTrackEvent', 'Button modal form sent', $( form ).find( '[type="submit"]' ).val(), $( form ).attr( 'id' )  );
+      sendDataLayer( 'myTrackEvent', 'Button modal form sent', 'Wyślij', $( form ).attr( 'id' )  );
      
     });
 
     $(document).on('submitError', function( e, form ) {
 
-      sendDataLayer( 'myTrackEvent', 'Button modal form error', $( form ).find( '[type="submit"]' ).val(), $( form ).attr( 'id' )  );
+      sendDataLayer( 'myTrackEvent', 'Button modal form error', 'Wyślij', $( form ).attr( 'id' )  );
      
     });
 
