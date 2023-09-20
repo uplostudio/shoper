@@ -68,6 +68,13 @@ $(document).ready(function () {
           onSubmitClick(e, emailField, form);
         }
       });
+
+      // emailField
+      //   .closest("form")
+      //   .find('[data-form="submit-step-one"]')
+      //   .on("click", function (e) {
+      //     onSubmitClick(e, emailField, form);
+      //   });
     });
   }
 
@@ -87,7 +94,6 @@ $(document).ready(function () {
 
   function onSubmitClick(e, emailField, form) {
     e.preventDefault();
-    // e.stopPropagation();
     state.errors = [];
     const wFormFail = form.next().next();
     $(emailField).trigger("blur");
