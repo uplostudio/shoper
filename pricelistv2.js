@@ -23,11 +23,11 @@ function setPrice(fields, prices, isGross, isYearly) {
 }
 
 function populateDiscounts(response) {
-  const standardDiscount = response.price.standard.discount;
-  const premiumDiscount = response.price.premium.discount;
+  const standardDiscount = response.promotion.price.standard.discount;
+  // const premiumDiscount = response.price.premium.discount;
   const enterpriseDiscount = response.price.enterprise.discount;
 
-  $("[data-field='promotion_discount']").text(premiumDiscount + "% taniej");
+  $("[data-field='promotion_discount']").text(standardDiscount + "% taniej");
   $("[data-field='standard_discount']").text(standardDiscount + "% taniej");
   $("[data-field='enterprise_discount']").text(enterpriseDiscount + "% taniej");
 }
