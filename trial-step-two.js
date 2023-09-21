@@ -107,7 +107,7 @@ $(document).ready(function () {
             iti.getNumber()
           );
 
-          DataLayerGatherers.pushTrackEventData(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
+          DataLayerGatherers.pushTrackEventData(form.find("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
 
           if (data.status === 1) {
             if (data.license_id) window.myGlobals.licenseId = data.license_id;
@@ -116,13 +116,9 @@ $(document).ready(function () {
         },
         error: function (data) {
           // console.log("Error: Something went wrong");
-          DataLayerGatherers.pushTrackEventErrorModal(
-            form.find("#create_trial_step2").attr("data-action"),
-            form.find("#create_trial_step2").find("#label").text(),
-            iti.getNumber()
-          );
+          DataLayerGatherers.pushTrackEventErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
 
-          DataLayerGatherers.pushSubmitErrorModal(form.find("#create_trial_step2").attr("data-action"), form.find("#create_trial_step2").find("#label").text(), iti.getNumber());
+          DataLayerGatherers.pushSubmitErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
           wFormFail.show();
         },
         complete: function () {
