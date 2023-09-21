@@ -101,9 +101,9 @@ $(document).ready(function () {
         success: function (data) {
           DataLayerGatherers.pushTrackEventDataModal(
             window.myGlobals.clientId,
-            form.find("#create_trial_step2").attr("data-action"),
+            $("#create_trial_step2").attr("data-action"),
             window.myGlobals.shopId,
-            form.find("#create_trial_step2").find("#label").text(),
+            $("#create_trial_step2").find("#label").text(),
             iti.getNumber()
           );
 
