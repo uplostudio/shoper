@@ -132,7 +132,6 @@ function sendFormDataToURL(formElement, form) {
   const inputElements = $(formElement).find("input:not([type=submit]), textarea, select");
 
   let outputValues = {};
-  // elements put in this array will convert any checkboxes values to 1 or 0 when AJAX
   let checkboxBinary = ["loan_decision_contact", "external_ads_terms"].includes($(formElement).attr("data-action"));
 
   inputElements.each(function () {
@@ -143,7 +142,6 @@ function sendFormDataToURL(formElement, form) {
     if (inputElement.is("input")) {
       const inputType = inputElement.attr("type");
 
-      // Handle checkboxes and radio buttons
       if (inputType === "checkbox" || inputType === "radio") {
         if (checkboxBinary) {
           inputValue = inputElement.is(":checked") ? "1" : "0";
@@ -154,36 +152,27 @@ function sendFormDataToURL(formElement, form) {
             .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
             .trim();
         } else {
-          // Continue to the next iteration if checkbox/radio not checked
           return;
         }
 
-        // Add to existing array or create a new one
-        if (outputValues.hasOwnProperty(inputName) && Array.isArray(outputValues[inputName])) {
-          outputValues[inputName].push(inputValue);
-        } else if (outputValues.hasOwnProperty(inputName)) {
-          outputValues[inputName] = [outputValues[inputName], inputValue];
-        } else {
-          outputValues[inputName] = inputValue;
+        if (!outputValues.hasOwnProperty(inputName)) {
+          outputValues[inputName] = [];
         }
+
+        outputValues[inputName].push(inputValue);
       } else if (inputValue !== "") {
         outputValues[inputName] = inputValue;
       }
     } else if (inputElement.is("textarea") || inputElement.is("select")) {
-      // If multiple selections for a field exist, create an array, otherwise store as a single value
-      if (outputValues.hasOwnProperty(inputName) && Array.isArray(outputValues[inputName])) {
-        outputValues[inputName].push(inputValue);
-      } else if (outputValues.hasOwnProperty(inputName)) {
-        outputValues[inputName] = [outputValues[inputName], inputValue];
-      } else {
-        outputValues[inputName] = inputValue;
-      }
+      outputValues[inputName] = inputValue;
     }
   });
 
   Object.keys(outputValues).forEach((inputName) => {
     if (Array.isArray(outputValues[inputName])) {
-      formData.append(inputName, JSON.stringify(outputValues[inputName]));
+      outputValues[inputName].forEach((value, index) => {
+        formData.append(`${inputName}[${index}]`, value);
+      });
     } else {
       formData.append(inputName, outputValues[inputName]);
     }
