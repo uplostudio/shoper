@@ -23,6 +23,7 @@ $(function () {
     "/oferta-shoper-plus/",
     "/oferta-symfonia/",
     "/oferta-sklep-polaczony-z-allegro/",
+    "sklep-internetowy-abonament/",
   ];
 
   var subpage = window.location.pathname;
