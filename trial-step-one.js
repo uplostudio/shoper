@@ -158,13 +158,13 @@ $(document).ready(function () {
     }
   }
 
-  $('[data-form="submit-step-one"]').each(function () {
-    const form = $(this).closest("form");
-    const emailField = form.find('[data-type="email"]');
-    $(this).on("click", function (e) {
-      onSubmitClick(e, emailField, form);
-    });
-  });
+  // $('[data-form="submit-step-one"]').each(function () {
+  //   const form = $(this).closest("form");
+  //   const emailField = form.find('[data-type="email"]');
+  //   $(this).on("click", function (e) {
+  //     onSubmitClick(e, emailField, form);
+  //   });
+  // });
 
   updateAnalytics();
   setupValidation();
