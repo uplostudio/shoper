@@ -24,6 +24,7 @@ $(function () {
     "/oferta-symfonia/",
     "/oferta-sklep-polaczony-z-allegro/",
     "sklep-internetowy-abonament/",
+    "witajwshoper/",
   ];
 
   var subpage = window.location.pathname;
