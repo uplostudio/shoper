@@ -31,6 +31,6 @@ $(function () {
   var subpage = window.location.pathname;
 
   if ($.inArray(subpage, excludedSubpages) === -1) {
-    $("body").append('<script src="https://shoper-web.netlify.app/intercom.js"></script>');
+    $("body").append('<script src="https://development--shoper-web.netlify.app/intercom.js"></script>');
   }
 });
