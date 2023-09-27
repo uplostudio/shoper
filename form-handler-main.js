@@ -29,16 +29,6 @@ const validationPatterns = [
 
 const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "autocomplete", "layer"];
 
-// function createEnterKeydownHandler(inputElement, submitTriggerElement) {
-//   return function (e) {
-//     if (e.key === "Enter") {
-//       e.preventDefault();
-//       inputElement.blur();
-//       submitTriggerElement.click();
-//     }
-//   };
-// }
-
 function validateInput(input) {
   const name = $(input).data("form");
   const type = $(input).data("type");
@@ -208,20 +198,12 @@ function sendFormDataToURL(formElement, form) {
       if (data.status !== 0) {
         $(formElement).hide();
         $(formElement).next().show();
-      }
-
-      if ($(formElement).data("layer") !== "true") {
-        return;
+        $(document).trigger("submitSuccess", $(formElement));
       } else {
-        DataLayerGatherers.pushTrackEventDataModalRegular($(formElement).attr("data-action"), $(formElement).attr("data-action"));
+        $(document).trigger("submitError", $(formElement));
       }
     },
     error: function () {
-      if ($(formElement).data("layer") !== "true") {
-        return;
-      } else {
-        DataLayerGatherers.pushTrackEventDataModalRegularError($(formElement).attr("data-action"), $(formElement).attr("data-action"));
-      }
       $(formElement).siblings(".error-message").show();
     },
   });
@@ -249,10 +231,12 @@ $("[data-app^='open_']").on("click", function () {
   modalElement.addClass("modal--open");
   $(document.body).toggleClass("overflow-hidden", true);
 
-  const form = modalElement.find("form:first"); // find the first form
+  const form = modalElement.find("form:first");
+  // find the first form
   if (form.length > 0) {
     // if form exists
-    form.find(":input:enabled:visible:first").focus(); // focus on the first input of the form
+    form.find(":input:enabled:visible:first").focus();
+    // focus on the first input of the form
   }
 });
 
@@ -262,11 +246,44 @@ $("[fs-formsubmit-element='reset']").on("click", function () {
   $(".loading-in-button").hide();
 });
 
-// function pushDataToDataLayer(formElement, eventCategory) {
-//   const leadOfferText = $(originalTrigger).attr("data-lead_offer");
+// DataLayer Support
 
-//   if (leadOfferText) {
-//     data.lead_offer = leadOfferText;
-//   }
+$(document).on("submitSuccess", function (e, formElement) {
+  sendDataLayer({
+    eventName: "myTrackEvent",
+    eventCategory: "Button modal form sent",
+    eventAction: $(formElement).find('[type="submit"]').val(),
+    eventType: $(formElement).attr("data-label"),
+    eventLabel: window.location.href,
+  });
+});
 
-//   window.dataLayer.push(data);
+$(document).on("submitError", function (e, formElement) {
+  sendDataLayer({
+    eventName: "myTrackEvent",
+    eventCategory: "Button modal form error",
+    eventAction: $(formElement).find('[type="submit"]').val(),
+    eventType: $(formElement).attr("data-label"),
+    eventLabel: window.location.href,
+  });
+});
+
+function cleanObject(obj = {}) {
+  let cleanedObj = {};
+
+  for (let key in obj) {
+    if (obj[key] !== undefined && obj[key] !== null && obj[key] !== "") {
+      cleanedObj[key] = obj[key];
+    }
+  }
+
+  return cleanedObj;
+}
+
+function sendDataLayer(obj = {}) {
+  obj = cleanObject(obj);
+
+  if (window.dataLayer) {
+    dataLayer.push(obj);
+  }
+}
