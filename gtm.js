@@ -23,9 +23,9 @@ $(function () {
     "/oferta-shoper-plus/",
     "/oferta-symfonia/",
     "/oferta-sklep-polaczony-z-allegro/",
-    "sklep-internetowy-abonament/",
-    "witajwshoper/",
-    "witajwshoper",
+    "/sklep-internetowy-abonament/",
+    "/witajwshoper/",
+    "/witajwshoper",
   ];
 
   var subpage = window.location.pathname;
