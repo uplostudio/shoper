@@ -158,15 +158,20 @@ function sendFormDataToURL(formElement, form) {
     }
   });
 
+  const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
+
   Object.keys(outputValues).forEach((inputName) => {
-    if (Array.isArray(outputValues[inputName])) {
+    // If it is a special inputName and the value is an array
+    if (arrayInputNames.includes(inputName) && Array.isArray(outputValues[inputName])) {
       outputValues[inputName].forEach((value, index) => {
         formData.append(`${inputName}[${index}]`, value);
       });
-    } else {
+    } // If the name isn't special, or it is but isn't an array value
+    else {
       formData.append(inputName, outputValues[inputName]);
     }
   });
+
   const loader = $(formElement).find(".loading-in-button");
   $.ajax({
     type: "POST",
