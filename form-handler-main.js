@@ -259,7 +259,7 @@ $("[fs-formsubmit-element='reset']").on("click", function () {
 
 $(document).on("submitSuccess", function (e, formElement) {
   sendDataLayer({
-    eventName: "myTrackEvent",
+    event: "myTrackEvent",
     eventCategory: "Button modal form sent",
     eventAction: $(formElement).find('[type="submit"]').val(),
     eventType: $(formElement).attr("data-label"),
@@ -269,7 +269,7 @@ $(document).on("submitSuccess", function (e, formElement) {
 
 $(document).on("submitError", function (e, formElement) {
   sendDataLayer({
-    eventName: "myTrackEvent",
+    event: "myTrackEvent",
     eventCategory: "Button modal form error",
     eventAction: $(formElement).find('[type="submit"]').val(),
     eventType: $(formElement).attr("data-label"),
