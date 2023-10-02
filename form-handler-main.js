@@ -214,7 +214,16 @@ function handleSubmitClick(e) {
   e.preventDefault();
   const form = this;
   const formElement = this.closest("form");
-  if (validateForm(formElement) === 0) {
+  const errors = validateForm(formElement);
+  if (errors > 0) {
+    window.dataLayer.push({
+      event: "myTrackEvent",
+      eventCategory: "Button modal form error",
+      eventAction: $(this).val(),
+      eventLabel: window.location.href,
+      eventType: $(formElement).attr("data-label") || "consult-form",
+    });
+  } else {
     sendFormDataToURL(formElement, form);
   }
 }

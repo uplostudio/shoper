@@ -119,27 +119,6 @@ const DataLayerGatherers = {
       eventHistory: window.history,
     });
   },
-  pushTrackEventDataModalRegular: function (formId, eventAction) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "myTrackEvent",
-      eventCategory: "Button modal form sent",
-      formId: formId,
-      eventAction: eventAction,
-      eventLabel: window.location.pathname,
-    });
-  },
-  pushTrackEventDataModalRegularError: function (formId, eventAction) {
-    window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
-      event: "myTrackEvent",
-      eventCategory: "Button modal form error",
-      formId: formId,
-      eventAction: eventAction,
-      eventLabel: window.location.pathname,
-    });
-  },
-
   pushTrackEventError: function (formId, eventAction, eventType) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -192,4 +171,21 @@ $(document).ready(function () {
   DataLayerGatherers.formAbandonEvent();
   DataLayerGatherers.controlBlur();
   DataLayerGatherers.controlFocus();
+});
+
+$(document).ready(function () {
+  $("a[data-app^='open_']").click(function () {
+    const dataAppValue = $(this).data("app");
+    const buttonTextContent = $(this).text();
+    const eventType = dataAppValue.split("open_")[1].split("_")[0];
+
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "myTrackEvent",
+      eventCategory: "Button modal opened",
+      eventAction: buttonTextContent,
+      eventLabel: window.location.href,
+      eventType: eventType,
+    });
+  });
 });
