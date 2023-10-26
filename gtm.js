@@ -26,6 +26,7 @@ $(function () {
     "/sklep-internetowy-abonament/",
     "/witajwshoper/",
     "/witajwshoper",
+    "/storefront/",
   ];
 
   var subpage = window.location.pathname;
