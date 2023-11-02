@@ -27,6 +27,7 @@ $(function () {
     "/witajwshoper/",
     "/witajwshoper",
     "/storefront/",
+    "/kampanie-ppc/",
   ];
 
   var subpage = window.location.pathname;
