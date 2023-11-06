@@ -107,7 +107,7 @@ $(document).ready(function () {
         type: "POST",
         url: window.myGlobals.URL,
         data: {
-          action: $("#create_trial_step1").attr("data-action"),
+          action: $("form").attr("data-action"),
           email: $(emailField).val(),
           "adwords[gclid]": state.gclidValue,
           "adwords[fbclid]": state.fbclidValue,
