@@ -35,7 +35,7 @@ function updateDisclaimer() {
     const currentGroup = getGroupForPathname(currentPathname);
 
     if (currentGroup) {
-        const dataItema = $("[data-item='disclaimer']");
+        const dataItem = $("[data-item='disclaimer']");
 
         if (dataItem.length) {
             const rodoLink = `<span class='inline-link'><a href='https://www.shoper.pl/static/rodo/Shoper_klauzula_informacyjna_osoby_korespondujace_z_Shoper.pdf' target='_blank'>informacją na temat przetwarzania twoich danych osobowych</a></span>`;
