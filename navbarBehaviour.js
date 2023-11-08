@@ -42,6 +42,10 @@ function setupScrollChanges({navSelector, subnavSelector, distanceThreshold=75})
             }
         }
         lastScrollTop = currentScrollTop;
+
+         requestAnimationFrame(() => {
+    $(window).scroll(scrollLogic); 
+  });
     }
 
     $(window).scroll(scrollLogic);
