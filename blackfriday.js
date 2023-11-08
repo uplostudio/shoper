@@ -1,4 +1,3 @@
-/*
 $(document).ready(function() {
     updateDisclaimer();
 });
@@ -48,4 +47,3 @@ function updateDisclaimer() {
         }
     }
 }
-*/
