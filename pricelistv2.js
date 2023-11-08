@@ -33,7 +33,7 @@ function populateDiscounts(response) {
 }
 
 $.ajax({
-  url: "https://www.shoper.pl/ajax.php",
+  url: "https://backend.webflow.prod.shoper.cloud",
   data: {
     action: "get_prices_list",
   },

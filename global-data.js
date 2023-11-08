@@ -7,7 +7,7 @@ window.myGlobals = {
   URL: null,
 };
 
-window.myGlobals.URL = "https://www.shoper.pl/ajax.php";
+window.myGlobals.URL = "https://backend.webflow.prod.shoper.cloud";
 // window.myGlobals.URL = "https://sandbox.shoper.pl/ajax.php";
 // console.log(`Current endpoint: ${window.myGlobals.URL}`);
 
