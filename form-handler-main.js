@@ -1,5 +1,6 @@
 let originalTrigger;
 let error;
+const API_URL_ADRESS = "https://backend.webflow.prod.shoper.cloud";
 // validation patterns
 
 const validationPatterns = [
@@ -175,7 +176,7 @@ function sendFormDataToURL(formElement, form) {
   const loader = $(formElement).find(".loading-in-button");
   $.ajax({
     type: "POST",
-    url: window.myGlobals.URL,
+    url: API_URL_ADRESS,
     data: formData,
     processData: false,
     contentType: false,
