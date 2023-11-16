@@ -174,6 +174,8 @@ function sendFormDataToURL(formElement, form) {
   });
 
   const loader = $(formElement).find(".loading-in-button");
+  formData.append( 'front_page', window.location.host + window.location.pathname);
+
   $.ajax({
     type: "POST",
     url: API_URL_ADRESS,
