@@ -1,9 +1,14 @@
 $(document).ready(function () {
     function setupScrollChanges({ navSelector, subnavSelector, distanceThreshold = 75 }) {
-        let lastScrollTop = 0;
         let navigation = $(navSelector);
         let subnav = $(subnavSelector);
 
+        // Check if the subnav element exists before setting up scroll changes
+        if (subnav.length === 0) {
+            return;
+        }
+
+        let lastScrollTop = 0;
         let initialNavPosition = navigation.css("position");
         let initialSubnavPadding = subnav.css("padding-top");
 
@@ -32,13 +37,13 @@ $(document).ready(function () {
             if (isScrolling || Math.abs(lastScrollTop - currentScrollTop) < distanceThreshold) {
                 return;
             }
-            
+
             isScrolling = true;
 
             if (currentScrollTop > lastScrollTop) {
                 navigation.css(scrollingDownStyles.nav);
                 subnav.css(scrollingDownStyles.subnav);
-            } else if(currentScrollTop < lastScrollTop){
+            } else if (currentScrollTop < lastScrollTop) {
                 navigation.css(scrollingUpStyles.nav);
                 subnav.css(scrollingUpStyles.subnav);
             }
