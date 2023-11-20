@@ -109,6 +109,11 @@ window.addEventListener("load", () => {
     en: "gross monthly",
   };
 
+  let save = {
+    pl: "%s% taniej",
+    en: "save %s%",
+  }
+
   //  grab form
   if (document.querySelector("[app='custom_form']")) {
     formWrapper = document.querySelector("[app='custom_form']");
@@ -234,7 +239,7 @@ window.addEventListener("load", () => {
   // fetch
 
   $.ajax({
-    url: "https://www.shoper.pl/ajax.php",
+    url: "https://backend.webflow.prod.shoper.cloud",
     headers: {},
     method: "POST",
     data: {
@@ -310,6 +315,27 @@ window.addEventListener("load", () => {
       priceBoxStandardRegularMini.textContent = "";
       priceBoxPremiumRegularMini.textContent = "";
       priceBoxEnterpriseRegularMini.textContent = "";
+
+      if ( data.promotion.price.standard ) {
+        standardBadge
+          .querySelector('strong')
+          .textContent = save[$("html").attr("lang")]
+          .replace( '%s', data.promotion.price.standard.discount);
+      }
+
+      if ( data.promotion.price.premium ) {
+        premiumBadge
+          .querySelector('strong')
+          .textContent = save[$("html").attr("lang")]
+          .replace( '%s', data.promotion.price.premium.discount);
+      }
+
+      if ( data.promotion.price.enterprise ) {
+        enterpriseBadge
+          .querySelector('strong')
+          .textContent = save[$("html").attr("lang")]
+          .replace( '%s', data.promotion.price.enterprise.discount);
+      }
 
       standardBadge.style.display = "none";
       premiumBadge.style.display = "none";
