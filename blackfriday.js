@@ -10,10 +10,10 @@ const pathnameGroups = {
 };
 
 const blackFridayLinks = {
-    group1: "https://www.shoper.pl/static/regulaminy/ogloszenie-o-promocji-shoper-kampanie-10.2023.pdf",
+    group1: "https://www.shoper.pl/static/regulaminy/ogloszenie-o-promocji-shoper-kampanie-11.2023.pdf",
     group2: "https://www.shoper.pl/static/regulaminy/ogloszenie-o-promocji-seo-pozycjonowanie-30.pdf",
     group3: "https://www.shoper.pl/static/regulaminy/ogloszenie-o-promocji-kosmiczne-oferty-przenies-sklep.pdf",
-    group4: "https://www.shoper.pl/static/regulaminy/ogloszenie-o-promocji-korzystna-wspolpraca-na-wielu-rynkach.pdf"
+    group4: "https://www.shoper.pl/static/regulaminy/ogloszenie-o-promocji-seo-pozycjonowanie-black.pdf"
 };
 
 function getGroupForPathname(pathname) {
