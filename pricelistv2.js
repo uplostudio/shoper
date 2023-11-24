@@ -34,7 +34,7 @@ window.addEventListener("load", () => {
           eventLabel: window.location.href,
           eventType: document.querySelector("[app='custom_form']").getAttribute("form"),
         };
-
+ 
         dataLayer.push(data);
       }
     } else {
@@ -283,22 +283,52 @@ window.addEventListener("load", () => {
       let standardWholePriceNetY = promotion.price.standard[12].month.net;
       let standardMainPartNetY = standardWholePriceNetY.toString().split(".")[0];
       let standardSparePartNetY = standardWholePriceNetY.toString().split(".")[1];
-      // Premium  Gross year price
-      let premiumWholePriceGrossY = regular.premium[12].month.gross;
-      let premiumMainPartGrossY = premiumWholePriceGrossY.toString().split(".")[0];
-      let premiumSparePartGrossY = premiumWholePriceGrossY.toString().split(".")[1];
-      // Premium  Net year price
-      let premiumWholePriceNetY = regular.premium[12].month.net;
-      let premiumMainPartNetY = premiumWholePriceNetY.toString().split(".")[0];
-      let premiumSparePartNetY = premiumWholePriceNetY.toString().split(".")[1];
+    
+      let premiumWholePriceGrossY = null,
+          premiumMainPartGrossY = null,
+          premiumSparePartGrossY = null,
+          enterpriseWholePriceGrossY = null,
+          enterpriseMainPartGrossY = null,
+          enterpriseSparePartNetY = null;
+
+      // Premium year price
+      if ( promotion.price.premium ) {
+        premiumWholePriceGrossY = promotion.price.premium[12].month.gross;
+        premiumMainPartGrossY = premiumWholePriceGrossY.toString().split(".")[0];
+        premiumSparePartGrossY = premiumWholePriceGrossY.toString().split(".")[1];
+
+        premiumWholePriceNetY = promotion.price.premium[12].month.net;
+        premiumMainPartNetY = premiumWholePriceNetY.toString().split(".")[0];
+        premiumSparePartNetY = premiumWholePriceNetY.toString().split(".")[1];
+      } else {
+        premiumWholePriceGrossY = regular.premium[12].month.gross;
+        premiumMainPartGrossY = premiumWholePriceGrossY.toString().split(".")[0];
+        premiumSparePartGrossY = premiumWholePriceGrossY.toString().split(".")[1];
+
+        premiumWholePriceNetY = regular.premium[12].month.net;
+        premiumMainPartNetY = premiumWholePriceNetY.toString().split(".")[0];
+        premiumSparePartNetY = premiumWholePriceNetY.toString().split(".")[1];
+      }
+
       // Enterprise Gross year price
-      let enterpriseWholePriceGrossY = regular.enterprise[12].month.gross;
-      let enterpriseMainPartGrossY = enterpriseWholePriceGrossY.toString().split(".")[0];
-      let enterpriseSparePartGrossY = enterpriseWholePriceGrossY.toString().split(".")[1];
-      // Enterprise Net year price
-      let enterpriseWholePriceNetY = regular.enterprise[12].month.net;
-      let enterpriseMainPartNetY = enterpriseWholePriceNetY.toString().split(".")[0];
-      let enterpriseSparePartNetY = enterpriseWholePriceNetY.toString().split(".")[1];
+      if ( promotion.price.enterprise ) {
+        enterpriseWholePriceGrossY = promotion.price.enterprise[12].month.gross;
+        enterpriseMainPartGrossY = enterpriseWholePriceGrossY.toString().split(".")[0];
+        enterpriseSparePartGrossY = enterpriseWholePriceGrossY.toString().split(".")[1];
+        // Enterprise Net year price
+        enterpriseWholePriceNetY = promotion.price.enterprise[12].month.net;
+        enterpriseMainPartNetY = enterpriseWholePriceNetY.toString().split(".")[0];
+        enterpriseSparePartNetY = enterpriseWholePriceNetY.toString().split(".")[1];
+      } else {
+        enterpriseWholePriceGrossY = regular.enterprise[12].month.gross;
+        enterpriseMainPartGrossY = enterpriseWholePriceGrossY.toString().split(".")[0];
+        enterpriseSparePartGrossY = enterpriseWholePriceGrossY.toString().split(".")[1];
+        // Enterprise Net year price
+        enterpriseWholePriceNetY = regular.enterprise[12].month.net;
+        enterpriseMainPartNetY = enterpriseWholePriceNetY.toString().split(".")[0];
+        enterpriseSparePartNetY = enterpriseWholePriceNetY.toString().split(".")[1];
+      }
+
       // initial values
       priceBoxStandard.textContent = standardWholePriceNetY;
       priceBoxPremium.textContent = premiumWholePriceNetY;
