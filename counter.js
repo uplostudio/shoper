@@ -14,9 +14,7 @@ function createCountdown(element, targetDate) {
     }
 
     var days = Math.floor(difference / (1000 * 60 * 60 * 24));
-    var hours = Math.floor(
-      (difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-    );
+    var hours = Math.floor((difference % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60));
     var minutes = Math.floor((difference % (1000 * 60 * 60)) / (1000 * 60));
     var seconds = Math.floor((difference % (1000 * 60)) / 1000);
 
@@ -44,30 +42,15 @@ function createCountdown(element, targetDate) {
 
 // Usage:
 // sklep-z-konsultacja
-createCountdown(
-  $("[data-item='counter-box-1']"),
-  new Date("Nov 19, 2023 23:59:59")
-);
+createCountdown($("[data-item='counter-box-1']"), new Date("Nov 19, 2023 23:59:59"));
 // sklep-90-taniej
-createCountdown(
-  $("[data-item='counter-box-2']"),
-  new Date("Nov 23, 2023 23:59:59")
-);
+createCountdown($("[data-item='counter-box-2']"), new Date("Nov 30, 2023 23:59:59"));
 // sklep-92-taniej
-createCountdown(
-  $("[data-item='counter-box-3']"),
-  new Date("Nov 27, 2023 23:59:59")
-);
+createCountdown($("[data-item='counter-box-3']"), new Date("Nov 27, 2023 23:59:59"));
 // sklep-premium-aplikacje
-createCountdown(
-  $("[data-item='counter-box-4']"),
-  new Date("Nov 23, 2023 23:59:59")
-);
+createCountdown($("[data-item='counter-box-4']"), new Date("Nov 23, 2023 23:59:59"));
 // sklep-premium-30-taniej
-createCountdown(
-  $("[data-item='counter-box-5']"),
-  new Date("Nov 27, 2023 23:59:59")
-);
+createCountdown($("[data-item='counter-box-5']"), new Date("Nov 30, 2023 23:59:59"));
 
 // GSAP and ScrollTrigger
 gsap.registerPlugin(ScrollTrigger);
@@ -87,7 +70,7 @@ ScrollTrigger.create({
       gsap.to(counterBoxSticky[0], {
         opacity: 0,
         display: "none",
-        duration: 0.35
+        duration: 0.35,
       });
     }
   },
@@ -95,14 +78,14 @@ ScrollTrigger.create({
     gsap.to(counterBoxSticky[0], {
       opacity: 1,
       display: "flex",
-      duration: 0.35
+      duration: 0.35,
     });
   },
   onEnterBack: ({ progress, direction, isActive }) => {
     gsap.to(counterBoxSticky[0], {
       opacity: 0,
       display: "none",
-      duration: 0.1
+      duration: 0.1,
     });
   },
   onLeaveBack: ({ progress, direction, isActive }) => {
@@ -111,10 +94,10 @@ ScrollTrigger.create({
       gsap.to(counterBoxSticky[0], {
         opacity: 1,
         display: "flex",
-        duration: 0.35
+        duration: 0.35,
       });
     }
-  }
+  },
 });
 
 let ctaSection = $("[data-item='section-cta']");
@@ -129,28 +112,28 @@ ScrollTrigger.create({
     gsap.to(counterBoxStickyButton[0], {
       // Fade out
       opacity: 0,
-      duration: 0.35
+      duration: 0.35,
     });
   },
   onLeave: () => {
     gsap.to(counterBoxStickyButton[0], {
       // Fade in
       opacity: 1,
-      duration: 0.35
+      duration: 0.35,
     });
   },
   onEnterBack: () => {
     gsap.to(counterBoxStickyButton[0], {
       // Fade out
       opacity: 0,
-      duration: 0.35
+      duration: 0.35,
     });
   },
   onLeaveBack: () => {
     gsap.to(counterBoxStickyButton[0], {
       // Fade in
       opacity: 1,
-      duration: 0.35
+      duration: 0.35,
     });
-  }
+  },
 });
