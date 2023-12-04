@@ -123,7 +123,7 @@ function sendFormDataToURL(formElement, form) {
   const inputElements = $(formElement).find("input:not([type=submit]), textarea, select");
 
   let outputValues = {};
-  let checkboxBinary = ["loan_decision_contact", "external_ads_terms"].includes($(formElement).attr("data-action"));
+  let checkboxBinary = ["loan_decision_contact", "external_ads_terms", "simple_form"].includes($(formElement).attr("data-action"));
 
   inputElements.each(function () {
     let inputElement = $(this);
@@ -174,7 +174,7 @@ function sendFormDataToURL(formElement, form) {
   });
 
   const loader = $(formElement).find(".loading-in-button");
-  formData.append( 'front_page', window.location.host + window.location.pathname);
+  formData.append("front_page", window.location.host + window.location.pathname);
 
   $.ajax({
     type: "POST",
