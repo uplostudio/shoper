@@ -23,6 +23,7 @@ function closeModal() {
       }
     });
   }
+  $(document).trigger("closeModalCalled");
 }
 
 // Attach the function to existing click events
