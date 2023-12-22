@@ -3,8 +3,8 @@ const LANG = $("html").attr("lang");
 const TRANSLATIONS = {
   pl: {
     currency: "zł",
-    monthGross: "netto miesięcznie",
-    monthNetto: "brutto miesięcznie",
+    monthGross: "brutto miesięcznie",
+    monthNetto: "netto miesięcznie",
     yearGross: "brutto rocznie",
     yearNetto: "netto rocznie",
     discount: '%s% taniej',
@@ -80,11 +80,11 @@ $( document ).ready( function() {
       type: "POST",
       dataType: "json",
       success: function(response) {
-      
+
           const {promotion, price} = response;
           let originalPrices = {};
           const fields = ["promotion", "standard", "standard_onetime", "premium", "premium_onetime", "enterprise", "enterprise_onetime"];
-      
+
           fields.forEach((field)=>{
               populateDiscounts(response);
               if (field === "promotion") {
@@ -118,13 +118,13 @@ $( document ).ready( function() {
               }
           }
           );
-        
+
           let isGross = false;
           let isYearly = false;
-        
+
           // Initial price setting
           setPrice(fields, originalPrices, isGross, isYearly, promotion);
-        
+
           // Change price mode on click
           $('a[data-toggle="price-mode"]').on("click", function(e) {
               e.preventDefault();
@@ -133,7 +133,7 @@ $( document ).ready( function() {
               isGross = !isGross;
               setPrice(fields, originalPrices, isGross, isYearly, promotion);
           });
-        
+
           // Change billing period on click
           $('a[data-toggle="billing-period"]').on("click", function(e) {
               e.preventDefault();
@@ -142,7 +142,7 @@ $( document ).ready( function() {
               isYearly = !isYearly;
               setPrice(fields, originalPrices, isGross, isYearly, promotion);
           });
-        
+
           $("[data-field='loader']").css("display", "none");
       }
 });
