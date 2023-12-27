@@ -94,17 +94,22 @@ const DataLayerGatherers = {
     });
   },
 
-  pushTrackEventData: function (formId, eventAction, eventType) {
+  pushTrackEventData: function (formId, eventAction, eventType, formType) {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    let data = {
       event: "myTrackEvent",
       formId: formId,
       eventCategory: "Button form sent",
       eventAction: eventAction,
       eventType: eventType,
       eventLabel: window.location.pathname,
-    });
+    };
+    if (formType) {
+      data.formType = formType;
+    }
+    window.dataLayer.push(data);
   },
+
   pushTrackEventDataModal: function (client_id, formId, shopId, eventAction, eventType) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
