@@ -82,32 +82,32 @@ const DataLayerGatherers = {
     });
   },
 
-  pushFormSubmitSuccessData: function (formId, eventType) {
+  pushFormSubmitSuccessData: function (formId, eventType, formType) {
     window.dataLayer = window.dataLayer || [];
-    window.dataLayer.push({
+    let data = {
       eventName: "formSubmitSuccess",
       formId: formId,
       eventCategory: "Button form sent",
       eventLabel: window.location.pathname,
       eventType: eventType,
       eventHistory: window.history,
-    });
+    };
+    if (formType) {
+      data.formType = formType;
+    }
+    window.dataLayer.push(data);
   },
 
-  pushTrackEventData: function (formId, eventAction, eventType, formType) {
+  pushTrackEventData: function (formId, eventAction, eventType) {
     window.dataLayer = window.dataLayer || [];
-    let data = {
+    window.dataLayer.push({
       event: "myTrackEvent",
       formId: formId,
       eventCategory: "Button form sent",
       eventAction: eventAction,
       eventType: eventType,
       eventLabel: window.location.pathname,
-    };
-    if (formType) {
-      data.formType = formType;
-    }
-    window.dataLayer.push(data);
+    });
   },
 
   pushTrackEventDataModal: function (client_id, formId, shopId, eventAction, eventType) {
