@@ -132,7 +132,7 @@ $(document).ready(function () {
             $("[data-app='trial-domain']").text(window.myGlobals.host);
             $('[data-modal="create_trial_step2"]').addClass("modal--open");
 
-            var formTypeValue = $("#create_trial_step1").attr("data-item") === "exit" ? "exit_popup" : "";
+            var formTypeValue = $("#create_trial_step1").attr("data-element") === "exit" ? "exit_popup" : "";
 
             DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $("#create_trial_step1").attr("data-action"), emailField.val());
 
