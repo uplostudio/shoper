@@ -1,7 +1,7 @@
 // hero
 
 $(function () {
-  var scrollSpeed = 120; // Adjust speed
+  var scrollSpeed = 60; // Adjust speed
 
   ["bottom", "top"].forEach(function (animationType) {
     var direction = animationType === "bottom" ? 1 : -1;
