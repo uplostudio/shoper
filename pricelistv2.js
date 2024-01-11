@@ -34,9 +34,14 @@ function formatPrice(price, isOnetime) {
 }
 
 function setPrice(fields, prices, isGross, isYearly, promotion) {
+
+    console.log( prices );
     fields.forEach((field)=>{
         const isOnetime = ["standard_onetime", "premium_onetime", "enterprise_onetime"].includes(field);
-        const priceType = isOnetime ? "onetimenet" : isGross ? (isYearly ? "yeargross" : "monthgross") : isYearly ? "yearnet" : "monthnet";
+        const priceType = isOnetime ? 
+            isGross ? (isYearly ? "onetimeGrossYear" : "onetimeGrossMonth") : isYearly ? "onetimeNetYear" : "onetimeNetMonth" :
+            isGross ? (isYearly ? "yeargross" : "monthgross") : isYearly ? "yearnet" : "monthnet";
+
         const priceValue = prices[field][priceType];
         let price = priceValue;
 
@@ -47,7 +52,8 @@ function setPrice(fields, prices, isGross, isYearly, promotion) {
             if (promotionPriceValue) {
                 price = promotionPriceValue;
             }
-        }
+        } 
+
         $("[data-field='" + field + "']").html(formatPrice(price, isOnetime));
     }
     );
@@ -56,19 +62,17 @@ function setPrice(fields, prices, isGross, isYearly, promotion) {
 }
 
 function populateDiscounts(response) {
-    const {promotion, price} = response;
+    const { promotion, price } = response;
 
-    if (promotion && promotion.active === 1) {
-        ["standard", "premium", "enterprise"].forEach((field)=>{
-            if (promotion.price[field]) {
-                //$("[data-field='" + field + "_discount']").text(promotion.price[field].discount + "% taniej" );
-                $("[data-field='" + field + "_discount']").text( TRANSLATIONS[LANG].discount.replace( '%s', promotion.price[field].discount ) );
-            } else {
-                $("[data-field='" + field + "_discount']").text( TRANSLATIONS[LANG].discount.replace( '%s', price[field].discount ) );
-            }
+    ["standard", "premium", "enterprise"].forEach((field) => {
+        let discount = "";
+        if (promotion && promotion.price && promotion.price[field]) {
+            discount = promotion.price[field].discount;
+        } else if (price && price[field]) {
+            discount = price[field].discount;
         }
-        );
-    }
+        $("[data-field='" + field + "_discount']").text(TRANSLATIONS[LANG].discount.replace('%s', discount));
+    });
 }
 
 $( document ).ready( function() {
@@ -83,7 +87,7 @@ $( document ).ready( function() {
 
           const {promotion, price} = response;
           let originalPrices = {};
-          const fields = ["promotion", "standard", "standard_onetime", "premium", "premium_onetime", "enterprise", "enterprise_onetime"];
+          const fields = [ "standard", "standard_onetime", "premium", "premium_onetime", "enterprise", "enterprise_onetime"];
 
           fields.forEach((field)=>{
               populateDiscounts(response);
@@ -106,7 +110,10 @@ $( document ).ready( function() {
               } else if (field.includes("_onetime")) {
                   const baseField = field.replace("_onetime", "");
                   originalPrices[field] = {
-                      onetimenet: parseFloat(price[baseField]["1"].net),
+                      onetimeNetMonth: parseFloat(price[baseField]["1"].net),
+                      onetimeGrossMonth: parseFloat(price[baseField]["1"].gross),
+                      onetimeNetYear: parseFloat(price[baseField]["12"].year.net),
+                      onetimeGrossYear: parseFloat(price[baseField]["12"].year.gross),
                   };
               } else {
                   originalPrices[field] = {
