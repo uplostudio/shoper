@@ -5,8 +5,6 @@ const TRANSLATIONS = {
     currency: "zł",
     monthGross: "brutto miesięcznie",
     monthNetto: "netto miesięcznie",
-    yearGross: "brutto rocznie",
-    yearNetto: "netto rocznie",
     discount: '%s% taniej',
     priceMode: 'Pokaż ceny brutto'
   },
@@ -14,8 +12,6 @@ const TRANSLATIONS = {
     currency: "PLN",
     monthGross: "gross monthly",
     monthNetto: "net monthly",
-    yearGross: "gross yearly",
-    yearNetto: "net yearly",
     discount: 'save %s%',
     priceMode: "Show gross prices"
   }
@@ -35,7 +31,6 @@ function formatPrice(price, isOnetime) {
 
 function setPrice(fields, prices, isGross, isYearly, promotion) {
 
-    console.log( prices );
     fields.forEach((field)=>{
         const isOnetime = ["standard_onetime", "premium_onetime", "enterprise_onetime"].includes(field);
         const priceType = isOnetime ? 
@@ -47,17 +42,19 @@ function setPrice(fields, prices, isGross, isYearly, promotion) {
 
         if (promotion && promotion.active === 1 && promotion.price[field]) {
             const priceTypePromotion = isYearly ? "year" : "month";
-            const promotionPriceValue = parseFloat(promotion.price[field]["12"][priceTypePromotion][isGross ? "gross" : "net"]);
+            const promotionPriceValue = isYearly ?
+                parseFloat(prices[field][isGross ? "yeargross" : "yearnet"]) :
+                parseFloat(promotion.price[field]["12"][priceTypePromotion][isGross ? "gross" : "net"]);
 
             if (promotionPriceValue) {
                 price = promotionPriceValue;
-            }
+            } 
         } 
 
         $("[data-field='" + field + "']").html(formatPrice(price, isOnetime));
     }
     );
-    const labelText = isGross ? (isYearly ? TRANSLATIONS[LANG].yearGross : TRANSLATIONS[LANG].monthGross) : isYearly ? TRANSLATIONS[LANG].yearNetto : TRANSLATIONS[LANG].monthNetto;
+    const labelText = isGross ? TRANSLATIONS[LANG].monthGross : TRANSLATIONS[LANG].monthNetto;
     $("[data-field='label']").text(labelText);
 }
 
@@ -77,7 +74,7 @@ function populateDiscounts(response) {
 
 $( document ).ready( function() {
   $.ajax({
-      url: "https://backend.webflow.prod.shoper.cloud",
+      url: "https://shoperpl.docker.shoper.tech/price.php",
       data: {
           action: "get_prices_list",
       },
@@ -96,15 +93,13 @@ $( document ).ready( function() {
                       originalPrices[field] = {
                           monthnet: parseFloat(promotion.price.standard["12"].month.net),
                           monthgross: parseFloat(promotion.price.standard["12"].month.gross),
-                          yearnet: parseFloat(promotion.price.standard["12"].year.net),
-                          yeargross: parseFloat(promotion.price.standard["12"].year.gross),
+                     
                       };
                   } else {
                       originalPrices[field] = {
-                          monthnet: parseFloat(price[field]["12"].month.net),
-                          monthgross: parseFloat(price[field]["12"].month.gross),
-                          yearnet: parseFloat(price[field]["12"].year.net),
-                          yeargross: parseFloat(price[field]["12"].year.gross),
+                          monthnet: parseFloat(price[field]["1"].net),
+                          monthgross: parseFloat(price[field]["1"].gross),
+                   
                       };
                   }
               } else if (field.includes("_onetime")) {
@@ -119,8 +114,8 @@ $( document ).ready( function() {
                   originalPrices[field] = {
                       monthnet: parseFloat(price[field]["12"].month.net),
                       monthgross: parseFloat(price[field]["12"].month.gross),
-                      yearnet: parseFloat(price[field]["12"].year.net),
-                      yeargross: parseFloat(price[field]["12"].year.gross),
+                      yearnet: parseFloat(price[field]["1"].net),
+                      yeargross: parseFloat(price[field]["1"].gross),
                   };
               }
           }
@@ -128,7 +123,7 @@ $( document ).ready( function() {
 
           let isGross = false;
           let isYearly = false;
-
+          console.log( originalPrices );
           // Initial price setting
           setPrice(fields, originalPrices, isGross, isYearly, promotion);
 
@@ -147,6 +142,21 @@ $( document ).ready( function() {
               const billingPeriod = $(this);
               billingPeriod.toggleClass("is-on").find(".toggle-ball").toggleClass("is-on");
               isYearly = !isYearly;
+              let elementsWithOnetime = $('[data-field]').filter(function() {
+                return $(this).data('field').indexOf('_onetime') !== -1;
+              });
+
+              let elementsWithDiscount = $('[data-field]').filter(function() {
+                return $(this).data('field').indexOf('_discount') !== -1;
+              });
+
+              if( isYearly ) {
+                elementsWithOnetime.css( "visibility", "hidden" );
+                elementsWithDiscount.parent().css( "visibility", "hidden" );
+              } else {
+                elementsWithOnetime.css( "visibility", "visible" );
+                elementsWithDiscount.parent().css( "visibility", "visible" );
+              }
               setPrice(fields, originalPrices, isGross, isYearly, promotion);
           });
 
