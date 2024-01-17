@@ -5,11 +5,13 @@
  */
 
 $(document).ready(function () {
-  var targetNode = document.querySelector(".board_modal");
-  var observer = new MutationObserver(function () {
-    var style = window.getComputedStyle(targetNode);
-    var display = style.getPropertyValue("display");
-    $("body").css("overflow", display == "flex" ? "hidden" : "auto");
+  $(".board_modal").each(function () {
+    var targetNode = this;
+    var observer = new MutationObserver(function () {
+      var style = window.getComputedStyle(targetNode);
+      var display = style.getPropertyValue("display");
+      $("body").css("overflow", display == "flex" ? "hidden" : "auto");
+    });
+    observer.observe(targetNode, { attributes: true, childList: false, subtree: false });
   });
-  observer.observe(targetNode, { attributes: true, childList: false, subtree: false });
 });
