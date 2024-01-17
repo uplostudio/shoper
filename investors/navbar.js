@@ -1,6 +1,6 @@
 // navbar
 
-let topBar = $('[data-item="topbar"]');
+topBar = $('[data-item="topbar"]');
 let lastScroll = 0;
 let scrollThreshold = 140;
 let windowWidthLimit = 992;
