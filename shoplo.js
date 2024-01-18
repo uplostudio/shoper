@@ -159,7 +159,7 @@ $(document).ready(function () {
             formData["front_page"] = window.location.host + window.location.pathname;
 
             $.ajax({
-                url: "https://www.shoper.pl/ajax.php",
+                url: "https://backend.webflow.prod.shoper.cloud",
                 headers: {},
                 method: "POST",
                 data: formData,
