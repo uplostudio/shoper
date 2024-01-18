@@ -111,3 +111,16 @@ $(document).ready(function () {
     });
   }
 });
+
+// align dropdown on desktop to left
+
+$(window)
+  .resize(function () {
+    if ($(window).width() > 991) {
+      $("[data-item='nav-drop']").each(function (index) {
+        var posLeft = ((index + 1) * -120).toString() + "%";
+        $(this).css("left", posLeft);
+      });
+    }
+  })
+  .trigger("resize");
