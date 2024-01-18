@@ -156,6 +156,7 @@ $(document).ready(function () {
 
         if ( $( errorsElemnet ).length === 0 ) {
             var formData = bindDataFromForm($(form));
+            formData["front_page"] = window.location.host + window.location.pathname;
 
             $.ajax({
                 url: "https://www.shoper.pl/ajax.php",
