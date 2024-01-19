@@ -1,9 +1,11 @@
-import utm from './modules/Utm';
-import insertToFormHiddenInput from './modules/InsertToFormHiddenInput';
+import utm from './modules/utm';
+import insertToFormHiddenInput from './modules/insertToFormHiddenInput';
+import countries from './modules/countries';
 
 const modules = [
     utm,
-    insertToFormHiddenInput
+    insertToFormHiddenInput,
+    countries
 ];
 
 modules.forEach(module => {

@@ -38,5 +38,5 @@ $( document ).ready( function() {
             $('.input-radio-additional-info').addClass('d-none');
         }
     });
-    
+
 });
