@@ -4,13 +4,15 @@ import insertToFormHiddenInput from './modules/insertToFormHiddenInput';
 import countries from './modules/countries';
 import handleRadioPayNow from './modules/handleRadioPayNow';
 import clientTypeFields from './modules/clientTypeFields';
+import phoneNumberWithPrefix from './modules/phoneNumberWithPrefix';
 
 const modules = [
     utm,
     insertToFormHiddenInput,
     countries,
     handleRadioPayNow,
-    clientTypeFields
+    clientTypeFields,
+    phoneNumberWithPrefix
 ];
 
 modules.forEach(module => {

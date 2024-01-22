@@ -1,23 +1,33 @@
 const path = require('path');
+const MiniCssExtractPlugin = require('mini-css-extract-plugin');
 
 module.exports = {
-  entry: './initialize.js', // ścieżka do głównego pliku, który importuje inne pliki
+  entry: './initialize.js',
   output: {
-    filename: 'bundle.js', // nazwa pliku wynikowego
-    path: path.resolve(__dirname, 'dist'), // ścieżka docelowa dla pliku wynikowego
+    filename: 'bundle.js',
+    path: path.resolve(__dirname, 'dist'),
   },
   module: {
     rules: [
       {
-        test: /\.js$/, // dopasuj pliki z rozszerzeniem .js
-        exclude: /node_modules/, // pomijaj pliki z katalogu node_modules
+        test: /\.js$/,
+        exclude: /node_modules/,
         use: {
-          loader: 'babel-loader', // użyj loadera Babel
+          loader: 'babel-loader',
           options: {
-            presets: ['@babel/preset-env'], // ustawienia Babel preset
+            presets: ['@babel/preset-env'],
           },
         },
       },
+      {
+        test: /\.css$/,
+        use: [MiniCssExtractPlugin.loader, 'css-loader'],
+      },
     ],
   },
+  plugins: [
+    new MiniCssExtractPlugin({
+      filename: 'styles.css', // Nazwa generowanego pliku CSS
+    }),
+  ],
 };
