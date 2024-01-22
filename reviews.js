@@ -1,15 +1,34 @@
 $(document).ready(function () {
+  var listContainer = $('*[fs-cmsload-element="list"]');
+  var childrenCount = listContainer.children().length;
+  var sumRate = 0,
+    ratingElementsCount = 0;
+
+  listContainer.find("*[data-rate]").each(function () {
+    var rateValue = parseFloat($(this).text());
+    if (!isNaN(rateValue)) {
+      sumRate += rateValue;
+      ratingElementsCount += 1;
+    }
+  });
+
+  if (ratingElementsCount > 0) {
+    var overallRating = sumRate / ratingElementsCount;
+    $('*[data-item="overall"]').text(overallRating.toFixed(1));
+  }
+
+  $('*[data-item="review-count"]').text(childrenCount);
+
   $('[data-item^="list"]').each(function () {
-    var listContainer = $(this);
+    var listElementContainer = $(this);
     var listToSort = [];
 
-    listContainer.find("span[fs-cmsfilter-field]").each(function () {
+    listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
       var $this = $(this);
       var value = $this.data("value");
       var count = $(`div[fs-cmsfilter-element='list'] div[data-set='${value}']`).length;
 
       $this.next(".counter_span").text("[" + count + "]");
-      console.log($this[0].length);
 
       if ($this.parent().parent().parent()) {
         listToSort.push({
@@ -21,23 +40,20 @@ $(document).ready(function () {
 
     if (listToSort.length > 0) {
       listToSort.sort((a, b) => b.count - a.count);
-      $.each(listToSort, (index, item) => listContainer.append(item.element));
+      $.each(listToSort, (index, item) => listElementContainer.append(item.element));
     }
-  });
 
-  $("[data-item^=list]").each(function () {
-    var $this = $(this);
-    var itemCount = $this.children().length;
-    var itemNum = $this.attr("data-item").split("-")[1];
+    var itemCount = listElementContainer.children().length;
+    var itemNum = listElementContainer.attr("data-item").split("-")[1];
 
     if (itemCount > 5) {
-      $this.addClass("collapsed");
+      listElementContainer.addClass("collapsed");
       var hiddenChildren = itemCount - 5;
 
-      if ($("[data-item=expand-" + itemNum + "]")) {
-        $("[data-item=expand-" + itemNum + "]")
-          .text("Pokaż wszystkie branże [" + hiddenChildren + "]")
-          .show();
+      var expandElement = $("[data-item=expand-" + itemNum + "]");
+
+      if (expandElement) {
+        expandElement.text("Pokaż wszystkie branże [" + hiddenChildren + "]").show();
       }
     }
   });
