@@ -15,6 +15,14 @@ $(document).ready(function () {
   if (ratingElementsCount > 0) {
     var overallRating = sumRate / ratingElementsCount;
     $('*[data-item="overall"]').text(overallRating.toFixed(1));
+
+    var roundedRating = Math.round(overallRating);
+    if (roundedRating > 1) {
+      var star = $('[data-item="star"]').first();
+      for (var i = 1; i < roundedRating; i++) {
+        star.clone().insertAfter(star);
+      }
+    }
   }
 
   $('*[data-item="review-count"]').text(childrenCount);
