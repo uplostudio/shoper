@@ -123,7 +123,7 @@ $( document ).ready( function() {
 
           let isGross = false;
           let isYearly = false;
-          console.log( originalPrices );
+
           // Initial price setting
           setPrice(fields, originalPrices, isGross, isYearly, promotion);
 
