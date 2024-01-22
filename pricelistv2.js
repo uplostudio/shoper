@@ -74,7 +74,7 @@ function populateDiscounts(response) {
 
 $( document ).ready( function() {
   $.ajax({
-      url: "https://shoperpl.docker.shoper.tech/price.php",
+      url: "https://backend.webflow.prod.shoper.cloud",
       data: {
           action: "get_prices_list",
       },
