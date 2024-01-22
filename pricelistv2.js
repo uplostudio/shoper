@@ -5,8 +5,6 @@ const TRANSLATIONS = {
     currency: "zł",
     monthGross: "brutto miesięcznie",
     monthNetto: "netto miesięcznie",
-    yearGross: "brutto rocznie",
-    yearNetto: "netto rocznie",
     discount: '%s% taniej',
     priceMode: 'Pokaż ceny brutto'
   },
@@ -14,8 +12,6 @@ const TRANSLATIONS = {
     currency: "PLN",
     monthGross: "gross monthly",
     monthNetto: "net monthly",
-    yearGross: "gross yearly",
-    yearNetto: "net yearly",
     discount: 'save %s%',
     priceMode: "Show gross prices"
   }
@@ -34,41 +30,46 @@ function formatPrice(price, isOnetime) {
 }
 
 function setPrice(fields, prices, isGross, isYearly, promotion) {
+
     fields.forEach((field)=>{
         const isOnetime = ["standard_onetime", "premium_onetime", "enterprise_onetime"].includes(field);
-        const priceType = isOnetime ? "onetimenet" : isGross ? (isYearly ? "yeargross" : "monthgross") : isYearly ? "yearnet" : "monthnet";
+        const priceType = isOnetime ? 
+            isGross ? (isYearly ? "onetimeGrossYear" : "onetimeGrossMonth") : isYearly ? "onetimeNetYear" : "onetimeNetMonth" :
+            isGross ? (isYearly ? "yeargross" : "monthgross") : isYearly ? "yearnet" : "monthnet";
+
         const priceValue = prices[field][priceType];
         let price = priceValue;
 
         if (promotion && promotion.active === 1 && promotion.price[field]) {
             const priceTypePromotion = isYearly ? "year" : "month";
-            const promotionPriceValue = parseFloat(promotion.price[field]["12"][priceTypePromotion][isGross ? "gross" : "net"]);
+            const promotionPriceValue = isYearly ?
+                parseFloat(prices[field][isGross ? "yeargross" : "yearnet"]) :
+                parseFloat(promotion.price[field]["12"][priceTypePromotion][isGross ? "gross" : "net"]);
 
             if (promotionPriceValue) {
                 price = promotionPriceValue;
-            }
-        }
+            } 
+        } 
+
         $("[data-field='" + field + "']").html(formatPrice(price, isOnetime));
     }
     );
-    const labelText = isGross ? (isYearly ? TRANSLATIONS[LANG].yearGross : TRANSLATIONS[LANG].monthGross) : isYearly ? TRANSLATIONS[LANG].yearNetto : TRANSLATIONS[LANG].monthNetto;
+    const labelText = isGross ? TRANSLATIONS[LANG].monthGross : TRANSLATIONS[LANG].monthNetto;
     $("[data-field='label']").text(labelText);
 }
 
 function populateDiscounts(response) {
-    const {promotion, price} = response;
+    const { promotion, price } = response;
 
-    if (promotion && promotion.active === 1) {
-        ["standard", "premium", "enterprise"].forEach((field)=>{
-            if (promotion.price[field]) {
-                //$("[data-field='" + field + "_discount']").text(promotion.price[field].discount + "% taniej" );
-                $("[data-field='" + field + "_discount']").text( TRANSLATIONS[LANG].discount.replace( '%s', promotion.price[field].discount ) );
-            } else {
-                $("[data-field='" + field + "_discount']").text( TRANSLATIONS[LANG].discount.replace( '%s', price[field].discount ) );
-            }
+    ["standard", "premium", "enterprise"].forEach((field) => {
+        let discount = "";
+        if (promotion && promotion.price && promotion.price[field]) {
+            discount = promotion.price[field].discount;
+        } else if (price && price[field]) {
+            discount = price[field].discount;
         }
-        );
-    }
+        $("[data-field='" + field + "_discount']").text(TRANSLATIONS[LANG].discount.replace('%s', discount));
+    });
 }
 
 $( document ).ready( function() {
@@ -83,7 +84,7 @@ $( document ).ready( function() {
 
           const {promotion, price} = response;
           let originalPrices = {};
-          const fields = ["promotion", "standard", "standard_onetime", "premium", "premium_onetime", "enterprise", "enterprise_onetime"];
+          const fields = [ "standard", "standard_onetime", "premium", "premium_onetime", "enterprise", "enterprise_onetime"];
 
           fields.forEach((field)=>{
               populateDiscounts(response);
@@ -92,28 +93,29 @@ $( document ).ready( function() {
                       originalPrices[field] = {
                           monthnet: parseFloat(promotion.price.standard["12"].month.net),
                           monthgross: parseFloat(promotion.price.standard["12"].month.gross),
-                          yearnet: parseFloat(promotion.price.standard["12"].year.net),
-                          yeargross: parseFloat(promotion.price.standard["12"].year.gross),
+                     
                       };
                   } else {
                       originalPrices[field] = {
-                          monthnet: parseFloat(price[field]["12"].month.net),
-                          monthgross: parseFloat(price[field]["12"].month.gross),
-                          yearnet: parseFloat(price[field]["12"].year.net),
-                          yeargross: parseFloat(price[field]["12"].year.gross),
+                          monthnet: parseFloat(price[field]["1"].net),
+                          monthgross: parseFloat(price[field]["1"].gross),
+                   
                       };
                   }
               } else if (field.includes("_onetime")) {
                   const baseField = field.replace("_onetime", "");
                   originalPrices[field] = {
-                      onetimenet: parseFloat(price[baseField]["1"].net),
+                      onetimeNetMonth: parseFloat(price[baseField]["1"].net),
+                      onetimeGrossMonth: parseFloat(price[baseField]["1"].gross),
+                      onetimeNetYear: parseFloat(price[baseField]["12"].year.net),
+                      onetimeGrossYear: parseFloat(price[baseField]["12"].year.gross),
                   };
               } else {
                   originalPrices[field] = {
                       monthnet: parseFloat(price[field]["12"].month.net),
                       monthgross: parseFloat(price[field]["12"].month.gross),
-                      yearnet: parseFloat(price[field]["12"].year.net),
-                      yeargross: parseFloat(price[field]["12"].year.gross),
+                      yearnet: parseFloat(price[field]["1"].net),
+                      yeargross: parseFloat(price[field]["1"].gross),
                   };
               }
           }
@@ -140,6 +142,21 @@ $( document ).ready( function() {
               const billingPeriod = $(this);
               billingPeriod.toggleClass("is-on").find(".toggle-ball").toggleClass("is-on");
               isYearly = !isYearly;
+              let elementsWithOnetime = $('[data-field]').filter(function() {
+                return $(this).data('field').indexOf('_onetime') !== -1;
+              });
+
+              let elementsWithDiscount = $('[data-field]').filter(function() {
+                return $(this).data('field').indexOf('_discount') !== -1;
+              });
+
+              if( isYearly ) {
+                elementsWithOnetime.css( "visibility", "hidden" );
+                elementsWithDiscount.parent().css( "visibility", "hidden" );
+              } else {
+                elementsWithOnetime.css( "visibility", "visible" );
+                elementsWithDiscount.parent().css( "visibility", "visible" );
+              }
               setPrice(fields, originalPrices, isGross, isYearly, promotion);
           });
 
