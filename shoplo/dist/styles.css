@@ -1306,3 +1306,23 @@
 .iti__flag.iti__np {
   background-color: transparent;
 }
+.iti--allow-dropdown {
+    width: 100%;
+}
+
+.iti--show-selected-dial-code .iti__selected-flag,
+.iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
+    background-color: transparent;
+}
+
+.iti--show-selected-dial-code .iti__selected-flag .error-field {
+    position: absolute;
+    top: 55px;
+}
+
+.iti__country-list {
+    background-color: #FFF;
+    position: relative;
+    z-index: 100;
+}
+
