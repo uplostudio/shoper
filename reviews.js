@@ -1,8 +1,10 @@
 $(document).ready(function () {
   initializeListContainer();
-  handleDataItemList();
   expandOnClick();
   feedBoxBottomClassHandler();
+  $('[data-item^="list"]').each(function () {
+    handleList($(this), true);
+  });
 });
 
 // Initializing List Container Attributes;
@@ -41,20 +43,26 @@ function handleRating(sumRate, ratingElementsCount) {
   }
 }
 
-// Data Item List Handler
+function processList(listElementContainer, isInitialLoad) {
+  var listToSort = [];
+
+  processListItem(listElementContainer, listToSort, isInitialLoad);
+
+  return listToSort;
+}
+
+function handleList(listElementContainer, isInitialLoad) {
+  var listToSort = processList(listElementContainer, isInitialLoad);
+  handleVisibilityAndExpansion(listElementContainer, listToSort);
+}
+
 function handleDataItemList() {
-  $('[data-item^="list"]').each(function () {
-    var listElementContainer = $(this);
-    var listToSort = [];
-
-    processListItem(listElementContainer, listToSort);
-
-    handleVisibilityAndExpansion(listElementContainer, listToSort);
-  });
+  processList();
+  handleList();
 }
 
 // Process each list item
-function processListItem(listElementContainer, listToSort) {
+function processListItem(listElementContainer, listToSort, isInitialLoad) {
   listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
     var $this = $(this);
     var value = $this.data("value");
@@ -62,8 +70,22 @@ function processListItem(listElementContainer, listToSort) {
 
     $this.next(".counter_span").text("[" + count + "]");
 
+    var closestListItem = $this.closest('[role="listitem"]');
     if (count === 0) {
-      $this.closest('[role="listitem"]').css("display", "none");
+      if (isInitialLoad) {
+        closestListItem.css("display", "none");
+      } else {
+        closestListItem.css({
+          opacity: "0.4",
+          "pointer-events": "none",
+        });
+      }
+    } else {
+      closestListItem.css({
+        display: "",
+        opacity: "",
+        "pointer-events": "",
+      });
     }
 
     if ($this.parent().parent().parent()) {
@@ -132,3 +154,30 @@ function feedBoxBottomClassHandler() {
     }
   });
 }
+
+// Observe when list is being changed
+
+function observeNodeChange(targetSelector, onNodeChange) {
+  var targetNode = document.querySelector(targetSelector);
+  var config = {
+    childList: true,
+    subtree: true,
+  };
+
+  var observer = new MutationObserver(function (mutations) {
+    mutations.forEach(function (mutation) {
+      if (mutation.type === "childList") {
+        onNodeChange(mutation);
+      }
+    });
+  });
+
+  observer.observe(targetNode, config);
+  return observer;
+}
+
+var observer = observeNodeChange('[fs-cmsfilter-element="list"]', function (mutation) {
+  $('[data-item^="list"]').each(function () {
+    handleList($(this), false);
+  });
+});
