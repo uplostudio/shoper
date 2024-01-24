@@ -1,4 +1,12 @@
 $(document).ready(function () {
+  initializeListContainer();
+  handleDataItemList();
+  expandOnClick();
+  feedBoxBottomClassHandler();
+});
+
+// Initializing List Container Attributes;
+function initializeListContainer() {
   var listContainer = $('*[fs-cmsload-element="list"]');
   var childrenCount = listContainer.children().length;
   var sumRate = 0,
@@ -13,69 +21,100 @@ $(document).ready(function () {
   });
 
   if (ratingElementsCount > 0) {
-    var overallRating = sumRate / ratingElementsCount;
-    $('*[data-item="overall"]').text(overallRating.toFixed(1));
-
-    var roundedRating = Math.round(overallRating);
-    if (roundedRating > 1) {
-      var star = $('[data-item="star"]').first();
-      for (var i = 1; i < roundedRating; i++) {
-        star.clone().insertAfter(star);
-      }
-    }
+    handleRating(sumRate, ratingElementsCount);
   }
 
   $('*[data-item="review-count"]').text(childrenCount);
+}
 
+// Rate Handler to manage ratings
+function handleRating(sumRate, ratingElementsCount) {
+  var overallRating = sumRate / ratingElementsCount;
+  $('*[data-item="overall"]').text(overallRating.toFixed(1));
+
+  var roundedRating = Math.round(overallRating);
+  if (roundedRating > 1) {
+    var star = $('[data-item="star"]').first();
+    for (var i = 1; i < roundedRating; i++) {
+      star.clone().insertAfter(star);
+    }
+  }
+}
+
+// Data Item List Handler
+function handleDataItemList() {
   $('[data-item^="list"]').each(function () {
     var listElementContainer = $(this);
     var listToSort = [];
 
-    listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
-      var $this = $(this);
-      var value = $this.data("value");
-      var count = $(`div[fs-cmsfilter-element='list'] div[data-set='${value}']`).length;
+    processListItem(listElementContainer, listToSort);
 
-      $this.next(".counter_span").text("[" + count + "]");
+    handleVisibilityAndExpansion(listElementContainer, listToSort);
+  });
+}
 
-      if ($this.parent().parent().parent()) {
-        listToSort.push({
-          element: $this.parent().parent().parent(),
-          count: count,
-        });
-      }
-    });
+// Process each list item
+function processListItem(listElementContainer, listToSort) {
+  listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
+    var $this = $(this);
+    var value = $this.data("value");
+    var count = $(`div[fs-cmsfilter-element='list'] div[data-set='${value}']`).length;
 
-    if (listToSort.length > 0) {
-      listToSort.sort((a, b) => b.count - a.count);
-      $.each(listToSort, (index, item) => listElementContainer.append(item.element));
+    $this.next(".counter_span").text("[" + count + "]");
+
+    if (count === 0) {
+      $this.closest('[role="listitem"]').css("display", "none");
     }
 
-    var itemCount = listElementContainer.children().length;
-    var itemNum = listElementContainer.attr("data-item").split("-")[1];
-
-    if (itemCount > 5) {
-      listElementContainer.addClass("collapsed");
-      var hiddenChildren = itemCount - 5;
-
-      var expandElement = $("[data-item=expand-" + itemNum + "]");
-
-      if (expandElement) {
-        expandElement.text("Pokaż wszystkie branże [" + hiddenChildren + "]").show();
-      }
+    if ($this.parent().parent().parent()) {
+      listToSort.push({
+        element: $this.parent().parent().parent(),
+        count: count,
+      });
     }
   });
+}
 
+// Sort and handle visibility of list items
+function handleVisibilityAndExpansion(listElementContainer, listToSort) {
+  if (listToSort.length > 0) {
+    listToSort.sort((a, b) => b.count - a.count);
+    $.each(listToSort, (index, item) => listElementContainer.append(item.element));
+  }
+
+  var itemCount = listElementContainer.children(":visible").length;
+  var itemNum = listElementContainer.attr("data-item").split("-")[1];
+  var hiddenChildren = itemCount - 5;
+  var expandElement = $("[data-item=expand-" + itemNum + "]");
+
+  if (hiddenChildren < 1) {
+    expandElement.hide();
+  } else if (itemCount > 5) {
+    listElementContainer.addClass("collapsed");
+    handleExpandElementText(itemNum, hiddenChildren, expandElement);
+  }
+}
+
+// Update expandElement's text
+function handleExpandElementText(itemNum, hiddenChildren, expandElement) {
+  var expandText = itemNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania";
+  expandElement.text(`Pokaż ${expandText} [${hiddenChildren}]`).show();
+}
+
+// Expand onClick
+function expandOnClick() {
   $("[data-item^=expand]").click(function () {
     var $this = $(this);
     var expandNum = $this.attr("data-item") ? $this.attr("data-item").split("-")[1] : "";
-
     if (expandNum) {
       $("[data-item=list-" + expandNum + "]").removeClass("collapsed");
       $this.hide();
     }
   });
+}
 
+// Feed Box Bottom Class Handler
+function feedBoxBottomClassHandler() {
   $(".feed_box-bottom").each(function () {
     var $this = $(this);
 
@@ -92,4 +131,4 @@ $(document).ready(function () {
       });
     }
   });
-});
+}
