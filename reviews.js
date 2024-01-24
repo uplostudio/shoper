@@ -109,7 +109,7 @@ function handleVisibilityAndExpansion(listElementContainer, listToSort) {
   var hiddenChildren = itemCount - 5;
   var expandElement = $("[data-item=expand-" + itemNum + "]");
 
-  if (hiddenChildren < 1) {
+  if (hiddenChildren < 1 || expandElement.data("wasExpanded")) {
     expandElement.hide();
   } else if (itemCount > 5) {
     listElementContainer.addClass("collapsed");
@@ -129,6 +129,7 @@ function expandOnClick() {
     var $this = $(this);
     var expandNum = $this.attr("data-item") ? $this.attr("data-item").split("-")[1] : "";
     if (expandNum) {
+      $this.data("wasExpanded", true);
       $("[data-item=list-" + expandNum + "]").removeClass("collapsed");
       $this.hide();
     }
