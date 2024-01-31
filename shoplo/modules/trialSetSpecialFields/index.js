@@ -6,6 +6,10 @@ const initialize = () => {
   if ( LSdata ) {
     formsTrial.each( ( index, formTrial) => {
       $(formTrial).append('<input name="sid" value="' + LSdata[1] + '" type="hidden" />');
+
+      if ( $(formTrial).attr('id') === "create_trial_step2" ) {
+        $($(formTrial).find('#trial-host').get(0)).text(atob(LSdata[5]))
+      }
       
       if ( $(formTrial).attr('id') === "create_trial_step3" ) {
         if ( LSdata[2] ) {

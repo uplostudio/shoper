@@ -50,14 +50,17 @@ const sendForm = (form) => {
               let LSdata = {
                   1: data.sid,
                   2: btoa(formData.email),
-                  3: btoa(data.shop_id)
+                  3: btoa(data.shop_id),
+                  5: btoa(data.host),
               };
               localStorage.setItem('trial', JSON.stringify(LSdata));
-              console.log( LSdata );
             }
             if (formData.email && $("#email-3")) {
               $("#email-3").val(formData.email);
             }
+
+            $("#trial-host").text(data.host);
+            
             $('[id^=create_trial_step]').each( ( index, trialForm ) => {
                 if( $($(trialForm).get(0)).find('input[name="sid"]').length === 0 ) {
                   $($(trialForm).get(0)).append('<input name="sid" type="hidden" value="' + data.sid + '" />');
