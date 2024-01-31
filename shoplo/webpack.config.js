@@ -7,6 +7,10 @@ module.exports = {
     filename: 'bundle.js',
     path: path.resolve(__dirname, 'dist'),
   },
+  optimization: {
+    minimize: true, // Wyłącz minifikację kodu
+  },
+  watch: false, // Włącz tryb watch
   module: {
     rules: [
       {

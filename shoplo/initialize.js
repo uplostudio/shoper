@@ -7,6 +7,8 @@ import clientTypeFields from './modules/clientTypeFields';
 import phoneNumberWithPrefix from './modules/phoneNumberWithPrefix';
 import formValidation from './modules/formValidation';
 import formHandler from './modules/formHandler';
+import checkNipField from './modules/checkNipField';
+import trialSetSpecialFields from './modules/trialSetSpecialFields';
 
 const modules = [
     utm,
@@ -16,7 +18,9 @@ const modules = [
     clientTypeFields,
     phoneNumberWithPrefix,
     formValidation,
-    formHandler
+    formHandler,
+    checkNipField,
+    trialSetSpecialFields
 ];
 
 modules.forEach(module => {

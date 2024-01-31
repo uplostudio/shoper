@@ -1,4 +1,5 @@
 import { MESSAGES } from "./constansts";
+import './style.css';
 
 const forms = $("form");
 const condition = () => forms.length > 0;
@@ -11,7 +12,7 @@ const initialize = () => {
       let form = $(e.target).parent("form");
       validateForm(form);
 
-      let errorsElemnet = $("div.error-field");
+      let errorsElemnet = $("div.error-field").prev().filter(':not([disabled])');
 
       if ($(errorsElemnet).length === 0) {
         $(document).trigger("submitFormSuccess", form);
