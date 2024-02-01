@@ -9,6 +9,7 @@ import formValidation from './modules/formValidation';
 import formHandler from './modules/formHandler';
 import checkNipField from './modules/checkNipField';
 import trialSetSpecialFields from './modules/trialSetSpecialFields';
+import dataLayer from './modules/dataLayer';
 
 const modules = [
     utm,
@@ -20,7 +21,8 @@ const modules = [
     formValidation,
     formHandler,
     checkNipField,
-    trialSetSpecialFields
+    trialSetSpecialFields,
+    dataLayer
 ];
 
 modules.forEach(module => {
