@@ -1307,57 +1307,65 @@
   background-color: transparent;
 }
 .iti--allow-dropdown {
-    width: 100%;
+  width: 100%;
 }
 
 .iti--show-selected-dial-code .iti__selected-flag,
 .iti--allow-dropdown .iti__flag-container:hover .iti__selected-flag {
-    background-color: transparent;
+  background-color: transparent;
 }
 
 .iti--show-selected-dial-code .iti__selected-flag .error-field {
-    position: absolute;
-    top: 55px;
+  position: absolute;
+  top: 55px;
 }
 
 .iti__country-list {
-    background-color: #FFF;
+  background-color: #fff;
+  position: relative;
+  z-index: 100;
+}
+
+@media (min-width: 480px) {
+  .input-group {
     position: relative;
-    z-index: 100;
+  }
+
+  .error-field {
+    align-items: start;
+  }
+
+  .error-field-image {
+    margin-top: 6px;
+  }
+
+  .input-city .error-field {
+    position: relative;
+    left: -153px;
+  }
+
+  .input-post-code .error-field {
+    position: relative;
+    width: 100%;
+    min-width: 378px;
+  }
+
+  .input-post-code .error-field div {
+    line-height: 11px;
+    padding-top: 7px;
+  }
+
+  .input-group div:nth-child(2) .error-field {
+    margin-top: 24px;
+  }
 }
 
-@media( min-width: 480px ) {
-
-    .input-group {
-        position: relative;
-    }
-
-    .error-field {
-        align-items: start;
-    }
-
-    .error-field-image {
-        margin-top: 6px;
-    }
-
-    .input-city .error-field {
-        position: relative;
-        left: -153px;
-    }
-
-    .input-post-code .error-field {
-        position: relative;
-        width: 100%;
-        min-width: 378px;
-    }
-
-    .input-post-code .error-field div {
-        line-height: 11px;
-        padding-top: 7px;
-    }
-
-    .input-group div:nth-child(2) .error-field {
-        margin-top: 24px;
-    }
-
+.iti {
+  margin-bottom: 34px;
 }
+
+.iti .error-field {
+  position: absolute;
+  bottom: -30px;
+}
+

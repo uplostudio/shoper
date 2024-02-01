@@ -33,7 +33,9 @@ const sendForm = (form) => {
       ].getNumber();
   }
 
-  $(`#${formData.action}`).parent().get(0).style.display = "none";
+  if ( $(`#${formData.action}`).parent().get(0) ) {
+    $(`#${formData.action}`).parent().get(0).style.display = "none";
+  }
   $(".loader-trial").removeClass("d-none");
 
   $.ajax({
@@ -85,7 +87,7 @@ const sendForm = (form) => {
             localStorage.removeItem('trial');
           break;
           default:
-
+  
         }
 
         if (data.step) {
@@ -95,6 +97,12 @@ const sendForm = (form) => {
 
         if (data.redirect) {
           window.location.href = data.redirect;
+        }
+
+        if (data.message) {
+          $(form).css('display', 'none');
+          $(form).next().find('div').text( data.message );
+          $(form).next().css('display', 'block');
         }
 
       } else {
