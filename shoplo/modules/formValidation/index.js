@@ -16,7 +16,7 @@ const initialize = () => {
 
       if ($(errorsElemnet).length === 0) {
         $(document).trigger("submitFormSuccess", form);
-        form.submit();
+        //form.submit();
       } else {
         $(document).trigger("submitFormError", form);
       }
@@ -109,7 +109,7 @@ const valideEmail = (field) => {
 
 const validePhoneNumber = (field) => {
   let fieldValue = $(field).val();
-  const phoneRegex = /^\d{9,15}|\d{2,4} \d{2,4} \d{2,4}$/;
+  const phoneRegex = /^\d{9}|\d{3,4} \d{3,4} \d{3,4}$/;
   if (!phoneRegex.test(fieldValue)) {
     setErrorField(MESSAGES[$("html").attr("lang")].phone, field);
   }

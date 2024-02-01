@@ -35,8 +35,8 @@ const sendForm = (form) => {
 
   if ( $(`#${formData.action}`).parent().get(0) ) {
     $(`#${formData.action}`).parent().get(0).style.display = "none";
+    $(".loader-trial").removeClass("d-none");
   }
-  $(".loader-trial").removeClass("d-none");
 
   $.ajax({
     url: API_URL,
@@ -51,11 +51,11 @@ const sendForm = (form) => {
             if ( data.sid ) {
               let LSdata = {
                   1: data.sid,
-                  2: btoa(formData.email),
-                  3: btoa(data.shop_id),
-                  5: btoa(data.host),
+                  2: formData.email,
+                  3: data.shop_id,
+                  5: data.host,
               };
-              localStorage.setItem('trial', JSON.stringify(LSdata));
+              localStorage.setItem('trial', btoa(JSON.stringify(LSdata)));
             }
             if (formData.email && $("#email-3")) {
               $("#email-3").val(formData.email);
@@ -72,10 +72,10 @@ const sendForm = (form) => {
           break;
           case "create_trial_step2":
             if ( data.license_id ) {
-            let LSdata = JSON.parse(localStorage.getItem('trial'));
-            if( atob(LSdata[3]) ===  data.license_id ) {
-              LSdata[4] = btoa(formData.phone);
-              localStorage.setItem('trial', JSON.stringify(LSdata));
+            let LSdata = JSON.parse(atob(localStorage.getItem('trial')));
+            if( LSdata[3] ===  data.license_id ) {
+              LSdata[4] = formData.phone;
+              localStorage.setItem('trial', btoa(JSON.stringify(LSdata)));
             }
             if (formData.phone && $("#phone-3")) {
               window.intlTelInputGlobals.instances[
@@ -87,7 +87,8 @@ const sendForm = (form) => {
             localStorage.removeItem('trial');
           break;
           default:
-  
+            
+          break;
         }
 
         if (data.step) {
@@ -106,6 +107,7 @@ const sendForm = (form) => {
         }
 
       } else {
+        
         let error;
         $(`#${formData.action}`).parent().get(0).style.display = "block";
         if ( $(`#${formData.action} .w-form-fail`) ) {
@@ -125,6 +127,7 @@ const sendForm = (form) => {
       console.error("Error Connection with API");
     },
   });
+
 
 };
 
