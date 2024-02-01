@@ -2,8 +2,9 @@ const formsTrial = $('[id^=create_trial_step]');
 const condition = () => formsTrial.length > 0;
  
 const initialize = () => {
-  let LSdata = JSON.parse(atob(localStorage.getItem('trial')));
+  let LSdata = JSON.parse(localStorage.getItem('trial'));
   if ( LSdata ) {
+    LSdata = atob(LSdata);
     formsTrial.each( ( index, formTrial) => {
       $(formTrial).append('<input name="sid" value="' + LSdata[1] + '" type="hidden" />');
 
