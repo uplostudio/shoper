@@ -45,7 +45,6 @@ const sendForm = (form) => {
     success: function (data) {
       $(".loader-trial").addClass("d-none");
       if (data.status === 1) {
-     
         switch (formData.action) {
           case "create_trial_step1":
             if ( data.sid ) {
@@ -56,6 +55,7 @@ const sendForm = (form) => {
                   5: data.host,
               };
               localStorage.setItem('trial', btoa(JSON.stringify(LSdata)));
+              $(document).trigger("trial_EmailSubmitted", [ data ]);
             }
             if (formData.email && $("#email-3")) {
               $("#email-3").val(formData.email);
@@ -97,7 +97,7 @@ const sendForm = (form) => {
         }
 
         if (data.redirect) {
-          window.location.href = data.redirect;
+          //window.location.href = data.redirect;
         }
 
         if (data.message) {

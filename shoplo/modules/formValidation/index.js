@@ -16,7 +16,6 @@ const initialize = () => {
 
       if ($(errorsElemnet).length === 0) {
         $(document).trigger("submitFormSuccess", form);
-        //form.submit();
       } else {
         $(document).trigger("submitFormError", form);
       }
