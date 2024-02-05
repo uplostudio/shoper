@@ -97,7 +97,7 @@ const sendForm = (form) => {
         }
 
         if (data.redirect) {
-          //window.location.href = data.redirect;
+          window.location.href = data.redirect;
         }
 
         if (data.message) {
