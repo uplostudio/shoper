@@ -3,7 +3,17 @@ $(document).ready(function () {
 });
 
 const pathnameGroups = {
-  group2: ["/systemy-platnosci/", "/kurierzy/", "/domena/", "/certyfikaty-ssl/", "/klarna/", "/systemy-platnosci/google-pay/", "/systemy-platnosci/paypo/", "/shoper-connect/"],
+  group2: [
+    "/systemy-platnosci/",
+    "/kurierzy/",
+    "/domena/",
+    "/certyfikaty-ssl/",
+    "/klarna/",
+    "/systemy-platnosci/google-pay/",
+    "/systemy-platnosci/paypo/",
+    "/shoper-connect/",
+    "/apilo/",
+  ],
 };
 
 function getGroupForPathname(pathname) {
