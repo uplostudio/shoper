@@ -1,3 +1,5 @@
+var resetElement = $("[fs-cmsfilter-element='reset']");
+resetElement.hide();
 $(document).ready(function () {
   initializeListContainer();
   expandOnClick();
@@ -181,4 +183,11 @@ var observer = observeNodeChange('[fs-cmsfilter-element="list"]', function (muta
   $('[data-item^="list"]').each(function () {
     handleList($(this), false);
   });
+  var filtersWrapperChildrenCount = $(".filters2_tags-wrapper").children().length;
+
+  if (filtersWrapperChildrenCount > 0) {
+    resetElement.show();
+  } else {
+    resetElement.hide();
+  }
 });
