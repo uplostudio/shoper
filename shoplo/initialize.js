@@ -1,4 +1,5 @@
 import $ from 'jquery';
+import removeDataLocalStorage from './modules/removeDataLocalStorage'
 import utm from './modules/utm';
 import insertToFormHiddenInput from './modules/insertToFormHiddenInput';
 import countries from './modules/countries';
@@ -12,6 +13,7 @@ import trialSetSpecialFields from './modules/trialSetSpecialFields';
 import dataLayer from './modules/dataLayer';
 
 const modules = [
+    removeDataLocalStorage,
     utm,
     insertToFormHiddenInput,
     countries,

@@ -23,6 +23,31 @@ const bindDataFromForm = (form) => {
   return formValues;
 };
 
+const maskedEmail = ( email ) => {
+  let maskedEmail = email.replace(/^(.)(.*)(.)@/, (match, firstLetter, middlePart, lastLetter) => {
+    return firstLetter + '*'.repeat(middlePart.length) + lastLetter + '@';
+  });
+
+  return maskedEmail;
+};
+
+const maskedPhoneNumber = ( phoneNumber ) => {
+  let maskedPhoneNumber = "";
+
+  for (let i = 0; i < phoneNumber.length - 2; i++) {
+    if (phoneNumber[i] !== " ") {
+      maskedPhoneNumber += "*";
+    } else {
+      maskedPhoneNumber += " ";
+    }
+  }
+
+  maskedPhoneNumber += phoneNumber[phoneNumber.length - 2];
+  maskedPhoneNumber += phoneNumber[phoneNumber.length - 1];
+
+  return maskedPhoneNumber;
+};
+
 const sendForm = (form) => {
   let formData = bindDataFromForm($(form));
 
@@ -50,15 +75,16 @@ const sendForm = (form) => {
             if ( data.sid ) {
               let LSdata = {
                   1: data.sid,
-                  2: formData.email,
+                  2: maskedEmail(formData.email),
                   3: data.shop_id,
                   5: data.host,
+                  6: ( ( Math.floor(new Date().getTime() / 1000) ) + (24 * 60 * 60) )
               };
               localStorage.setItem('trial', btoa(JSON.stringify(LSdata)));
               $(document).trigger("trial_EmailSubmitted", [ data ]);
             }
             if (formData.email && $("#email-3")) {
-              $("#email-3").val(formData.email);
+              $("#email-3").val(maskedEmail(formData.email));
             }
 
             $("#trial-host").text(data.host);
@@ -74,13 +100,13 @@ const sendForm = (form) => {
             if ( data.license_id ) {
             let LSdata = JSON.parse(atob(localStorage.getItem('trial')));
             if( LSdata[3] ===  data.license_id ) {
-              LSdata[4] = formData.phone;
+              LSdata[4] = maskedPhoneNumber(formData.phone);
               localStorage.setItem('trial', btoa(JSON.stringify(LSdata)));
             }
             if (formData.phone && $("#phone-3")) {
               window.intlTelInputGlobals.instances[
                 $($("#phone-3").get(0)).attr("data-intl-tel-input-id")
-              ].setNumber(formData.phone);
+              ].setNumber(LSdata[4]);
             }}
           break;
           case "create_trial_step3":

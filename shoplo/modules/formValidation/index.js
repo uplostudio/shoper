@@ -98,7 +98,7 @@ const setErrorField = (messege, field) => {
 
 const valideEmail = (field) => {
   let fieldValue = $(field).val();
-  const emailRegex = /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+  const emailRegex = /^[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,8}$/;
   if (!emailRegex.test(fieldValue)) {
     setErrorField(MESSAGES[$("html").attr("lang")].email, field);
   }
