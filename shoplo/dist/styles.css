@@ -1369,3 +1369,9 @@
   bottom: -30px;
 }
 
+@media (min-width: 480px) and (max-width: 515px) {
+  .iti .error-field {
+    bottom: -60px;
+  }
+}
+
