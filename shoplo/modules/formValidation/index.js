@@ -1,7 +1,7 @@
 import { MESSAGES } from "./constansts";
 import './style.css';
 
-const forms = $("form");
+const forms = $('[data-post="true"]');
 const condition = () => forms.length > 0;
 
 const initialize = () => {
