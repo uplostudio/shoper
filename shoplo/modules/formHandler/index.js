@@ -23,22 +23,30 @@ const bindDataFromForm = (form) => {
   return formValues;
 };
 
-const maskedEmail = ( email ) => {
-  let maskedEmail = email.replace(/^(.)(.*)(.)@/, (match, firstLetter, middlePart, lastLetter) => {
-    return firstLetter + '*'.repeat(middlePart.length) + lastLetter + '@';
-  });
+const maskedEmail = (email) => {
+  let maskedEmail = email.replace(
+    /^(.)(.*)(.)@/,
+    (match, firstLetter, middlePart, lastLetter) => {
+      return firstLetter + "***" + lastLetter + "@";
+    }
+  );
 
   return maskedEmail;
 };
 
-const maskedPhoneNumber = ( phoneNumber ) => {
+const maskedPhoneNumber = (phoneNumber) => {
   let maskedPhoneNumber = "";
+  let firstSpaceIndex = phoneNumber.indexOf(" ");
 
   for (let i = 0; i < phoneNumber.length - 2; i++) {
-    if (phoneNumber[i] !== " ") {
-      maskedPhoneNumber += "*";
+    if (i < firstSpaceIndex) {
+      maskedPhoneNumber += phoneNumber[i];
     } else {
-      maskedPhoneNumber += " ";
+      if (phoneNumber[i].trim() !== "") {
+        maskedPhoneNumber += "*";
+      } else {
+        maskedPhoneNumber += " ";
+      }
     }
   }
 
@@ -58,7 +66,7 @@ const sendForm = (form) => {
       ].getNumber();
   }
 
-  if ( $(`#${formData.action}`).parent().get(0) ) {
+  if ($(`#${formData.action}`).parent().get(0)) {
     $(`#${formData.action}`).parent().get(0).style.display = "none";
     $(".loader-trial").removeClass("d-none");
   }
@@ -72,53 +80,61 @@ const sendForm = (form) => {
       if (data.status === 1) {
         switch (formData.action) {
           case "create_trial_step1":
-            if ( data.sid ) {
+            if (data.sid) {
               let LSdata = {
-                  1: data.sid,
-                  2: maskedEmail(formData.email),
-                  3: data.shop_id,
-                  5: data.host,
-                  6: ( ( Math.floor(new Date().getTime() / 1000) ) + (24 * 60 * 60) )
+                1: data.sid,
+                2: maskedEmail(formData.email),
+                3: data.shop_id,
+                5: data.host,
+                6: Math.floor(new Date().getTime() / 1000) + 24 * 60 * 60,
               };
-              localStorage.setItem('trial', btoa(JSON.stringify(LSdata)));
-              $(document).trigger("trial_EmailSubmitted", [ data ]);
+              localStorage.setItem("trial", btoa(JSON.stringify(LSdata)));
+              $(document).trigger("trial_EmailSubmitted", [data]);
             }
             if (formData.email && $("#email-3")) {
               $("#email-3").val(maskedEmail(formData.email));
             }
 
             $("#trial-host").text(data.host);
-            
-            $('[id^=create_trial_step]').each( ( index, trialForm ) => {
-                if( $($(trialForm).get(0)).find('input[name="sid"]').length === 0 ) {
-                  $($(trialForm).get(0)).append('<input name="sid" type="hidden" value="' + data.sid + '" />');
-                }
+
+            $("[id^=create_trial_step]").each((index, trialForm) => {
+              if (
+                $($(trialForm).get(0)).find('input[name="sid"]').length === 0
+              ) {
+                $($(trialForm).get(0)).append(
+                  '<input name="sid" type="hidden" value="' + data.sid + '" />'
+                );
+              }
             });
             $("#create_trial_step2").parent().get(0).style.display = "block";
-          break;
+            break;
           case "create_trial_step2":
-            if ( data.license_id ) {
-            let LSdata = JSON.parse(atob(localStorage.getItem('trial')));
-            if( LSdata[3] ===  data.license_id ) {
-              LSdata[4] = maskedPhoneNumber(formData.phone);
-              localStorage.setItem('trial', btoa(JSON.stringify(LSdata)));
+            if (data.license_id) {
+              let LSdata = JSON.parse(atob(localStorage.getItem("trial")));
+              if (LSdata[3] === data.license_id) {
+                let phone =
+                  $($(form).find(".iti__selected-dial-code").get(0)).text() +
+                  " " +
+                  $($(form).find('[name="phone"]').get(0)).val();
+                LSdata[4] = maskedPhoneNumber(phone);
+                localStorage.setItem("trial", btoa(JSON.stringify(LSdata)));
+              }
+              if (formData.phone && $("#phone-3")) {
+                $('#phone-3').val(
+                  LSdata[4]
+                );
+              }
             }
-            if (formData.phone && $("#phone-3")) {
-              window.intlTelInputGlobals.instances[
-                $($("#phone-3").get(0)).attr("data-intl-tel-input-id")
-              ].setNumber(LSdata[4]);
-            }}
-          break;
+            break;
           case "create_trial_step3":
-            localStorage.removeItem('trial');
-          break;
+            localStorage.removeItem("trial");
+            break;
           default:
-            
-          break;
+            break;
         }
 
         if (data.step) {
-          $('[id^=create_trial_step]').parent().css('display', 'none');
+          $("[id^=create_trial_step]").parent().css("display", "none");
           $(data.step).parent().get(0).style.display = "block";
         }
 
@@ -127,16 +143,15 @@ const sendForm = (form) => {
         }
 
         if (data.message) {
-          $(form).css('display', 'none');
-          $(form).next().find('div').text( data.message );
-          $(form).next().css('display', 'block');
+          $(form).css("display", "none");
+          $(form).next().find("div").text(data.message);
+          $(form).next().css("display", "block");
         }
-
       } else {
-        
+
         let error;
         $(`#${formData.action}`).parent().get(0).style.display = "block";
-        if ( $(`#${formData.action} .w-form-fail`) ) {
+        if ($(`#${formData.action} .w-form-fail`)) {
           $(`#${formData.action} .w-form-fail`).remove();
         }
         if (data.code) {
@@ -144,17 +159,18 @@ const sendForm = (form) => {
         } else {
           error = data.message;
         }
-        $(`#${formData.action}`).eq(0).append('<div class="w-form-fail d-block">' + error + '</div>');
+        $(`#${formData.action}`)
+          .eq(0)
+          .append('<div class="w-form-fail d-block">' + error + "</div>");
       }
     },
     error: function (data) {
+ 
       $(".loader-trial").addClass("d-block");
       $(`#${formData.action}`).parent().get(0).style.display = "block";
       console.error("Error Connection with API");
     },
   });
-
-
 };
 
 export default {

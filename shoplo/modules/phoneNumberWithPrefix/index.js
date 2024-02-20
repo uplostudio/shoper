@@ -16,7 +16,8 @@ const initialize = () => {
       autoPlaceholder: "off",
       initialCountry: "pl",
       showSelectedDialCode: true,
-      countrySearch: false
+      countrySearch: false,
+      formatAsYouType: false
     });
   });
 

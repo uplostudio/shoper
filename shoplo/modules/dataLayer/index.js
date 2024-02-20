@@ -25,6 +25,7 @@ const initialize = () => {
   });
 
   $(document).on("submitFormSuccess", function (e, form) {
+
     sendDataLayer({
       event: "myTrackEvent",
       eventCategory: "Button modal form sent",
