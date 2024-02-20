@@ -24,8 +24,8 @@ const initialize = () => {
     }
   });
 
-  $(document).on("submitFormSuccess", function (e, form) {
-
+  $(document).on("dataLayerSuccess", function (e, form) {
+    form = $(form).closest('form').get(0);
     sendDataLayer({
       event: "myTrackEvent",
       eventCategory: "Button modal form sent",
@@ -41,7 +41,8 @@ const initialize = () => {
     }
   });
 
-  $(document).on("submitFormError", function (e, form) {
+  $(document).on("dataLayerError", function (e, form) {
+    form = $(form).closest('form').get(0);
     sendDataLayer({
       event: "myTrackEvent",
       eventCategory: "Button modal form error",

@@ -9,6 +9,7 @@ const initialize = () => {
   });
 
   $(document).on("submitFormError", function (e, form) {
+    $(document).trigger('dataLayerError', form );
     console.error("Error ");
   });
 };
@@ -23,13 +24,11 @@ const bindDataFromForm = (form) => {
   return formValues;
 };
 
-const maskedEmail = (email) => {
-  let maskedEmail = email.replace(
-    /^(.)(.*)(.)@/,
-    (match, firstLetter, middlePart, lastLetter) => {
-      return firstLetter + "***" + lastLetter + "@";
-    }
-  );
+
+const maskedEmail = ( email ) => {
+  let maskedEmail = email.replace(/^(.)(.*)(.)@/, (match, firstLetter, middlePart, lastLetter) => {
+    return firstLetter + '*'.repeat(middlePart.length) + lastLetter + '@';
+  });
 
   return maskedEmail;
 };
@@ -78,6 +77,8 @@ const sendForm = (form) => {
     success: function (data) {
       $(".loader-trial").addClass("d-none");
       if (data.status === 1) {
+       
+        $(document).trigger('dataLayerSuccess', form);
         switch (formData.action) {
           case "create_trial_step1":
             if (data.sid) {
@@ -148,7 +149,7 @@ const sendForm = (form) => {
           $(form).next().css("display", "block");
         }
       } else {
-
+        $(document).trigger('dataLayerError', form);
         let error;
         $(`#${formData.action}`).parent().get(0).style.display = "block";
         if ($(`#${formData.action} .w-form-fail`)) {
@@ -165,7 +166,7 @@ const sendForm = (form) => {
       }
     },
     error: function (data) {
- 
+      $(document).trigger('dataLayerError', form);
       $(".loader-trial").addClass("d-block");
       $(`#${formData.action}`).parent().get(0).style.display = "block";
       console.error("Error Connection with API");
