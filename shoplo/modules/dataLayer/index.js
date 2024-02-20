@@ -89,6 +89,14 @@ const initialize = () => {
       email: data.email,
     });
   });
+
+  $('[data-event-action="open"]').on( 'click', () => {
+    $('body').css('overflow', "hidden");
+  });
+
+  $('[data-event-action="close"]').on( 'click', () => {
+    $('body').removeAttr('style');
+  })
 };
 
 // Function send dataLayer
