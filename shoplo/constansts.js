@@ -1,1 +1,1 @@
-export const API_URL = `https://backend.webflow.prod.shoper.cloud/`;
+export const API_URL = `https://backend.webflow.dev.shoper.cloud/`;
