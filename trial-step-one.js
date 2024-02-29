@@ -112,12 +112,14 @@ $(document).ready(function () {
           "adwords[gclid]": state.gclidValue,
           "adwords[fbclid]": state.fbclidValue,
           analyticsId: window.myGlobals.analyticsId,
+          affiliant: ( $(form).attr("data-affiliant") ) ? $(form).attr("data-affiliant") : '',
         },
         beforeSend: function () {
           loader.show();
           // Show loader
         },
         success: function (data) {
+          
           if (data.client_id) window.myGlobals.clientId = data.client_id;
           if (data.host) window.myGlobals.host = data.host;
           if (data.shop_id) window.myGlobals.shopId = data.shop_id;
@@ -128,6 +130,9 @@ $(document).ready(function () {
           }
 
           if (data.status === 1) {
+            if ( localStorage.getItem("shoper_affiliate") ) {
+              localStorage.removeItem("shoper_affiliate");
+            }
             $("[data-app='create_trial_step1_modal']").removeClass("modal--open");
             $("[data-app='trial-domain']").text(window.myGlobals.host);
             $('[data-modal="create_trial_step2"]').addClass("modal--open");
