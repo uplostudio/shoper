@@ -34,7 +34,7 @@ if ( shoperAffiliate ) {
         // Add affiliate date to form create_trial_step1
         let forms = document.querySelectorAll('#create_trial_step1');
         forms.forEach( ( item, index ) => {
-            item.setAttribute( 'data-affiliate', shoperAffiliate);
+            item.setAttribute( 'data-affiliant', shoperAffiliate);
         });
     }
 }
