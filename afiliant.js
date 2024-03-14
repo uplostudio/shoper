@@ -5,7 +5,8 @@ let shoperAffiliate;
 // When URL addres has parametr afiliant - save to LS tag ID
 
 if ( tagAffiliate ) {
-    var timeStamp = new Date().getTime();
+    var currentData = new Date();
+    var timeStamp = currentData.getTime() + ( Math.abs(currentData.getTimezoneOffset() * 60 * 1000) );
     var expirationDate = timeStamp + (30 * 24 * 60 * 60 * 1000);
     var referer = document.referrer;
 
