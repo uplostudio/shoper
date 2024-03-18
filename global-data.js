@@ -7,9 +7,15 @@ window.myGlobals = {
   URL: null,
 };
 
-window.myGlobals.URL = "https://www.shoper.pl/ajax.php";
+// window.myGlobals.URL = "https://www.shoper.pl/ajax.php";
 // window.myGlobals.URL = "https://sandbox.shoper.pl/ajax.php";
 // console.log(`Current endpoint: ${window.myGlobals.URL}`);
+
+let hostname = window.location.hostname;
+
+window.myGlobals.URL = hostname === 'www.shoper.pl'
+  ? 'https://www.shoper.pl/ajax.php'
+  : 'https://webflow-sandbox.shoper.pl/ajax.php';
 
 const DataLayerGatherers = {
   formAbandonEvent: function () {
