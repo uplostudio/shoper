@@ -113,7 +113,7 @@ $(document).ready(function () {
             if (data.license_id) window.myGlobals.licenseId = data.license_id;
             window.location.href = hostname === 'www.shoper.pl'
               ? "https://www.shoper.pl/zaloz-sklep/"
-              : "https://www.webflow-sandbox.shoper.pl/zaloz-sklep/";
+              : "https://webflow-sandbox.shoper.pl/zaloz-sklep";
           }
         },
         error: function (data) {
