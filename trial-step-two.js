@@ -111,7 +111,9 @@ $(document).ready(function () {
 
           if (data.status === 1) {
             if (data.license_id) window.myGlobals.licenseId = data.license_id;
-            window.location.href = "https://www.shoper.pl/zaloz-sklep/";
+            window.location.href = hostname === 'www.shoper.pl'
+              ? "https://www.shoper.pl/zaloz-sklep/"
+              : "https://www.webflow-sandbox.shoper.pl/zaloz-sklep/";
           }
         },
         error: function (data) {
