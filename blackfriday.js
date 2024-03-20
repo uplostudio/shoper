@@ -4,15 +4,15 @@ $(document).ready(function () {
 
 const pathnameGroups = {
   group2: [
-    "/systemy-platnosci/",
-    "/kurierzy/",
-    "/domena/",
-    "/certyfikaty-ssl/",
-    "/klarna/",
-    "/systemy-platnosci/google-pay/",
-    "/systemy-platnosci/paypo/",
-    "/shoper-connect/",
-    "/apilo/",
+    "/systemy-platnosci",
+    "/kurierzy",
+    "/domena",
+    "/certyfikaty-ssl",
+    "/klarna",
+    "/systemy-platnosci/google-pay",
+    "/systemy-platnosci/paypo",
+    "/shoper-connect",
+    "/apilo",
   ],
 };
 
@@ -33,7 +33,7 @@ function updateDisclaimer() {
   const dataItem = $("[data-item='disclaimer']");
 
   if (currentGroup === "group2") {
-    const disclaimerHTML = `<div>Nie masz jeszcze sklepu? <a href="https://www.shoper.pl/cennik-sklepu-shoper/" class="inline-link">Wypróbuj go za darmo</a></div>`;
+    const disclaimerHTML = `<div>Nie masz jeszcze sklepu? <a href="/cennik-sklepu-shoper" class="inline-link">Wypróbuj go za darmo</a></div>`;
     dataItem.html(disclaimerHTML);
   }
 }
