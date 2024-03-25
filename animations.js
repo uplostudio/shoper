@@ -94,3 +94,16 @@ $(window).scroll(function () {
     }, 2000);
   });
 });
+
+function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
+  $(document).ready(function () {
+    let keyword = $(`[${dataAttribute}]`).attr(dataAttribute);
+    let regex = new RegExp(`\\b${keyword}\\b`, "gi");
+
+    $(targetElement).html(function(_, html) {
+      return html.replace(regex, `<span id="${spanId}" class="${spanClass}">${keyword}</span>`);
+    });
+  });
+}
+
+wrapKeywordInSpan('h1', 'data-span', 'line-load-animate', 'mark animate');
