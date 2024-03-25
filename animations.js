@@ -98,6 +98,11 @@ $(window).scroll(function () {
 function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
   $(document).ready(function () {
     let keyword = $(`[${dataAttribute}]`).attr(dataAttribute);
+
+    if(!keyword || keyword.trim() === '') {
+      return;
+    }
+
     let regex = new RegExp(`\\b${keyword}\\b`, "gi");
 
     $(targetElement).html(function(_, html) {
@@ -107,3 +112,4 @@ function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
 }
 
 wrapKeywordInSpan('h1', 'data-span', 'line-load-animate', 'mark animate');
+
