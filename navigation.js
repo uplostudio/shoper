@@ -307,3 +307,23 @@ try {
   let footerYear = document.querySelector("#footer-year");
   footerYear.innerHTML = new Date().getFullYear();
 } catch (e) {}
+
+// mobile tabs fix
+
+$(document).ready(function() {
+
+  function checkWidthAndApplyClass() {
+      if($(window).width() > 991) {
+          $('[data-trigger="open"]').addClass('tab--open');
+      } else {
+          $('[data-trigger="open"]').removeClass('tab--open');
+      }
+  }
+
+  checkWidthAndApplyClass();
+
+  $(window).resize(function() {
+      checkWidthAndApplyClass();
+  });
+});
+
