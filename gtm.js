@@ -28,6 +28,7 @@ $(function () {
     "/witajwshoper",
     "/storefront/",
     "/kampanie-ppc/",
+    "/pozycjonowanie-sklepow-internetowych/"
   ];
 
   var subpage = window.location.pathname;
