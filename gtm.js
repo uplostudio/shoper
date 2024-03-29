@@ -1,34 +1,20 @@
-// window.addEventListener("load", () => {
-//   try {
-//     let gtmBanner = document.querySelector("#top-bar-header");
-
-//     gtmBanner.addEventListener("click", () => {
-//       let bf = document.querySelector("[app='blackFriday']");
-//       bf.classList.add("modal--open");
-//       $(document.body).css("overflow", "hidden");
-//     });
-//   } catch (err) {}
-// });
-
 // remove sites from intercom
 
 $(function () {
   var excludedSubpages = [
     "/rodo",
-    "/rodo/",
     "/zmien-oprogramowanie-sklepu",
-    "/zmien-oprogramowanie-sklepu/",
-    "/regulamin-kampanii/microsoft-advert/",
-    "/regulamin-kampanii/google-ads/",
-    "/oferta-shoper-plus/",
-    "/oferta-symfonia/",
-    "/oferta-sklep-polaczony-z-allegro/",
-    "/sklep-internetowy-abonament/",
-    "/witajwshoper/",
+    "/regulamin-kampanii/microsoft-advert",
+    "/regulamin-kampanii/google-ads",
+    "/oferta-shoper-plus",
+    "/oferta-symfonia",
+    "/oferta-sklep-polaczony-z-allegro",
+    "/sklep-internetowy-abonament",
     "/witajwshoper",
-    "/storefront/",
-    "/kampanie-ppc/",
-    "/pozycjonowanie-sklepow-internetowych/"
+    "/storefront",
+    "/kampanie-ppc",
+    "/pozycjonowanie-sklepow-internetowych",
+    "/cennik-sklepu-shoper"
   ];
 
   var subpage = window.location.pathname;
