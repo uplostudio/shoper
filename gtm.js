@@ -14,7 +14,8 @@ $(function () {
     "/storefront",
     "/kampanie-ppc",
     "/pozycjonowanie-sklepow-internetowych",
-    "/cennik-sklepu-shoper"
+    "/cennik-sklepu-shoper",
+    "/pelny-cennik-uslug-shoper"
   ];
 
   var subpage = window.location.pathname;
