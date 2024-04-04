@@ -1043,12 +1043,10 @@ let countriesList = [{
     code: "AE",
 }, ];
 
-for (let key of countriesList) {
-    let option = document.createElement("option");
-    countrySelect.appendChild(option);
-    option.innerHTML = `${key.name_pl}`;
-    option.value = `${key.code}`;
+$.each(countriesList, function(index, key) {
+    let option = $("<option></option>").text(key.name_pl).val(key.code);
     if(key.code === "PL") {
-        option.selected = true;
+        option.attr('selected', 'selected');
     }
-}
+    $(countrySelect).append(option);
+});
