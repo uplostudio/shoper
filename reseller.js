@@ -1,5 +1,5 @@
-let countrySelect = $("#country");
-let phoneField = $("#phone-field");
+let countrySelect = $("#country")[0];
+let phoneField = $("#phone-field")[0];
 
 var iti = window.intlTelInput(phoneField, {
     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
