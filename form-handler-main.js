@@ -58,7 +58,7 @@ function validateInput(input) {
       $(input).addClass("error");
     }
   } else {
-    if (type === "checkbox") {
+    if (type === "checkbox" || type !== "radio") {
       $(input).prev(".form-checkbox-icon").removeClass("error");
       if ($(input).parent().next('[class*="error-wrapper"]').length) {
         $(input).parent().next().css("display", "none");
@@ -100,7 +100,7 @@ $("input").each(function () {
 });
 
 function validateForm(formElement) {
-  const inputs = $(formElement).find("input, textarea");
+  const inputs = $(formElement).find("input:not([type='submit']):enabled:not([data-exclude='true']), textarea:enabled, select:enabled");
 
   let errors = 0;
 
@@ -124,44 +124,43 @@ function sendFormDataToURL(formElement, form) {
     }
   });
 
-  const inputElements = $(formElement).find("input:not([type=submit]), textarea, select");
+  const inputElements = $(formElement).find("input:not([type='submit']):enabled:not([data-exclude='true']), textarea:enabled, select:enabled");
 
   let outputValues = {};
-  let checkboxBinary = ["loan_decision_contact", "external_ads_terms", "simple_form"].includes($(formElement).attr("data-action"));
+  let checkboxBinary = ["loan_decision_contact", "external_ads_terms", "simple_form", "register_seller"].includes($(formElement).attr("data-action"));
 
-  inputElements.each(function () {
+  inputElements.each(function() {
     let inputElement = $(this);
     let inputValue = inputElement.val();
     const inputName = inputElement.attr("data-form");
 
     if (inputElement.is("input")) {
-      const inputType = inputElement.attr("type");
+        const inputType = inputElement.attr("type");
+        const inputNameAttr = inputElement.attr("name");
 
-      if (inputType === "checkbox" || inputType === "radio") {
-        if (checkboxBinary) {
-          inputValue = inputElement.is(":checked") ? "1" : "0";
-        } else if (inputElement.is(":checked")) {
-          inputValue = inputElement
-            .next()
-            .text()
-            .replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "")
-            .trim();
-        } else {
-          return;
+        if (inputType === "checkbox" || inputType === "radio") {
+            if (inputType === "radio" && inputNameAttr === "client_type") {
+                inputValue = inputElement.val();
+            } else if (checkboxBinary) {
+                inputValue = inputElement.is(":checked") ? "1" : "0";
+            } else if (inputElement.is(":checked")) {
+                inputValue = inputElement.next().text().replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "").trim();
+            } else {
+                return;
+            }
+
+            if (!outputValues.hasOwnProperty(inputName)) {
+                outputValues[inputName] = [];
+            }
+
+            outputValues[inputName].push(inputValue);
+        } else if (inputValue !== "") {
+            outputValues[inputName] = inputValue;
         }
-
-        if (!outputValues.hasOwnProperty(inputName)) {
-          outputValues[inputName] = [];
-        }
-
-        outputValues[inputName].push(inputValue);
-      } else if (inputValue !== "") {
-        outputValues[inputName] = inputValue;
-      }
     } else if (inputElement.is("textarea") || inputElement.is("select")) {
-      outputValues[inputName] = inputValue;
+        outputValues[inputName] = inputValue;
     }
-  });
+});
 
   const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
 
