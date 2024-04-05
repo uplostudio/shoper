@@ -133,40 +133,44 @@ function sendFormDataToURL(formElement, form) {
   const inputElements = $(formElement).find("input:not([type='submit']):enabled:not([data-exclude='true']), textarea:enabled, select:enabled");
 
   let outputValues = {};
-  let checkboxBinary = ["loan_decision_contact", "external_ads_terms", "simple_form", "register_seller"].includes($(formElement).attr("data-action"));
+  let binaryCheckboxActions = ["loan_decision_contact", "external_ads_terms", "simple_form", "register_reseller"];
 
   inputElements.each(function() {
-    let inputElement = $(this);
-    let inputValue = inputElement.val();
-    const inputName = inputElement.attr("data-form");
-
-    if (inputElement.is("input")) {
-        const inputType = inputElement.attr("type");
-        const inputNameAttr = inputElement.attr("name");
-
-        if (inputType === "checkbox" || inputType === "radio") {
-            if (inputType === "radio" && inputNameAttr === "client_type") {
-                inputValue = inputElement.val();
-            } else if (checkboxBinary) {
-                inputValue = inputElement.is(":checked") ? "1" : "0";
-            } else if (inputElement.is(":checked")) {
-                inputValue = inputElement.next().text().replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "").trim();
-            } else {
-                return;
-            }
-
-            if (!outputValues.hasOwnProperty(inputName)) {
-                outputValues[inputName] = [];
-            }
-
-            outputValues[inputName].push(inputValue);
-        } else if (inputValue !== "") {
-            outputValues[inputName] = inputValue;
-        }
-    } else if (inputElement.is("textarea") || inputElement.is("select")) {
-        outputValues[inputName] = inputValue;
-    }
-});
+      let currentElement = $(this);
+      let currentValue = currentElement.val();
+      const elementName = currentElement.attr("data-form");
+      
+      if (currentElement.is("input")) {
+          const checkboxBinary = binaryCheckboxActions.includes($(formElement).attr("data-action"));
+          const elementType = currentElement.attr("type");
+          
+          // Check for checkbox or radio input types
+          if (elementType === "checkbox" || elementType === "radio") {
+              if (elementType === "radio") {
+                  currentValue = currentElement.val();
+              } else if (checkboxBinary) {
+                  // Assign 1 or 0 based on checkbox state
+                  currentValue = currentElement.is(":checked") ? "1" : "0";
+              } else if (currentElement.is(":checked")) {
+                  currentValue = currentElement.next().text().replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "").trim();
+              } else {
+                  return;
+              }
+              
+              // If the outputValues object doesn't already have this key, initialize it with an empty array
+              if (!outputValues.hasOwnProperty(elementName)) {
+                  outputValues[elementName] = [];
+              }
+              
+              // Push the current value into the array corresponding to the element name in the outputValues object
+              outputValues[elementName].push(currentValue);
+          } else if (currentValue !== "") {
+              outputValues[elementName] = currentValue;
+          }
+      } else if (currentElement.is("textarea") || currentElement.is("select")) {
+          outputValues[elementName] = currentValue;
+      }
+  });
 
   const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
 
