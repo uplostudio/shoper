@@ -35,40 +35,46 @@ const validationPatterns = [
 const omittedAtributes = ["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "autocomplete", "layer"];
 
 function validateInput(input) {
+  var excludeIds = ["1", "0"]; // Match the IDs of the radio inputs to exclude them to NOT interact with this snippet
+
+  const id = $(input).attr("id"); 
   const name = $(input).data("form");
   const type = $(input).data("type");
   const value = type === "checkbox" ? $(input).prop("checked") : $(input).val();
   const required = $(input).prop("required");
   let error = required ? (value === false || value === "" ? `${name} - jest wymagane` : null) : null;
 
-  if (value !== "" && value !== false) {
-    const pattern = validationPatterns.find((p) => p.type === type)?.pattern;
-    if (pattern && !pattern.test(value)) {
-      error = `${name} nie jest wypełnione prawidłowo`;
+  // Continue only if the input's id is not in the excludeIds array
+  if (!excludeIds.includes(id)) {
+    if (value !== "" && value !== false) {
+      const pattern = validationPatterns.find((p) => p.type === type)?.pattern;
+      if (pattern && !pattern.test(value)) {
+        error = `${name} nie jest wypełnione prawidłowo`;
+      }
     }
-  }
 
-  if (required && (value === "" || value === false)) {
-    if (type === "checkbox") {
-      $(input).prev(".form-checkbox-icon").addClass("error");
-      $(input).parent().next().css("display", "flex");
-    } else {
-      $(input).next().next().css("display", "flex");
-      $(input).next().css("display", "none");
-      $(input).addClass("error");
-    }
-  } else {
-    if (type === "checkbox" || type !== "radio") {
-      $(input).prev(".form-checkbox-icon").removeClass("error");
-      if ($(input).parent().next('[class*="error-wrapper"]').length) {
-        $(input).parent().next().css("display", "none");
+    if (required && (value === "" || value === false)) {
+      if (type === "checkbox") {
+        $(input).prev(".form-checkbox-icon").addClass("error");
+        $(input).parent().next().css("display", "flex");
+      } else {
+        $(input).next().next().css("display", "flex");
+        $(input).next().css("display", "none");
+        $(input).addClass("error");
       }
     } else {
-      $(input).next().next().css("display", "none");
-      $(input)
-        .next()
-        .css("display", error !== null ? "flex" : "none");
-      $(input).toggleClass("error", error !== null);
+      if (type === "checkbox" || (name === "client_type")) {
+        $(input).prev(".form-checkbox-icon").removeClass("error");
+        if ($(input).parent().next('[class*="error-wrapper"]').length) {
+          $(input).parent().next().css("display", "none");
+        }
+      } else {
+        $(input).next().next().css("display", "none");
+        $(input)
+          .next()
+          .css("display", error !== null ? "flex" : "none");
+        $(input).toggleClass("error", error !== null);
+      }
     }
   }
   return error;
