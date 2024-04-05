@@ -26,7 +26,7 @@ const validationPatterns = [
   },
   {
     type: "zipcode",
-    pattern: /^\d{5}$/,
+    pattern: /^(\d{5}|\d{2}-\d{3})$/,
   },
 ];
 
