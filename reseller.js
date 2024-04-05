@@ -1,6 +1,5 @@
-
-let countrySelect = document.querySelector("#country");
-let phoneField = document.querySelector("#phone-field")
+let countrySelect = $("#country");
+let phoneField = $("#phone-field");
 
 var iti = window.intlTelInput(phoneField, {
     utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
@@ -10,7 +9,24 @@ var iti = window.intlTelInput(phoneField, {
     separateDialCode: true,
     autoPlaceholder: "off",
     initialCountry: "pl",
-});
+  });
+  
+  $(phoneField).on('blur', function() {
+    var inputValue = $(this).val();
+    var emptyDiv = $('[data-toast="required"]');
+    var errorDiv = $('[data-toast="regex"]');
+    
+    if($.trim(inputValue) === "") {
+      emptyDiv.css('display', 'flex');
+      errorDiv.css('display', 'none');
+    } else if(iti.isValidNumber()) {
+      emptyDiv.css('display', 'none');
+      errorDiv.css('display', 'none');
+    } else {
+      emptyDiv.css('display', 'none');
+      errorDiv.css('display', 'flex');
+    }
+  });
 
 $(document).ready(function() {
     const updateElements = (clickId, unclickId, enableElem, disableElem) => {
