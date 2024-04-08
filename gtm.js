@@ -15,7 +15,11 @@ $(function () {
     "/kampanie-ppc",
     "/pozycjonowanie-sklepow-internetowych",
     "/cennik-sklepu-shoper",
-    "/pelny-cennik-uslug-shoper"
+    "/pelny-cennik-uslug-shoper",
+    "/program-partnerski",
+    "/program-partnerski/reseller",
+    "/program-partnerski/afiliant",
+    "/program-partnerski/tworca-aplikacji",
   ];
 
   var subpage = window.location.pathname;
