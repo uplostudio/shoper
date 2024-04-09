@@ -1,5 +1,6 @@
 $(document).ready(function () {
   updateDisclaimer();
+  changeSubmitValue();
 });
 
 const pathnameGroups = {
@@ -13,6 +14,9 @@ const pathnameGroups = {
     "/systemy-platnosci/paypo",
     "/shoper-connect",
     "/apilo",
+    "/autopay",
+    "/przelewy24",
+
   ],
 };
 
@@ -35,5 +39,12 @@ function updateDisclaimer() {
   if (currentGroup === "group2") {
     const disclaimerHTML = `<div>Nie masz jeszcze sklepu? <a href="/cennik-sklepu-shoper" class="inline-link">Wypróbuj go za darmo</a></div>`;
     dataItem.html(disclaimerHTML);
+  }
+}
+
+function changeSubmitValue() {
+  let submitInput = $("[data-app='login']").find("input[type='submit']");
+  if(submitInput.length) {
+      submitInput.val('Zaloguj się');
   }
 }
