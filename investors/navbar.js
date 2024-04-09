@@ -1,7 +1,7 @@
 // navbar
 
 topBar = $('[data-item="topbar"]');
-let lastScroll = 0;
+lastScroll = 0;
 let scrollThreshold = 140;
 let windowWidthLimit = 992;
 let animationDuration = 0.1;
