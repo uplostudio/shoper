@@ -15,7 +15,7 @@ const pathnameGroups = {
     "/shoper-connect",
     "/apilo",
     "/autopay",
-    "/przelewy-24",
+    "/przelewy24",
 
   ],
 };
