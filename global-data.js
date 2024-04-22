@@ -5,6 +5,9 @@ window.myGlobals = {
   analyticsId: null,
   licenseId: null,
   URL: null,
+  analyticsId: null,
+  fbclidValue: getOrStoreParameter("fbclid"),
+  gclidValue: getOrStoreParameter("gclid"),
 };
 
 let hostname = window.location.hostname;
@@ -12,6 +15,33 @@ let hostname = window.location.hostname;
 window.myGlobals.URL = hostname === 'www.shoper.pl'
   ? 'https://www.shoper.pl/ajax.php'
   : 'https://webflow-sandbox.shoper.pl/ajax.php';
+
+
+  function getOrStoreParameter(name) {
+    let urlSearchParams = new URLSearchParams(window.location.search);
+    let urlValue = urlSearchParams.get(name) || "";
+    let storedValue = localStorage.getItem(name);
+
+    if (urlValue) {
+      if (urlValue !== storedValue) {
+        localStorage.setItem(name, urlValue);
+      }
+      return urlValue;
+    } else if (storedValue) {
+      return storedValue;
+    }
+    return "";
+  }
+
+  function updateAnalytics() {  
+    setTimeout(function () {
+      try {
+        const tracker = ga.getAll()[0];
+        window.myGlobals.analyticsId = tracker.get("clientId");
+        $("[name='analytics_id']").val(window.myGlobals.analyticsId);
+      } catch (err) {}
+    }, 2000);
+  }
 
 const DataLayerGatherers = {
   formAbandonEvent: function () {

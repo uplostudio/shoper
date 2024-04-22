@@ -6,40 +6,10 @@ $(document).ready(function () {
 
   let state = {
     errors: [],
-    analyticsId: "",
-    gclidValue: getOrStoreParameter("gclid"),
-    fbclidValue: getOrStoreParameter("fbclid"),
     emailRegex: new RegExp(
       '^(([^<>()\\[\\]\\\\.,;:\\s@"]+(\\.[^<>()\\[\\]\\\\.,;:\\s@"]+)*)|(\\".+\\"))@((\\[[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\.[0-9]{1,3}\\])|(([a-zA-Z\\-0-9]+\\.)+[a-zA-Z]{2,}))$'
     ),
   };
-
-  function getOrStoreParameter(name) {
-    let urlSearchParams = new URLSearchParams(window.location.search);
-    let urlValue = urlSearchParams.get(name) || "";
-    let storedValue = localStorage.getItem(name);
-
-    if (urlValue) {
-      if (urlValue !== storedValue) {
-        localStorage.setItem(name, urlValue);
-      }
-      return urlValue;
-    } else if (storedValue) {
-      return storedValue;
-    }
-    return "";
-  }
-
-  function updateAnalytics() {
-    setTimeout(function () {
-      try {
-        const tracker = ga.getAll()[0];
-        state.analyticsId = tracker.get("clientId");
-        window.myGlobals.analyticsId = state.analyticsId;
-        $("[name='analytics_id']").val(state.analyticsId);
-      } catch (err) {}
-    }, 2000);
-  }
 
   function setupValidation() {
     const forms = $('[data-action="create_trial_step1"]');
@@ -109,8 +79,8 @@ $(document).ready(function () {
         data: {
           action: $(form).attr("data-action"),
           email: $(emailField).val(),
-          "adwords[gclid]": state.gclidValue,
-          "adwords[fbclid]": state.fbclidValue,
+          "adwords[gclid]": window.myGlobals.gclidValue,
+          "adwords[fbclid]": window.myGlobals.fbclidValue,
           analyticsId: window.myGlobals.analyticsId,
           affiliant: ( $(form).attr("data-affiliant") ) ? $(form).attr("data-affiliant") : '',
         },

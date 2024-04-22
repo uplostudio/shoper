@@ -188,6 +188,8 @@ function sendFormDataToURL(formElement, form) {
 
   const loader = $(formElement).find(".loading-in-button");
   formData.append("front_page", window.location.host + window.location.pathname);
+  formData.append("adwords[gclid]", window.myGlobals.gclidValue);
+  formData.append("adwords[fbclid]", window.myGlobals.fbclidValue);
 
   $.ajax({
     type: "POST",

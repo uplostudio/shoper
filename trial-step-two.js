@@ -90,8 +90,8 @@ $(document).ready(function () {
           phone: iti.getNumber(),
           formid: "create_trial_step2",
           eventname: "formSubmitSuccess",
-          "adwords[gclid]": localStorage.getItem("gclid"),
-          "adwords[fbclid]": localStorage.getItem("fbclid"),
+          "adwords[gclid]": window.myGlobals.gclidValue,
+          "adwords[fbclid]": window.myGlobals.fbclidValue,
           analytics_id: window.myGlobals.analyticsId,
         },
         beforeSend: function () {
