@@ -103,7 +103,8 @@ function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
       return;
     }
 
-    let regex = new RegExp(`\\b${keyword}\\b`, "gi");
+    let escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
+    let regex = new RegExp(`${escapedKeyword}`, "gi");
 
     $(targetElement).html(function(_, html) {
       return html.replace(regex, `<span id="${spanId}" class="${spanClass}">${keyword}</span>`);
