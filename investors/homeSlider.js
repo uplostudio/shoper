@@ -10,7 +10,7 @@ const swiper = new Swiper(".swiper", {
   slidesPerView: "auto",
   centeredSlides: false,
   autoplay: {
-    delay: 3000,
+    delay: 4000,
     disableOnInteraction: false,
   },
   spaceBetween: 10,
