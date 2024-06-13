@@ -4,7 +4,7 @@ export const TRANSLATE = {
         trialBtn: 'Rozpocznij darmowy okres próbny'
     },
     en: {
-        paidNowBtn: 'Zapłać teraz',
-        trialBtn: 'Rozpocznij darmowy okres próbny'
+        paidNowBtn: 'Pay now',
+        trialBtn: 'Start your free trial'
     }
 };
