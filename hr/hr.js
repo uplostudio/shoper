@@ -112,6 +112,10 @@ $(document).ready(function () {
     });
 
     $(this).find(".offer_count-box.is-offer").text(count);
+
+    if (count === 0) {
+      $(this).remove();
+    }
   });
 
   var observer = new MutationObserver(function () {
