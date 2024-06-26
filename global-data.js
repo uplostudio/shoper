@@ -9,7 +9,7 @@ window.myGlobals = {
   fbclidValue: getOrStoreParameter("fbclid"),
   gclidValue: getOrStoreParameter("gclid"),
 };
-const valueTrack = DataLayerGatherers.getValueTrackData();
+
 let hostname = window.location.hostname;
 
 window.myGlobals.URL =

@@ -72,6 +72,7 @@ $(document).ready(function () {
     };
 
     if (state.errors.length === 0) {
+      const valueTrack = DataLayerGatherers.getValueTrackData();
       const loader = form.find(".loading-in-button.is-inner");
 
       if (valueTrack) {

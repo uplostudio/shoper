@@ -80,6 +80,7 @@ $(document).ready(function () {
     let form = phoneField.closest("form");
     const wFormFail = form.find(".w-form-fail");
     phoneField.trigger("blur");
+    const valueTrack = DataLayerGatherers.getValueTrackData();
     const loader = form.find(".loading-in-button.is-inner");
     if (state.errors.length === 0) {
 
