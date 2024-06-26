@@ -168,5 +168,3 @@ $(document).ready(function () {
 
   setupValidation();
 });
-
-// 
