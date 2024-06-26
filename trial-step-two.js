@@ -5,38 +5,31 @@ $(document).ready(function () {
   };
 
   // form's additional styling
-  $("form").on(
-    "click",
-    ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags",
-    function () {
-      if ($(window).width() < 992) {
-        var container = $(".iti.iti--container");
-        if (container.length && !container.parent().is(this)) {
-          container.css({
-            top: "48px",
-            left: "0",
-            position: "absolute",
-            height: "50vh",
-            // Changing from 50svh to 50vh
-            "overflow-y": "auto",
-          });
+  $("form").on("click", ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags", function () {
+    if ($(window).width() < 992) {
+      var container = $(".iti.iti--container");
+      if (container.length && !container.parent().is(this)) {
+        container.css({
+          top: "48px",
+          left: "0",
+          position: "absolute",
+          height: "50vh",
+          // Changing from 50svh to 50vh
+          "overflow-y": "auto",
+        });
 
-          $(this).append(container);
-        }
+        $(this).append(container);
       }
     }
-  );
+  });
 
   function setupValidation() {
-    const phoneFields = $(
-      '[data-action="create_trial_step2"] [data-type="phone"]'
-    );
+    const phoneFields = $('[data-action="create_trial_step2"] [data-type="phone"]');
     phoneFields.each(function () {
       let phoneField = $(this);
 
       var iti = window.intlTelInput(phoneField.get(0), {
-        utilsScript:
-          "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
         preferredCountries: ["pl", "de", "ie", "us", "gb", "nl"],
         autoInsertDialCode: false,
         nationalMode: false,
@@ -90,30 +83,19 @@ $(document).ready(function () {
     const valueTrack = DataLayerGatherers.getValueTrackData();
     const loader = form.find(".loading-in-button.is-inner");
     if (state.errors.length === 0) {
+
       $.ajax({
         type: "POST",
         url: window.myGlobals.URL,
-        data: (function () {
-          var data = {
-            action: "create_trial_step2",
-            phone: iti.getNumber(),
-            formid: "create_trial_step2",
-            eventname: "formSubmitSuccess",
-            "adwords[gclid]": window.myGlobals.gclidValue,
-            "adwords[fbclid]": window.myGlobals.fbclidValue,
-            analytics_id: window.myGlobals.analyticsId,
-          };
-
-          if (valueTrack) {
-            Object.entries(valueTrack).forEach(([key, value]) => {
-              if (key !== "timestamp") {
-                data[key] = value;
-              }
-            });
-          }
-
-          return data;
-        })(),
+        data: {
+          action: "create_trial_step2",
+          phone: iti.getNumber(),
+          formid: "create_trial_step2",
+          eventname: "formSubmitSuccess",
+          "adwords[gclid]": window.myGlobals.gclidValue,
+          "adwords[fbclid]": window.myGlobals.fbclidValue,
+          analytics_id: window.myGlobals.analyticsId,
+        },
         beforeSend: function () {
           loader.show();
           // Show loader
@@ -127,33 +109,20 @@ $(document).ready(function () {
             iti.getNumber()
           );
 
-          DataLayerGatherers.pushTrackEventData(
-            form.find("#create_trial_step2").attr("data-action"),
-            $("#create_trial_step2").find("#label").text(),
-            iti.getNumber()
-          );
+          DataLayerGatherers.pushTrackEventData(form.find("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
 
           if (data.status === 1) {
             if (data.license_id) window.myGlobals.licenseId = data.license_id;
-            window.location.href =
-              hostname === "www.shoper.pl"
-                ? "https://www.shoper.pl/zaloz-sklep"
-                : "https://webflow-sandbox.shoper.pl/zaloz-sklep";
+            window.location.href = hostname === 'www.shoper.pl'
+              ? "https://www.shoper.pl/zaloz-sklep"
+              : "https://webflow-sandbox.shoper.pl/zaloz-sklep";
           }
         },
         error: function (data) {
           // console.log("Error: Something went wrong");
-          DataLayerGatherers.pushTrackEventErrorModal(
-            $("#create_trial_step2").attr("data-action"),
-            $("#create_trial_step2").find("#label").text(),
-            iti.getNumber()
-          );
+          DataLayerGatherers.pushTrackEventErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
 
-          DataLayerGatherers.pushSubmitErrorModal(
-            $("#create_trial_step2").attr("data-action"),
-            $("#create_trial_step2").find("#label").text(),
-            iti.getNumber()
-          );
+          DataLayerGatherers.pushSubmitErrorModal($("#create_trial_step2").attr("data-action"), $("#create_trial_step2").find("#label").text(), iti.getNumber());
           wFormFail.show();
         },
         complete: function () {
