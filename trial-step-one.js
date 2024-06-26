@@ -75,31 +75,44 @@ $(document).ready(function () {
       const valueTrack = DataLayerGatherers.getValueTrackData();
       const loader = form.find(".loading-in-button.is-inner");
 
-    //   if (valueTrack) {
-    //     for (const [key,value] of Object.entries(valueTrack)) {
-    //         if (key !== 'timestamp') {
-    //             formData.append(key, value);
-    //         }
-    //     }
-    // }
+      //   if (valueTrack) {
+      //     for (const [key,value] of Object.entries(valueTrack)) {
+      //         if (key !== 'timestamp') {
+      //             formData.append(key, value);
+      //         }
+      //     }
+      // }
 
       $.ajax({
         type: "POST",
         url: window.myGlobals.URL,
-        data: {
-          action: $(form).attr("data-action"),
-          email: $(emailField).val(),
-          "adwords[gclid]": window.myGlobals.gclidValue,
-          "adwords[fbclid]": window.myGlobals.fbclidValue,
-          analyticsId: window.myGlobals.analyticsId,
-          affiliant: ( $(form).attr("data-affiliant") ) ? $(form).attr("data-affiliant") : '',
-        },
+        data: (function () {
+          var data = {
+            action: $(form).attr("data-action"),
+            email: $(emailField).val(),
+            "adwords[gclid]": window.myGlobals.gclidValue,
+            "adwords[fbclid]": window.myGlobals.fbclidValue,
+            analyticsId: window.myGlobals.analyticsId,
+            affiliant: $(form).attr("data-affiliant")
+              ? $(form).attr("data-affiliant")
+              : "",
+          };
+
+          if (valueTrack) {
+            Object.entries(valueTrack).forEach(([key, value]) => {
+              if (key !== "timestamp") {
+                data[key] = value;
+              }
+            });
+          }
+
+          return data;
+        })(),
         beforeSend: function () {
           loader.show();
           // Show loader
         },
         success: function (data) {
-          
           if (data.client_id) window.myGlobals.clientId = data.client_id;
           if (data.host) window.myGlobals.host = data.host;
           if (data.shop_id) window.myGlobals.shopId = data.shop_id;
@@ -110,24 +123,48 @@ $(document).ready(function () {
           }
 
           if (data.status === 1) {
-            if ( localStorage.getItem("shoper_affiliate") ) {
+            if (localStorage.getItem("shoper_affiliate")) {
               localStorage.removeItem("shoper_affiliate");
             }
-            $("[data-app='create_trial_step1_modal']").removeClass("modal--open");
+            $("[data-app='create_trial_step1_modal']").removeClass(
+              "modal--open"
+            );
             $("[data-app='trial-domain']").text(window.myGlobals.host);
             $('[data-modal="create_trial_step2"]').addClass("modal--open");
 
-            var formTypeValue = $(form).attr("data-item") === "exit" ? "exit_popup" : "";
+            var formTypeValue =
+              $(form).attr("data-item") === "exit" ? "exit_popup" : "";
 
-            DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $("#create_trial_step1").attr("data-action"), emailField.val());
+            DataLayerGatherers.pushEmailSubmittedData(
+              window.myGlobals.clientId,
+              window.myGlobals.shopId,
+              $("#create_trial_step1").attr("data-action"),
+              emailField.val()
+            );
 
-            DataLayerGatherers.pushFormSubmitSuccessData($("#create_trial_step1").attr("data-action"), emailField.val(), formTypeValue);
+            DataLayerGatherers.pushFormSubmitSuccessData(
+              $("#create_trial_step1").attr("data-action"),
+              emailField.val(),
+              formTypeValue
+            );
 
-            DataLayerGatherers.pushTrackEventData($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
+            DataLayerGatherers.pushTrackEventData(
+              $("#create_trial_step1").attr("data-action"),
+              $("#create_trial_step1").find("#label").text(),
+              emailField.val()
+            );
           } else {
-            DataLayerGatherers.pushTrackEventError($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
+            DataLayerGatherers.pushTrackEventError(
+              $("#create_trial_step1").attr("data-action"),
+              $("#create_trial_step1").find("#label").text(),
+              emailField.val()
+            );
 
-            DataLayerGatherers.pushSubmitError($("#create_trial_step1").attr("data-action"), $("#create_trial_step1").find("#label").text(), emailField.val());
+            DataLayerGatherers.pushSubmitError(
+              $("#create_trial_step1").attr("data-action"),
+              $("#create_trial_step1").find("#label").text(),
+              emailField.val()
+            );
           }
         },
         error: function (data) {
