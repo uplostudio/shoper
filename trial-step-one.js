@@ -75,13 +75,13 @@ $(document).ready(function () {
       const valueTrack = DataLayerGatherers.getValueTrackData();
       const loader = form.find(".loading-in-button.is-inner");
 
-      if (valueTrack) {
-        for (const [key,value] of Object.entries(valueTrack)) {
-            if (key !== 'timestamp') {
-                formData.append(key, value);
-            }
-        }
-    }
+    //   if (valueTrack) {
+    //     for (const [key,value] of Object.entries(valueTrack)) {
+    //         if (key !== 'timestamp') {
+    //             formData.append(key, value);
+    //         }
+    //     }
+    // }
 
       $.ajax({
         type: "POST",

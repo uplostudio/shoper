@@ -84,13 +84,13 @@ $(document).ready(function () {
     const loader = form.find(".loading-in-button.is-inner");
     if (state.errors.length === 0) {
 
-      if (valueTrack) {
-        for (const [key,value] of Object.entries(valueTrack)) {
-            if (key !== 'timestamp') {
-                formData.append(key, value);
-            }
-        }
-    }
+    //   if (valueTrack) {
+    //     for (const [key,value] of Object.entries(valueTrack)) {
+    //         if (key !== 'timestamp') {
+    //             formData.append(key, value);
+    //         }
+    //     }
+    // }
 
       $.ajax({
         type: "POST",
