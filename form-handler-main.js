@@ -191,8 +191,8 @@ function sendFormDataToURL(formElement, form) {
   formData.append("adwords[gclid]", window.myGlobals.gclidValue);
   formData.append("adwords[fbclid]", window.myGlobals.fbclidValue);
 
-  if (valueTrackData) {
-    for (const [key,value] of Object.entries(valueTrackData)) {
+  if (valueTrack) {
+    for (const [key,value] of Object.entries(valueTrack)) {
         if (key !== 'timestamp') {
             formData.append(key, value);
         }

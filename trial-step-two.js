@@ -83,14 +83,14 @@ $(document).ready(function () {
     const loader = form.find(".loading-in-button.is-inner");
     if (state.errors.length === 0) {
 
-      if (valueTrackData) {
-        for (const [key,value] of Object.entries(valueTrackData)) {
+      if (valueTrack) {
+        for (const [key,value] of Object.entries(valueTrack)) {
             if (key !== 'timestamp') {
                 formData.append(key, value);
             }
         }
     }
-    
+
       $.ajax({
         type: "POST",
         url: window.myGlobals.URL,

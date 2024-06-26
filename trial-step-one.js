@@ -74,8 +74,8 @@ $(document).ready(function () {
     if (state.errors.length === 0) {
       const loader = form.find(".loading-in-button.is-inner");
 
-      if (valueTrackData) {
-        for (const [key,value] of Object.entries(valueTrackData)) {
+      if (valueTrack) {
+        for (const [key,value] of Object.entries(valueTrack)) {
             if (key !== 'timestamp') {
                 formData.append(key, value);
             }
