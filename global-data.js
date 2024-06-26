@@ -12,40 +12,42 @@ window.myGlobals = {
 
 let hostname = window.location.hostname;
 
-window.myGlobals.URL = hostname === 'www.shoper.pl'
-  ? 'https://www.shoper.pl/ajax.php'
-  : 'https://webflow-sandbox.shoper.pl/ajax.php';
+window.myGlobals.URL =
+  hostname === "www.shoper.pl"
+    ? "https://www.shoper.pl/ajax.php"
+    : "https://webflow-sandbox.shoper.pl/ajax.php";
 
+function getOrStoreParameter(name) {
+  let urlSearchParams = new URLSearchParams(window.location.search);
+  let urlValue = urlSearchParams.get(name) || "";
+  let storedValue = localStorage.getItem(name);
 
-  function getOrStoreParameter(name) {
-    let urlSearchParams = new URLSearchParams(window.location.search);
-    let urlValue = urlSearchParams.get(name) || "";
-    let storedValue = localStorage.getItem(name);
-
-    if (urlValue) {
-      if (urlValue !== storedValue) {
-        localStorage.setItem(name, urlValue);
-      }
-      return urlValue;
-    } else if (storedValue) {
-      return storedValue;
+  if (urlValue) {
+    if (urlValue !== storedValue) {
+      localStorage.setItem(name, urlValue);
     }
-    return "";
+    return urlValue;
+  } else if (storedValue) {
+    return storedValue;
   }
+  return "";
+}
 
-  function updateAnalytics() {  
-    setTimeout(function () {
-      try {
-        const tracker = ga.getAll()[0];
-        window.myGlobals.analyticsId = tracker.get("clientId");
-        $("[name='analytics_id']").val(window.myGlobals.analyticsId);
-      } catch (err) {}
-    }, 2000);
-  }
+function updateAnalytics() {
+  setTimeout(function () {
+    try {
+      const tracker = ga.getAll()[0];
+      window.myGlobals.analyticsId = tracker.get("clientId");
+      $("[name='analytics_id']").val(window.myGlobals.analyticsId);
+    } catch (err) {}
+  }, 2000);
+}
 
 const DataLayerGatherers = {
   formAbandonEvent: function () {
-    const $formContainer = $('[data-action="create_trial_step1"], [data-action="create_trial_step2"]');
+    const $formContainer = $(
+      '[data-action="create_trial_step1"], [data-action="create_trial_step2"]'
+    );
 
     let isFormModified = false;
 
@@ -74,7 +76,9 @@ const DataLayerGatherers = {
   },
 
   controlBlur: function () {
-    const $formContainer = $('[data-action="create_trial_step1"], [data-action="create_trial_step2"]');
+    const $formContainer = $(
+      '[data-action="create_trial_step1"], [data-action="create_trial_step2"]'
+    );
 
     $formContainer.find("input").on("blur", function () {
       window.dataLayer = window.dataLayer || [];
@@ -89,7 +93,9 @@ const DataLayerGatherers = {
   },
 
   controlFocus: function () {
-    const $formContainer = $('[data-action="create_trial_step1"], [data-action="create_trial_step2"]');
+    const $formContainer = $(
+      '[data-action="create_trial_step1"], [data-action="create_trial_step2"]'
+    );
 
     $formContainer.find("input").on("focus", function () {
       window.dataLayer = window.dataLayer || [];
@@ -142,7 +148,13 @@ const DataLayerGatherers = {
     });
   },
 
-  pushTrackEventDataModal: function (client_id, formId, shopId, eventAction, eventType) {
+  pushTrackEventDataModal: function (
+    client_id,
+    formId,
+    shopId,
+    eventAction,
+    eventType
+  ) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
       event: "formSubmitSuccess",
@@ -202,6 +214,66 @@ const DataLayerGatherers = {
       eventType: eventType,
     });
   },
+
+  checkAndStoreQueryParams: function () {
+    const PARAMS = [
+      "utm_source",
+      "utm_medium",
+      "utm_campaign",
+      "utm_content",
+      "adgroup",
+      "device",
+    ];
+    const VALUE_TRACK_KEY = "valueTrack";
+    const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
+
+    // Helper function to get query parameters from the URL
+    function getQueryParams() {
+      const urlParams = new URLSearchParams(window.location.search);
+      const queryParams = {};
+
+      PARAMS.forEach((param) => {
+        if (urlParams.has(param)) {
+          queryParams[param] = urlParams.get(param);
+        }
+      });
+
+      return queryParams;
+    }
+
+    // Store the query parameters in localStorage
+    function storeParams(params) {
+      const data = {
+        ...params,
+        timestamp: new Date().getTime(),
+      };
+      localStorage.setItem(VALUE_TRACK_KEY, JSON.stringify(data));
+    }
+
+    // Check if the stored data is older than 90 days
+    function checkExpiry() {
+      const data = localStorage.getItem(VALUE_TRACK_KEY);
+      if (data) {
+        const parsedData = JSON.parse(data);
+        const currentTime = new Date().getTime();
+        if (currentTime - parsedData.timestamp > NINETY_DAYS_MS) {
+          localStorage.removeItem(VALUE_TRACK_KEY);
+        }
+      }
+    }
+
+    // Main logic execution
+    const queryParams = getQueryParams();
+    if (Object.keys(queryParams).length > 0) {
+      storeParams(queryParams);
+    }
+    checkExpiry();
+  },
+
+  getValueTrackData: function () {
+    const data = localStorage.getItem("valueTrack");
+    return data ? JSON.parse(data) : null;
+  },
 };
 
 $(document).ready(function () {
@@ -226,3 +298,5 @@ $(document).ready(function () {
     });
   });
 });
+
+DataLayerGatherers.checkAndStoreQueryParams();
