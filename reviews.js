@@ -13,8 +13,7 @@ $(document).ready(function () {
 function initializeListContainer() {
   var listContainer = $('*[fs-cmsload-element="list"]');
   var childrenCount = listContainer.children().length;
-  var sumRate = 0,
-    ratingElementsCount = 0;
+  var sumRate = 0, ratingElementsCount = 0;
 
   listContainer.find("*[data-rate]").each(function () {
     var rateValue = parseFloat($(this).text());
@@ -73,23 +72,7 @@ function processListItem(listElementContainer, listToSort, isInitialLoad) {
     $this.next(".counter_span").text("[" + count + "]");
 
     var closestListItem = $this.closest('[role="listitem"]');
-    if (count === 0) {
-      if (isInitialLoad) {
-        closestListItem.css("display", "none");
-      } else {
-        closestListItem.css({
-          opacity: "0.4",
-          "pointer-events": "none",
-        });
-      }
-    } else {
-      closestListItem.css({
-        display: "",
-        opacity: "",
-        "pointer-events": "",
-      });
-    }
-
+    
     if ($this.parent().parent().parent()) {
       listToSort.push({
         element: $this.parent().parent().parent(),
