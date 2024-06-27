@@ -122,7 +122,7 @@ function handleVisibilityAndExpansion(listElementContainer, listToSort) {
 // Update expandElement's text
 function handleExpandElementText(itemNum, hiddenChildren, expandElement) {
   var expandText = itemNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania";
-  expandElement.text(`Pokaż ${expandText} [${hiddenChildren}]`).show();
+  // expandElement.text(`Pokaż ${expandText} [${hiddenChildren}]`).show();
 }
 
 // Expand onClick
