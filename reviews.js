@@ -1,19 +1,28 @@
-// Define resetElement in a wider scope to ensure accessibility
+// Simplifying global definition
 var resetElement;
 
+// Document ready
 $(document).ready(function () {
-  // Initialize resetElement
   initializeResetElement();
-  
-  console.log(resetElement); // Verify elements are found
-  // Initially hide the reset element
   resetElement.hide();
-
+  
   initializeListContainer();
-  expandOnClick();
+  expandOnClick(); // Bind expand click events
   feedBoxBottomClassHandler();
-  $('[data-item^="list"]').each(function () {
-    handleList($(this), true);
+  initializeListElements(true);
+
+  // MutationObserver
+  observeNodeChange('[fs-cmsfilter-element="list"]', function () {
+    initializeResetElement();
+    initializeListElements(false);
+
+    if ($('.filters2_tags-wrapper').children().length > 0) {
+      resetElement.show();
+    } else {
+      resetElement.hide();
+    }
+
+    expandOnClick(); // Re-bind expand click events
   });
 });
 
@@ -22,13 +31,20 @@ function initializeResetElement() {
   resetElement = $("[fs-cmsfilter-element='reset']");
 }
 
+// Function to initialize list elements and handle list
+function initializeListElements(isInitialLoad) {
+  $('[data-item^="list"]').each(function () {
+    handleList($(this), isInitialLoad);
+  });
+}
+
 // Initializing List Container Attributes
 function initializeListContainer() {
   var listContainer = $('*[fs-cmsload-element="list"]');
   var childrenCount = listContainer.children().length;
   var sumRate = 0, ratingElementsCount = 0;
 
-  listContainer.find("*[data-rate]").each(function () {
+  listContainer.find("[data-rate]").each(function () {
     var rateValue = parseFloat($(this).text());
     if (!isNaN(rateValue)) {
       sumRate += rateValue;
@@ -40,13 +56,13 @@ function initializeListContainer() {
     handleRating(sumRate, ratingElementsCount);
   }
 
-  $('*[data-item="review-count"]').text(childrenCount);
+  $('[data-item="review-count"]').text(childrenCount);
 }
 
 // Rate Handler to manage ratings
 function handleRating(sumRate, ratingElementsCount) {
   var overallRating = sumRate / ratingElementsCount;
-  $('*[data-item="overall"]').text(overallRating.toFixed(1));
+  $('[data-item="overall"]').text(overallRating.toFixed(1));
 
   var roundedRating = Math.round(overallRating);
   if (roundedRating > 1) {
@@ -59,9 +75,7 @@ function handleRating(sumRate, ratingElementsCount) {
 
 function processList(listElementContainer, isInitialLoad) {
   var listToSort = [];
-
   processListItem(listElementContainer, listToSort, isInitialLoad);
-
   return listToSort;
 }
 
@@ -70,12 +84,6 @@ function handleList(listElementContainer, isInitialLoad) {
   handleVisibilityAndExpansion(listElementContainer, listToSort);
 }
 
-function handleDataItemList() {
-  processList();
-  handleList();
-}
-
-// Process each list item
 function processListItem(listElementContainer, listToSort, isInitialLoad) {
   listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
     var $this = $(this);
@@ -103,25 +111,23 @@ function handleVisibilityAndExpansion(listElementContainer, listToSort) {
 
   var itemCount = listElementContainer.children(":visible").length;
   var itemNum = listElementContainer.attr("data-item").split("-")[1];
-  var hiddenChildren = itemCount - 5;
+  var hiddenChildren = itemCount - 5; // Number of hidden items
   var expandElement = $("[data-item=expand-" + itemNum + "]");
 
+  // Always keep expandElement visible
+  expandElement.show();
+
   if (hiddenChildren < 1 || expandElement.data("wasExpanded")) {
-    expandElement.hide();
+    expandElement.text("Pokaż mniej"); // Default to "Show Less" if all are expanded
   } else if (itemCount > 5) {
     listElementContainer.addClass("collapsed");
-    handleExpandElementText(itemNum, hiddenChildren, expandElement);
   }
-}
-
-function handleExpandElementText(itemNum, hiddenChildren, expandElement) {
-  var expandText = itemNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania";
-  // expandElement.text(`Pokaż ${expandText} [${hiddenChildren}]`).show();
 }
 
 // Expand onClick
 function expandOnClick() {
-  $("[data-item^=expand]").click(function () {
+  $("[data-item^=expand]").off('click').on('click', function (event) {
+    event.preventDefault();
     var $this = $(this);
     var expandNum = $this.attr("data-item") ? $this.attr("data-item").split("-")[1] : "";
     var listElement = $("[data-item=list-" + expandNum + "]");
@@ -183,19 +189,3 @@ function observeNodeChange(targetSelector, onNodeChange) {
   observer.observe(targetNode, config);
   return observer;
 }
-
-var observer = observeNodeChange('[fs-cmsfilter-element="list"]', function (mutation) {
-  initializeResetElement();
-
-  $('[data-item^="list"]').each(function () {
-    handleList($(this), false);
-  });
-
-  var filtersWrapperChildrenCount = $(".filters2_tags-wrapper").children().length;
-
-  if (filtersWrapperChildrenCount > 0) {
-    resetElement.show();
-  } else {
-    resetElement.hide();
-  }
-});
