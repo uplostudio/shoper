@@ -5,24 +5,30 @@ var resetElement;
 $(document).ready(function () {
   initializeResetElement();
   resetElement.hide();
-  
+
+  // Initialize components
   initializeListContainer();
   expandOnClick(); // Bind expand click events
   feedBoxBottomClassHandler();
   initializeListElements(true);
 
-  // MutationObserver
+  // Update filters visibility just once when DOM is ready
+  updateFiltersVisibility();
+
+  // MutationObserver to handle list changes
   observeNodeChange('[fs-cmsfilter-element="list"]', function () {
     initializeResetElement();
     initializeListElements(false);
 
+    // Ensure reset button visibility is correct
     if ($('.filters2_tags-wrapper').children().length > 0) {
       resetElement.show();
     } else {
       resetElement.hide();
     }
 
-    expandOnClick(); // Re-bind expand click events
+    // Re-bind expand click events
+    expandOnClick(); 
   });
 });
 
@@ -121,6 +127,7 @@ function handleVisibilityAndExpansion(listElementContainer, listToSort) {
     expandElement.text("Pokaż mniej"); // Default to "Show Less" if all are expanded
   } else if (itemCount > 5) {
     listElementContainer.addClass("collapsed");
+    // expandElement.text(`Pokaż ${itemNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania"}`).show();
   }
 }
 
@@ -139,7 +146,8 @@ function expandOnClick() {
         // Collapse the list
         listElement.addClass("collapsed");
         $this.data("wasExpanded", false);
-        $this.text("Pokaż więcej"); // Update text to "Show more"
+        $this.text("Pokaż więcej"); // Update text to "Show less"
+        // $this.text(`Pokaż ${expandNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania"}`); // Update text as needed
       } else {
         // Expand the list
         listElement.removeClass("collapsed");
@@ -166,6 +174,23 @@ function feedBoxBottomClassHandler() {
           }
         });
       });
+    }
+  });
+}
+
+// Function to update filter visibility based on the presence of result items
+function updateFiltersVisibility() {
+  var filters = $("span[fs-cmsfilter-field]");
+  
+  filters.each(function () {
+    var filterField = $(this);
+    var filterValue = filterField.data("value");
+    var matchingItems = $(`div[fs-cmsfilter-field][data-set='${filterValue}']`);
+
+    if (matchingItems.length === 0) {
+      filterField.closest(".w-dyn-item").hide();
+    } else {
+      filterField.closest(".w-dyn-item").show();
     }
   });
 }
