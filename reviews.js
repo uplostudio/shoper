@@ -1,6 +1,14 @@
-var resetElement = $("[fs-cmsfilter-element='reset']");
-resetElement.hide();
+// Define resetElement in a wider scope to ensure accessibility
+var resetElement;
+
 $(document).ready(function () {
+  // Initialize resetElement
+  initializeResetElement();
+  
+  console.log(resetElement); // Verify elements are found
+  // Initially hide the reset element
+  resetElement.hide();
+
   initializeListContainer();
   expandOnClick();
   feedBoxBottomClassHandler();
@@ -9,7 +17,12 @@ $(document).ready(function () {
   });
 });
 
-// Initializing List Container Attributes;
+// Function to initialize resetElement
+function initializeResetElement() {
+  resetElement = $("[fs-cmsfilter-element='reset']");
+}
+
+// Initializing List Container Attributes
 function initializeListContainer() {
   var listContainer = $('*[fs-cmsload-element="list"]');
   var childrenCount = listContainer.children().length;
@@ -82,7 +95,6 @@ function processListItem(listElementContainer, listToSort, isInitialLoad) {
   });
 }
 
-// Sort and handle visibility of list items
 function handleVisibilityAndExpansion(listElementContainer, listToSort) {
   if (listToSort.length > 0) {
     listToSort.sort((a, b) => b.count - a.count);
@@ -102,7 +114,6 @@ function handleVisibilityAndExpansion(listElementContainer, listToSort) {
   }
 }
 
-// Update expandElement's text
 function handleExpandElementText(itemNum, hiddenChildren, expandElement) {
   var expandText = itemNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania";
   // expandElement.text(`Pokaż ${expandText} [${hiddenChildren}]`).show();
@@ -113,10 +124,22 @@ function expandOnClick() {
   $("[data-item^=expand]").click(function () {
     var $this = $(this);
     var expandNum = $this.attr("data-item") ? $this.attr("data-item").split("-")[1] : "";
+    var listElement = $("[data-item=list-" + expandNum + "]");
+
     if (expandNum) {
-      $this.data("wasExpanded", true);
-      $("[data-item=list-" + expandNum + "]").removeClass("collapsed");
-      $this.hide();
+      var wasExpanded = $this.data("wasExpanded");
+
+      if (wasExpanded) {
+        // Collapse the list
+        listElement.addClass("collapsed");
+        $this.data("wasExpanded", false);
+        $this.text("Pokaż więcej"); // Update text to "Show more"
+      } else {
+        // Expand the list
+        listElement.removeClass("collapsed");
+        $this.data("wasExpanded", true);
+        $this.text("Pokaż mniej"); // Update text to "Show less"
+      }
     }
   });
 }
@@ -142,7 +165,6 @@ function feedBoxBottomClassHandler() {
 }
 
 // Observe when list is being changed
-
 function observeNodeChange(targetSelector, onNodeChange) {
   var targetNode = document.querySelector(targetSelector);
   var config = {
@@ -163,9 +185,12 @@ function observeNodeChange(targetSelector, onNodeChange) {
 }
 
 var observer = observeNodeChange('[fs-cmsfilter-element="list"]', function (mutation) {
+  initializeResetElement();
+
   $('[data-item^="list"]').each(function () {
     handleList($(this), false);
   });
+
   var filtersWrapperChildrenCount = $(".filters2_tags-wrapper").children().length;
 
   if (filtersWrapperChildrenCount > 0) {
