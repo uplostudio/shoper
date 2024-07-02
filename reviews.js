@@ -21,14 +21,14 @@ $(document).ready(function () {
     initializeListElements(false);
 
     // Ensure reset button visibility is correct
-    if ($('.filters2_tags-wrapper').children().length > 0) {
+    if ($(".filters2_tags-wrapper").children().length > 0) {
       resetElement.show();
     } else {
       resetElement.hide();
     }
 
     // Re-bind expand click events
-    expandOnClick(); 
+    expandOnClick();
   });
 });
 
@@ -48,7 +48,8 @@ function initializeListElements(isInitialLoad) {
 function initializeListContainer() {
   var listContainer = $('*[fs-cmsload-element="list"]');
   var childrenCount = listContainer.children().length;
-  var sumRate = 0, ratingElementsCount = 0;
+  var sumRate = 0,
+    ratingElementsCount = 0;
 
   listContainer.find("[data-rate]").each(function () {
     var rateValue = parseFloat($(this).text());
@@ -94,12 +95,14 @@ function processListItem(listElementContainer, listToSort, isInitialLoad) {
   listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
     var $this = $(this);
     var value = $this.data("value");
-    var count = $(`div[fs-cmsfilter-element='list'] div[data-set='${value}']`).length;
+    var count = $(
+      `div[fs-cmsfilter-element='list'] div[data-set='${value}']`
+    ).length;
 
     $this.next(".counter_span").text("[" + count + "]");
 
     var closestListItem = $this.closest('[role="listitem"]');
-    
+
     if ($this.parent().parent().parent()) {
       listToSort.push({
         element: $this.parent().parent().parent(),
@@ -112,7 +115,9 @@ function processListItem(listElementContainer, listToSort, isInitialLoad) {
 function handleVisibilityAndExpansion(listElementContainer, listToSort) {
   if (listToSort.length > 0) {
     listToSort.sort((a, b) => b.count - a.count);
-    $.each(listToSort, (index, item) => listElementContainer.append(item.element));
+    $.each(listToSort, (index, item) =>
+      listElementContainer.append(item.element)
+    );
   }
 
   var itemCount = listElementContainer.children(":visible").length;
@@ -133,29 +138,33 @@ function handleVisibilityAndExpansion(listElementContainer, listToSort) {
 
 // Expand onClick
 function expandOnClick() {
-  $("[data-item^=expand]").off('click').on('click', function (event) {
-    event.preventDefault();
-    var $this = $(this);
-    var expandNum = $this.attr("data-item") ? $this.attr("data-item").split("-")[1] : "";
-    var listElement = $("[data-item=list-" + expandNum + "]");
+  $("[data-item^=expand]")
+    .off("click")
+    .on("click", function (event) {
+      event.preventDefault();
+      var $this = $(this);
+      var expandNum = $this.attr("data-item")
+        ? $this.attr("data-item").split("-")[1]
+        : "";
+      var listElement = $("[data-item=list-" + expandNum + "]");
 
-    if (expandNum) {
-      var wasExpanded = $this.data("wasExpanded");
+      if (expandNum) {
+        var wasExpanded = $this.data("wasExpanded");
 
-      if (wasExpanded) {
-        // Collapse the list
-        listElement.addClass("collapsed");
-        $this.data("wasExpanded", false);
-        $this.text("Pokaż więcej"); // Update text to "Show less"
-        // $this.text(`Pokaż ${expandNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania"}`); // Update text as needed
-      } else {
-        // Expand the list
-        listElement.removeClass("collapsed");
-        $this.data("wasExpanded", true);
-        $this.text("Pokaż mniej"); // Update text to "Show less"
+        if (wasExpanded) {
+          // Collapse the list
+          listElement.addClass("collapsed");
+          $this.data("wasExpanded", false);
+          $this.text("Pokaż więcej"); // Update text to "Show less"
+          // $this.text(`Pokaż ${expandNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania"}`); // Update text as needed
+        } else {
+          // Expand the list
+          listElement.removeClass("collapsed");
+          $this.data("wasExpanded", true);
+          $this.text("Pokaż mniej"); // Update text to "Show less"
+        }
       }
-    }
-  });
+    });
 }
 
 // Feed Box Bottom Class Handler
@@ -181,7 +190,7 @@ function feedBoxBottomClassHandler() {
 // Function to update filter visibility based on the presence of result items
 function updateFiltersVisibility() {
   var filters = $("span[fs-cmsfilter-field]");
-  
+
   filters.each(function () {
     var filterField = $(this);
     var filterValue = filterField.data("value");
@@ -214,3 +223,40 @@ function observeNodeChange(targetSelector, onNodeChange) {
   observer.observe(targetNode, config);
   return observer;
 }
+
+$(document).ready(function () {
+  var targetNode = $(".filters2_filters-wrapper")[0];
+  var observerOptions = {
+    attributes: true,
+    childList: false,
+    subtree: false,
+  };
+  var observer = new MutationObserver(handleMutation);
+  observer.observe(targetNode, observerOptions);
+
+  function handleMutation(mutationsList, observer) {
+    for (var mutation of mutationsList) {
+      if (mutation.type == "attributes" && mutation.attributeName === "style") {
+        var displayValue = $(".filters2_filters-wrapper").css("display");
+        if (displayValue === "flex") {
+          $("body").css("overflow", "hidden");
+        } else if (displayValue === "none") {
+          $("body").css("overflow", "auto");
+        }
+      }
+    }
+  }
+});
+
+$(document).ready(function () {
+  function addSeparators() {
+    $(".solutions_list .bullet").remove();
+    $(".solutions_list .w-dyn-item").each(function (index, element) {
+      if (index < $(".solutions_list .w-dyn-item").length - 1) {
+        $(element).after('<div class="bullet">•</div>');
+      }
+    });
+  }
+
+  addSeparators();
+});
