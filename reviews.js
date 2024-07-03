@@ -139,11 +139,13 @@ document.addEventListener("DOMContentLoaded", function() {
     const optimizedInitializeListElements = debounce(function(isInitialLoad) {
       initializeListElements(isInitialLoad);
     }, 200);
-
+    
+    addSeparators();
     expandOnClick();
     feedBoxBottomClassHandler();
     optimizedInitializeListElements(true);
     updateFiltersVisibility();
+    
 
     observeNodeChange('[fs-cmsfilter-element="list"]', function() {
       $filtersWrapper.children().length > 0 ? resetElement.show() : resetElement.hide();
@@ -158,6 +160,5 @@ document.addEventListener("DOMContentLoaded", function() {
     };
 
     new MutationObserver(handleMutation).observe($filtersWrapper[0], observerOptions);
-    addSeparators();
   });
 });
