@@ -1,48 +1,49 @@
+
 var resetElement;
 $(document).ready(function () {
   initializeResetElement();
-  resetElement.hide();
   const $filtersWrapper = $(".filters2_tags-wrapper");
 
-  function initializeListContainer() {
-    const $listContainer = $('*[fs-cmsload-element="list"]');
-    const childrenCount = $listContainer.children().length;
-    let sumRate = 0, ratingElementsCount = 0;
-
-    $listContainer.find("[data-rate]").each(function () {
-      const rateValue = parseFloat($(this).text());
-      if (!isNaN(rateValue)) {
-        sumRate += rateValue;
-        ratingElementsCount++;
-      }
-    });
-
-    if (ratingElementsCount > 0) {
-      handleRating(sumRate, ratingElementsCount);
-    }
-
-    $('[data-item="review-count"]').text(childrenCount);
+  function initializeResetElement() {
+    resetElement = $("[fs-cmsfilter-element='reset']");
+    resetElement.hide();
   }
 
-  function handleRating(sumRate, ratingElementsCount) {
-    const overallRating = (sumRate / ratingElementsCount).toFixed(1);
-    $('[data-item="overall"]').text(overallRating);
+  // function initializeListContainer() {
+  //   const $listContainer = $('*[fs-cmsload-element="list"]');
+  //   const childrenCount = $listContainer.children().length;
+  //   let sumRate = 0, ratingElementsCount = 0;
 
-    let roundedRating = Math.round(overallRating);
-    const $star = $('[data-item="star"]').first();
-    for (let i = 1; i < roundedRating; i++) {
-      $star.clone().insertAfter($star);
-    }
-  }
+  //   $listContainer.find("[data-rate]").each(function () {
+  //     const rateValue = parseFloat($(this).text());
+  //     if (!isNaN(rateValue)) {
+  //       sumRate += rateValue;
+  //       ratingElementsCount++;
+  //     }
+  //   });
+
+  //   if (ratingElementsCount > 0) {
+  //     handleRating(sumRate, ratingElementsCount);
+  //   }
+
+  //   $('[data-item="review-count"]').text(childrenCount);
+  // }
+
+  // function handleRating(sumRate, ratingElementsCount) {
+  //   const overallRating = (sumRate / ratingElementsCount).toFixed(1);
+  //   $('[data-item="overall"]').text(overallRating);
+
+  //   let roundedRating = Math.round(overallRating);
+  //   const $star = $('[data-item="star"]').first();
+  //   for (let i = 1; i < roundedRating; i++) {
+  //     $star.clone().insertAfter($star);
+  //   }
+  // }
 
   function initializeListElements(isInitialLoad) {
     $('[data-item^="list"]').each(function () {
       handleList($(this), isInitialLoad);
     });
-  }
-
-  function initializeResetElement() {
-    resetElement = $("[fs-cmsfilter-element='reset']");
   }
 
   function handleList($listElementContainer, isInitialLoad) {
@@ -168,14 +169,14 @@ $(document).ready(function () {
     initializeListElements(isInitialLoad);
   }, 200);
 
-  initializeListContainer();
+  // initializeListContainer();
   expandOnClick();
   feedBoxBottomClassHandler();
   optimizedInitializeListElements(true);
   updateFiltersVisibility();
 
   observeNodeChange('[fs-cmsfilter-element="list"]', function () {
-    $filtersWrapper.children().length > 0 ? $resetElement.show() : $resetElement.hide();
+    $filtersWrapper.children().length > 0 ? resetElement.show() : resetElement.hide();
     optimizedInitializeListElements(false);
     expandOnClick();
   });
