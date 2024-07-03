@@ -1,6 +1,7 @@
-
+var resetElement;
 $(document).ready(function () {
-  const $resetElement = $("[fs-cmsfilter-element='reset']").hide();
+  initializeResetElement();
+  resetElement.hide();
   const $filtersWrapper = $(".filters2_tags-wrapper");
 
   function initializeListContainer() {
@@ -38,6 +39,10 @@ $(document).ready(function () {
     $('[data-item^="list"]').each(function () {
       handleList($(this), isInitialLoad);
     });
+  }
+
+  function initializeResetElement() {
+    resetElement = $("[fs-cmsfilter-element='reset']");
   }
 
   function handleList($listElementContainer, isInitialLoad) {
