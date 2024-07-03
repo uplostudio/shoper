@@ -1,15 +1,19 @@
 document.addEventListener("DOMContentLoaded", function() {
+  function initializeResetElement() {
+    resetElement = $("[fs-cmsfilter-element='reset']");
+    resetElement.each(function() {
+      $(this).hide();
+      this.style.display = 'none';
+    });
+  }
+
+  initializeResetElement(); // Ensure reset elements are hidden before other jQuery operations
+
   $(document).ready(function () {
-    initializeResetElement();
     const $filtersWrapper = $(".filters2_tags-wrapper");
 
-    function initializeResetElement() {
-      resetElement = $("[fs-cmsfilter-element='reset']");
-      resetElement.hide();
-    }
-
     function initializeListElements(isInitialLoad) {
-      $('[data-item^="list"]').each(function () {
+      $('[data-item^="list"]').each(function() {
         handleList($(this), isInitialLoad);
       });
     }
@@ -21,7 +25,7 @@ document.addEventListener("DOMContentLoaded", function() {
 
     function processList($listElementContainer, isInitialLoad) {
       let listToSort = [];
-      $listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
+      $listElementContainer.find("span[fs-cmsfilter-field]").each(function() {
         const $this = $(this);
         const count = $(`div[fs-cmsfilter-element='list'] div[data-set='${$this.data("value")}']`).length;
         $this.next(".counter_span").text(`[${count}]`);
@@ -55,7 +59,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function expandOnClick() {
-      $("[data-item^=expand]").off("click").on("click", function (event) {
+      $("[data-item^=expand]").off("click").on("click", function(event) {
         event.preventDefault();
         const $this = $(this);
         const expandNum = $this.attr("data-item").split("-")[1];
@@ -69,11 +73,11 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function feedBoxBottomClassHandler() {
-      $(".feed_box-bottom").each(function () {
+      $(".feed_box-bottom").each(function() {
         const $this = $(this);
         if ($this.find("a.w-condition-invisible").length === 1) {
-          $this.find("a:not(.w-condition-invisible)").each(function () {
-            $(this).removeClass(function (index, className) {
+          $this.find("a:not(.w-condition-invisible)").each(function() {
+            $(this).removeClass(function(index, className) {
               return className && className !== "button";
             });
           });
@@ -82,7 +86,7 @@ document.addEventListener("DOMContentLoaded", function() {
     }
 
     function updateFiltersVisibility() {
-      $("span[fs-cmsfilter-field]").each(function () {
+      $("span[fs-cmsfilter-field]").each(function() {
         const $filterField = $(this);
         const filterValue = $filterField.data("value");
         const matchingItems = $(`div[fs-cmsfilter-field][data-set='${filterValue}']`);
@@ -115,17 +119,16 @@ document.addEventListener("DOMContentLoaded", function() {
     function addSeparators() {
       const $solutionsListItems = $(".solutions_list .w-dyn-item");
       $solutionsListItems.next(".bullet").remove();
-      $solutionsListItems.each(function (index, element) {
+      $solutionsListItems.each(function(index, element) {
         if (index < $solutionsListItems.length - 1) {
           $(element).after('<div class="bullet">•</div>');
         }
       });
     }
 
-    // Debounce function to limit the rate of function execution
     function debounce(func, wait) {
       let timeout;
-      return function () {
+      return function() {
         const context = this;
         const args = arguments;
         clearTimeout(timeout);
@@ -137,13 +140,12 @@ document.addEventListener("DOMContentLoaded", function() {
       initializeListElements(isInitialLoad);
     }, 200);
 
-    // initializeListContainer();
     expandOnClick();
     feedBoxBottomClassHandler();
     optimizedInitializeListElements(true);
     updateFiltersVisibility();
 
-    observeNodeChange('[fs-cmsfilter-element="list"]', function () {
+    observeNodeChange('[fs-cmsfilter-element="list"]', function() {
       $filtersWrapper.children().length > 0 ? resetElement.show() : resetElement.hide();
       optimizedInitializeListElements(false);
       expandOnClick();
