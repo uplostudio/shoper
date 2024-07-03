@@ -1,225 +1,186 @@
-// Simplifying global definition
-var resetElement;
 
-// Document ready
 $(document).ready(function () {
-  initializeResetElement();
-  resetElement.hide();
+  const $resetElement = $("[fs-cmsfilter-element='reset']").hide();
+  const $filtersWrapper = $(".filters2_tags-wrapper");
 
-  // Initialize components
+  function initializeListContainer() {
+    const $listContainer = $('*[fs-cmsload-element="list"]');
+    const childrenCount = $listContainer.children().length;
+    let sumRate = 0, ratingElementsCount = 0;
+
+    $listContainer.find("[data-rate]").each(function () {
+      const rateValue = parseFloat($(this).text());
+      if (!isNaN(rateValue)) {
+        sumRate += rateValue;
+        ratingElementsCount++;
+      }
+    });
+
+    if (ratingElementsCount > 0) {
+      handleRating(sumRate, ratingElementsCount);
+    }
+
+    $('[data-item="review-count"]').text(childrenCount);
+  }
+
+  function handleRating(sumRate, ratingElementsCount) {
+    const overallRating = (sumRate / ratingElementsCount).toFixed(1);
+    $('[data-item="overall"]').text(overallRating);
+
+    let roundedRating = Math.round(overallRating);
+    const $star = $('[data-item="star"]').first();
+    for (let i = 1; i < roundedRating; i++) {
+      $star.clone().insertAfter($star);
+    }
+  }
+
+  function initializeListElements(isInitialLoad) {
+    $('[data-item^="list"]').each(function () {
+      handleList($(this), isInitialLoad);
+    });
+  }
+
+  function handleList($listElementContainer, isInitialLoad) {
+    const listToSort = processList($listElementContainer, isInitialLoad);
+    handleVisibilityAndExpansion($listElementContainer, listToSort);
+  }
+
+  function processList($listElementContainer, isInitialLoad) {
+    let listToSort = [];
+    $listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
+      const $this = $(this);
+      const count = $(`div[fs-cmsfilter-element='list'] div[data-set='${$this.data("value")}']`).length;
+      $this.next(".counter_span").text(`[${count}]`);
+      const closestListItem = $this.closest('[role="listitem"]');
+
+      if (closestListItem.length) {
+        listToSort.push({ element: closestListItem, count });
+      }
+    });
+    return listToSort;
+  }
+
+  function handleVisibilityAndExpansion($listElementContainer, listToSort) {
+    if (listToSort.length > 0) {
+      const fragment = document.createDocumentFragment();
+      listToSort.sort((a, b) => b.count - a.count).forEach(item => fragment.appendChild(item.element[0]));
+      $listElementContainer.append(fragment);
+    }
+
+    const itemCount = $listElementContainer.children(":visible").length;
+    const itemNum = $listElementContainer.attr("data-item").split("-")[1];
+    const hiddenChildren = itemCount - 5;
+    const $expandElement = $(`[data-item=expand-${itemNum}]`);
+
+    if (hiddenChildren < 1 || $expandElement.data("wasExpanded")) {
+      $expandElement.text("Pokaż mniej").show();
+    } else if (itemCount > 5) {
+      $listElementContainer.addClass("collapsed");
+      $expandElement.text("Pokaż więcej").show();
+    }
+  }
+
+  function expandOnClick() {
+    $("[data-item^=expand]").off("click").on("click", function (event) {
+      event.preventDefault();
+      const $this = $(this);
+      const expandNum = $this.attr("data-item").split("-")[1];
+      const $listElement = $(`[data-item=list-${expandNum}]`);
+      const wasExpanded = !$this.data("wasExpanded");
+
+      $this.data("wasExpanded", wasExpanded);
+      $listElement.toggleClass("collapsed", !wasExpanded);
+      $this.text(wasExpanded ? "Pokaż mniej" : "Pokaż więcej");
+    });
+  }
+
+  function feedBoxBottomClassHandler() {
+    $(".feed_box-bottom").each(function () {
+      const $this = $(this);
+      if ($this.find("a.w-condition-invisible").length === 1) {
+        $this.find("a:not(.w-condition-invisible)").each(function () {
+          $(this).removeClass(function (index, className) {
+            return className && className !== "button";
+          });
+        });
+      }
+    });
+  }
+
+  function updateFiltersVisibility() {
+    $("span[fs-cmsfilter-field]").each(function () {
+      const $filterField = $(this);
+      const filterValue = $filterField.data("value");
+      const matchingItems = $(`div[fs-cmsfilter-field][data-set='${filterValue}']`);
+      $filterField.closest(".w-dyn-item").toggle(matchingItems.length > 0);
+    });
+  }
+
+  function observeNodeChange(targetSelector, onNodeChange) {
+    const targetNode = document.querySelector(targetSelector);
+    if (!targetNode) return;
+
+    const observer = new MutationObserver(mutations => {
+      mutations.forEach(mutation => {
+        if (mutation.type === "childList") onNodeChange(mutation);
+      });
+    });
+
+    observer.observe(targetNode, { childList: true, subtree: true });
+  }
+
+  function handleMutation(mutationsList) {
+    mutationsList.forEach(mutation => {
+      if (mutation.type === "attributes" && mutation.attributeName === "style") {
+        const displayValue = $filtersWrapper.css("display");
+        $("body").css("overflow", displayValue === "flex" ? "hidden" : "auto");
+      }
+    });
+  }
+
+  function addSeparators() {
+    const $solutionsListItems = $(".solutions_list .w-dyn-item");
+    $solutionsListItems.next(".bullet").remove();
+    $solutionsListItems.each(function (index, element) {
+      if (index < $solutionsListItems.length - 1) {
+        $(element).after('<div class="bullet">•</div>');
+      }
+    });
+  }
+
+  // Debounce function to limit the rate of function execution
+  function debounce(func, wait) {
+    let timeout;
+    return function () {
+      const context = this;
+      const args = arguments;
+      clearTimeout(timeout);
+      timeout = setTimeout(() => func.apply(context, args), wait);
+    };
+  }
+
+  const optimizedInitializeListElements = debounce(function(isInitialLoad) {
+    initializeListElements(isInitialLoad);
+  }, 200);
+
   initializeListContainer();
-  expandOnClick(); // Bind expand click events
+  expandOnClick();
   feedBoxBottomClassHandler();
-  initializeListElements(true);
-
-  // Update filters visibility just once when DOM is ready
+  optimizedInitializeListElements(true);
   updateFiltersVisibility();
 
-  // MutationObserver to handle list changes
   observeNodeChange('[fs-cmsfilter-element="list"]', function () {
-    initializeResetElement();
-    initializeListElements(false);
-
-    // Ensure reset button visibility is correct
-    if ($(".filters2_tags-wrapper").children().length > 0) {
-      resetElement.show();
-    } else {
-      resetElement.hide();
-    }
-
-    // Re-bind expand click events
+    $filtersWrapper.children().length > 0 ? $resetElement.show() : $resetElement.hide();
+    optimizedInitializeListElements(false);
     expandOnClick();
   });
-});
 
-// Function to initialize resetElement
-function initializeResetElement() {
-  resetElement = $("[fs-cmsfilter-element='reset']");
-}
-
-// Function to initialize list elements and handle list
-function initializeListElements(isInitialLoad) {
-  $('[data-item^="list"]').each(function () {
-    handleList($(this), isInitialLoad);
-  });
-}
-
-// Initializing List Container Attributes
-function initializeListContainer() {
-  var listContainer = $('*[fs-cmsload-element="list"]');
-  var childrenCount = listContainer.children().length;
-  var sumRate = 0,
-    ratingElementsCount = 0;
-
-  listContainer.find("[data-rate]").each(function () {
-    var rateValue = parseFloat($(this).text());
-    if (!isNaN(rateValue)) {
-      sumRate += rateValue;
-      ratingElementsCount += 1;
-    }
-  });
-
-  if (ratingElementsCount > 0) {
-    handleRating(sumRate, ratingElementsCount);
-  }
-
-  $('[data-item="review-count"]').text(childrenCount);
-}
-
-// Rate Handler to manage ratings
-function handleRating(sumRate, ratingElementsCount) {
-  var overallRating = sumRate / ratingElementsCount;
-  $('[data-item="overall"]').text(overallRating.toFixed(1));
-
-  var roundedRating = Math.round(overallRating);
-  if (roundedRating > 1) {
-    var star = $('[data-item="star"]').first();
-    for (var i = 1; i < roundedRating; i++) {
-      star.clone().insertAfter(star);
-    }
-  }
-}
-
-function processList(listElementContainer, isInitialLoad) {
-  var listToSort = [];
-  processListItem(listElementContainer, listToSort, isInitialLoad);
-  return listToSort;
-}
-
-function handleList(listElementContainer, isInitialLoad) {
-  var listToSort = processList(listElementContainer, isInitialLoad);
-  handleVisibilityAndExpansion(listElementContainer, listToSort);
-}
-
-function processListItem(listElementContainer, listToSort, isInitialLoad) {
-  listElementContainer.find("span[fs-cmsfilter-field]").each(function () {
-    var $this = $(this);
-    var value = $this.data("value");
-    var count = $(
-      `div[fs-cmsfilter-element='list'] div[data-set='${value}']`
-    ).length;
-
-    $this.next(".counter_span").text("[" + count + "]");
-
-    var closestListItem = $this.closest('[role="listitem"]');
-
-    if ($this.parent().parent().parent()) {
-      listToSort.push({
-        element: $this.parent().parent().parent(),
-        count: count,
-      });
-    }
-  });
-}
-
-function handleVisibilityAndExpansion(listElementContainer, listToSort) {
-  if (listToSort.length > 0) {
-    listToSort.sort((a, b) => b.count - a.count);
-    $.each(listToSort, (index, item) =>
-      listElementContainer.append(item.element)
-    );
-  }
-
-  var itemCount = listElementContainer.children(":visible").length;
-  var itemNum = listElementContainer.attr("data-item").split("-")[1];
-  var hiddenChildren = itemCount - 5; // Number of hidden items
-  var expandElement = $("[data-item=expand-" + itemNum + "]");
-
-  // Always keep expandElement visible
-  expandElement.show();
-
-  if (hiddenChildren < 1 || expandElement.data("wasExpanded")) {
-    expandElement.text("Pokaż mniej"); // Default to "Show Less" if all are expanded
-  } else if (itemCount > 5) {
-    listElementContainer.addClass("collapsed");
-    // expandElement.text(`Pokaż ${itemNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania"}`).show();
-  }
-}
-
-// Expand onClick
-function expandOnClick() {
-  $("[data-item^=expand]")
-    .off("click")
-    .on("click", function (event) {
-      event.preventDefault();
-      var $this = $(this);
-      var expandNum = $this.attr("data-item")
-        ? $this.attr("data-item").split("-")[1]
-        : "";
-      var listElement = $("[data-item=list-" + expandNum + "]");
-
-      if (expandNum) {
-        var wasExpanded = $this.data("wasExpanded");
-
-        if (wasExpanded) {
-          // Collapse the list
-          listElement.addClass("collapsed");
-          $this.data("wasExpanded", false);
-          $this.text("Pokaż więcej"); // Update text to "Show less"
-          // $this.text(`Pokaż ${expandNum === "1" ? "wszystkie branże" : "wszystkie rozwiązania"}`); // Update text as needed
-        } else {
-          // Expand the list
-          listElement.removeClass("collapsed");
-          $this.data("wasExpanded", true);
-          $this.text("Pokaż mniej"); // Update text to "Show less"
-        }
-      }
-    });
-}
-
-// Feed Box Bottom Class Handler
-function feedBoxBottomClassHandler() {
-  $(".feed_box-bottom").each(function () {
-    var $this = $(this);
-
-    if ($this.find("a.w-condition-invisible").length == 1) {
-      $this.find("a:not(.w-condition-invisible)").each(function () {
-        var aElement = $(this);
-        var classes = aElement.prop("classList") || [];
-
-        classes.forEach(function (classItem) {
-          if (classItem !== "button") {
-            aElement.removeClass(classItem);
-          }
-        });
-      });
-    }
-  });
-}
-
-// Function to update filter visibility based on the presence of result items
-function updateFiltersVisibility() {
-  var filters = $("span[fs-cmsfilter-field]");
-
-  filters.each(function () {
-    var filterField = $(this);
-    var filterValue = filterField.data("value");
-    var matchingItems = $(`div[fs-cmsfilter-field][data-set='${filterValue}']`);
-
-    if (matchingItems.length === 0) {
-      filterField.closest(".w-dyn-item").hide();
-    } else {
-      filterField.closest(".w-dyn-item").show();
-    }
-  });
-}
-
-// Observe when list is being changed
-function observeNodeChange(targetSelector, onNodeChange) {
-  var targetNode = document.querySelector(targetSelector);
-  var config = {
-    childList: true,
-    subtree: true,
+  const observerOptions = {
+    attributes: true,
+    childList: false,
+    subtree: false
   };
 
-  var observer = new MutationObserver(function (mutations) {
-    mutations.forEach(function (mutation) {
-      if (mutation.type === "childList") {
-        onNodeChange(mutation);
-      }
-    });
-  });
-
-  observer.observe(targetNode, config);
-  return observer;
-}
+  new MutationObserver(handleMutation).observe($filtersWrapper[0], observerOptions);
+  addSeparators();
+});
