@@ -215,6 +215,14 @@ const DataLayerGatherers = {
     });
   },
 
+  pushClientTypeChangeEvent: function(clientType) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: "client_type_change",
+        client_type: clientType,
+    });
+},
+
   checkAndStoreQueryParams: function () {
     const PARAMS = [
       "utm_source",
@@ -300,3 +308,17 @@ $(document).ready(function () {
 });
 
 DataLayerGatherers.checkAndStoreQueryParams();
+
+
+// DL Conversion
+function clientTypeChange() {
+  $('input[name="client_type"]').on('change', function() {
+    const label = $(this).closest('label');
+    const spanText = label.find('span.w-form-label').text().trim();
+    DataLayerGatherers.pushClientTypeChangeEvent(spanText);
+  });
+}
+
+$(window).on('load', function() {
+  clientTypeChange();
+});
