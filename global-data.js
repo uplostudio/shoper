@@ -214,14 +214,31 @@ const DataLayerGatherers = {
       eventType: eventType,
     });
   },
-
-  pushClientTypeChangeEvent: function(clientType) {
+  // DL Conversions starts here
+  pushClientTypeChangeEvent: function (clientType) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
-        event: "client_type_change",
-        client_type: clientType,
+      event: "client_type_change",
+      client_type: clientType,
     });
-},
+  },
+  pushFormInteractionEvent: function (
+    formId,
+    formLocation,
+    formType,
+    formStep
+  ) {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+      event: "form_interaction",
+      form_id: formId,
+      form_location: formLocation,
+      form_type: formType,
+      form_step: formStep,
+    });
+  },
+
+  // DL Conversions ends here
 
   checkAndStoreQueryParams: function () {
     const PARAMS = [
@@ -309,16 +326,36 @@ $(document).ready(function () {
 
 DataLayerGatherers.checkAndStoreQueryParams();
 
-
-// DL Conversion
+// DL Conversion Functions starts here:
 function clientTypeChange() {
-  $('input[name="client_type"]').on('change', function() {
-    const label = $(this).closest('label');
-    const spanText = label.find('span.w-form-label').text().trim();
+  $('input[name="client_type"]').on("change", function () {
+    const label = $(this).closest("label");
+    const spanText = label.find("span.w-form-label").text().trim();
     DataLayerGatherers.pushClientTypeChangeEvent(spanText);
   });
 }
 
-$(window).on('load', function() {
+$(window).on("load", function () {
   clientTypeChange();
 });
+
+function trackFormInteraction(form, input) {
+  if (form.data('interaction-tracked')) return;
+
+  DataLayerGatherers.pushFormInteractionEvent(
+      form.attr('id') || 'empty',
+      window.location.pathname,
+      'on_page',
+      input && input.length ? input.attr('data-name') || 'unknown' : 'unknown'
+  );
+
+  form.data('interaction-tracked', true);
+}
+
+$(document).ready(function() {
+  $("form").on("focus", "input, textarea, select", function() {
+      trackFormInteraction($(this.form), $(this));
+  });
+});
+
+// DL Conversion Functions ends here:
