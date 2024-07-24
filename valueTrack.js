@@ -62,7 +62,7 @@ const PARAMS = [
           document.querySelectorAll("form").forEach(function (item, index) {
             item.insertAdjacentHTML(
               "beforeend",
-              `<input data-name="${key}" type="hidden" name="${key}" value="${data[key]}"/>`
+              `<input data-name="${key}" type="hidden" name="valueTrack[${key}]" value="${data[key]}"/>`
             );
           });
         }
