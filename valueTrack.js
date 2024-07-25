@@ -4,10 +4,10 @@ const PARAMS = [
     "utm_campaign",
     "utm_content",
     "adgroup",
-    "device",
+    'utm_term'
   ];
   
-  const VALUE_TRACK_KEY = "valueTrack";
+  const VALUE_TRACK_KEY = "adwords";
   const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
   
   window.addEventListener("DOMContentLoaded", () => {
@@ -62,7 +62,7 @@ const PARAMS = [
           document.querySelectorAll("form").forEach(function (item, index) {
             item.insertAdjacentHTML(
               "beforeend",
-              `<input data-name="${key}" type="hidden" name="valueTrack[${key}]" value="${data[key]}"/>`
+              `<input data-name="${key}" type="hidden" name="${VALUE_TRACK_KEY}[${key}]" value="${data[key]}"/>`
             );
           });
         }
