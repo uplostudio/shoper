@@ -246,7 +246,7 @@ const DataLayerGatherers = {
       "utm_medium",
       "utm_campaign",
       "utm_content",
-      "utm_adgroup",
+      "adgroup",
       'utm_term'
     ];
     const VALUE_TRACK_KEY = "adwords";
