@@ -324,7 +324,7 @@ $(document).ready(function () {
   });
 });
 
-DataLayerGatherers.checkAndStoreQueryParams();
+//DataLayerGatherers.checkAndStoreQueryParams();
 
 // DL Conversion Functions starts here:
 function clientTypeChange() {
