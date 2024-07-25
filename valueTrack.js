@@ -3,10 +3,11 @@ const PARAMS = [
     "utm_medium",
     "utm_campaign",
     "utm_content",
-    "adgroup",
+    "utm_adgroup",
     'utm_term'
   ];
   
+  //?utm_source=TestMM1&utm_medium=TestMM2&utm_campaign=TestMM3&utm_content=Test4&utm_adgroup=TestMM5&utm_term=Test6
   const VALUE_TRACK_KEY = "adwords";
   const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
   
