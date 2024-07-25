@@ -3,7 +3,7 @@ const PARAMS = [
     "utm_medium",
     "utm_campaign",
     "utm_content",
-    "utm_adgroup",
+    "adgroup",
     'utm_term'
   ];
   
