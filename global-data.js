@@ -246,10 +246,10 @@ const DataLayerGatherers = {
       "utm_medium",
       "utm_campaign",
       "utm_content",
-      "adgroup",
-      "device",
+      "utm_adgroup",
+      'utm_term'
     ];
-    const VALUE_TRACK_KEY = "valueTrack";
+    const VALUE_TRACK_KEY = "adwords";
     const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
 
     // Helper function to get query parameters from the URL
@@ -296,7 +296,7 @@ const DataLayerGatherers = {
   },
 
   getValueTrackData: function () {
-    const data = localStorage.getItem("valueTrack");
+    const data = localStorage.getItem(VALUE_TRACK_KEY);
     return data ? JSON.parse(data) : null;
   },
 };
