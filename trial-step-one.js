@@ -93,7 +93,7 @@ $(document).ready(function () {
           if (valueTrack) {
             Object.entries(valueTrack).forEach(([key, value]) => {
               if (key !== "timestamp") {
-                data[key] = value;
+                data[`adwords[${key}]`] = value;
               }
             });
           }
