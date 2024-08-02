@@ -1,22 +1,3 @@
-// caculate menu height based on black friday's banner
-
-// setInterval(function () {
-//   try {
-//     let menu = document.querySelector(".nav__menu");
-//     let banner = document.querySelector("[data-app='custom-banner']");
-//     bannerHeightString = window.getComputedStyle(banner).height;
-//     bannerHeightValue = parseInt(bannerHeightString);
-
-//     if (window.innerWidth <= 991 && window.scrollY < 30) {
-//       menu.style.height = `${window.innerHeight - bannerHeightValue}px`;
-//     } else {
-//       return;
-//     }
-//   } catch (e) {
-//     return;
-//   }
-// }, 100);
-
 (function () {
   const $nav = $(".nav");
   const $nav_menu = $nav.find(".nav__menu");
@@ -327,3 +308,68 @@ $(document).ready(function() {
   });
 });
 
+// Navbar sticky logic
+
+$(document).ready(function () {
+  function setupScrollChanges({ navSelector, subnavSelector, distanceThreshold = 75 }) {
+      let navigation = $(navSelector);
+      let subnav = $(subnavSelector);
+
+      // Check if the subnav element exists before setting up scroll changes
+      if (subnav.length === 0) {
+          return;
+      }
+
+      let lastScrollTop = 0;
+      let initialNavPosition = navigation.css("position");
+      let initialSubnavPadding = subnav.css("padding-top");
+
+      let scrollingDownStyles = {
+          "nav": { "position": "static" },
+          "subnav": { "padding-top": "0" }
+      };
+
+      let scrollingUpStyles = {
+          "nav": { "position": initialNavPosition },
+          "subnav": { "padding-top": initialSubnavPadding }
+      };
+
+      let isScrolling = false;
+
+      $(window).on('scroll', function () {
+          let currentScrollTop = $(window).scrollTop();
+
+          // If user has quickly scrolled to top, reset the style regardless of the delay
+          if (currentScrollTop === 0) {
+              navigation.css(scrollingUpStyles.nav);
+              subnav.css(scrollingUpStyles.subnav);
+              return;
+          }
+          
+          if (isScrolling || Math.abs(lastScrollTop - currentScrollTop) < distanceThreshold) {
+              return;
+          }
+
+          isScrolling = true;
+
+          if (currentScrollTop > lastScrollTop) {
+              navigation.css(scrollingDownStyles.nav);
+              subnav.css(scrollingDownStyles.subnav);
+          } else if (currentScrollTop < lastScrollTop) {
+              navigation.css(scrollingUpStyles.nav);
+              subnav.css(scrollingUpStyles.subnav);
+          }
+
+          lastScrollTop = currentScrollTop;
+
+          setTimeout(function() {
+              isScrolling = false;
+          }, 500);
+      });
+  }
+
+  setupScrollChanges({
+      navSelector: "[data-item='navigation']",
+      subnavSelector: "[data-item='subnav']"
+  });
+});

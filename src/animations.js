@@ -113,5 +113,3 @@ function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
 }
 
 wrapKeywordInSpan('h1', 'data-span', 'line-load-animate', 'mark animate');
-
-// reup
