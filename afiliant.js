@@ -4,8 +4,9 @@ let shoperAffiliate;
 
 // When URL addres has parametr afiliant - save to LS tag ID
 
-if ( tagAffiliate ) {
-    var timeStamp = new Date().getTime();
+if (tagAffiliate) {
+    var currentData = new Date();
+    var timeStamp = currentData.getTime() + (Math.abs(currentData.getTimezoneOffset() * 60 * 1000));
     var expirationDate = timeStamp + (30 * 24 * 60 * 60 * 1000);
     var referer = document.referrer;
 
@@ -15,7 +16,7 @@ if ( tagAffiliate ) {
         timeStamp: timeStamp
     }
 
-    if ( referer ) {
+    if (referer) {
         shoperAffiliate.referer = referer;
     }
 
@@ -26,17 +27,17 @@ if ( tagAffiliate ) {
 // Get shoper_affiliate from LS
 shoperAffiliate = localStorage.getItem("shoper_affiliate");
 
-if ( shoperAffiliate ) {
+if (shoperAffiliate) {
     let shoperAffiliateDecode = JSON.parse(atob(shoperAffiliate));
 
     // Remove when expirationDate is < than current time
-    if ( shoperAffiliateDecode.expirationDate < Date.now() ) {
+    if (shoperAffiliateDecode.expirationDate < Date.now()) {
         localStorage.removeItem("shoper_affiliate");
     } else {
         // Add affiliate date to form create_trial_step1
         let forms = document.querySelectorAll('#create_trial_step1');
-        forms.forEach( ( item, index ) => {
-            item.setAttribute( 'data-affiliant', shoperAffiliate);
+        forms.forEach((item, index) => {
+            item.setAttribute('data-affiliant', shoperAffiliate);
         });
     }
 }
