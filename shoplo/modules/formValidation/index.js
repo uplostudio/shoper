@@ -1,3 +1,4 @@
+import { API_URL } from "../../constansts";
 import { MESSAGES } from "./constansts";
 import './style.css';
 
@@ -134,14 +135,64 @@ const valideFieldPostcode = (field) => {
 };
 
 // Function check field type NIP
-
-const valideFieldNip = (field) => {
-    let fieldValue = $(field).val();
-    const phoneRegex = /^(\d{10}|[A-Z]{2}\d{10})$/;
-    if (!phoneRegex.test(fieldValue)) {
-      setErrorField(MESSAGES[$("html").attr("lang")].nip, field);
+ const valideFieldNip = (field) => {
+  let fieldValue = $(field).val();
+  const phoneRegex = /^(\d{10}|[A-Z]{2}\d{10})$/;
+  if (!phoneRegex.test(fieldValue)) {
+    setErrorField(MESSAGES[$("html").attr("lang")].nip, field);
+  } else {
+    if ( fieldValue.length >= 10 ) {
+      valideFieldNipServer(field);
     }
+  }
+};
+
+const valideFieldNipServer = (field) => {
+  const countryField = $(field)
+  .closest("form")
+  .find('[name="address1[country]"]');
+  let data = {
+    action: "validate_nip",
+    country: $(countryField).val(),
   };
+  data[$(field).attr("name")] = $(field).val();
+  $.ajax({
+    url: API_URL,
+    method: "POST",
+    data: data,
+    success: function (data) {
+      if( !data ) {
+        setErrorField(MESSAGES[$("html").attr("lang")].nip, field);
+      }
+    },
+    error: function (data) {
+      console.error("Error Connection with API");
+      setErrorField(MESSAGES[$("html").attr("lang")].nip, field);
+    },
+  });
+};
+
+// const valideFieldNip = (field) => {
+//   let data = {
+//     action: "validate_nip",
+//     nip: $(field).val(),
+//     country: "PL"
+//   };
+
+//     $.ajax({
+//       url: API_URL,
+//       method: "POST",
+//       data: data,
+//       success: function (data) {
+//         if(!data) {
+//           setErrorField(MESSAGES[$("html").attr("lang")].nip, field);
+//         }
+//       },
+//       error: function (data) {
+//         console.error("Error Connection with API");
+//       },
+//     });
+//   };
 
 // Function check field type checkbox
 const validRequired = (field) => {

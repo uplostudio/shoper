@@ -8,7 +8,7 @@ import clientTypeFields from './modules/clientTypeFields';
 import phoneNumberWithPrefix from './modules/phoneNumberWithPrefix';
 import formValidation from './modules/formValidation';
 import formHandler from './modules/formHandler';
-import checkNipField from './modules/checkNipField';
+// import checkNipField from './modules/checkNipField';
 import trialSetSpecialFields from './modules/trialSetSpecialFields';
 import dataLayer from './modules/dataLayer';
 
@@ -22,7 +22,7 @@ const modules = [
     phoneNumberWithPrefix,
     formValidation,
     formHandler,
-    checkNipField,
+    // checkNipField,
     trialSetSpecialFields,
     dataLayer
 ];

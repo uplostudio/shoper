@@ -9,7 +9,7 @@ const initialize = () => {
   });
 
   $(document).on("submitFormError", function (e, form) {
-    $(document).trigger('dataLayerError', form );
+    $(document).trigger("dataLayerError", form);
     console.error("Error ");
   });
 };
@@ -24,11 +24,13 @@ const bindDataFromForm = (form) => {
   return formValues;
 };
 
-
-const maskedEmail = ( email ) => {
-  let maskedEmail = email.replace(/^(.)(.*)(.)@/, (match, firstLetter, middlePart, lastLetter) => {
-    return firstLetter + '*'.repeat(middlePart.length) + lastLetter + '@';
-  });
+const maskedEmail = (email) => {
+  let maskedEmail = email.replace(
+    /^(.)(.*)(.)@/,
+    (match, firstLetter, middlePart, lastLetter) => {
+      return firstLetter + "*".repeat(middlePart.length) + lastLetter + "@";
+    }
+  );
 
   return maskedEmail;
 };
@@ -77,8 +79,7 @@ const sendForm = (form) => {
     success: function (data) {
       $(".loader-trial").addClass("d-none");
       if (data.status === 1) {
-       
-        $(document).trigger('dataLayerSuccess', form);
+        $(document).trigger("dataLayerSuccess", form);
         switch (formData.action) {
           case "create_trial_step1":
             if (data.sid) {
@@ -121,9 +122,7 @@ const sendForm = (form) => {
                 localStorage.setItem("trial", btoa(JSON.stringify(LSdata)));
               }
               if (formData.phone && $("#phone-3")) {
-                $('#phone-3').val(
-                  LSdata[4]
-                );
+                $("#phone-3").val(LSdata[4]);
               }
             }
             break;
@@ -149,16 +148,26 @@ const sendForm = (form) => {
           $(form).next().css("display", "block");
         }
       } else {
-        $(document).trigger('dataLayerError', form);
+        $(document).trigger("dataLayerError", form);
         let error;
         $(`#${formData.action}`).parent().get(0).style.display = "block";
         if ($(`#${formData.action} .w-form-fail`)) {
           $(`#${formData.action} .w-form-fail`).remove();
         }
+
+        error = MESSAGES[$("html").attr("lang")]['default'];
         if (data.code) {
           error = MESSAGES[$("html").attr("lang")][data.code];
         } else {
-          error = data.message;
+      
+          if (data.message) {
+            error = data.message;
+          }
+
+          if (data.errors) {
+            error = showErrors(data.errors);
+            
+          }
         }
         $(`#${formData.action}`)
           .eq(0)
@@ -166,11 +175,29 @@ const sendForm = (form) => {
       }
     },
     error: function (data) {
-      $(document).trigger('dataLayerError', form);
+      $(document).trigger("dataLayerError", form);
       $(".loader-trial").addClass("d-block");
       $(`#${formData.action}`).parent().get(0).style.display = "block";
       console.error("Error Connection with API");
     },
+
+    showErrors: function(data) {
+      let error = '';
+      Object.entries(data.errors).forEach(([key, value]) => {
+        if (typeof value === "object") {
+          Object.entries(value).forEach(([subKey, subValue]) => {
+            if (typeof subValue === "object") {
+              Object.entries(subValue).forEach(
+                ([errorKey, errorMessage]) => {
+                  error += `${errorMessage} `;
+                }
+              );
+            }
+          });
+        }
+      });
+      return error;
+    }
   });
 };
 
