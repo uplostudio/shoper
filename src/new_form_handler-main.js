@@ -154,7 +154,7 @@ function sendFormDataToURL(formElement) {
     const $form = $(formElement);
 
     // Add form attributes
-    Array.from(formElement.attributes).forEach(({name, value}) => {
+    Array.from(formElement.attributes).forEach(({ name, value }) => {
         const attributeName = name.replace("data-", "");
         if (value && !omittedAttributes.has(attributeName)) {
             formData.append(attributeName, value);
@@ -166,7 +166,7 @@ function sendFormDataToURL(formElement) {
     const outputValues = {};
     const binaryCheckboxActions = new Set(["loan_decision_contact", "external_ads_terms", "simple_form", "register_reseller"]);
 
-    $inputs.each(function() {
+    $inputs.each(function () {
         const $input = $(this);
         const name = $input.attr("name");
         const type = $input.attr("type");
@@ -210,10 +210,16 @@ function sendFormDataToURL(formElement) {
                 if (data.status === 1) {
                     console.log(data);
                     $form.siblings(".error-admin").hide();
-                    // window.location.href = data.redirect;
+                    window.location.href = data.redirect;  // Redirect to the URL from the response
                 } else {
                     $form.siblings(".error-admin").show();
                 }
+                return;
+            }
+
+            // Separate handling for trial step 3 form
+            if ($form.data('name') === 'create_trial_step3' && data.status === 1) {
+                window.location.href = data.redirect;
                 return;
             }
 
