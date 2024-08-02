@@ -1,6 +1,6 @@
 const API_URL_ADDRESS = "https://backend.webflow.prod.shoper.cloud";
 
-window.validationPatterns = {
+validationPatterns = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
     phone: /^\d{9}$/,
     text: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
