@@ -69,17 +69,18 @@ SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, st
         window.myGlobals.licenseId = data.license_id;
     }
 
-    if (data.status === 1) {
-        if (data.sid) {
-            const now = new Date().getTime();
-            localStorage.setItem('sid', JSON.stringify({
-                value: data.sid,
-                timestamp: now
-            }));
-            this.setCurrentSID(data.sid);
-            $('[data-formid="create_trial_step1"], [data-formid="create_trial_step2"], [data-formid="create_trial_step3"]').attr('data-sid', data.sid);
-        }
+    // Store SID if present in the response
+    if (data.sid) {
+        const now = new Date().getTime();
+        localStorage.setItem('sid', JSON.stringify({
+            value: data.sid,
+            timestamp: now
+        }));
+        this.setCurrentSID(data.sid);
+        $('[data-formid="create_trial_step1"], [data-formid="create_trial_step2"], [data-formid="create_trial_step3"]').attr('data-sid', data.sid);
+    }
 
+    if (data.status === 1) {
         if (data.email) {
             localStorage.setItem('email', this.encodeEmail(data.email));
         }
@@ -90,8 +91,7 @@ SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, st
         // Trigger a custom event to notify that the step is complete
         $(document).trigger('trialStepComplete', [stepNumber, data]);
     }
-}
-;
+};
 
 SharedUtils.handleErrorResponse = function(error, $form, $field, $wFormFail, stepNumber) {
     if (error.statusText === "abort") {
