@@ -1,7 +1,7 @@
 $(document).ready(function() {
     let state = {
         errors: [],
-        phoneRegex: validationPatterns.phone, // Use the existing phone regex
+        phoneRegex: window.validationPatterns.phone, // Use the existing phone regex
     };
 
     function maskPhoneNumber(phone) {
