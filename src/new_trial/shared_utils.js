@@ -8,7 +8,7 @@ const $trialsWrapper = $("[data-element='trials-wrapper']");
 // Common constants
 SharedUtils.API_URL = "https://backend.webflow.prod.shoper.cloud";
 SharedUtils.EMAIL_REGEX = (()=>{
-    const pattern = validationPatterns?.mail;
+    const pattern = window.validationPatterns?.mail;
     return pattern ? pattern.pattern : /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 })();
 
