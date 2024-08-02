@@ -13,22 +13,32 @@ $(document).ready(()=>{
     }
     ;
 
-    const validateEmail = $field=>{
-        const email = $field.val().trim();
-        const error = !email ? generateErrorMessage('required') : !SharedUtils.EMAIL_REGEX.test(email) ? generateErrorMessage('email') : null;
-
-        $field.next('.error-box').remove();
-        if (error) {
-            $field.after(`<span class="error-box">${error}</span>`);
-            $field.removeClass('valid').addClass('invalid');
-            $field.siblings('.new__input-label').removeClass('valid active').addClass('invalid');
-        } else {
-            $field.removeClass('invalid').addClass('valid');
-            $field.siblings('.new__input-label').removeClass('invalid').addClass('valid');
-        }
-        return error;
+    const validateEmail = ($field) => {
+    const email = $field.val().trim();
+    const emailRegex = SharedUtils.EMAIL_REGEX || /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+    
+    let error = null;
+    
+    if (!email) {
+        error = generateErrorMessage('required');
+    } else if (!emailRegex.test(email)) {
+        error = generateErrorMessage('email');
     }
-    ;
+
+    $field.next('.error-box').remove();
+    
+    if (error) {
+        $field.after(`<span class="error-box">${error}</span>`);
+        $field.removeClass('valid').addClass('invalid');
+        $field.siblings('.new__input-label').removeClass('valid active').addClass('invalid');
+    } else {
+        $field.removeClass('invalid').addClass('valid');
+        $field.siblings('.new__input-label').removeClass('invalid').addClass('valid');
+    }
+    
+    return error;
+};
+
 
     const handleFormSubmission = (e,$form)=>{
         e.preventDefault();
@@ -101,22 +111,36 @@ $(document).ready(()=>{
     }
     ;
 
-    const $openTrialModalButton = $("[data-app='open_trial_modal_button']");
-    if ($openTrialModalButton.length) {
-        $openTrialModalButton.on('click', ()=>{
-            $("[data-app='create_trial_step1_modal']").addClass("modal--open");
+    const $openTrialWrapperButton = $("[data-element='open_trial_wrapper']");
+    if ($openTrialWrapperButton.length) {
+        console.log("now")
+        $openTrialWrapperButton.on('click', ()=>{
+            $trialsWrapper.show();
             $("body").addClass("overflow-hidden");
+        }
+        );
+    }
+
+    const $closeTrialWrapperButton = $("[data-element='close_trial_wrapper']");
+    if ($closeTrialWrapperButton.length) {
+        $closeTrialWrapperButton.on('click', ()=>{
+            $trialsWrapper.hide();
+            $("body").removeClass("overflow-hidden");
         }
         );
     }
 
     $(document).on('trialStepComplete', function(event, completedStep, data) {
         if (completedStep === 1) {
+            $trialsWrapper.show();
             const $modalTrialOne = $('[data-element="modal_trial_one"]');
             const $modalTrialTwo = $('[data-element="modal_trial_two"]');
 
+            
+
             if ($modalTrialOne.length) {
                 $modalTrialOne.hide();
+                
             }
             if ($modalTrialTwo.length) {
                 $modalTrialTwo.show();
@@ -124,7 +148,6 @@ $(document).ready(()=>{
 
             // Additional actions after successful step 1 completion
             console.log("Step 1 completed successfully");
-            // You can add more actions here if needed
         }
     });
 
@@ -146,7 +169,7 @@ $(document).ready(()=>{
         $(document).off('keydown', '[data-action="create_trial_step1"] [data-type="email"]');
         $(document).off('click', '[data-action="create_trial_step1"] [data-form="submit-step-one"]');
         $(document).off('submit', '[data-action="create_trial_step1"]');
-        $("[data-app='open_trial_modal_button']").off('click');
+        $openTrialWrapperButton.off('click');
     }
     ;
 

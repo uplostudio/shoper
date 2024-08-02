@@ -3,13 +3,15 @@
 // Initialize SharedUtils as a global object
 window.SharedUtils = window.SharedUtils || {};
 
+const $trialsWrapper = $("[data-element='trials-wrapper']");
+
 // Common constants
 SharedUtils.API_URL = "https://backend.webflow.prod.shoper.cloud";
 SharedUtils.EMAIL_REGEX = (()=>{
-    const pattern = validationPatterns.find(p=>p.type === 'email');
-    return pattern ? pattern.pattern : null;
-}
-)();
+    const pattern = validationPatterns?.mail;
+    return pattern ? pattern.pattern : /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+})();
+
 
 // Status messages
 SharedUtils.statusMessages = Object.freeze({
@@ -102,46 +104,47 @@ SharedUtils.handleErrorResponse = function(error, $form, $field, $wFormFail, ste
 ;
 
 SharedUtils.encodeEmail = function(email) {
-    if (!email)
-        return '';
-    const parts = email.split('@');
-    if (parts.length !== 2)
-        return email;
-    const [username,domain] = parts;
+    if (!email) return '';
+    const [username, domain] = email.split('@');
+    if (!domain) return email;
     return `${username[0]}${'*'.repeat(Math.max(0, username.length - 1))}@${domain}`;
-}
-;
+};
+
 
 let currentSID = null;
 
 SharedUtils.checkAndUpdateSID = function() {
     const sidData = localStorage.getItem('sid');
-    if (sidData) {
-        let parsedSidData;
-        try {
-            parsedSidData = JSON.parse(sidData);
-        } catch (e) {
-            console.error('Failed to parse SID data:', e);
-            parsedSidData = null;
-        }
+    if (!sidData) {
+        this.setCurrentSID(null);
+        return;
+    }
 
-        if (parsedSidData && parsedSidData.value) {
-            const now = new Date().getTime();
-            const hoursSinceStored = (now - parsedSidData.timestamp) / (1000 * 60 * 60);
+    let parsedSidData;
+    try {
+        parsedSidData = JSON.parse(sidData);
+    } catch (e) {
+        console.error('Failed to parse SID data:', e);
+        localStorage.removeItem('sid');
+        this.setCurrentSID(null);
+        return;
+    }
 
-            if (hoursSinceStored < 24) {
-                this.setCurrentSID(parsedSidData.value);
-                $('[data-formid="create_trial_step1"], [data-formid="create_trial_step2"], [data-formid="create_trial_step3"]').attr('data-sid', parsedSidData.value);
-            } else {
-                localStorage.removeItem('sid');
-                $('[data-formid="create_trial_step1"], [data-formid="create_trial_step2"], [data-formid="create_trial_step3"]').removeAttr('data-sid');
-                this.setCurrentSID(null);
-            }
-        } else {
-            localStorage.removeItem('sid');
-            this.setCurrentSID(null);
-        }
+    if (!parsedSidData || !parsedSidData.value) {
+        localStorage.removeItem('sid');
+        this.setCurrentSID(null);
+        return;
+    }
+
+    const now = new Date().getTime();
+    const hoursSinceStored = (now - parsedSidData.timestamp) / (1000 * 60 * 60);
+
+    if (hoursSinceStored < 24) {
+        this.setCurrentSID(parsedSidData.value);
+        $('[data-formid="create_trial_step1"], [data-formid="create_trial_step2"], [data-formid="create_trial_step3"]').attr('data-sid', parsedSidData.value);
     } else {
+        localStorage.removeItem('sid');
+        $('[data-formid="create_trial_step1"], [data-formid="create_trial_step2"], [data-formid="create_trial_step3"]').removeAttr('data-sid');
         this.setCurrentSID(null);
     }
 }

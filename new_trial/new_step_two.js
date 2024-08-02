@@ -1,10 +1,7 @@
-// step_two.js
-
 $(document).ready(function() {
     let state = {
         errors: [],
-        phoneRegex: /^\+48\d{9}$/,
-        // Adjusted regex pattern to match +48 followed by 9 digits
+        phoneRegex: validationPatterns.phone, // Use the existing phone regex
     };
 
     function maskPhoneNumber(phone) {
@@ -51,18 +48,32 @@ $(document).ready(function() {
         const countryCode = iti.getSelectedCountryData().iso2;
         let phone = iti.getNumber();
         console.log('Validating phone number:', phone);
-        $(field).removeClass("error");
-        $("[data-toast]").removeClass("error").css("display", "none");
+        
+        clearErrors($(field));
 
         if (!phone) {
-            $('[data-toast="required"]').addClass("error").css("display", "flex");
-            errors.push("Phone is required.");
-        } else if (countryCode === "pl" && !phoneRegex.test(phone)) {
-            $('[data-toast="regex"]').addClass("error").css("display", "flex");
-            errors.push("Phone is invalid.");
+            showError($(field), errorMessages.default);
+            errors.push(errorMessages.default);
+        } else if (countryCode === "pl" && !phoneRegex.test(phone.slice(-9))) { // Check only the last 9 digits
+            showError($(field), errorMessages.phone);
+            errors.push(errorMessages.phone);
         }
 
         return errors;
+    }
+
+    function showError($field, message) {
+        $field.addClass('error');
+        let $errorElement = $field.siblings('.error-box');
+        if ($errorElement.length === 0) {
+            $errorElement = $('<div class="error-box"></div>').insertAfter($field);
+        }
+        $errorElement.text(message).show();
+    }
+
+    function clearErrors($field) {
+        $field.removeClass('error');
+        $field.siblings('.error-box').hide();
     }
 
     function handleFormSubmission(e, phoneField, iti) {
@@ -88,8 +99,7 @@ $(document).ready(function() {
                 if (key !== "timestamp") {
                     formData[key] = value;
                 }
-            }
-            );
+            });
         }
 
         if (state.errors.length === 0) {
@@ -137,15 +147,12 @@ $(document).ready(function() {
                 $modalTrialThree.show();
             }
 
-            // Additional actions after successful step 2 completion
             console.log("Step 2 completed successfully");
             if (data.license_id) {
                 console.log("License ID:", data.license_id);
             }
-
         }
     });
-
 });
 
 $(document).on('formSubmissionComplete', function(event, isSuccess, $form, $phoneField, data) {
