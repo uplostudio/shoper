@@ -308,8 +308,8 @@ $(document).ready(function () {
 });
 
 $(document).ready(function () {
-  $("a[data-app^='open_']").click(function () {
-    const dataAppValue = $(this).data("app");
+  $("a[data-app^='open_'], a[data-element^='open_']").click(function () {
+    const dataAppValue = $(this).data("app") || $(this).data("element");
     const buttonTextContent = $(this).text();
     const eventType = dataAppValue.split("open_")[1].split("_")[0];
 
@@ -323,6 +323,7 @@ $(document).ready(function () {
     });
   });
 });
+
 
 //DataLayerGatherers.checkAndStoreQueryParams();
 

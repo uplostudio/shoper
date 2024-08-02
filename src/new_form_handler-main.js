@@ -250,18 +250,20 @@ function handleSubmitClick(e) {
 function initializeEventListeners() {
     $("[data-form='submit']").on("click", handleSubmitClick);
 
-    $("[data-app^='open_']").on("click", function() {
-        const triggerName = $(this).data("app").replace(/^open_|_modal_button$/g, "");
-        const $modal = $(`[data-app='${triggerName}']`);
-
+    $("[data-app^='open_'], [data-element^='open_']").on("click", function() {
+        const dataValue = $(this).data("app") || $(this).data("element");
+        const triggerName = dataValue.replace(/^open_|_modal_button$/g, "");
+        const $modal = $(`[data-app='${triggerName}'], [data-element='${triggerName}']`);
+    
         $modal.addClass("modal--open");
         $(document.body).addClass("overflow-hidden");
-
+    
         const $form = $modal.find("form:first");
         if ($form.length > 0) {
             $form.find(":input:enabled:visible:first").focus();
         }
     });
+    
 
     $("[fs-formsubmit-element='reset']").on("click", () => $(".loading-in-button").hide());
 
