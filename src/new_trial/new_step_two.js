@@ -76,62 +76,62 @@ $(document).ready(function() {
         $field.siblings('.error-box').hide();
     }
 
-    function handleFormSubmission(e, phoneField, iti) {
-        console.log("handleFormSubmission called");
-        let form = phoneField.closest("form");
-        const wFormFail = form.find(".w-form-fail");
-        phoneField.trigger("blur");
-        const valueTrack = DataLayerGatherers.getValueTrackData();
-        const loader = form.find(".loading-in-button.is-inner");
-        const formData = {
-            action: "create_trial_step2",
-            phone: iti.getNumber(),
-            formid: "create_trial_step2",
-            eventname: "formSubmitSuccess",
-            "adwords[gclid]": window.myGlobals.gclidValue,
-            "adwords[fbclid]": window.myGlobals.fbclidValue,
-            analytics_id: window.myGlobals.analyticsId,
-            sid: SharedUtils.getCurrentSID()
-        };
+        function handleFormSubmission(e, phoneField, iti) {
+            console.log("handleFormSubmission called");
+            let form = phoneField.closest("form");
+            const wFormFail = form.find(".w-form-fail");
+            phoneField.trigger("blur");
+            const valueTrack = DataLayerGatherers.getValueTrackData();
+            const loader = form.find(".loading-in-button.is-inner");
+            const formData = {
+                action: "create_trial_step2",
+                phone: iti.getNumber(),
+                formid: "create_trial_step2",
+                eventname: "formSubmitSuccess",
+                "adwords[gclid]": window.myGlobals.gclidValue,
+                "adwords[fbclid]": window.myGlobals.fbclidValue,
+                analytics_id: window.myGlobals.analyticsId,
+                sid: SharedUtils.getCurrentSID()
+            };
 
-        if (valueTrack) {
-            Object.entries(valueTrack).forEach(([key,value])=>{
-                if (key !== "timestamp") {
-                    formData[key] = value;
-                }
-            });
+            if (valueTrack) {
+                Object.entries(valueTrack).forEach(([key,value])=>{
+                    if (key !== "timestamp") {
+                        formData[key] = value;
+                    }
+                });
+            }
+
+            if (state.errors.length === 0) {
+                console.log("No validation errors, submitting form");
+
+                const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
+                localStorage.setItem('phoneNumber', maskedPhoneNumber);
+
+                $.ajax({
+                    type: "POST",
+                    url: SharedUtils.API_URL,
+                    data: formData,
+                    beforeSend: function() {
+                        loader.show();
+                    },
+                    success: function(data) {
+                        console.log("Form submission successful");
+                        SharedUtils.handleResponse(data, form, phoneField, wFormFail, true, 2);
+                    },
+                    error: function(data) {
+                        console.log("Form submission failed");
+                        SharedUtils.handleResponse(data, form, phoneField, wFormFail, false, 2);
+                    },
+                    complete: function() {
+                        loader.hide();
+                    },
+                });
+            } else {
+                console.log("Validation errors:", state.errors);
+                e.preventDefault();
+            }
         }
-
-        if (state.errors.length === 0) {
-            console.log("No validation errors, submitting form");
-
-            const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
-            localStorage.setItem('phoneNumber', maskedPhoneNumber);
-
-            $.ajax({
-                type: "POST",
-                url: SharedUtils.API_URL,
-                data: formData,
-                beforeSend: function() {
-                    loader.show();
-                },
-                success: function(data) {
-                    console.log("Form submission successful");
-                    SharedUtils.handleResponse(data, form, phoneField, wFormFail, true, 2);
-                },
-                error: function(data) {
-                    console.log("Form submission failed");
-                    SharedUtils.handleResponse(data, form, phoneField, wFormFail, false, 2);
-                },
-                complete: function() {
-                    loader.hide();
-                },
-            });
-        } else {
-            console.log("Validation errors:", state.errors);
-            e.preventDefault();
-        }
-    }
 
     setupValidation();
 

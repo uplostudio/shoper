@@ -1,46 +1,44 @@
 // step_one.js
 
-$(document).ready(()=>{
+$(document).ready(() => {
     let ajaxRequest;
     let currentSID = null;
 
-    const generateErrorMessage = type=>{
+    const generateErrorMessage = type => {
         const messages = {
             email: "Podaj poprawny adres e-mail.",
             required: "To pole jest wymagane."
         };
         return messages[type] || messages.required;
-    }
-    ;
+    };
 
     const validateEmail = ($field) => {
-    const email = $field.val().trim();
-    const emailRegex = SharedUtils.EMAIL_REGEX || /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-    
-    let error = null;
-    
-    if (!email) {
-        error = generateErrorMessage('required');
-    } else if (!emailRegex.test(email)) {
-        error = generateErrorMessage('email');
-    }
+        const email = $field.val().trim();
+        const emailRegex = SharedUtils.EMAIL_REGEX || /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
 
-    $field.next('.error-box').remove();
-    
-    if (error) {
-        $field.after(`<span class="error-box">${error}</span>`);
-        $field.removeClass('valid').addClass('invalid');
-        $field.siblings('.new__input-label').removeClass('valid active').addClass('invalid');
-    } else {
-        $field.removeClass('invalid').addClass('valid');
-        $field.siblings('.new__input-label').removeClass('invalid').addClass('valid');
-    }
-    
-    return error;
-};
+        let error = null;
 
+        if (!email) {
+            error = generateErrorMessage('required');
+        } else if (!emailRegex.test(email)) {
+            error = generateErrorMessage('email');
+        }
 
-    const handleFormSubmission = (e,$form)=>{
+        $field.next('.error-box').remove();
+
+        if (error) {
+            $field.after(`<span class="error-box">${error}</span>`);
+            $field.removeClass('valid').addClass('invalid');
+            $field.siblings('.new__input-label').removeClass('valid active').addClass('invalid');
+        } else {
+            $field.removeClass('invalid').addClass('valid');
+            $field.siblings('.new__input-label').removeClass('invalid').addClass('valid');
+        }
+
+        return error;
+    };
+
+    const handleFormSubmission = (e, $form) => {
         e.preventDefault();
         const $emailField = $form.find('[data-type="email"]');
         if (validateEmail($emailField))
@@ -64,6 +62,19 @@ $(document).ready(()=>{
             ...DataLayerGatherers.getValueTrackData()
         };
 
+        // Check for SID in localStorage, parse it, and add its value to formData if present
+        const localStorageSID = localStorage.getItem('sid');
+        if (localStorageSID) {
+            try {
+                const parsedSID = JSON.parse(localStorageSID);
+                if (parsedSID.value) {
+                    formData.sid = parsedSID.value;
+                }
+            } catch (e) {
+                console.error("Failed to parse SID from localStorage:", e);
+            }
+        }
+
         if (currentSID) {
             formData.sid = currentSID;
         }
@@ -75,75 +86,76 @@ $(document).ready(()=>{
             data: formData
         });
 
-        ajaxRequest.then(response=>{
+        ajaxRequest.then(response => {
             SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
-        }
-        ).catch(error=>{
+            $(document).trigger('trialStepComplete', [1, response]);
+        }).catch(error => {
             SharedUtils.handleResponse(error, $form, $emailField, $wFormFail, false, 1);
-        }
-        ).always(()=>{
+        }).always(() => {
             $loader.hide();
             ajaxRequest = null;
-        }
-        );
-    }
-    ;
+        });
+    };
 
-    const setupValidation = ()=>{
-        $(document).on('blur', '[data-action="create_trial_step1"] [data-type="email"]', function() {
+    const setupValidation = () => {
+        $(document).on('blur', '[data-action="create_trial_step1"] [data-type="email"]', function () {
             validateEmail($(this));
         });
 
-        $(document).on('keydown', '[data-action="create_trial_step1"] [data-type="email"]', function(e) {
+        $(document).on('keydown', '[data-action="create_trial_step1"] [data-type="email"]', function (e) {
             if (e.key === 'Enter') {
                 e.preventDefault();
                 handleFormSubmission(e, $(this).closest('form'));
             }
         });
 
-        $(document).on('click', '[data-action="create_trial_step1"] [data-form="submit-step-one"]', function(e) {
+        $(document).on('click', '[data-action="create_trial_step1"] [data-form="submit-step-one"]', function (e) {
             handleFormSubmission(e, $(this).closest('form'));
         });
 
-        $(document).on('submit', '[data-action="create_trial_step1"]', function(e) {
+        $(document).on('submit', '[data-action="create_trial_step1"]', function (e) {
             handleFormSubmission(e, $(this));
         });
-    }
-    ;
+    };
 
     const $openTrialWrapperButton = $("[data-element='open_trial_wrapper']");
     if ($openTrialWrapperButton.length) {
-        console.log("now")
-        $openTrialWrapperButton.on('click', ()=>{
+        $openTrialWrapperButton.on('click', () => {
             $trialsWrapper.show();
             $("body").addClass("overflow-hidden");
-        }
-        );
+        });
     }
 
     const $closeTrialWrapperButton = $("[data-element='close_trial_wrapper']");
     if ($closeTrialWrapperButton.length) {
-        $closeTrialWrapperButton.on('click', ()=>{
+        $closeTrialWrapperButton.on('click', () => {
             $trialsWrapper.hide();
             $("body").removeClass("overflow-hidden");
-        }
-        );
+        });
     }
 
-    $(document).on('trialStepComplete', function(event, completedStep, data) {
+    $(document).on('trialStepComplete', function (event, completedStep, data) {
         if (completedStep === 1) {
             $trialsWrapper.show();
             const $modalTrialOne = $('[data-element="modal_trial_one"]');
             const $modalTrialTwo = $('[data-element="modal_trial_two"]');
-
-            
+            const $modalTrialThree = $('[data-element="modal_trial_three"]');
 
             if ($modalTrialOne.length) {
                 $modalTrialOne.hide();
-                
             }
-            if ($modalTrialTwo.length) {
-                $modalTrialTwo.show();
+
+            if (data.step === "#create_trial_step3") {
+                if ($modalTrialTwo.length) {
+                    $modalTrialTwo.hide();
+                }
+                if ($modalTrialThree.length) {
+                    $modalTrialThree.show();
+                }
+            } else {
+                if ($modalTrialTwo.length) {
+                    $modalTrialTwo.show();
+                }
             }
 
             // Additional actions after successful step 1 completion
@@ -161,7 +173,7 @@ $(document).ready(()=>{
         console.warn('updateAnalytics function is not defined');
     }
 
-    const cleanup = ()=>{
+    const cleanup = () => {
         if (ajaxRequest) {
             ajaxRequest.abort();
         }
@@ -170,23 +182,19 @@ $(document).ready(()=>{
         $(document).off('click', '[data-action="create_trial_step1"] [data-form="submit-step-one"]');
         $(document).off('submit', '[data-action="create_trial_step1"]');
         $openTrialWrapperButton.off('click');
-    }
-    ;
+    };
 
-    const forceReload = ()=>{
+    const forceReload = () => {
         cleanup();
-        requestAnimationFrame(()=>{
+        requestAnimationFrame(() => {
             window.location.reload(true);
-        }
-        );
-    }
-    ;
+        });
+    };
 
     $(window).on('beforeunload', cleanup);
-}
-);
+});
 
-$(document).on('formSubmissionComplete', function(event, isSuccess, $form, $emailField, data) {
+$(document).on('formSubmissionComplete', function (event, isSuccess, $form, $emailField, data) {
     if (isSuccess) {
         DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data('action'), $emailField.val());
     } else {
