@@ -303,5 +303,3 @@ $(document).ready(() => {
     initializeInputs();
     initializeEventListeners();
 });
-
-// push to netlify
