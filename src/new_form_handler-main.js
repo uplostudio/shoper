@@ -173,10 +173,9 @@ function sendFormDataToURL(formElement) {
         const dataForm = $input.attr("data-form") || name;
 
         if (type === "radio") {
-            if (!outputValues[dataForm]) {
-                outputValues[dataForm] = [];
+            if ($input.is(":checked")) {
+                outputValues[dataForm] = $input.val();
             }
-            outputValues[dataForm].push($input.val());
         } else if (type === "checkbox") {
             const checkboxBinary = binaryCheckboxActions.has($form.attr("data-action"));
             if (checkboxBinary) {
@@ -189,6 +188,7 @@ function sendFormDataToURL(formElement) {
             const value = $input.val().trim();
             if (value) outputValues[dataForm] = value;
         }
+        
     });
 
     // Append outputValues to formData
