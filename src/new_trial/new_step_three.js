@@ -58,10 +58,19 @@ $(document).ready(function() {
         clearAllErrors();
     }
 
-    function toggleTrialPromoBox() {
-        const isPayNow = $payNowRadios.filter(':checked').val() === 'pay_now';
-        $trialPromoBox.toggle(isPayNow);
+   function toggleTrialPromoBox() {
+    const isPayNow = $payNowRadios.filter(':checked').val() === '1';
+    $trialPromoBox.toggle(isPayNow);
+    
+    // Change the button label
+    const $submitButtonLabel = $submitButton.find('#label');
+    if (isPayNow) {
+        $submitButtonLabel.text('Zapłać teraz');
+    } else {
+        $submitButtonLabel.text('Rozpocznij darmowy okres próbny');
     }
+}
+
 
     function handleFormSubmission() {
         const errors = validateForm($form[0]);
