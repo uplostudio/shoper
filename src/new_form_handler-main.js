@@ -1,5 +1,4 @@
 const API_URL_ADDRESS = "https://backend.webflow.prod.shoper.cloud";
-const $loader = $form.find(".loading-in-button.is-inner");
 
 validationPatterns = {
     email: /^[^\s@]+@[^\s@]+\.[^\s@]+$/,
@@ -154,6 +153,7 @@ function validateForm(formElement) {
 function sendFormDataToURL(formElement) {
     const formData = new FormData();
     const $form = $(formElement);
+    const $loader = $form.find(".loading-in-button.is-inner");
 
     // Add form attributes
     Array.from(formElement.attributes).forEach(({name, value})=>{
