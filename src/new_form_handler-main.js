@@ -22,6 +22,29 @@ const errorMessages = {
 
 const omittedAttributes = new Set(["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "autocomplete", "layer"]);
 
+function validateNIPWithAPI(nip) {
+    return new Promise((resolve,reject)=>{
+        $.ajax({
+            type: "POST",
+            url: API_URL_ADDRESS,
+            data: {
+                action: "validate_nip",
+                country: "PL",
+                nip: nip
+            },
+            success: (response)=>{
+                resolve(response === true);
+            }
+            ,
+            error: (xhr,status,error)=>{
+                console.error("NIP validation API error:", error);
+                reject(error);
+            }
+        });
+    }
+    );
+}
+
 function validateInput($input) {
     const value = $input.val().trim();
     const isRequired = $input.prop('required');
@@ -34,21 +57,40 @@ function validateInput($input) {
 
     if (isActive || isDisabled) {
         $input.siblings('.error-box, [class*="error-wrapper"]').hide();
-        return false;
+        return Promise.resolve(false);
     }
 
     if (isRequired && (value === '' || (isOldStructure && inputType === 'checkbox' && !$input.prop('checked')))) {
         showError($input, errorMessages.default, isOldStructure, true);
-        return true;
+        return Promise.resolve(true);
     }
 
-    if (value !== '' && validationPatterns[inputType] && !validationPatterns[inputType].test(value)) {
-        showError($input, errorMessages[inputType] || errorMessages.default, isOldStructure, false);
-        return true;
+    if (value !== '' && validationPatterns[inputType]) {
+        if (!validationPatterns[inputType].test(value)) {
+            showError($input, errorMessages[inputType] || errorMessages.default, isOldStructure, false);
+            return Promise.resolve(true);
+        } else if (inputType === 'nip') {
+            // If NIP regex passes, perform API validation
+            return validateNIPWithAPI(value).then(isValid=>{
+                if (!isValid) {
+                    showError($input, errorMessages.nip, isOldStructure, false);
+                    return true;
+                } else {
+                    hideError($input, isOldStructure);
+                    return false;
+                }
+            }
+            ).catch(()=>{
+                // In case of API error, consider it valid to not block the user
+                hideError($input, isOldStructure);
+                return false;
+            }
+            );
+        }
     }
 
     hideError($input, isOldStructure);
-    return false;
+    return Promise.resolve(false);
 }
 
 function showError($input, message, isOldStructure, isRequiredError) {
@@ -80,19 +122,20 @@ function handleBlur(event) {
     const $element = $(event.target);
     $element.data("touched", true).removeClass('active');
 
-    validateInput($element);
+    validateInput($element).then(()=>{
+        if (!$element.siblings('.new__input-label').length)
+            return;
 
-    if (!$element.siblings('.new__input-label').length)
-        return;
-
-    const $label = $element.siblings('.new__input-label');
-    $label.removeClass('active');
-    if ($element.val()) {
-        $label.addClass('valid');
-    } else {
-        $label.removeClass('valid');
-        $element.attr('placeholder', $element.data('initial-placeholder'));
+        const $label = $element.siblings('.new__input-label');
+        $label.removeClass('active');
+        if ($element.val()) {
+            $label.addClass('valid');
+        } else {
+            $label.removeClass('valid');
+            $element.attr('placeholder', $element.data('initial-placeholder'));
+        }
     }
+    );
 }
 
 function initializeInputs() {
@@ -145,9 +188,47 @@ function initializeInputs() {
 
 function validateForm(formElement) {
     const $inputs = $(formElement).find("input:not([type='submit']):not([data-exclude='true']):not(:disabled), textarea:not([data-exclude='true']):not(:disabled), select:not([data-exclude='true']):not(:disabled)");
-    return $inputs.filter(function() {
-        return !$(this).closest('[data-element]').hasClass('hide') && validateInput($(this));
-    }).length;
+
+    const validationPromises = $inputs.map(function() {
+        const $input = $(this);
+        if (!$input.closest('[data-element]').hasClass('hide')) {
+            return validateInput($input);
+        }
+        return Promise.resolve(false);
+    }).get();
+
+    return Promise.all(validationPromises).then(results=>{
+        return results.filter(Boolean).length;
+    }
+    );
+}
+
+function performNIPPreflightCheck($form) {
+    const $nipInput = $form.find('input[data-type="nip"]');
+    if ($nipInput.length === 0) {
+        return Promise.resolve(true);
+    }
+
+    const nipValue = $nipInput.val().trim();
+    if (!validationPatterns.nip.test(nipValue)) {
+        showError($nipInput, errorMessages.nip, !$nipInput.siblings('.new__input-label').length, false);
+        return Promise.resolve(false);
+    }
+
+    return validateNIPWithAPI(nipValue).then(isValid=>{
+        if (!isValid) {
+            showError($nipInput, errorMessages.nip, !$nipInput.siblings('.new__input-label').length, false);
+        } else {
+            hideError($nipInput, !$nipInput.siblings('.new__input-label').length);
+        }
+        return isValid;
+    }
+    ).catch(()=>{
+        // In case of API error, we'll consider it valid to not block the user
+        hideError($nipInput, !$nipInput.siblings('.new__input-label').length);
+        return true;
+    }
+    );
 }
 
 function sendFormDataToURL(formElement) {
@@ -215,14 +296,12 @@ function sendFormDataToURL(formElement) {
                     console.log(data);
                     $form.siblings(".error-admin").hide();
                     window.location.href = data.redirect;
-                    // Redirect to the URL from the response
                 } else {
                     $form.siblings(".error-admin").show();
                 }
                 return;
             }
 
-            // Separate handling for trial step 3 form
             if ($form.data('name') === 'create_trial_step3' && data.status === 1) {
                 window.location.href = data.redirect;
                 return;
@@ -245,19 +324,46 @@ function sendFormDataToURL(formElement) {
 function handleSubmitClick(e) {
     e.preventDefault();
     const $form = $(this).closest("form");
-    const errors = validateForm($form[0]);
-    if (errors > 0) {
-        sendDataLayer({
-            event: "myTrackEvent",
-            eventCategory: "Button modal form error",
-            eventAction: $(this).val(),
-            eventLabel: window.location.href,
-            eventType: $form.attr("data-label") || "consult-form",
-        });
-    } else {
-        sendFormDataToURL($form[0]);
-    }
+
+    validateForm($form[0]).then(errors => {
+        if (errors > 0) {
+            sendDataLayer({
+                event: "myTrackEvent",
+                eventCategory: "Button modal form error",
+                eventAction: $(this).val(),
+                eventLabel: window.location.href,
+                eventType: $form.attr("data-label") || "consult-form",
+            });
+        } else {
+            const $nipInput = $form.find('input[data-type="nip"]');
+            if ($nipInput.length > 0) {
+                const nipValue = $nipInput.val().trim();
+                validateNIPWithAPI(nipValue).then(isValid => {
+                    if (isValid) {
+                        console.log("nip true")
+                        sendFormDataToURL($form[0]);
+                    } else {
+                        console.log("nip invalid")
+                        showError($nipInput, errorMessages.nip, !$nipInput.siblings('.new__input-label').length, false);
+                        sendDataLayer({
+                            event: "myTrackEvent",
+                            eventCategory: "Button modal form error",
+                            eventAction: $(this).val(),
+                            eventLabel: window.location.href,
+                            eventType: $form.attr("data-label") || "consult-form",
+                        });
+                    }
+                }).catch(() => {
+                    // In case of API error, proceed with form submission
+                    sendFormDataToURL($form[0]);
+                });
+            } else {
+                sendFormDataToURL($form[0]);
+            }
+        }
+    });
 }
+
 
 function initializeEventListeners() {
     $("[data-form='submit']").on("click", handleSubmitClick);

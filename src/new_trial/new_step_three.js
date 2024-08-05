@@ -84,19 +84,33 @@ $(document).ready(function () {
   }
 
   function handleFormSubmission() {
-    const errors = validateForm($form[0]);
-    if (errors === 0) {
-      sendFormDataToURL($form[0], $submitButton[0]);
-    } else {
-      window.dataLayer.push({
-        event: "myTrackEvent",
-        eventCategory: "Button modal form error",
-        eventAction: $submitButton.val(),
-        eventLabel: window.location.href,
-        eventType: $form.attr("data-label") || "consult-form",
-      });
-    }
-  }
+    validateForm($form[0]).then(errors => {
+        if (errors === 0) {
+            performNIPPreflightCheck($form).then(isNipValid => {
+                if (isNipValid) {
+                    sendFormDataToURL($form[0]);
+                } else {
+                    window.dataLayer.push({
+                        event: "myTrackEvent",
+                        eventCategory: "Button modal form error",
+                        eventAction: $submitButton.val(),
+                        eventLabel: window.location.href,
+                        eventType: $form.attr("data-label") || "consult-form",
+                    });
+                }
+            });
+        } else {
+            window.dataLayer.push({
+                event: "myTrackEvent",
+                eventCategory: "Button modal form error",
+                eventAction: $submitButton.val(),
+                eventLabel: window.location.href,
+                eventType: $form.attr("data-label") || "consult-form",
+            });
+        }
+    });
+}
+
 
   setupForm();
 
