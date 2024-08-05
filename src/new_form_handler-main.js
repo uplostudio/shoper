@@ -82,7 +82,8 @@ function handleBlur(event) {
 
     validateInput($element);
 
-    if (!$element.siblings('.new__input-label').length) return;
+    if (!$element.siblings('.new__input-label').length)
+        return;
 
     const $label = $element.siblings('.new__input-label');
     $label.removeClass('active');
@@ -154,19 +155,19 @@ function sendFormDataToURL(formElement) {
     const $form = $(formElement);
 
     // Add form attributes
-    Array.from(formElement.attributes).forEach(({ name, value }) => {
+    Array.from(formElement.attributes).forEach(({name, value})=>{
         const attributeName = name.replace("data-", "");
         if (value && !omittedAttributes.has(attributeName)) {
             formData.append(attributeName, value);
         }
-    });
+    }
+    );
 
     // Add form inputs
     const $inputs = $form.find("input:not([type='submit']):enabled:not([data-exclude='true']), textarea:enabled, select:enabled");
     const outputValues = {};
-    const binaryCheckboxActions = new Set(["loan_decision_contact", "external_ads_terms", "simple_form", "register_reseller"]);
 
-    $inputs.each(function () {
+    $inputs.each(function() {
         const $input = $(this);
         const name = $input.attr("name");
         const type = $input.attr("type");
@@ -177,24 +178,19 @@ function sendFormDataToURL(formElement) {
                 outputValues[dataForm] = $input.val();
             }
         } else if (type === "checkbox") {
-            const checkboxBinary = binaryCheckboxActions.has($form.attr("data-action"));
-            if (checkboxBinary) {
-                outputValues[dataForm] = $input.is(":checked") ? "1" : "0";
-            } else if ($input.is(":checked")) {
-                if (!outputValues[dataForm]) outputValues[dataForm] = [];
-                outputValues[dataForm].push($input.next().text().replace(/[^\u0000-\u007F\u0100-\u017F]+/g, "").trim());
-            }
+            outputValues[dataForm] = $input.is(":checked") ? "1" : "0";
         } else {
             const value = $input.val().trim();
-            if (value) outputValues[dataForm] = value;
+            if (value)
+                outputValues[dataForm] = value;
         }
-        
     });
 
     // Append outputValues to formData
-    Object.entries(outputValues).forEach(([key, value]) => {
-        formData.append(key, Array.isArray(value) ? value.join(', ') : value);
-    });
+    Object.entries(outputValues).forEach(([key,value])=>{
+        formData.append(key, value);
+    }
+    );
 
     $.ajax({
         type: "POST",
@@ -202,18 +198,23 @@ function sendFormDataToURL(formElement) {
         data: formData,
         processData: false,
         contentType: false,
-        beforeSend: () => {
-            if (typeof loader !== 'undefined' && loader.show) loader.show();
-        },
-        complete: () => {
-            if (typeof loader !== 'undefined' && loader.hide) loader.hide();
-        },
-        success: (data) => {
+        beforeSend: ()=>{
+            if (typeof loader !== 'undefined' && loader.show)
+                loader.show();
+        }
+        ,
+        complete: ()=>{
+            if (typeof loader !== 'undefined' && loader.hide)
+                loader.hide();
+        }
+        ,
+        success: (data)=>{
             if (formData.has("host")) {
                 if (data.status === 1) {
                     console.log(data);
                     $form.siblings(".error-admin").hide();
-                    window.location.href = data.redirect;  // Redirect to the URL from the response
+                    window.location.href = data.redirect;
+                    // Redirect to the URL from the response
                 } else {
                     $form.siblings(".error-admin").show();
                 }
@@ -232,8 +233,9 @@ function sendFormDataToURL(formElement) {
             } else {
                 $(document).trigger("submitError", $form);
             }
-        },
-        error: () => {
+        }
+        ,
+        error: ()=>{
             $form.siblings(".error-message").show();
         }
     });
@@ -263,20 +265,19 @@ function initializeEventListeners() {
         const dataValue = $(this).data("app") || $(this).data("element");
         const triggerName = dataValue.replace(/^open_|_modal_button$/g, "");
         const $modal = $(`[data-app='${triggerName}'], [data-element='${triggerName}']`);
-    
+
         $modal.addClass("modal--open");
         $(document.body).addClass("overflow-hidden");
-    
+
         const $form = $modal.find("form:first");
         if ($form.length > 0) {
             $form.find(":input:enabled:visible:first").focus();
         }
     });
-    
 
-    $("[fs-formsubmit-element='reset']").on("click", () => $(".loading-in-button").hide());
+    $("[fs-formsubmit-element='reset']").on("click", ()=>$(".loading-in-button").hide());
 
-    $(document).on("submitSuccess submitError", (e, formElement) => {
+    $(document).on("submitSuccess submitError", (e,formElement)=>{
         sendDataLayer({
             event: "myTrackEvent",
             eventCategory: `Button modal form ${e.type === "submitSuccess" ? "sent" : "error"}`,
@@ -284,14 +285,15 @@ function initializeEventListeners() {
             eventType: $(formElement).attr("data-label"),
             eventLabel: window.location.href,
         });
-    });
+    }
+    );
 }
 
-function cleanObject(obj = {}) {
-    return Object.fromEntries(Object.entries(obj).filter(([, value]) => value != null && value !== ""));
+function cleanObject(obj={}) {
+    return Object.fromEntries(Object.entries(obj).filter(([,value])=>value != null && value !== ""));
 }
 
-function sendDataLayer(obj = {}) {
+function sendDataLayer(obj={}) {
     const cleanedObj = cleanObject(obj);
     if (window.dataLayer) {
         dataLayer.push(cleanedObj);
@@ -299,7 +301,8 @@ function sendDataLayer(obj = {}) {
 }
 
 // Initialize everything when the document is ready
-$(document).ready(() => {
+$(document).ready(()=>{
     initializeInputs();
     initializeEventListeners();
-});
+}
+);
