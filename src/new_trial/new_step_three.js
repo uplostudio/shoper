@@ -1,7 +1,7 @@
 // step_three.js
 
 $(document).ready(function () {
-  const $form = $('[data-formid="create_trial_step3"]');
+  const $form = $('[data-formid="create_trial_step3"], [data-name="reseller"]');
   const $submitButton = $form.find('[data-form="submit-step-three"]');
   const $clientTypeRadios = $form.find('input[name="address[client_type]"]');
   const $payNowRadios = $form.find('input[name="pay_now"]');
@@ -10,12 +10,15 @@ $(document).ready(function () {
   const $trialPromoBox = $("#trial-promo-box");
 
   function setupForm() {
-    // Populate email and phone from localStorage
-    const email = localStorage.getItem("email");
-    const phone = localStorage.getItem("phoneNumber");
+    // Populate email and phone from localStorage only for create_trial_step3 form
+    const $trialForm = $form.filter('[data-formid="create_trial_step3"]');
+    if ($trialForm.length) {
+      const email = localStorage.getItem("email");
+      const phone = localStorage.getItem("phoneNumber");
 
-    $form.find('[data-form="email"]').val(email).prop("disabled", true);
-    $form.find('[data-form="number_phone"]').val(phone).prop("disabled", true);
+      $trialForm.find('[data-form="email"]').val(email).prop("disabled", true);
+      $trialForm.find('[data-form="number_phone"]').val(phone).prop("disabled", true);
+    }
 
     // Set up country select
     SharedUtils.populateCountrySelect("#address1\\[country\\]");
@@ -72,6 +75,7 @@ $(document).ready(function () {
 
   function toggleTrialPromoBox() {
     const isPayNow = $payNowRadios.filter(":checked").val() === "1";
+    console.log(isPayNow)
     $trialPromoBox.toggle(isPayNow);
 
     // Change the button label
@@ -104,9 +108,9 @@ $(document).ready(function () {
             pushDataLayerError();
         }
     });
-}
+  }
 
-function pushDataLayerError() {
+  function pushDataLayerError() {
     window.dataLayer.push({
         event: "myTrackEvent",
         eventCategory: "Button modal form error",
@@ -114,9 +118,7 @@ function pushDataLayerError() {
         eventLabel: window.location.href,
         eventType: $form.attr("data-label") || "trial-step-3-form",
     });
-}
-
-
+  }
 
   setupForm();
 

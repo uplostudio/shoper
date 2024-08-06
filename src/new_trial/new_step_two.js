@@ -9,7 +9,7 @@ $(document).ready(function() {
     }
 
     function setupValidation() {
-        const phoneFields = $('[data-action="create_trial_step2"] [data-type="phone"]');
+        const phoneFields = $('[data-type="phone"]');
         phoneFields.each(function() {
             let phoneField = $(this);
 
