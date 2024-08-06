@@ -4,6 +4,7 @@ const loginFormsActions = [
   "get_campaign",
   "get_admin",
   "get_payment_address",
+  "get_app"
 ];
 
 validationPatterns = {
@@ -488,7 +489,7 @@ function initializeEventListeners() {
         event: "generate_lead",
         form_id: formId,
         form_location: "",
-        form_type: "on_page",
+        form_type: "",
         lead_offer: "standard",
         form_step: "complete",
         lead_type: "new",
