@@ -95,7 +95,7 @@ $(document).ready(function () {
                         eventCategory: "Button modal form error",
                         eventAction: $submitButton.val(),
                         eventLabel: window.location.href,
-                        eventType: $form.attr("data-label") || "consult-form",
+                        eventType: $form.attr("data-label") || "trial-step-3-form",
                     });
                 }
             });
@@ -105,7 +105,7 @@ $(document).ready(function () {
                 eventCategory: "Button modal form error",
                 eventAction: $submitButton.val(),
                 eventLabel: window.location.href,
-                eventType: $form.attr("data-label") || "consult-form",
+                eventType: $form.attr("data-label") || "trial-step-3-form",
             });
         }
     });

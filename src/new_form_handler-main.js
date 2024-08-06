@@ -260,7 +260,14 @@ function sendFormDataToURL(formElement) {
                 outputValues[dataForm] = $input.val();
             }
         } else if (type === "checkbox") {
-            outputValues[dataForm] = $input.is(":checked") ? "1" : "0";
+            if ($input.is(":checked")) {
+                if (!outputValues[dataForm]) {
+                    outputValues[dataForm] = [];
+                }
+                // Use aria-label value if available, otherwise use the input's value
+                const value = $input.attr('aria-label') || $input.val();
+                outputValues[dataForm].push(value);
+            }
         } else {
             const value = $input.val().trim();
             if (value)
@@ -268,9 +275,19 @@ function sendFormDataToURL(formElement) {
         }
     });
 
+    // Define array input names
+    const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
+
     // Append outputValues to formData
-    Object.entries(outputValues).forEach(([key,value])=>{
-        formData.append(key, value);
+    Object.keys(outputValues).forEach((inputName)=>{
+        if (arrayInputNames.includes(inputName) && Array.isArray(outputValues[inputName])) {
+            outputValues[inputName].forEach((value,index)=>{
+                formData.append(`${inputName}[${index}]`, value);
+            }
+            );
+        } else {
+            formData.append(inputName, outputValues[inputName]);
+        }
     }
     );
 
@@ -293,7 +310,6 @@ function sendFormDataToURL(formElement) {
         success: (data)=>{
             if (formData.has("host")) {
                 if (data.status === 1) {
-                    console.log(data);
                     $form.siblings(".error-admin").hide();
                     window.location.href = data.redirect;
                 } else {
@@ -325,7 +341,7 @@ function handleSubmitClick(e) {
     e.preventDefault();
     const $form = $(this).closest("form");
 
-    validateForm($form[0]).then(errors => {
+    validateForm($form[0]).then(errors=>{
         if (errors > 0) {
             sendDataLayer({
                 event: "myTrackEvent",
@@ -338,12 +354,10 @@ function handleSubmitClick(e) {
             const $nipInput = $form.find('input[data-type="nip"]');
             if ($nipInput.length > 0) {
                 const nipValue = $nipInput.val().trim();
-                validateNIPWithAPI(nipValue).then(isValid => {
+                validateNIPWithAPI(nipValue).then(isValid=>{
                     if (isValid) {
-                        console.log("nip true")
                         sendFormDataToURL($form[0]);
                     } else {
-                        console.log("nip invalid")
                         showError($nipInput, errorMessages.nip, !$nipInput.siblings('.new__input-label').length, false);
                         sendDataLayer({
                             event: "myTrackEvent",
@@ -353,17 +367,19 @@ function handleSubmitClick(e) {
                             eventType: $form.attr("data-label") || "consult-form",
                         });
                     }
-                }).catch(() => {
+                }
+                ).catch(()=>{
                     // In case of API error, proceed with form submission
                     sendFormDataToURL($form[0]);
-                });
+                }
+                );
             } else {
                 sendFormDataToURL($form[0]);
             }
         }
-    });
+    }
+    );
 }
-
 
 function initializeEventListeners() {
     $("[data-form='submit']").on("click", handleSubmitClick);
