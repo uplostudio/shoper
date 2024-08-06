@@ -369,7 +369,6 @@ function handleSubmitClick(e) {
                     }
                 }
                 ).catch(()=>{
-                    // In case of API error, proceed with form submission
                     sendFormDataToURL($form[0]);
                 }
                 );
@@ -400,16 +399,35 @@ function initializeEventListeners() {
 
     $("[fs-formsubmit-element='reset']").on("click", ()=>$(".loading-in-button").hide());
 
-    $(document).on("submitSuccess submitError", (e,formElement)=>{
-        sendDataLayer({
+    $(document).on("submitSuccess submitError", (e, formElement) => {
+        // Common data for both success and error events
+        const commonData = {
             event: "myTrackEvent",
             eventCategory: `Button modal form ${e.type === "submitSuccess" ? "sent" : "error"}`,
             eventAction: $(formElement).find('[type="submit"]').val(),
             eventType: $(formElement).attr("data-label"),
             eventLabel: window.location.href,
-        });
-    }
-    );
+        };
+    
+        // Send the common data to dataLayer
+        sendDataLayer(commonData);
+    
+        // If the submission was successful, send an additional event
+        if (e.type === "submitSuccess") {
+            const formId = $(formElement).attr("id");
+            
+            sendDataLayer({
+                event: "generate_lead",
+                form_id: formId,
+                form_location: "",
+                form_type: "on_page",
+                lead_offer: "standard",
+                form_step: "complete",
+                lead_type: "new"
+            });
+        }
+    });
+    
 }
 
 function cleanObject(obj={}) {
