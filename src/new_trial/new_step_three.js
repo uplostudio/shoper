@@ -86,30 +86,36 @@ $(document).ready(function () {
   function handleFormSubmission() {
     validateForm($form[0]).then(errors => {
         if (errors === 0) {
-            performNIPPreflightCheck($form).then(isNipValid => {
-                if (isNipValid) {
-                    sendFormDataToURL($form[0]);
-                } else {
-                    window.dataLayer.push({
-                        event: "myTrackEvent",
-                        eventCategory: "Button modal form error",
-                        eventAction: $submitButton.val(),
-                        eventLabel: window.location.href,
-                        eventType: $form.attr("data-label") || "trial-step-3-form",
-                    });
-                }
-            });
+            const $nipField = $form.find('[data-type="nip"]');
+            const shouldValidateNip = $nipField.length > 0 && $nipField.attr('data-exclude') !== 'true';
+
+            if (shouldValidateNip) {
+                performNIPPreflightCheck($form).then(isNipValid => {
+                    if (isNipValid) {
+                        sendFormDataToURL($form[0]);
+                    } else {
+                        pushDataLayerError();
+                    }
+                });
+            } else {
+                sendFormDataToURL($form[0]);
+            }
         } else {
-            window.dataLayer.push({
-                event: "myTrackEvent",
-                eventCategory: "Button modal form error",
-                eventAction: $submitButton.val(),
-                eventLabel: window.location.href,
-                eventType: $form.attr("data-label") || "trial-step-3-form",
-            });
+            pushDataLayerError();
         }
     });
 }
+
+function pushDataLayerError() {
+    window.dataLayer.push({
+        event: "myTrackEvent",
+        eventCategory: "Button modal form error",
+        eventAction: $submitButton.val(),
+        eventLabel: window.location.href,
+        eventType: $form.attr("data-label") || "trial-step-3-form",
+    });
+}
+
 
 
   setupForm();
