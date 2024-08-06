@@ -311,12 +311,19 @@ function sendFormDataToURL(formElement) {
             if (formData.has("host")) {
                 if (data.status === 1) {
                     $form.siblings(".error-admin").hide();
+                    dataLayer.push({
+                        event: "login",
+                        user_id: "",
+                        shop_id: "",
+                    });
+            
                     window.location.href = data.redirect;
                 } else {
                     $form.siblings(".error-admin").show();
                 }
                 return;
             }
+            
 
             if ($form.data('name') === 'create_trial_step3' && data.status === 1) {
                 window.location.href = data.redirect;
