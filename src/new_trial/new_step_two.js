@@ -90,7 +90,6 @@ $(document).ready(function() {
                 action: "create_trial_step2",
                 phone: iti.getNumber(),
                 formid: "create_trial_step2",
-                eventname: "formSubmitSuccess",
                 "adwords[gclid]": window.myGlobals.gclidValue,
                 "adwords[fbclid]": window.myGlobals.fbclidValue,
                 analytics_id: window.myGlobals.analyticsId,
@@ -160,7 +159,7 @@ $(document).ready(function() {
 
 $(document).on('formSubmissionComplete', function(event, isSuccess, $form, $phoneField, data) {
     if (isSuccess) {
-        DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data('action'), $phoneField.val());
+        DataLayerGatherers.pushTrackEventDataModal(window.myGlobals.clientId, window.myGlobals.shopId, $form.data('action'), $phoneField.val());
     } else {
         DataLayerGatherers.pushTrackEventError($form.data('action'), $form.find("#label").text(), $phoneField.val());
     }

@@ -46,7 +46,7 @@ function updateAnalytics() {
 const DataLayerGatherers = {
   formAbandonEvent: function () {
     const $formContainer = $(
-      '[data-action="create_trial_step1"], [data-action="create_trial_step2"]'
+      '[data-action="create_trial_step1"], [data-action="create_trial_step2"], [data-action="create_trial_step3"]'
     );
 
     let isFormModified = false;

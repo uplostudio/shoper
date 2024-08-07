@@ -196,7 +196,7 @@ $(document).ready(() => {
 
 $(document).on('formSubmissionComplete', function (event, isSuccess, $form, $emailField, data) {
     if (isSuccess) {
-        DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data('action'), $emailField.val());
+        DataLayerGatherers.pushTrackEventDataModal(window.myGlobals.clientId, $form.data('action'), window.myGlobals.shopId, $form.data('action'), $emailField.val());
     } else {
         DataLayerGatherers.pushTrackEventError($form.data('action'), $form.find("#label").text(), $emailField.val());
     }

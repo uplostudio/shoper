@@ -149,7 +149,7 @@ $(document).on(
   "formSubmissionComplete",
   function (event, isSuccess, $form, $field, data) {
     if (isSuccess) {
-      DataLayerGatherers.pushEmailSubmittedData(
+      DataLayerGatherers.pushTrackEventDataModal(
         window.myGlobals.clientId,
         window.myGlobals.shopId,
         $form.data("action"),
