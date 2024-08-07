@@ -76,9 +76,8 @@ const DataLayerGatherers = {
   },
 
   controlBlur: function () {
-    const $formContainer = $(
-      '[data-action="create_trial_step1"], [data-action="create_trial_step2"]'
-    );
+    const $formContainer = $('form');
+
 
     $formContainer.find("input").on("blur", function () {
       window.dataLayer = window.dataLayer || [];
@@ -93,9 +92,8 @@ const DataLayerGatherers = {
   },
 
   controlFocus: function () {
-    const $formContainer = $(
-      '[data-action="create_trial_step1"], [data-action="create_trial_step2"]'
-    );
+    const $formContainer = $('form');
+
 
     $formContainer.find("input").on("focus", function () {
       window.dataLayer = window.dataLayer || [];
