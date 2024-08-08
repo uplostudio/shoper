@@ -75,7 +75,7 @@ $(document).ready(function () {
 
   function toggleTrialPromoBox() {
     const isPayNow = $payNowRadios.filter(":checked").val() === "1";
-    console.log(isPayNow)
+    console.log(isPayNow);
     $trialPromoBox.toggle(isPayNow);
 
     // Change the button label
@@ -87,41 +87,58 @@ $(document).ready(function () {
     }
   }
 
-  function handleFormSubmission() {
-    validateForm($form[0]).then(errors => {
-        if (errors === 0) {
-            const $nipField = $form.find('[data-type="nip"]');
-            const shouldValidateNip = $nipField.length > 0 && $nipField.attr('data-exclude') !== 'true';
+  function formSubmitErrorTrial(formId, eventAction, phone) {
+    const formData = {
+      event: "formSubmitError",
+      formid: formId || "",
+      action: eventAction || "",
+      "address1[client_type]": $form.find('input[name="address[client_type]"]:checked').val() || "",
+      "address1[first_name]": $form.find('input[name="address[first_name]"]').val() || "",
+      "address1[last_name]": $form.find('input[name="address[last_name]"]').val() || "",
+      "address1[line_1]": $form.find('input[name="address[line_1]"]').val() || "",
+      "address1[post_code]": $form.find('input[name="address[post_code]"]').val() || "",
+      "address1[city]": $form.find('input[name="address[city]"]').val() || "",
+      "address1[country]": $form.find('select[name="address[country]"]').val() || "",
+      pay_now: $form.find('input[name="pay_now"]:checked').val() || "",
+      accept: 1,
+      website: "shoper",
+      eventLabel: window.location.pathname || ""
+    };
 
-            if (shouldValidateNip) {
-                performNIPPreflightCheck($form).then(isNipValid => {
-                    if (isNipValid) {
-                        sendFormDataToURL($form[0]);
-                    } else {
-                        pushDataLayerError();
-                    }
-                });
-            } else {
-                sendFormDataToURL($form[0]);
-                DataLayerGatherers.pushFormSubmitSuccessData(
-                  $form.attr("data-action"),
-                  emailField.val(),
-                  formTypeValue
-                );
-            }
-        } else {
-            pushDataLayerError();
-        }
-    });
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push(formData);
   }
 
   function pushDataLayerError() {
-    window.dataLayer.push({
-        event: "myTrackEvent",
-        eventCategory: "Button modal form error",
-        eventAction: $submitButton.val(),
-        eventLabel: window.location.href,
-        eventType: $form.attr("data-label") || "trial-step-3-form",
+    console.log("Form submission error pushed to dataLayer");
+  }
+
+  function handleFormSubmission() {
+    validateForm($form[0]).then(errors => {
+      const phone = localStorage.getItem("phoneNumber") || "";
+      const formId = $form.data("formid") || "create_trial_step3";
+      const eventAction = formId;
+
+      if (errors === 0) {
+        const $nipField = $form.find('[data-type="nip"]');
+        const shouldValidateNip = $nipField.length > 0 && $nipField.attr('data-exclude') !== 'true';
+
+        if (shouldValidateNip) {
+          performNIPPreflightCheck($form).then(isNipValid => {
+            if (isNipValid) {
+              sendFormDataToURL($form[0]);
+            } else {
+              formSubmitErrorTrial(formId, eventAction, phone);
+              pushDataLayerError();
+            }
+          });
+        } else {
+          sendFormDataToURL($form[0]);
+        }
+      } else {
+        formSubmitErrorTrial(formId, eventAction, phone);
+        pushDataLayerError();
+      }
     });
   }
 
@@ -149,4 +166,3 @@ $(document).ready(function () {
     }
   });
 });
-

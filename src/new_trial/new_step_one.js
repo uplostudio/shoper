@@ -26,7 +26,7 @@ $(document).ready(() => {
 
     const validateEmail = ($field) => {
         const email = $field.val().trim();
-        const emailRegex = SharedUtils.EMAIL_REGEX || /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
+        const emailRegex = validationPatterns.email;
 
         let error = null;
 
@@ -103,6 +103,7 @@ $(document).ready(() => {
 
         ajaxRequest.then(response => {
             SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
+            DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId,$form.data('action'),$emailField.val())
             $(document).trigger('trialStepComplete', [1, response]);
             $('[data-app="trial-domain"]').text(response.host);
         }).catch(error => {

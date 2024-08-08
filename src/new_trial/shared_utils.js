@@ -6,11 +6,6 @@ $('[data-app="trial-domain"]').text(localStorage.getItem('host') || '');
 
 // Common constants
 SharedUtils.API_URL = "https://backend.webflow.prod.shoper.cloud";
-SharedUtils.EMAIL_REGEX = (()=>{
-    const pattern = window.validationPatterns?.mail;
-    return pattern ? pattern.pattern : /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
-})();
-
 
 // Status messages
 SharedUtils.statusMessages = Object.freeze({
