@@ -120,6 +120,11 @@ $(document).ready(function() {
                     success: function(data) {
                         console.log("Form submission successful");
                         SharedUtils.handleResponse(data, form, phoneField, wFormFail, true, 2);
+                        DataLayerGatherers.pushFormSubmitSuccessData(
+                            form.attr("data-action"),
+                            iti.getNumber(),
+                            formTypeValue
+                          );
                     },
                     error: function(data) {
                         console.log("Form submission failed");

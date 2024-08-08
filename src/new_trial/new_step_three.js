@@ -103,6 +103,11 @@ $(document).ready(function () {
                 });
             } else {
                 sendFormDataToURL($form[0]);
+                DataLayerGatherers.pushFormSubmitSuccessData(
+                  $form.attr("data-action"),
+                  emailField.val(),
+                  formTypeValue
+                );
             }
         } else {
             pushDataLayerError();
