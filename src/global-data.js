@@ -263,6 +263,18 @@ const DataLayerGatherers = {
       eventType: eventType,
     });
   },
+
+  pushModalClosed: function() {
+    window.dataLayer = window.dataLayer || [];
+    window.dataLayer.push({
+        event: "myTrackEvent",
+        eventCategory: "Button modal closed",
+        eventAction: "",
+        eventType: "modal-form",
+        eventLabel: window.location.pathname,
+    })
+  },
+
   // DL Conversions starts here
   pushClientTypeChangeEvent: function (clientType) {
     window.dataLayer = window.dataLayer || [];
@@ -355,6 +367,8 @@ $(document).ready(function () {
   DataLayerGatherers.controlBlur();
   DataLayerGatherers.controlFocus();
 });
+
+$(document).on("closeModalCalled", DataLayerGatherers.pushModalClosed);
 
 $(document).ready(function () {
   $("a[data-app^='open_'], a[data-element^='open_']").click(function () {
