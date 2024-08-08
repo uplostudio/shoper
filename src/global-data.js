@@ -127,20 +127,21 @@ const DataLayerGatherers = {
     }
   },  
   controlBlur: function () {
-    const $formContainer = $('form');
-
-
-    $formContainer.find("input").on("blur", function () {
+    $(document).on("blur", "form input", function () {
+      const $input = $(this);
+      const $form = $input.closest('form');
+      
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "controlBlur",
-        formId: $formContainer.attr("data-action"),
-        controlName: $(this).attr("data-form"),
-        controlType: $(this).attr("type"),
-        controlValue: $(this).val(),
+        formId: $form.attr("data-action"),
+        controlName: $input.attr("data-form"),
+        controlType: $input.attr("type"),
+        controlValue: $input.val(),
       });
     });
   },
+  
 
   controlFocus: function () {
     $(document).on("focus", "form input", function () {
