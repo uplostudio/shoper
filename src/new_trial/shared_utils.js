@@ -5,6 +5,8 @@ window.SharedUtils = window.SharedUtils || {};
 
 const $trialsWrapper = $("[data-element='trials-wrapper']");
 
+$('[data-app="trial-domain"]').text(localStorage.getItem('host') || '');
+
 // Common constants
 SharedUtils.API_URL = "https://backend.webflow.prod.shoper.cloud";
 SharedUtils.EMAIL_REGEX = (()=>{
