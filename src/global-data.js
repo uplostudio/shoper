@@ -136,7 +136,7 @@ const DataLayerGatherers = {
         event: "controlBlur",
         formId: $form.attr("data-action"),
         controlName: $input.attr("data-form"),
-        controlType: $input.attr("type"),
+        controlType: $input.attr("data-type"),
         controlValue: $input.val(),
       });
     });
@@ -153,7 +153,7 @@ const DataLayerGatherers = {
         event: "controlFocus",
         formId: $form.attr("data-action"),
         controlName: $input.attr("data-form"),
-        controlType: $input.attr("type"),
+        controlType: $input.attr("data-type"),
         controlValue: $input.val(),
       });
     });
