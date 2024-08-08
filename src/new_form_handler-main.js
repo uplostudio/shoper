@@ -1,9 +1,7 @@
 const API_URL_ADDRESS = "https://backend.webflow.prod.shoper.cloud";
-const loginFormsActions = [
+const signupFormsActions = [
+  "get_inpost",
   "get_ssl",
-  "get_campaign",
-  "get_admin",
-  "get_payment_address",
   "get_app"
 ];
 
@@ -356,11 +354,14 @@ function sendFormDataToURL(formElement) {
       if (formData.has("host")) {
         if (data.status === 1) {
           $form.siblings(".error-admin").hide();
-          dataLayer.push({
-            event: "login",
-            user_id: "",
-            shop_id: "",
-          });
+        
+          if ($form.attr("action") === "get_admin") {
+            dataLayer.push({
+              event: "login",
+              user_id: "undefined",
+              shop_id: "undefined",
+            });
+          }
 
           window.location.href = data.redirect;
         } else {
@@ -394,21 +395,15 @@ function handleSubmitClick(e) {
   validateForm($form[0]).then((errors) => {
     if (errors > 0) {
       const formAction = $form.attr("data-action");
-      if (loginFormsActions.includes(formAction)) {
+      if (signupFormsActions.includes(formAction)) {
         dataLayer.push({
           event: "sign_up",
-          user_id: "",
+          user_id: "undefined",
           method: "url",
-          shop_id: "",
+          shop_id: "undefined",
         });
       }
-      sendDataLayer({
-        event: "myTrackEvent",
-        eventCategory: "Button modal form error",
-        eventAction: $(this).val(),
-        eventLabel: window.location.href,
-        eventType: $form.attr("data-label") || "consult-form",
-      });
+      DataLayerGatherers.pushTrackEventErrorModal($form.attr("id"), $(this).val(), $form.attr("data-label") || "consult-form")
     } else {
       const $nipInput = $form.find('input[data-type="nip"]');
       if ($nipInput.length > 0) {
@@ -424,13 +419,7 @@ function handleSubmitClick(e) {
                 !$nipInput.siblings(".new__input-label").length,
                 false
               );
-              sendDataLayer({
-                event: "myTrackEvent",
-                eventCategory: "Button modal form error",
-                eventAction: $(this).val(),
-                eventLabel: window.location.href,
-                eventType: $form.attr("data-label") || "consult-form",
-              });
+              DataLayerGatherers.pushTrackEventErrorModal($form.attr("id"), $(this).val(), $form.attr("data-label") || "consult-form")
             }
           })
           .catch(() => {

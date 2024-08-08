@@ -145,22 +145,3 @@ $(document).ready(function () {
   });
 });
 
-$(document).on(
-  "formSubmissionComplete",
-  function (event, isSuccess, $form, $field, data) {
-    if (isSuccess) {
-      DataLayerGatherers.pushTrackEventDataModal(
-        window.myGlobals.clientId,
-        window.myGlobals.shopId,
-        $form.data("action"),
-        "********"
-      );
-    } else {
-      DataLayerGatherers.pushTrackEventError(
-        $form.data("action"),
-        $form.find("#label").text(),
-        "********"
-      );
-    }
-  }
-);

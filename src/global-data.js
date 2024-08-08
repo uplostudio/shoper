@@ -45,36 +45,69 @@ function updateAnalytics() {
 
 const DataLayerGatherers = {
   formAbandonEvent: function () {
-    const $formContainer = $(
-      '[data-action="create_trial_step1"], [data-action="create_trial_step2"], [data-action="create_trial_step3"]'
-    );
-
+    const $modalWrappers = $('[data-element^="modal_trial_"]');
+    const $formContainers = $('[data-action^="create_trial_step"]');
     let isFormModified = false;
-
-    $formContainer.find("input").on("input", function () {
+    let lastFocusedInput = null;
+    let currentFormId = null;
+  
+    // Track input changes and last focused input
+    $formContainers.on("input change", "input, select, textarea", function () {
       isFormModified = true;
+      lastFocusedInput = $(this);
+      currentFormId = $(this).closest('[data-action^="create_trial_step"]').attr('data-action');
     });
-
+  
+    // Track focus on form elements
+    $formContainers.on("focus", "input, select, textarea", function () {
+      lastFocusedInput = $(this);
+      currentFormId = $(this).closest('[data-action^="create_trial_step"]').attr('data-action');
+    });
+  
+    // Handle modal close or click outside the form
     $(document).on("click", function (event) {
-      if (!$(event.target).closest($formContainer).length) {
-        if (isFormModified && !$formContainer.data("submitted")) {
-          window.dataLayer = window.dataLayer || [];
-          window.dataLayer.push({
-            event: "formAbandon",
-            formId: $formContainer.attr("data-action"),
-            eventHistory: window.history,
-          });
-
-          isFormModified = false;
-        }
+      const $clickedElement = $(event.target);
+      
+      // Check if click is outside the form or on a close button
+      if ((!$clickedElement.closest($formContainers).length || $clickedElement.hasClass('modal-close-btn')) && isFormModified) {
+        sendFormAbandonEvent();
       }
     });
-
-    $formContainer.on("submit", function () {
-      $(this).data("submitted", true);
+  
+    // Handle ESC key press
+    $(document).on("keydown", function (event) {
+      if (event.key === "Escape" && isFormModified) {
+        sendFormAbandonEvent();
+      }
     });
-  },
-
+  
+    // Reset form state on submission
+    $formContainers.on("submit", function () {
+      isFormModified = false;
+      lastFocusedInput = null;
+      currentFormId = null;
+    });
+  
+    function sendFormAbandonEvent() {
+      if (currentFormId && !$(`[data-action="${currentFormId}"]`).data("submitted")) {
+        const emailValue = lastFocusedInput && lastFocusedInput.attr('type') === 'email' ? lastFocusedInput.val() : '';
+        
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+          "event": "formAbandon",
+          "formId": currentFormId,
+          "email": emailValue,
+          "action": currentFormId,
+          "website": "shoper",
+          "eventLabel": window.location.href
+        });
+  
+        isFormModified = false;
+        lastFocusedInput = null;
+        currentFormId = null;
+      }
+    }
+  },  
   controlBlur: function () {
     const $formContainer = $('form');
 
