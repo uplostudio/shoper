@@ -89,6 +89,7 @@ $(document).ready(() => {
         ajaxRequest.then(response => {
             SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
             $(document).trigger('trialStepComplete', [1, response]);
+            $('[data-app="trial-domain"]').text(response.host);
         }).catch(error => {
             SharedUtils.handleResponse(error, $form, $emailField, $wFormFail, false, 1);
         }).always(() => {
