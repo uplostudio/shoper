@@ -419,7 +419,6 @@ function handleSubmitClick(e) {
                 !$nipInput.siblings(".new__input-label").length,
                 false
               );
-              DataLayerGatherers.pushTrackEventErrorModal($form.attr("id"), $(this).val(), $form.attr("data-label") || "consult-form")
             }
           })
           .catch(() => {
