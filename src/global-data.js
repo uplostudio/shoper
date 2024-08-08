@@ -392,7 +392,7 @@ $(document).ready(function () {
 
 // DL Conversion Functions starts here:
 function clientTypeChange() {
-  $('input[name="client_type"]').on("change", function () {
+  $('input[name="address[client_type]"]').on("change", function () {
     const label = $(this).closest("label");
     const spanText = label.find("span.w-form-label").text().trim();
     DataLayerGatherers.pushClientTypeChangeEvent(spanText);
