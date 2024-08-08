@@ -107,8 +107,15 @@ SharedUtils.encodeEmail = function(email) {
     if (!email) return '';
     const [username, domain] = email.split('@');
     if (!domain) return email;
-    return `${username[0]}${'*'.repeat(Math.max(0, username.length - 1))}@${domain}`;
+    
+    if (username.length <= 2) {
+        return `${username}@${domain}`;
+    } else {
+        const maskedPart = '*'.repeat(Math.max(0, username.length - 2));
+        return `${username[0]}${maskedPart}${username[username.length - 1]}@${domain}`;
+    }
 };
+
 
 
 let currentSID = null;
