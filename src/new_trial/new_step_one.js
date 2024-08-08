@@ -12,6 +12,18 @@ $(document).ready(() => {
         return messages[type] || messages.required;
     };
 
+    const formSubmitErrorTrial = (formId, eventAction, email) => {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            "event": "formSubmitError",
+            "formId": formId,
+            "email": email,
+            "action": eventAction,
+            "website": "shoper",
+            "eventLabel": window.location.pathname
+        });
+    };
+
     const validateEmail = ($field) => {
         const email = $field.val().trim();
         const emailRegex = SharedUtils.EMAIL_REGEX || /^[^\s@]+@[^\s@]+\.[^\s@]+$/;
@@ -30,6 +42,9 @@ $(document).ready(() => {
             $field.after(`<span class="error-box">${error}</span>`);
             $field.removeClass('valid').addClass('invalid');
             $field.siblings('.new__input-label').removeClass('valid active').addClass('invalid');
+
+            const $form = $field.closest('form');
+            formSubmitErrorTrial($form.attr('id'), $form.data('action'), email);
         } else {
             $field.removeClass('invalid').addClass('valid');
             $field.siblings('.new__input-label').removeClass('invalid').addClass('valid');
@@ -90,11 +105,6 @@ $(document).ready(() => {
             SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
             $(document).trigger('trialStepComplete', [1, response]);
             $('[data-app="trial-domain"]').text(response.host);
-            DataLayerGatherers.pushFormSubmitSuccessData(
-                form.attr("data-action"),
-                emailField.val(),
-                formTypeValue
-              );
         }).catch(error => {
             SharedUtils.handleResponse(error, $form, $emailField, $wFormFail, false, 1);
         }).always(() => {

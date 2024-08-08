@@ -1,6 +1,3 @@
-// shared_utils.js
-
-// Initialize SharedUtils as a global object
 window.SharedUtils = window.SharedUtils || {};
 
 const $trialsWrapper = $("[data-element='trials-wrapper']");

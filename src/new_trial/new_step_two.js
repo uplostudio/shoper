@@ -8,6 +8,18 @@ $(document).ready(function() {
         return phone.replace(/(\+48)(\d{3})(\d{3})(\d{1})(\d{2})/, '$1 *** *** *$4$5');
     }
 
+    function formSubmitErrorTrial(formId, eventAction, phone) {
+        window.dataLayer = window.dataLayer || [];
+        window.dataLayer.push({
+            "event": "formSubmitError",
+            "formId": formId,
+            "phone": phone,
+            "action": eventAction,
+            "website": "shoper",
+            "eventLabel": window.location.pathname
+        });
+    }
+
     function setupValidation() {
         // select only phone fields in the trial forms
         const phoneFields = $('[data-type="phone"]').filter(function() {
@@ -28,12 +40,13 @@ $(document).ready(function() {
 
             phoneField.on("blur", function() {
                 console.log("Phone field blur triggered");
-                state.errors = validatePhone(this, state.errors, state.phoneRegex, iti);
+                state.errors = validatePhone(this, iti);
             });
 
             phoneField.on("keydown", function(e) {
                 if (e.which === 13) {
                     console.log("Enter key pressed");
+                    e.preventDefault();
                     $(this).trigger("blur");
                     handleFormSubmission(e, phoneField, iti);
                 }
@@ -46,22 +59,34 @@ $(document).ready(function() {
         });
     }
 
-    function validatePhone(field, errors, phoneRegex, iti) {
-        errors = [];
+    function validatePhone(field, iti) {
+        let errors = [];
         const countryCode = iti.getSelectedCountryData().iso2;
-        let phone = iti.getNumber();
+        let phone = iti.getNumber().trim();
         console.log('Validating phone number:', phone);
         
         clearErrors($(field));
-
+    
         if (!phone) {
             showError($(field), errorMessages.default);
             errors.push(errorMessages.default);
-        } else if (countryCode === "pl" && !phoneRegex.test(phone.slice(-9))) { // Check only the last 9 digits
+        } else if (countryCode === "pl") {
+            const phoneWithoutPrefix = phone.replace(/^\+48/, '');
+            if (!/^\d{9}$/.test(phoneWithoutPrefix)) {
+                showError($(field), errorMessages.phone);
+                errors.push(errorMessages.phone);
+            }
+        } else {
             showError($(field), errorMessages.phone);
             errors.push(errorMessages.phone);
         }
-
+    
+        if (errors.length > 0) {
+            const $form = $(field).closest('form');
+            formSubmitErrorTrial($form.attr('id'), $form.data('action'), phone);
+        }
+    
+        state.errors = errors;
         return errors;
     }
 
@@ -79,66 +104,67 @@ $(document).ready(function() {
         $field.siblings('.error-box').hide();
     }
 
-        function handleFormSubmission(e, phoneField, iti) {
-            console.log("handleFormSubmission called");
-            let form = phoneField.closest("form");
-            const wFormFail = form.find(".w-form-fail");
-            phoneField.trigger("blur");
-            const valueTrack = DataLayerGatherers.getValueTrackData();
-            const loader = form.find(".loading-in-button.is-inner");
-            const formData = {
-                action: "create_trial_step2",
-                phone: iti.getNumber(),
-                formid: "create_trial_step2",
-                "adwords[gclid]": window.myGlobals.gclidValue,
-                "adwords[fbclid]": window.myGlobals.fbclidValue,
-                analytics_id: window.myGlobals.analyticsId,
-                sid: SharedUtils.getCurrentSID()
-            };
+    function handleFormSubmission(e, phoneField, iti) {
+        console.log("handleFormSubmission called");
+        e.preventDefault();
+        let form = phoneField.closest("form");
+        const wFormFail = form.find(".w-form-fail");
+        phoneField.trigger("blur");
+        const valueTrack = DataLayerGatherers.getValueTrackData();
+        const loader = form.find(".loading-in-button.is-inner");
+        const formData = {
+            action: "create_trial_step2",
+            phone: iti.getNumber(),
+            formid: "create_trial_step2",
+            "adwords[gclid]": window.myGlobals.gclidValue,
+            "adwords[fbclid]": window.myGlobals.fbclidValue,
+            analytics_id: window.myGlobals.analyticsId,
+            sid: SharedUtils.getCurrentSID()
+        };
 
-            if (valueTrack) {
-                Object.entries(valueTrack).forEach(([key,value])=>{
-                    if (key !== "timestamp") {
-                        formData[key] = value;
-                    }
-                });
-            }
+        if (valueTrack) {
+            Object.entries(valueTrack).forEach(([key,value])=>{
+                if (key !== "timestamp") {
+                    formData[key] = value;
+                }
+            });
+        }
 
-            if (state.errors.length === 0) {
-                console.log("No validation errors, submitting form");
+        if (state.errors.length === 0) {
+            console.log("No validation errors, submitting form");
 
-                const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
-                localStorage.setItem('phoneNumber', maskedPhoneNumber);
+            const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
+            localStorage.setItem('phoneNumber', maskedPhoneNumber);
 
-                $.ajax({
-                    type: "POST",
-                    url: SharedUtils.API_URL,
-                    data: formData,
-                    beforeSend: function() {
-                        loader.show();
-                    },
-                    success: function(data) {
+            $.ajax({
+                type: "POST",
+                url: SharedUtils.API_URL,
+                data: formData,
+                beforeSend: function() {
+                    loader.show();
+                },
+                success: function(data) {
+                    if (data.status === 0) { 
+                        // Display error message if status is 0
+                        showError(phoneField, data.errors.phone.invalidPhone);
+                        console.log("Form submission failed with error:", data.errors.phone.invalidPhone);
+                    } else {
                         console.log("Form submission successful");
                         SharedUtils.handleResponse(data, form, phoneField, wFormFail, true, 2);
-                        DataLayerGatherers.pushFormSubmitSuccessData(
-                            form.attr("data-action"),
-                            iti.getNumber(),
-                            formTypeValue
-                          );
-                    },
-                    error: function(data) {
-                        console.log("Form submission failed");
-                        SharedUtils.handleResponse(data, form, phoneField, wFormFail, false, 2);
-                    },
-                    complete: function() {
-                        loader.hide();
-                    },
-                });
-            } else {
-                console.log("Validation errors:", state.errors);
-                e.preventDefault();
-            }
+                    }
+                },
+                error: function(data) {
+                    console.log("Form submission failed");
+                    SharedUtils.handleResponse(data, form, phoneField, wFormFail, false, 2);
+                },
+                complete: function() {
+                    loader.hide();
+                },
+            });
+        } else {
+            console.log("Validation errors:", state.errors);
         }
+    }
 
     setupValidation();
 
