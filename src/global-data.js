@@ -45,31 +45,49 @@ function updateAnalytics() {
 
 const DataLayerGatherers = {
   formAbandonEvent: function () {
-    const $modalWrappers = $('[data-element^="modal_trial_"]');
-    const $formContainers = $('[data-action^="create_trial_step"]');
+    const $trialModal = $('.new__trial-modal');
+    const $modalSteps = $('[data-element^="modal_trial_"]');
+    const $closeButton = $('[data-element="close_trial_wrapper"]');
     let isFormModified = false;
     let lastFocusedInput = null;
     let currentFormId = null;
   
-    // Track input changes and last focused input
-    $formContainers.on("input change", "input, select, textarea", function () {
+    function getCurrentVisibleForm() {
+      const $visibleStep = $modalSteps.filter(function() {
+        return $(this).css('display') !== 'none';
+      });
+      const $form = $visibleStep.find('[data-action^="create_trial_step"]');
+      return $form;
+    }
+  
+    // Track input changes
+    $trialModal.on("input change", "input, select, textarea", function () {
       isFormModified = true;
-      lastFocusedInput = $(this);
-      currentFormId = $(this).closest('[data-action^="create_trial_step"]').attr('data-action');
     });
   
     // Track focus on form elements
-    $formContainers.on("focus", "input, select, textarea", function () {
+    $trialModal.on("focus", "input, select, textarea", function () {
       lastFocusedInput = $(this);
-      currentFormId = $(this).closest('[data-action^="create_trial_step"]').attr('data-action');
+      currentFormId = getCurrentVisibleForm().attr('data-action');
     });
   
-    // Handle modal close or click outside the form
+    // Track blur (losing focus) on form elements
+    $trialModal.on("blur", "input, select, textarea", function () {
+      isFormModified = true;
+    });
+  
+    // Handle modal close button click
+    $closeButton.on("click", function (event) {
+      if (isFormModified) {
+        sendFormAbandonEvent();
+      }
+    });
+  
+    // Handle click outside the form
     $(document).on("click", function (event) {
       const $clickedElement = $(event.target);
       
-      // Check if click is outside the form or on a close button
-      if ((!$clickedElement.closest($formContainers).length || $clickedElement.hasClass('modal-close-btn')) && isFormModified) {
+      if (!$clickedElement.closest($trialModal).length && isFormModified) {
         sendFormAbandonEvent();
       }
     });
@@ -82,7 +100,7 @@ const DataLayerGatherers = {
     });
   
     // Reset form state on submission
-    $formContainers.on("submit", function () {
+    $trialModal.on("submit", '[data-action^="create_trial_step"]', function () {
       isFormModified = false;
       lastFocusedInput = null;
       currentFormId = null;
@@ -90,8 +108,8 @@ const DataLayerGatherers = {
   
     function sendFormAbandonEvent() {
       if (currentFormId && !$(`[data-action="${currentFormId}"]`).data("submitted")) {
-        const emailValue = lastFocusedInput && lastFocusedInput.attr('type') === 'email' ? lastFocusedInput.val() : '';
-        
+        const emailValue = lastFocusedInput.val();
+  
         window.dataLayer = window.dataLayer || [];
         window.dataLayer.push({
           "event": "formAbandon",
