@@ -188,17 +188,18 @@ function sendFormDataToURL(formElement, form) {
 
   const loader = $(formElement).find(".loading-in-button");
   const valueTrack = DataLayerGatherers.getValueTrackData();
-  formData.append("front_page", window.location.host + window.location.pathname);
-  formData.append("adwords[gclid]", window.myGlobals.gclidValue);
-  formData.append("adwords[fbclid]", window.myGlobals.fbclidValue);
+formData.append("front_page", window.location.host + window.location.pathname);
+formData.append("adwords[gclid]", window.myGlobals.gclidValue);
+formData.append("adwords[fbclid]", window.myGlobals.fbclidValue);
 
-  if (valueTrack) {
-    for (const [key,value] of Object.entries(valueTrack)) {
+if (valueTrack) {
+    for (const [key, value] of Object.entries(valueTrack)) {
         if (key !== 'timestamp') {
-            formData.append(key, value);
+            formData.append(`adwords[${key}]`, value);
         }
     }
 }
+
 
   $.ajax({
     type: "POST",
