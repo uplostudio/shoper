@@ -27,7 +27,7 @@ function closeModal() {
 }
 
 // Attach the function to existing click events
-$(".modal__close, .modal__close-area, [data-trigger='close-modal']").on("click", closeModal);
+$(".modal__close, .modal__close-area, [data-trigger='close-modal'], [data-element='close_trial_wrapper']").on("click", closeModal);
 
 // Attach the function to 'keyup' event for the ESC key
 $(document).on("keyup", function (e) {

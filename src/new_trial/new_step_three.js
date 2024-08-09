@@ -1,5 +1,3 @@
-// step_three.js
-
 $(document).ready(function () {
   const $form = $('[data-formid="create_trial_step3"], [data-name="reseller"]');
   const $submitButton = $form.find('[data-form="submit-step-three"]');
@@ -165,4 +163,28 @@ $(document).ready(function () {
       }
     }
   });
+  const targetNode = document.querySelector('[data-element="modal_trial_two"]');
+  const config = { attributes: true, attributeFilter: ['style'] };
+
+  const callback = function (mutationsList) {
+    for (let mutation of mutationsList) {
+      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+        const display = window.getComputedStyle(targetNode).display;
+        if (display === 'none') {
+          const $trialForm = $form.filter('[data-formid="create_trial_step3"]');
+          if ($trialForm.length) {
+            const email = localStorage.getItem("email");
+            const phone = localStorage.getItem("phoneNumber");
+
+            $trialForm.find('[data-form="email"]').val(email).prop("disabled", true);
+            $trialForm.find('[data-form="number_phone"]').val(phone).prop("disabled", true);
+          }
+        }
+      }
+    }
+  };
+
+  const observer = new MutationObserver(callback);
+  observer.observe(targetNode, config);
+
 });
