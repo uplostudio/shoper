@@ -123,11 +123,11 @@ $(document).ready(function() {
         };
 
         if (valueTrack) {
-            Object.entries(valueTrack).forEach(([key,value])=>{
-                if (key !== "timestamp") {
-                    formData[key] = value;
+            for (const [key, value] of Object.entries(valueTrack)) {
+                if (key !== 'timestamp') {
+                    formData.append(`adwords[${key}]`, value);
                 }
-            });
+            }
         }
 
         if (state.errors.length === 0) {
