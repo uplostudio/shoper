@@ -211,7 +211,7 @@ $(document).ready(function () {
             },
           ],
         },
-        eventLabel: "https://www.shoper.pl/help/",
+        eventLabel: window.location.pathname,
       });
 
       const $modalTrialTwo = $('[data-element="modal_trial_two"]');

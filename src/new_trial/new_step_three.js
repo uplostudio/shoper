@@ -132,6 +132,16 @@ $(document).ready(function () {
           });
         } else {
           sendFormDataToURL($form[0]);
+          window.dataLayer = window.dataLayer || [];
+          window.dataLayer.push({
+            "event": "ecommerce_purchase",
+            "ecommerce": {
+                "trial": true,
+                "trial_type": "Standard",
+                "client_type": "Konsument"
+            },
+            "eventLabel": window.location.pathname
+        });
         }
       } else {
         formSubmitErrorTrial(formId, eventAction, phone);
