@@ -112,16 +112,17 @@ $(document).ready(function() {
         phoneField.trigger("blur");
         const valueTrack = DataLayerGatherers.getValueTrackData();
         const loader = form.find(".loading-in-button.is-inner");
-        const formData = {
-            action: "create_trial_step2",
-            phone: iti.getNumber(),
-            formid: "create_trial_step2",
-            "adwords[gclid]": window.myGlobals.gclidValue,
-            "adwords[fbclid]": window.myGlobals.fbclidValue,
-            analytics_id: window.myGlobals.analyticsId,
-            sid: SharedUtils.getCurrentSID()
-        };
-
+        
+        // Create a FormData object
+        const formData = new FormData();
+        formData.append("action", "create_trial_step2");
+        formData.append("phone", iti.getNumber());
+        formData.append("formid", "create_trial_step2");
+        formData.append("adwords[gclid]", window.myGlobals.gclidValue);
+        formData.append("adwords[fbclid]", window.myGlobals.fbclidValue);
+        formData.append("analytics_id", window.myGlobals.analyticsId);
+        formData.append("sid", SharedUtils.getCurrentSID());
+    
         if (valueTrack) {
             for (const [key, value] of Object.entries(valueTrack)) {
                 if (key !== 'timestamp') {
@@ -129,17 +130,19 @@ $(document).ready(function() {
                 }
             }
         }
-
+    
         if (state.errors.length === 0) {
             console.log("No validation errors, submitting form");
-
+    
             const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
             localStorage.setItem('phoneNumber', maskedPhoneNumber);
-
+    
             $.ajax({
                 type: "POST",
                 url: SharedUtils.API_URL,
                 data: formData,
+                processData: false, 
+                contentType: false, 
                 beforeSend: function() {
                     loader.show();
                 },
@@ -165,6 +168,7 @@ $(document).ready(function() {
             console.log("Validation errors:", state.errors);
         }
     }
+    
 
     setupValidation();
 
