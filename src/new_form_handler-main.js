@@ -118,7 +118,27 @@ function validateInput($input) {
   return Promise.resolve(false);
 }
 
+function pushFormError(errorMessage, $input) {
+  const formId = $input.closest('form').attr('id');
+  const formStep = $input.attr('data-type') || 'undefined';
+
+  window.dataLayer = window.dataLayer || [];
+  window.dataLayer.push({
+    event: "form_error",
+    error_message: errorMessage,
+    form_id: formId,
+    form_location: "undefined",
+    form_step: formStep,
+    form_type: "undefined",
+    lead_offer: "standard",
+    lead_type: "new"
+  });
+}
+
 function showError($input, message, isOldStructure, isRequiredError) {
+  console.log(`Validation error for input ${$input.attr("name")}: ${message}`); // Log the error message
+  pushFormError(message, $input); // Fire dataLayer event
+
   $input.addClass("invalid");
   if (isOldStructure) {
     const $errorWrappers = $input.siblings(".form-input__error-wrapper");
@@ -135,6 +155,8 @@ function showError($input, message, isOldStructure, isRequiredError) {
     $errorBox.text(message).show();
   }
 }
+
+
 
 function hideError($input, isOldStructure) {
   if (isOldStructure) {
