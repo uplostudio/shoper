@@ -371,7 +371,6 @@ function sendFormDataToURL(formElement) {
       }
 
       if ($form.data("name") === "create_trial_step3" && data.status === 1) {
-        history.replaceState(null, null, "https://www.shoper.pl/myadmin");
         window.location.href = data.redirect;
         return;
       }
