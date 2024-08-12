@@ -157,7 +157,6 @@ function pushFormError(errorMessage, $input) {
 }
 
 function showError($input, message, isOldStructure, isRequiredError) {
-  console.log(`Validation error for input ${$input.attr("name")}: ${message}`);
   pushFormError(message, $input);
 
   $input.addClass("invalid");

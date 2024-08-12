@@ -43,13 +43,11 @@ $(document).ready(function () {
       });
 
       phoneField.on("blur", function () {
-        console.log("Phone field blur triggered");
         state.errors = validatePhone(this, iti);
       });
 
       phoneField.on("keydown", function (e) {
         if (e.which === 13) {
-          console.log("Enter key pressed");
           e.preventDefault();
           $(this).trigger("blur");
           handleFormSubmission(e, phoneField, iti);
@@ -60,7 +58,6 @@ $(document).ready(function () {
         .closest("form")
         .find('[data-form="submit-step-two"]')
         .on("click", function (e) {
-          console.log("Form submit button clicked");
           handleFormSubmission(e, phoneField, iti);
         });
     });
@@ -70,7 +67,6 @@ $(document).ready(function () {
     let errors = [];
     const countryCode = iti.getSelectedCountryData().iso2;
     let phone = iti.getNumber().trim();
-    console.log("Validating phone number:", phone);
 
     clearErrors($(field));
 
@@ -112,7 +108,6 @@ $(document).ready(function () {
   }
 
   function handleFormSubmission(e, phoneField, iti) {
-    console.log("handleFormSubmission called");
     e.preventDefault();
     let form = phoneField.closest("form");
     const wFormFail = form.find(".w-form-fail");
@@ -139,7 +134,6 @@ $(document).ready(function () {
     }
 
     if (state.errors.length === 0) {
-      console.log("No validation errors, submitting form");
 
       const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
       localStorage.setItem("phoneNumber", maskedPhoneNumber);
@@ -156,12 +150,7 @@ $(document).ready(function () {
         success: function (data) {
           if (data.status === 0) {
             showError(phoneField, data.errors.phone.invalidPhone);
-            console.log(
-              "Form submission failed with error:",
-              data.errors.phone.invalidPhone
-            );
           } else {
-            console.log("Form submission successful");
             SharedUtils.handleResponse(
               data,
               form,
@@ -173,7 +162,6 @@ $(document).ready(function () {
           }
         },
         error: function (data) {
-          console.log("Form submission failed");
           SharedUtils.handleResponse(
             data,
             form,
@@ -188,7 +176,6 @@ $(document).ready(function () {
         },
       });
     } else {
-      console.log("Validation errors:", state.errors);
     }
   }
 
@@ -224,9 +211,7 @@ $(document).ready(function () {
         $modalTrialThree.show();
       }
 
-      console.log("Step 2 completed successfully");
       if (data.license_id) {
-        console.log("License ID:", data.license_id);
       }
     }
   });

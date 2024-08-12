@@ -73,7 +73,6 @@ $(document).ready(function () {
 
   function toggleTrialPromoBox() {
     const isPayNow = $payNowRadios.filter(":checked").val() === "1";
-    console.log(isPayNow);
     $trialPromoBox.toggle(isPayNow);
 
     // Change the button label
@@ -108,7 +107,6 @@ $(document).ready(function () {
   }
 
   function pushDataLayerError() {
-    console.log("Form submission error pushed to dataLayer");
   }
 
   function handleFormSubmission() {
@@ -164,12 +162,11 @@ $(document).ready(function () {
         $modalTrialSuccess.show();
       }
 
-      console.log("Step 3 completed successfully");
       if (data.license_id) {
-        console.log("License ID:", data.license_id);
+
       }
       if (data.host) {
-        console.log("Host:", data.host);
+
       }
     }
   });
