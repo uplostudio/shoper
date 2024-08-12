@@ -40,14 +40,14 @@ const omittedAttributes = new Set([
   "layer",
 ]);
 
-function validateNIPWithAPI(nip) {
+function validateNIPWithAPI(nip, country) {
   return new Promise((resolve, reject) => {
     $.ajax({
       type: "POST",
       url: API_URL_ADDRESS,
       data: {
         action: "validate_nip",
-        country: "PL",
+        country: country,
         nip: nip,
       },
       success: (response) => {
@@ -60,6 +60,7 @@ function validateNIPWithAPI(nip) {
     });
   });
 }
+
 function validateInput($input) {
   const value = $input.val().trim();
   const isRequired = $input.prop("required");
@@ -104,8 +105,9 @@ function validateInput($input) {
       );
       return Promise.resolve(true);
     } else if (inputType === "nip") {
-      // If NIP regex passes, perform API validation
-      return validateNIPWithAPI(value)
+      const $form = $input.closest('form');
+      const country = $form.find('select[data-form="address1[country]"]').val() || 'PL';
+      return validateNIPWithAPI(value, country)
         .then((isValid) => {
           if (!isValid) {
             showError($input, errorMessages.nip, isOldStructure, false);
@@ -116,7 +118,6 @@ function validateInput($input) {
           }
         })
         .catch(() => {
-          // In case of API error, consider it valid to not block the user
           hideError($input, isOldStructure);
           return false;
         });
@@ -126,8 +127,6 @@ function validateInput($input) {
   hideError($input, isOldStructure);
   return Promise.resolve(false);
 }
-
-
 
 function pushFormError(errorMessage, $input) {
   const formId = $input.closest('form').attr('id');
@@ -147,8 +146,8 @@ function pushFormError(errorMessage, $input) {
 }
 
 function showError($input, message, isOldStructure, isRequiredError) {
-  console.log(`Validation error for input ${$input.attr("name")}: ${message}`); // Log the error message
-  pushFormError(message, $input); // Fire dataLayer event
+  console.log(`Validation error for input ${$input.attr("name")}: ${message}`);
+  pushFormError(message, $input);
 
   $input.addClass("invalid");
   if (isOldStructure) {
@@ -166,8 +165,6 @@ function showError($input, message, isOldStructure, isRequiredError) {
     $errorBox.text(message).show();
   }
 }
-
-
 
 function hideError($input, isOldStructure) {
   if (isOldStructure) {
@@ -268,9 +265,6 @@ function initializeInputs() {
   $("input, textarea").removeClass("invalid");
 }
 
-
-
-
 function validateForm(formElement) {
   const $inputs = $(formElement).find(
     "input:not([type='submit']):not([data-exclude='true']):not(:disabled), textarea:not([data-exclude='true']):not(:disabled), select:not([data-exclude='true']):not(:disabled)"
@@ -308,7 +302,8 @@ function performNIPPreflightCheck($form) {
     return Promise.resolve(false);
   }
 
-  return validateNIPWithAPI(nipValue)
+  const country = $form.find('select[data-form="address1[country]"]').val() || 'PL';
+  return validateNIPWithAPI(nipValue, country)
     .then((isValid) => {
       if (!isValid) {
         showError(
@@ -323,7 +318,6 @@ function performNIPPreflightCheck($form) {
       return isValid;
     })
     .catch(() => {
-      // In case of API error, we'll consider it valid to not block the user
       hideError($nipInput, !$nipInput.siblings(".new__input-label").length);
       return true;
     });
@@ -459,7 +453,8 @@ function handleSubmitClick(e) {
       const $nipInput = $form.find('input[data-type="nip"]');
       if ($nipInput.length > 0) {
         const nipValue = $nipInput.val().trim();
-        validateNIPWithAPI(nipValue)
+        const country = $form.find('select[data-form="address1[country]"]').val() || 'PL';
+        validateNIPWithAPI(nipValue, country)
           .then((isValid) => {
             if (isValid) {
               sendFormDataToURL($form[0]);
@@ -535,6 +530,15 @@ function initializeEventListeners() {
       });
     }
   });
+
+  // Add event listener for country select change
+  $('select[data-form="address1[country]"]').on('change', function() {
+    const $form = $(this).closest('form');
+    const $nipInput = $form.find('input[data-type="nip"]');
+    if ($nipInput.length > 0 && $nipInput.val().trim() !== '') {
+      validateInput($nipInput);
+    }
+  });
 }
 
 function cleanObject(obj = {}) {
@@ -555,4 +559,3 @@ $(document).ready(() => {
   initializeInputs();
   initializeEventListeners();
 });
-// 
