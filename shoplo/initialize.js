@@ -11,6 +11,7 @@ import formHandler from './modules/formHandler';
 // import checkNipField from './modules/checkNipField';
 import trialSetSpecialFields from './modules/trialSetSpecialFields';
 import dataLayer from './modules/dataLayer';
+import setPackage from './modules/setPackage';
 
 const modules = [
     removeDataLocalStorage,
@@ -24,7 +25,8 @@ const modules = [
     formHandler,
     // checkNipField,
     trialSetSpecialFields,
-    dataLayer
+    dataLayer,
+    setPackage
 ];
 
 modules.forEach(module => {
