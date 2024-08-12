@@ -22,9 +22,10 @@ const errorMessages = {
     "Podaj poprawny numer telefonu składający się z 9 cyfr bez znaków specjalnych.",
   text: "Podaj poprawne dane.",
   nip: "Podaj poprawny numer NIP",
+  address: "Podaj poprawny adres",
   url: "Podaj poprawny adres URL.",
   zipcode: "Podaj poprawny kod pocztowy",
-  default: "Podaj poprawne dane",
+  default: "To pole jest wymagane",
 };
 
 const omittedAttributes = new Set([
