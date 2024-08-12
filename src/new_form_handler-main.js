@@ -24,7 +24,7 @@ const errorMessages = {
   nip: "Podaj poprawny numer NIP",
   url: "Podaj poprawny adres URL.",
   zipcode: "Podaj poprawny kod pocztowy",
-  default: "To pole jest wymagane",
+  default: "Podaj poprawne dane",
 };
 
 const omittedAttributes = new Set([
@@ -111,14 +111,17 @@ function validateInput($input) {
         .then((isValid) => {
           if (!isValid) {
             showError($input, errorMessages.nip, isOldStructure, false);
+            updateInputLabel($input, 'invalid');
             return true;
           } else {
             hideError($input, isOldStructure);
+            updateInputLabel($input, 'valid');
             return false;
           }
         })
         .catch(() => {
           hideError($input, isOldStructure);
+          updateInputLabel($input, 'valid');
           return false;
         });
     }
@@ -126,6 +129,13 @@ function validateInput($input) {
 
   hideError($input, isOldStructure);
   return Promise.resolve(false);
+}
+
+function updateInputLabel($input, state) {
+  const $label = $input.siblings(".new__input-label");
+  if ($label.length) {
+    $label.removeClass("valid invalid").addClass(state);
+  }
 }
 
 function pushFormError(errorMessage, $input) {
@@ -531,12 +541,14 @@ function initializeEventListeners() {
     }
   });
 
-  // Add event listener for country select change
+  // Modified event listener for country select change
   $('select[data-form="address1[country]"]').on('change', function() {
     const $form = $(this).closest('form');
     const $nipInput = $form.find('input[data-type="nip"]');
     if ($nipInput.length > 0 && $nipInput.val().trim() !== '') {
-      validateInput($nipInput);
+      validateInput($nipInput).then((isInvalid) => {
+        updateInputLabel($nipInput, isInvalid ? 'invalid' : 'valid');
+      });
     }
   });
 }
