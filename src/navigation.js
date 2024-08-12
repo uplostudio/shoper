@@ -34,12 +34,12 @@
   checkIfMobile();
   originViewport = currentViewport;
 
-  $(window).resize(function () {
-    checkIfMobile();
-    if (currentViewport != originViewport) {
-      location.reload();
-    }
-  });
+  // $(window).resize(function () {
+  //   checkIfMobile();
+  //   if (currentViewport != originViewport) {
+  //     location.reload();
+  //   }
+  // });
 
   function initNav() {
     /** Set data */

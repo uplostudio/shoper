@@ -60,7 +60,6 @@ function validateNIPWithAPI(nip) {
     });
   });
 }
-
 function validateInput($input) {
   const value = $input.val().trim();
   const isRequired = $input.prop("required");
@@ -76,11 +75,21 @@ function validateInput($input) {
     return Promise.resolve(false);
   }
 
-  if (
-    isRequired &&
-    (value === "" ||
-      (isOldStructure && inputType === "checkbox" && !$input.prop("checked")))
-  ) {
+  // Handle checkbox validation
+  if (inputType === "checkbox") {
+    const isChecked = $input.prop("checked");
+
+    if (isRequired && !isChecked) {
+      showError($input, errorMessages.default, isOldStructure, true);
+      return Promise.resolve(true);
+    }
+
+    hideError($input, isOldStructure);
+    return Promise.resolve(false);
+  }
+
+  // Handle other input types
+  if (isRequired && value === "") {
     showError($input, errorMessages.default, isOldStructure, true);
     return Promise.resolve(true);
   }
@@ -117,6 +126,8 @@ function validateInput($input) {
   hideError($input, isOldStructure);
   return Promise.resolve(false);
 }
+
+
 
 function pushFormError(errorMessage, $input) {
   const formId = $input.closest('form').attr('id');
@@ -173,19 +184,22 @@ function handleBlur(event) {
   const $element = $(event.target);
   $element.data("touched", true).removeClass("active");
 
-  validateInput($element).then(() => {
+  validateInput($element).then((isInvalid) => {
     if (!$element.siblings(".new__input-label").length) return;
 
     const $label = $element.siblings(".new__input-label");
-    $label.removeClass("active");
-    if ($element.val()) {
+    $label.removeClass("active valid invalid");
+    
+    if (isInvalid) {
+      $label.addClass("invalid");
+    } else if ($element.val()) {
       $label.addClass("valid");
-    } else {
-      $label.removeClass("valid");
-      $element.attr("placeholder", $element.data("initial-placeholder"));
     }
+    
+    $element.attr("placeholder", $element.data("initial-placeholder"));
   });
 }
+
 
 function initializeInputs() {
   $("input, textarea").each(function () {
@@ -203,43 +217,50 @@ function initializeInputs() {
             .addClass("active")
             .removeClass("invalid")
             .attr("placeholder", "");
-          $label.addClass("active").removeClass("invalid valid");
+          $label.removeClass("valid invalid").addClass("active");
           $(this).siblings(".error-box").hide();
         },
         input: function () {
           const $label = $(this).siblings(".new__input-label");
           const hasValue = $(this).val().length > 0;
-          $label.toggleClass("active", hasValue);
+          $label.removeClass("valid invalid");
+          if (hasValue) {
+            $label.addClass("active");
+          } else {
+            $label.removeClass("active");
+          }
           $(this).attr(
             "placeholder",
             hasValue ? "" : $(this).data("initial-placeholder")
           );
-          if ($(this).hasClass("invalid")) {
-            validateInput($(this));
-          }
-        },
-        mouseenter: function () {
-          $(this).siblings(".new__input-label").addClass("hover");
-        },
-        mouseleave: function () {
-          $(this).siblings(".new__input-label").removeClass("hover");
+          validateInput($(this)).then((isInvalid) => {
+            if (isInvalid) {
+              $label.addClass("invalid");
+            } else if (hasValue) {
+              $label.addClass("valid");
+            }
+          });
         },
       });
 
       // Initial state check
       const $label = $element.siblings(".new__input-label");
-      if ($element.val()) {
-        $label.addClass("active");
-        $element.attr("placeholder", "");
-      } else {
-        $label.removeClass("active");
-        $element.attr("placeholder", $element.data("initial-placeholder"));
-      }
+      $label.removeClass("active valid invalid");
+      validateInput($element).then((isInvalid) => {
+        if (isInvalid) {
+          $label.addClass("invalid");
+        } else if ($element.val()) {
+          $label.addClass("valid");
+        }
+      });
+      $element.attr("placeholder", $element.val() ? "" : $element.data("initial-placeholder"));
     }
 
     $element.on("blur", handleBlur);
   });
 }
+
+
 
 function validateForm(formElement) {
   const $inputs = $(formElement).find(
