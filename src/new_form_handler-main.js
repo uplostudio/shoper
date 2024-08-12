@@ -200,7 +200,6 @@ function handleBlur(event) {
   });
 }
 
-
 function initializeInputs() {
   $("input, textarea").each(function () {
     const $element = $(this);
@@ -246,19 +245,29 @@ function initializeInputs() {
       // Initial state check
       const $label = $element.siblings(".new__input-label");
       $label.removeClass("active valid invalid");
-      validateInput($element).then((isInvalid) => {
-        if (isInvalid) {
-          $label.addClass("invalid");
-        } else if ($element.val()) {
-          $label.addClass("valid");
-        }
-      });
-      $element.attr("placeholder", $element.val() ? "" : $element.data("initial-placeholder"));
+      
+      // Only validate if the field has a value
+      if ($element.val()) {
+        validateInput($element).then((isInvalid) => {
+          if (isInvalid) {
+            $label.addClass("invalid");
+          } else {
+            $label.addClass("valid");
+          }
+        });
+        $element.attr("placeholder", "");
+      } else {
+        $element.attr("placeholder", $element.data("initial-placeholder"));
+      }
     }
 
     $element.on("blur", handleBlur);
   });
+
+  // Remove any 'invalid' classes that might have been set incorrectly on load
+  $("input, textarea").removeClass("invalid");
 }
+
 
 
 
