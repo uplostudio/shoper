@@ -1,8 +1,9 @@
-// step_one.js
+// new_step_one.js
 
 $(document).ready(() => {
   let ajaxRequest;
   let currentSID = null;
+  let lastProcessedData = null;
 
   const generateErrorMessage = (type) => {
     const messages = {
@@ -82,7 +83,6 @@ $(document).ready(() => {
       ...DataLayerGatherers.getValueTrackData(),
     };
 
-    // Check for SID in localStorage, parse it, and add its value to formData if present
     const localStorageSID = localStorage.getItem("sid");
     if (localStorageSID) {
       try {
@@ -194,8 +194,22 @@ $(document).ready(() => {
     });
   }
 
-  $(document).on("trialStepComplete", function (event, completedStep, data) {
-    if (completedStep === 1) {
+  const debounce = (func, wait) => {
+    let timeout;
+    return function executedFunction(...args) {
+      const later = () => {
+        clearTimeout(timeout);
+        func(...args);
+      };
+      clearTimeout(timeout);
+      timeout = setTimeout(later, wait);
+    };
+  };
+
+  const handleTrialStepComplete = debounce(function (event, completedStep, data) {
+    if (completedStep === 1 && JSON.stringify(data) !== JSON.stringify(lastProcessedData)) {
+      lastProcessedData = data;
+      
       $trialsWrapper.show();
       const $modalTrialOne = $('[data-element="modal_trial_one"]');
       const $modalTrialTwo = $('[data-element="modal_trial_two"]');
@@ -234,10 +248,10 @@ $(document).ready(() => {
           $modalTrialTwo.show();
         }
       }
-
-      console.log("Step 1 completed successfully");
     }
-  });
+  }, 250);
+
+  $(document).off("trialStepComplete.step1").on("trialStepComplete.step1", handleTrialStepComplete);
 
   setupValidation();
   SharedUtils.checkAndUpdateSID();
@@ -267,14 +281,8 @@ $(document).ready(() => {
     );
     $(document).off("submit", '[data-action="create_trial_step1"]');
     $openTrialWrapperButton.off("click");
+    $(document).off("trialStepComplete.step1");
   };
-
-  // const forceReload = () => {
-  //     cleanup();
-  //     requestAnimationFrame(() => {
-  //         window.location.reload(true);
-  //     });
-  // };
 
   $(window).on("beforeunload", cleanup);
 });
