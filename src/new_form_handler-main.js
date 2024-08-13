@@ -443,17 +443,18 @@ function handleSubmitClick(e) {
   e.preventDefault();
   const $form = $(this).closest("form");
 
+  const formAction = $form.attr("data-action");
+  if (signupFormsActions.includes(formAction)) {
+    dataLayer.push({
+      event: "sign_up",
+      user_id: "undefined",
+      method: "url",
+      shop_id: "undefined",
+    });
+  }
+
   validateForm($form[0]).then((errors) => {
     if (errors > 0) {
-      const formAction = $form.attr("data-action");
-      if (signupFormsActions.includes(formAction)) {
-        dataLayer.push({
-          event: "sign_up",
-          user_id: "undefined",
-          method: "url",
-          shop_id: "undefined",
-        });
-      }
       DataLayerGatherers.pushTrackEventErrorModal($form.attr("id"), $(this).val(), $form.attr("data-label") || "consult-form")
     } else {
       const $nipInput = $form.find('input[data-type="nip"]');
