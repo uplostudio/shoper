@@ -7,7 +7,7 @@ $(document).ready(function () {
   function maskPhoneNumber(phone) {
     return phone.replace(
       /(\+48)(\d{3})(\d{3})(\d{1})(\d{2})/,
-      "$1 *** *** $4"
+      "$1 *** *** *$4$5"
     );
   }
 
