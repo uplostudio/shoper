@@ -271,7 +271,6 @@ function initializeInputs() {
     $element.on("blur", handleBlur);
   });
 
-  // Remove any 'invalid' classes that might have been set incorrectly on load
   $("input, textarea").removeClass("invalid");
 }
 
@@ -367,7 +366,6 @@ function sendFormDataToURL(formElement) {
         if (!outputValues[dataForm]) {
           outputValues[dataForm] = [];
         }
-        // Use aria-label value if available, otherwise use the input's value
         const value = $input.attr("aria-label") || $input.val();
         outputValues[dataForm].push(value);
       }
@@ -377,10 +375,8 @@ function sendFormDataToURL(formElement) {
     }
   });
 
-  // Define array input names
   const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
 
-  // Append outputValues to formData
   Object.keys(outputValues).forEach((inputName) => {
     if (
       arrayInputNames.includes(inputName) &&
@@ -522,10 +518,8 @@ function initializeEventListeners() {
       eventLabel: window.location.href,
     };
 
-    // Send the common data to dataLayer
     sendDataLayer(commonData);
 
-    // If the submission was successful, send an additional event
     if (e.type === "submitSuccess") {
       const formId = $(formElement).attr("id");
 
@@ -541,7 +535,6 @@ function initializeEventListeners() {
     }
   });
 
-  // Modified event listener for country select change
   $('select[data-form="address1[country]"]').on('change', function() {
     const $form = $(this).closest('form');
     const $nipInput = $form.find('input[data-type="nip"]');
@@ -566,7 +559,6 @@ function sendDataLayer(obj = {}) {
   }
 }
 
-// Initialize everything when the document is ready
 $(document).ready(() => {
   initializeInputs();
   initializeEventListeners();

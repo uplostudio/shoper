@@ -82,7 +82,6 @@ SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, st
             localStorage.setItem('host', data.host);
         }
 
-        // Trigger a custom event to notify that the step is complete
         $(document).trigger('trialStepComplete', [stepNumber, data]);
     }
 };
