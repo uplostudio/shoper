@@ -1,13 +1,13 @@
 $(document).ready(function () {
   let state = {
     errors: [],
-    phoneRegex: window.validationPatterns.phone, // Use the existing phone regex
+    phoneRegex: window.validationPatterns.phone,
   };
 
   function maskPhoneNumber(phone) {
     return phone.replace(
       /(\+48)(\d{3})(\d{3})(\d{1})(\d{2})/,
-      "$1 *** *** *$4$5"
+      "$1 *** *** $4"
     );
   }
 

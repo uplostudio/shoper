@@ -8,7 +8,6 @@ $(document).ready(function () {
   const $trialPromoBox = $("#trial-promo-box");
 
   function setupForm() {
-    // Populate email and phone from localStorage only for create_trial_step3 form
     const $trialForm = $form.filter('[data-formid="create_trial_step3"]');
     if ($trialForm.length) {
       const email = localStorage.getItem("email");
@@ -43,7 +42,6 @@ $(document).ready(function () {
       handleFormSubmission();
     });
 
-    // Use the existing input handling from form-handler-main.js
     $form.find("input, select, textarea").each(function () {
       const $input = $(this);
       $input.data("touched", false);
