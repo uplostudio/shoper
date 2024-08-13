@@ -273,7 +273,7 @@ $(document).ready(() => {
     );
     $(document).off(
       "keydown",
-      '[data-action="create_trial_step1"] [data-type="email"]'
+      '[data-action="create_trial_step1"] [data-type="email"]'  
     );
     $(document).off(
       "click",
