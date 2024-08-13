@@ -180,25 +180,25 @@ const sendForm = (form) => {
       $(`#${formData.action}`).parent().get(0).style.display = "block";
       console.error("Error Connection with API");
     },
+  });
+};
 
-    showErrors: function(data) {
-      let error = '';
-      Object.entries(data.errors).forEach(([key, value]) => {
-        if (typeof value === "object") {
-          Object.entries(value).forEach(([subKey, subValue]) => {
-            if (typeof subValue === "object") {
-              Object.entries(subValue).forEach(
-                ([errorKey, errorMessage]) => {
-                  error += `${errorMessage} `;
-                }
-              );
+const showErrors = (data) => {
+  let error = '';
+  Object.entries(data.errors).forEach(([key, value]) => {
+    if (typeof value === "object") {
+      Object.entries(value).forEach(([subKey, subValue]) => {
+        if (typeof subValue === "object") {
+          Object.entries(subValue).forEach(
+            ([errorKey, errorMessage]) => {
+              error += `${errorMessage} `;
             }
-          });
+          );
         }
       });
-      return error;
     }
   });
+  return error;
 };
 
 export default {
