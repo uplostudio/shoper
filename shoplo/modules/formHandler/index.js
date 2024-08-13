@@ -183,9 +183,9 @@ const sendForm = (form) => {
   });
 };
 
-const showErrors = (data) => {
+const showErrors = ( errors ) => {
   let error = '';
-  Object.entries(data.errors).forEach(([key, value]) => {
+  Object.entries(errors).forEach(([key, value]) => {
     if (typeof value === "object") {
       Object.entries(value).forEach(([subKey, subValue]) => {
         if (typeof subValue === "object") {
