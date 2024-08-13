@@ -183,22 +183,26 @@ const sendForm = (form) => {
   });
 };
 
-const showErrors = ( errors ) => {
+const showErrors = (errors) => {
   let error = '';
-  Object.entries(errors).forEach(([key, value]) => {
-    if (typeof value === "object") {
-      Object.entries(value).forEach(([subKey, subValue]) => {
-        if (typeof subValue === "object") {
-          Object.entries(subValue).forEach(
-            ([errorKey, errorMessage]) => {
-              error += `${errorMessage} `;
-            }
-          );
-        }
-      });
-    }
-  });
-  return error;
+
+  // Sprawdź, czy errors jest obiektem
+  if (errors && typeof errors === 'object') {
+    Object.entries(errors).forEach(([key, value]) => {
+      // Sprawdź, czy value jest obiektem
+      if (typeof value === 'object') {
+        Object.entries(value).forEach(([subKey, subValue]) => {
+          // Sprawdź, czy subValue jest stringiem
+          if (typeof subValue === 'string') {
+            error += `${subValue} `;
+          }
+        });
+      }
+    });
+  }
+
+  // Zwraca sformatowane komunikaty błędów
+  return error.trim(); // Użyj trim, aby usunąć nadmiarowe spacje na końcu
 };
 
 export default {
