@@ -422,6 +422,7 @@ function sendFormDataToURL(formElement) {
       }
 
       if ($form.data("name") === "create_trial_step3" && data.status === 1) {
+        localStorage.clear();
         window.location.href = data.redirect;
         return;
       }
