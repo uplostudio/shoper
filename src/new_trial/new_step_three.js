@@ -128,6 +128,7 @@ $(document).ready(function () {
           });
         } else {
           sendFormDataToURL($form[0]);
+          DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction)
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             "event": "ecommerce_purchase",
