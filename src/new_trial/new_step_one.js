@@ -4,6 +4,9 @@ $(document).ready(() => {
   let ajaxRequest;
   let currentSID = null;
   let lastProcessedData = null;
+  const $modalTrialOne = $('[data-element="modal_trial_one"]');
+  const $modalTrialTwo = $('[data-element="modal_trial_two"]');
+  const $modalTrialThree = $('[data-element="modal_trial_three"]');
 
   const generateErrorMessage = (type) => {
     const messages = {
@@ -124,6 +127,20 @@ $(document).ready(() => {
         );
         $(document).trigger("trialStepComplete", [1, response]);
         $('[data-app="trial-domain"]').text(response.host);
+        if (response.step === "#create_trial_step3") {
+          $trialsWrapper.show();
+          if ($modalTrialTwo.length) {
+            $modalTrialTwo.hide();
+          }
+          if ($modalTrialThree.length) {
+            $modalTrialThree.show();
+          }
+        } else {
+          if ($modalTrialTwo.length) {
+            $modalTrialThree.hide()
+            $modalTrialTwo.show();
+          }
+        }
       })
       .catch((error) => {
         SharedUtils.handleResponse(
@@ -206,30 +223,36 @@ $(document).ready(() => {
     };
   };
 
-  const handleTrialStepComplete = debounce(function (event, completedStep, data) {
-    if (completedStep === 1 && JSON.stringify(data) !== JSON.stringify(lastProcessedData)) {
+  const handleTrialStepComplete = debounce(function (
+    event,
+    completedStep,
+    data
+  ) {
+    if (
+      completedStep === 1 &&
+      JSON.stringify(data) !== JSON.stringify(lastProcessedData)
+    ) {
       lastProcessedData = data;
-      
+
       $trialsWrapper.show();
-      const $modalTrialOne = $('[data-element="modal_trial_one"]');
-      const $modalTrialTwo = $('[data-element="modal_trial_two"]');
-      const $modalTrialThree = $('[data-element="modal_trial_three"]');
-      
+
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "begin_checkout",
         ecommerce: {
           value: 420,
-          items: [{
-            item_id: "Standard",
-            item_name: "Standard",
-            item_category: "Global Header",
-            price: "35",
-            currency: "PLN",
-            item_variant: "12"
-          }]
+          items: [
+            {
+              item_id: "Standard",
+              item_name: "Standard",
+              item_category: "Global Header",
+              price: "35",
+              currency: "PLN",
+              item_variant: "12",
+            },
+          ],
         },
-        eventLabel: window.location.pathname
+        eventLabel: window.location.pathname,
       });
 
       if ($modalTrialOne.length) {
@@ -249,9 +272,12 @@ $(document).ready(() => {
         }
       }
     }
-  }, 250);
+  },
+  250);
 
-  $(document).off("trialStepComplete.step1").on("trialStepComplete.step1", handleTrialStepComplete);
+  $(document)
+    .off("trialStepComplete.step1")
+    .on("trialStepComplete.step1", handleTrialStepComplete);
 
   setupValidation();
   SharedUtils.checkAndUpdateSID();
@@ -273,7 +299,7 @@ $(document).ready(() => {
     );
     $(document).off(
       "keydown",
-      '[data-action="create_trial_step1"] [data-type="email"]'  
+      '[data-action="create_trial_step1"] [data-type="email"]'
     );
     $(document).off(
       "click",
