@@ -12,6 +12,7 @@ import formHandler from './modules/formHandler';
 import trialSetSpecialFields from './modules/trialSetSpecialFields';
 import dataLayer from './modules/dataLayer';
 import setPackage from './modules/setPackage';
+import preoidToggler from './modules/preoidToggler';
 
 const modules = [
     removeDataLocalStorage,
@@ -26,7 +27,8 @@ const modules = [
     // checkNipField,
     trialSetSpecialFields,
     dataLayer,
-    setPackage
+    setPackage,
+    preoidToggler
 ];
 
 modules.forEach(module => {
