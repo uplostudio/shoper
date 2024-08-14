@@ -6,10 +6,11 @@ $(document).ready(function () {
 
   function maskPhoneNumber(phone) {
     return phone.replace(
-      /(\+48)(\d{3})(\d{3})(\d{1})(\d{2})/,
-      "$1 *** *** *$4$5"
+      /(\+48)(\d{7})(\d{2})/,
+      "$1 *** *** *$3"
     );
   }
+  
 
   function formSubmitErrorTrial(formId, eventAction, phone) {
     window.dataLayer = window.dataLayer || [];
