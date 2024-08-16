@@ -49,9 +49,6 @@ $(document).ready(() => {
         .siblings(".new__input-label")
         .removeClass("valid active")
         .addClass("invalid");
-
-      const $form = $field.closest("form");
-      formSubmitErrorTrial($form.attr("id"), $form.data("action"), email);
     } else {
       $field.removeClass("invalid").addClass("valid");
       $field
@@ -66,7 +63,11 @@ $(document).ready(() => {
   const handleFormSubmission = (e, $form) => {
     e.preventDefault();
     const $emailField = $form.find('[data-type="email"]');
-    if (validateEmail($emailField)) return;
+    const error = validateEmail($emailField);
+    if (error) {
+      formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
+      return;
+    }
 
     const $wFormFail = $form.next().next();
     const $loader = $form.find(".loading-in-button.is-inner");
