@@ -137,9 +137,7 @@ $(document).ready(function () {
                 ecommerce: {
                   trial: true,
                   trial_type: "Standard",
-                  client_type: $form
-                    .find('input[name="address[client_type]"]:checked')
-                    .val(),
+                  client_type: "Firma",
                 },
                 eventLabel: window.location.pathname,
               });
@@ -157,9 +155,7 @@ $(document).ready(function () {
             ecommerce: {
               trial: true,
               trial_type: "Standard",
-              client_type: $form
-                .find('input[name="address[client_type]"]:checked')
-                .val(),
+              client_type: "Konsument",
             },
             eventLabel: window.location.pathname,
           });
