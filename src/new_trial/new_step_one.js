@@ -65,7 +65,11 @@ $(document).ready(() => {
     const $emailField = $form.find('[data-type="email"]');
     const error = validateEmail($emailField);
     if (error) {
-      formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
+      formSubmitErrorTrial(
+        $form.attr("id"),
+        $form.data("action"),
+        $emailField.val()
+      );
       return;
     }
 
@@ -111,52 +115,70 @@ $(document).ready(() => {
     });
 
     ajaxRequest
-      .then((response) => {
-        SharedUtils.handleResponse(
-          response,
-          $form,
-          $emailField,
-          $wFormFail,
-          true,
-          1
-        );
-        DataLayerGatherers.pushEmailSubmittedData(
-          window.myGlobals.clientId,
-          window.myGlobals.shopId,
-          $form.data("action"),
-          $emailField.val()
-        );
-        $(document).trigger("trialStepComplete", [1, response]);
-        $('[data-app="trial-domain"]').text(response.host);
-        if (response.step === "#create_trial_step3") {
-          $trialsWrapper.show();
-          if ($modalTrialTwo.length) {
-            $modalTrialTwo.hide();
-          }
-          if ($modalTrialThree.length) {
-            $modalTrialThree.show();
-          }
-        } else {
-          if ($modalTrialTwo.length) {
-            $modalTrialThree.hide()
-            $modalTrialTwo.show();
-          }
-        }
-      })
-      .catch((error) => {
-        SharedUtils.handleResponse(
-          error,
-          $form,
-          $emailField,
-          $wFormFail,
-          false,
-          1
-        );
-      })
-      .always(() => {
-        $loader.hide();
-        ajaxRequest = null;
-      });
+  .then((response) => {
+    if (response.status === 1) {
+      SharedUtils.handleResponse(
+        response,
+        $form,
+        $emailField,
+        $wFormFail,
+        true,
+        1
+      );
+      DataLayerGatherers.pushEmailSubmittedData(
+        window.myGlobals.clientId,
+        window.myGlobals.shopId,
+        $form.data("action"),
+        $emailField.val()
+      );
+
+      // Hide all modals first
+      $modalTrialOne.hide();
+      $modalTrialTwo.hide();
+      $modalTrialThree.hide();
+
+      // Show the trials wrapper
+      $trialsWrapper.show();
+
+      // Set up the next step
+      if (response.step === "#create_trial_step3") {
+        $modalTrialThree.show();
+      } else {
+        $modalTrialTwo.show();
+      }
+
+      // Trigger the event
+      $(document).trigger("trialStepComplete", [1, response]);
+      $('[data-app="trial-domain"]').text(response.host);
+
+    } else {
+      // Handle status 0 response (unchanged)
+      const error = generateErrorMessage("email");
+      $emailField.next(".error-box").remove();
+      $emailField.after(`<span class="error-box">${error}</span>`);
+      $emailField.removeClass("valid").addClass("invalid");
+      $emailField
+        .siblings(".new__input-label")
+        .removeClass("valid active")
+        .addClass("invalid");
+      formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
+    }
+  })
+  .catch((error) => {
+    SharedUtils.handleResponse(
+      error,
+      $form,
+      $emailField,
+      $wFormFail,
+      false,
+      1
+    );
+  })
+  .always(() => {
+    $loader.hide();
+    ajaxRequest = null;
+  });
+
   };
 
   const setupValidation = () => {
