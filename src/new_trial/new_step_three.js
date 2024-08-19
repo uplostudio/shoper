@@ -14,7 +14,10 @@ $(document).ready(function () {
       const phone = localStorage.getItem("phoneNumber");
 
       $trialForm.find('[data-form="email"]').val(email).prop("disabled", true);
-      $trialForm.find('[data-form="number_phone"]').val(phone).prop("disabled", true);
+      $trialForm
+        .find('[data-form="number_phone"]')
+        .val(phone)
+        .prop("disabled", true);
     }
 
     // Set up country select
@@ -87,40 +90,59 @@ $(document).ready(function () {
       event: "formSubmitError",
       formid: formId || "",
       action: eventAction || "",
-      "address1[client_type]": $form.find('input[name="address[client_type]"]:checked').val() || "",
-      "address1[first_name]": $form.find('input[name="address[first_name]"]').val() || "",
-      "address1[last_name]": $form.find('input[name="address[last_name]"]').val() || "",
-      "address1[line_1]": $form.find('input[name="address[line_1]"]').val() || "",
-      "address1[post_code]": $form.find('input[name="address[post_code]"]').val() || "",
+      "address1[client_type]":
+        $form.find('input[name="address[client_type]"]:checked').val() || "",
+      "address1[first_name]":
+        $form.find('input[name="address[first_name]"]').val() || "",
+      "address1[last_name]":
+        $form.find('input[name="address[last_name]"]').val() || "",
+      "address1[line_1]":
+        $form.find('input[name="address[line_1]"]').val() || "",
+      "address1[post_code]":
+        $form.find('input[name="address[post_code]"]').val() || "",
       "address1[city]": $form.find('input[name="address[city]"]').val() || "",
-      "address1[country]": $form.find('select[name="address[country]"]').val() || "",
+      "address1[country]":
+        $form.find('select[name="address[country]"]').val() || "",
       pay_now: $form.find('input[name="pay_now"]:checked').val() || "",
       accept: 1,
       website: "shoper",
-      eventLabel: window.location.pathname || ""
+      eventLabel: window.location.pathname || "",
     };
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push(formData);
   }
 
-  function pushDataLayerError() {
-  }
+  function pushDataLayerError() {}
 
   function handleFormSubmission() {
-    validateForm($form[0]).then(errors => {
+    validateForm($form[0]).then((errors) => {
       const phone = localStorage.getItem("phoneNumber") || "";
       const formId = $form.data("formid") || "create_trial_step3";
       const eventAction = formId;
 
       if (errors === 0) {
         const $nipField = $form.find('[data-type="nip"]');
-        const shouldValidateNip = $nipField.length > 0 && $nipField.attr('data-exclude') !== 'true';
+        const shouldValidateNip =
+          $nipField.length > 0 && $nipField.attr("data-exclude") !== "true";
 
         if (shouldValidateNip) {
-          performNIPPreflightCheck($form).then(isNipValid => {
+          performNIPPreflightCheck($form).then((isNipValid) => {
             if (isNipValid) {
               sendFormDataToURL($form[0]);
+              DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
+              window.dataLayer = window.dataLayer || [];
+              window.dataLayer.push({
+                event: "ecommerce_purchase",
+                ecommerce: {
+                  trial: true,
+                  trial_type: "Standard",
+                  client_type: $form
+                    .find('input[name="address[client_type]"]:checked')
+                    .val(),
+                },
+                eventLabel: window.location.pathname,
+              });
             } else {
               formSubmitErrorTrial(formId, eventAction, phone);
               pushDataLayerError();
@@ -128,17 +150,19 @@ $(document).ready(function () {
           });
         } else {
           sendFormDataToURL($form[0]);
-          DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction)
+          DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
-            "event": "ecommerce_purchase",
-            "ecommerce": {
-                "trial": true,
-                "trial_type": "Standard",
-                "client_type": "Konsument"
+            event: "ecommerce_purchase",
+            ecommerce: {
+              trial: true,
+              trial_type: "Standard",
+              client_type: $form
+                .find('input[name="address[client_type]"]:checked')
+                .val(),
             },
-            "eventLabel": window.location.pathname
-        });
+            eventLabel: window.location.pathname,
+          });
         }
       } else {
         formSubmitErrorTrial(formId, eventAction, phone);
@@ -162,28 +186,35 @@ $(document).ready(function () {
       }
 
       if (data.license_id) {
-
       }
       if (data.host) {
-
       }
     }
   });
   const targetNode = document.querySelector('[data-element="modal_trial_two"]');
-  const config = { attributes: true, attributeFilter: ['style'] };
+  const config = { attributes: true, attributeFilter: ["style"] };
 
   const callback = function (mutationsList) {
     for (let mutation of mutationsList) {
-      if (mutation.type === 'attributes' && mutation.attributeName === 'style') {
+      if (
+        mutation.type === "attributes" &&
+        mutation.attributeName === "style"
+      ) {
         const display = window.getComputedStyle(targetNode).display;
-        if (display === 'none') {
+        if (display === "none") {
           const $trialForm = $form.filter('[data-formid="create_trial_step3"]');
           if ($trialForm.length) {
             const email = localStorage.getItem("email");
             const phone = localStorage.getItem("phoneNumber");
 
-            $trialForm.find('[data-form="email"]').val(email).prop("disabled", true);
-            $trialForm.find('[data-form="number_phone"]').val(phone).prop("disabled", true);
+            $trialForm
+              .find('[data-form="email"]')
+              .val(email)
+              .prop("disabled", true);
+            $trialForm
+              .find('[data-form="number_phone"]')
+              .val(phone)
+              .prop("disabled", true);
           }
         }
       }
@@ -192,5 +223,4 @@ $(document).ready(function () {
 
   const observer = new MutationObserver(callback);
   observer.observe(targetNode, config);
-
 });
