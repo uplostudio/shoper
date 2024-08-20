@@ -295,7 +295,7 @@ function validateForm(formElement) {
 }
 
 function performNIPPreflightCheck($form) {
-  const $nipInput = $form.find('input[data-type="nip"]');
+  const $nipInput = $form.find('input[data-type="nip"]:not([data-exclude="true"]):not(:disabled)');
   if ($nipInput.length === 0) {
     return Promise.resolve(true);
   }
@@ -458,7 +458,7 @@ function handleSubmitClick(e) {
     if (errors > 0) {
       DataLayerGatherers.pushTrackEventErrorModal($form.attr("id"), $(this).val(), $form.attr("data-label") || "consult-form")
     } else {
-      const $nipInput = $form.find('input[data-type="nip"]');
+      const $nipInput = $form.find('input[data-type="nip"]:not([data-exclude="true"]):not(:disabled)');
       if ($nipInput.length > 0) {
         const nipValue = $nipInput.val().trim();
         const country = $form.find('select[data-form="address1[country]"]').val() || 'PL';

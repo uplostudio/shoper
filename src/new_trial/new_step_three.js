@@ -122,7 +122,7 @@ $(document).ready(function () {
       const eventAction = formId;
 
       if (errors === 0) {
-        const $nipField = $form.find('[data-type="nip"]');
+        const $nipField = $form.find('input[data-type="nip"]:not([data-exclude="true"]):not(:disabled)');
         const shouldValidateNip =
           $nipField.length > 0 && $nipField.attr("data-exclude") !== "true";
 
