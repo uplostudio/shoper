@@ -153,15 +153,21 @@ $(document).ready(() => {
 
     } else {
       // Handle status 0 response (unchanged)
-      const error = generateErrorMessage("email");
-      $emailField.next(".error-box").remove();
-      $emailField.after(`<span class="error-box">${error}</span>`);
-      $emailField.removeClass("valid").addClass("invalid");
-      $emailField
-        .siblings(".new__input-label")
-        .removeClass("valid active")
-        .addClass("invalid");
-      formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
+      let error;
+    if (response.hasOwnProperty('code') && SharedUtils.statusMessages.hasOwnProperty(response.code)) {
+      error = SharedUtils.statusMessages[response.code];
+    } else {
+      error = generateErrorMessage("email");
+    }
+
+    $emailField.next(".error-box").remove();
+    $emailField.after(`<span class="error-box">${error}</span>`);
+    $emailField.removeClass("valid").addClass("invalid");
+    $emailField
+      .siblings(".new__input-label")
+      .removeClass("valid active")
+      .addClass("invalid");
+    formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
     }
   })
   .catch((error) => {
