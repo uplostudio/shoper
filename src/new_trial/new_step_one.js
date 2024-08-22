@@ -7,6 +7,39 @@ $(document).ready(() => {
   const $modalTrialOne = $('[data-element="modal_trial_one"]');
   const $modalTrialTwo = $('[data-element="modal_trial_two"]');
   const $modalTrialThree = $('[data-element="modal_trial_three"]');
+  let isPremiumPackage = false;
+
+  function updateTrialPromoElements(data, isPremiumPackage) {
+    const $trialPromo = $('#trial-promo');
+    const $trialPromoBox = $('#trial-promo-box');
+    let discount, oldPrice, newPrice, packageName;
+  
+    if (isPremiumPackage) {
+      packageName = "Premium";
+      discount = data.promotion?.price?.premium?.discount;
+      oldPrice = data.price?.premium?.["12"]?.year?.net;
+      newPrice = data.promotion?.price?.premium?.["12"]?.year?.net;
+    } else {
+      packageName = "Standard";
+      discount = data.promotion?.price?.standard?.discount;
+      oldPrice = data.price?.standard?.["12"]?.year?.net;
+      newPrice = data.promotion?.price?.standard?.["12"]?.year?.net;
+    }
+  
+    // Update trial promo
+    if (discount && discount !== 0) {
+      $trialPromo.text(`${discount}% taniej`).show();
+    } else {
+      $trialPromo.hide();
+    }
+  
+    // Update trial promo box
+    const formattedOldPrice = parseFloat(oldPrice || 0).toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    const formattedNewPrice = parseFloat(newPrice || 0).toLocaleString('pl-PL', {minimumFractionDigits: 2, maximumFractionDigits: 2});
+    
+    $trialPromoBox.html(`Shoper ${packageName} w promocji <del>${formattedOldPrice}</del> <strong>${formattedNewPrice} zł</strong> netto / pierwszy rok`);
+  }
+  
 
   const generateErrorMessage = (type) => {
     const messages = {
@@ -91,6 +124,10 @@ $(document).ready(() => {
       ...DataLayerGatherers.getValueTrackData(),
     };
 
+    if (isPremiumPackage) {
+      formData.package = 33;
+    }
+
     const localStorageSID = localStorage.getItem("sid");
     if (localStorageSID) {
       try {
@@ -115,76 +152,81 @@ $(document).ready(() => {
     });
 
     ajaxRequest
-  .then((response) => {
-    if (response.status === 1) {
-      SharedUtils.handleResponse(
-        response,
-        $form,
-        $emailField,
-        $wFormFail,
-        true,
-        1
-      );
-      DataLayerGatherers.pushEmailSubmittedData(
-        window.myGlobals.clientId,
-        window.myGlobals.shopId,
-        $form.data("action"),
-        $emailField.val()
-      );
+      .then((response) => {
+        if (response.status === 1) {
+          SharedUtils.handleResponse(
+            response,
+            $form,
+            $emailField,
+            $wFormFail,
+            true,
+            1
+          );
+          DataLayerGatherers.pushEmailSubmittedData(
+            window.myGlobals.clientId,
+            window.myGlobals.shopId,
+            $form.data("action"),
+            $emailField.val()
+          );
 
-      // Hide all modals first
-      $modalTrialOne.hide();
-      $modalTrialTwo.hide();
-      $modalTrialThree.hide();
+          // Hide all modals first
+          $modalTrialOne.hide();
+          $modalTrialTwo.hide();
+          $modalTrialThree.hide();
 
-      // Show the trials wrapper
-      $trialsWrapper.show();
+          // Show the trials wrapper
+          $trialsWrapper.show();
 
-      // Set up the next step
-      if (response.step === "#create_trial_step3") {
-        $modalTrialThree.show();
-      } else {
-        $modalTrialTwo.show();
-      }
+          // Set up the next step
+          if (response.step === "#create_trial_step3") {
+            $modalTrialThree.show();
+          } else {
+            $modalTrialTwo.show();
+          }
 
-      // Trigger the event
-      $(document).trigger("trialStepComplete", [1, response]);
-      $('[data-app="trial-domain"]').text(response.host);
+          // Trigger the event
+          $(document).trigger("trialStepComplete", [1, response]);
+          $('[data-app="trial-domain"]').text(response.host);
+        } else {
+          // Handle status 0 response (unchanged)
+          let error;
+          if (
+            response.hasOwnProperty("code") &&
+            SharedUtils.statusMessages.hasOwnProperty(response.code)
+          ) {
+            error = SharedUtils.statusMessages[response.code];
+          } else {
+            error = generateErrorMessage("email");
+          }
 
-    } else {
-      // Handle status 0 response (unchanged)
-      let error;
-    if (response.hasOwnProperty('code') && SharedUtils.statusMessages.hasOwnProperty(response.code)) {
-      error = SharedUtils.statusMessages[response.code];
-    } else {
-      error = generateErrorMessage("email");
-    }
-
-    $emailField.next(".error-box").remove();
-    $emailField.after(`<span class="error-box">${error}</span>`);
-    $emailField.removeClass("valid").addClass("invalid");
-    $emailField
-      .siblings(".new__input-label")
-      .removeClass("valid active")
-      .addClass("invalid");
-    formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
-    }
-  })
-  .catch((error) => {
-    SharedUtils.handleResponse(
-      error,
-      $form,
-      $emailField,
-      $wFormFail,
-      false,
-      1
-    );
-  })
-  .always(() => {
-    $loader.hide();
-    ajaxRequest = null;
-  });
-
+          $emailField.next(".error-box").remove();
+          $emailField.after(`<span class="error-box">${error}</span>`);
+          $emailField.removeClass("valid").addClass("invalid");
+          $emailField
+            .siblings(".new__input-label")
+            .removeClass("valid active")
+            .addClass("invalid");
+          formSubmitErrorTrial(
+            $form.attr("id"),
+            $form.data("action"),
+            $emailField.val()
+          );
+        }
+      })
+      .catch((error) => {
+        SharedUtils.handleResponse(
+          error,
+          $form,
+          $emailField,
+          $wFormFail,
+          false,
+          1
+        );
+      })
+      .always(() => {
+        $loader.hide();
+        ajaxRequest = null;
+      });
   };
 
   const setupValidation = () => {
@@ -226,9 +268,15 @@ $(document).ready(() => {
 
   const $openTrialWrapperButton = $("[data-element='open_trial_wrapper']");
   if ($openTrialWrapperButton.length) {
-    $openTrialWrapperButton.on("click", () => {
+    $openTrialWrapperButton.on("click", function () {
       $trialsWrapper.show();
       $("body").addClass("overflow-hidden");
+
+      isPremiumPackage = $(this).data("premium") === true;
+
+      window.ShoperPricing.addLoadCallback(function (pricingData) {
+        updateTrialPromoElements(pricingData, isPremiumPackage);
+      });
     });
   }
 
@@ -266,16 +314,27 @@ $(document).ready(() => {
       $trialsWrapper.show();
 
       window.dataLayer = window.dataLayer || [];
+
+      const packageDetails = isPremiumPackage
+        ? {
+            item_id: "Premium",
+            item_name: "Premium",
+            price: "499",
+          }
+        : {
+            item_id: "Standard",
+            item_name: "Standard",
+            price: "35",
+          };
+
       window.dataLayer.push({
         event: "begin_checkout",
         ecommerce: {
-          value: 420,
+          value: "420",
           items: [
             {
-              item_id: "Standard",
-              item_name: "Standard",
+              ...packageDetails,
               item_category: "Global Header",
-              price: "35",
               currency: "PLN",
               item_variant: "12",
             },
@@ -300,6 +359,10 @@ $(document).ready(() => {
           $modalTrialTwo.show();
         }
       }
+
+      window.ShoperPricing.addLoadCallback(function (pricingData) {
+        updateTrialPromoElements(pricingData, isPremiumPackage);
+      });
     }
   },
   250);
