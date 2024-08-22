@@ -126,6 +126,7 @@ $(document).ready(() => {
 
     if (isPremiumPackage) {
       formData.package = 33;
+      formData.period = 12;
     }
 
     const localStorageSID = localStorage.getItem("sid");
