@@ -121,6 +121,7 @@ $(document).ready(() => {
       "adwords[fbclid]": window.myGlobals.fbclidValue,
       analyticsId: window.myGlobals.analyticsId,
       affiliant: $form.data("affiliant") || "",
+      form_source_url: window.location.href.split('?')[0],
       ...DataLayerGatherers.getValueTrackData(),
     };
 
