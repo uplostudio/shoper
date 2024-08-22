@@ -128,6 +128,10 @@ $(document).ready(() => {
     if (isPremiumPackage) {
       formData.package = 33;
       formData.period = 12;
+      localStorage.setItem('isPremiumPackage', 'true');
+    } else {
+      localStorage.setItem('isPremiumPackage', 'false');
+
     }
 
     const localStorageSID = localStorage.getItem("sid");

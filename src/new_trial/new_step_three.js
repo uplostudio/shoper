@@ -113,9 +113,10 @@ $(document).ready(function () {
     window.dataLayer.push(formData);
   }
 
-  function pushDataLayerError() {}
+  
 
   function handleFormSubmission() {
+    const isPremiumPackage = localStorage.getItem('isPremiumPackage') === 'true';
     validateForm($form[0]).then((errors) => {
       const phone = localStorage.getItem("phoneNumber") || "";
       const formId = $form.data("formid") || "create_trial_step3";
@@ -130,13 +131,15 @@ $(document).ready(function () {
           performNIPPreflightCheck($form).then((isNipValid) => {
             if (isNipValid) {
               sendFormDataToURL($form[0]);
+          console.log(isPremiumPackage)
+
               DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
               window.dataLayer = window.dataLayer || [];
               window.dataLayer.push({
                 event: "ecommerce_purchase",
                 ecommerce: {
                   trial: true,
-                  trial_type: "Standard",
+                  trial_type: isPremiumPackage ? "Premium" : "Standard",
                   client_type: "Firma",
                 },
                 eventLabel: window.location.pathname,
@@ -148,13 +151,14 @@ $(document).ready(function () {
           });
         } else {
           sendFormDataToURL($form[0]);
+          console.log(isPremiumPackage)
           DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             event: "ecommerce_purchase",
             ecommerce: {
               trial: true,
-              trial_type: "Standard",
+              trial_type: isPremiumPackage ? "Premium" : "Standard",
               client_type: "Konsument",
             },
             eventLabel: window.location.pathname,
