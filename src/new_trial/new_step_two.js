@@ -190,7 +190,7 @@ $(document).ready(function () {
               item_id: isPremiumPackage ? "Premium" : "Standard",
               item_name: isPremiumPackage ? "Premium" : "Standard",
               item_category: "Global Header",
-              price: "35",
+              price: isPremiumPackage ? "35" : "499",
               currency: "PLN",
               item_variant: "12",
             },
