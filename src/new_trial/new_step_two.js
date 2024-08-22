@@ -5,12 +5,8 @@ $(document).ready(function () {
   };
 
   function maskPhoneNumber(phone) {
-    return phone.replace(
-      /(\+48)(\d{7})(\d{2})/,
-      "$1 *** *** *$3"
-    );
+    return phone.replace(/(\+48)(\d{7})(\d{2})/, "$1 *** *** *$3");
   }
-  
 
   function formSubmitErrorTrial(formId, eventAction, phone) {
     window.dataLayer = window.dataLayer || [];
@@ -135,7 +131,6 @@ $(document).ready(function () {
     }
 
     if (state.errors.length === 0) {
-
       const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
       localStorage.setItem("phoneNumber", maskedPhoneNumber);
 
@@ -184,14 +179,16 @@ $(document).ready(function () {
 
   $(document).on("trialStepComplete", function (event, completedStep, data) {
     if (completedStep === 2) {
+      const isPremiumPackage =
+        localStorage.getItem("isPremiumPackage") === "true";
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "add_payment_info",
         ecommerce: {
           items: [
             {
-              item_id: "Standard",
-              item_name: "Standard",
+              item_id: isPremiumPackage ? "Premium" : "Standard",
+              item_name: isPremiumPackage ? "Premium" : "Standard",
               item_category: "Global Header",
               price: "35",
               currency: "PLN",
