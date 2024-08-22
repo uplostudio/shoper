@@ -17,7 +17,7 @@ $(document).ready(() => {
     if (isPremiumPackage) {
       packageName = "Premium";
       discount = data.promotion?.price?.premium?.discount;
-      oldPrice = data.price?.premium?.["12"]?.year?.net;
+      oldPrice = data.price?.premium?.regular_price_year;
       newPrice = data.promotion?.price?.premium?.["12"]?.year?.net;
     } else {
       packageName = "Standard";
