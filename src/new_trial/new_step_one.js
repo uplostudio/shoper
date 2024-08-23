@@ -120,7 +120,7 @@ $(document).ready(() => {
       "adwords[gclid]": window.myGlobals.gclidValue,
       "adwords[fbclid]": window.myGlobals.fbclidValue,
       analyticsId: window.myGlobals.analyticsId,
-      affiliant: $form.data("affiliant") || "",
+      affiliant: shoperAffiliate || "",
       form_source_url: window.location.href.split('?')[0],
       ...DataLayerGatherers.getValueTrackData(),
     };
