@@ -174,6 +174,7 @@ $(document).ready(() => {
             $form.data("action"),
             $emailField.val()
           );
+          localStorage.removeItem('shoper_affiliate');
 
           // Hide all modals first
           $modalTrialOne.hide();
@@ -316,7 +317,6 @@ $(document).ready(() => {
       JSON.stringify(data) !== JSON.stringify(lastProcessedData)
     ) {
       lastProcessedData = data;
-
       $trialsWrapper.show();
 
       window.dataLayer = window.dataLayer || [];
@@ -415,12 +415,14 @@ $(document).on(
   "formSubmissionComplete",
   function (event, isSuccess, $form, $emailField, data) {
     if (isSuccess) {
+      const packageValue = localStorage.getItem('isPremiumPackage') === 'true' ? 33 : "";
       DataLayerGatherers.pushTrackEventDataModal(
         window.myGlobals.clientId,
         $form.data("action"),
         window.myGlobals.shopId,
         $form.data("action"),
-        $emailField.val()
+        $emailField.val(),  
+        packageValue
       );
     } else {
       DataLayerGatherers.pushTrackEventError(
@@ -431,3 +433,5 @@ $(document).on(
     }
   }
 );
+
+

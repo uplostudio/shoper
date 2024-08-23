@@ -204,7 +204,8 @@ const DataLayerGatherers = {
     formId,
     shopId,
     eventAction,
-    eventType
+    eventType,
+    package
   ) {
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -217,6 +218,7 @@ const DataLayerGatherers = {
       eventLabel: window.location.pathname,
       eventType: eventType,
       eventHistory: window.history,
+      package: package
     });
   },
   pushTrackEventError: function (formId, eventAction, eventType) {
