@@ -20,6 +20,7 @@ $(function () {
     "/program-partnerski/reseller",
     "/program-partnerski/afiliant",
     "/program-partnerski/tworca-aplikacji",
+    "/new-components/forms"
   ];
 
   var subpage = window.location.pathname;
