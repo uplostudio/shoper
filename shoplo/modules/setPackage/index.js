@@ -1,3 +1,4 @@
+import { TRANSLATE } from "./constansts";
 const dataPackage = document.querySelectorAll("[data-package]");
 const condition = () => dataPackage.length > 0;
 
@@ -48,7 +49,6 @@ const setPrice = (packageName, priceList) => {
     let discount = priceList.promotion.price[packageName][period] ?
             priceList.promotion.price[packageName].discount :
             false;
-            console.log(time);
     let oldPrice = priceList.promotion.price[packageName][period] ?
         priceList.price[packageName][period][time].net :
         priceList.price[packageName][period].net
@@ -64,11 +64,22 @@ const setPrice = (packageName, priceList) => {
     let additionalInfoAboutPackageElement = $('.input-radio-additional-info');
 
     if ( time === "month" ) {
-        additionalInfoAboutPackageElement.html(`Shoper pakiet ${ucfirst(packageName)} <strong>${price} zł netto / miesięcznie</strong>`);
+        additionalInfoAboutPackageElement
+          .html(
+            TRANSLATE[$("html").attr("lang")].info_month
+              .replace('[package]', ucfirst(packageName))
+              .replace('[price]', price )
+          );
     } 
 
     if ( time === "year" ) {
-        additionalInfoAboutPackageElement.html(`Shoper pakiet ${ucfirst(packageName)} w promocji <em class="del-text">${oldPrice} zł</em> <strong>${price} zł netto / pierwszy rok</strong>`);
+        additionalInfoAboutPackageElement
+          .html(
+            TRANSLATE[$("html").attr("lang")].info_year
+              .replace('[package]', ucfirst(packageName))
+              .replace('[price]', price)
+              .replace('[oldprice]', oldPrice)
+          );
     }
 };
 
