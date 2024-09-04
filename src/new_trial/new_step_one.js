@@ -22,15 +22,16 @@ $(document).ready(() => {
       newPrice = data.promotion?.price?.premium?.["12"]?.year?.net;
     } else if (isStandardPlusPackage) {
       packageName = "Standard+";
-      discount = data.promotion?.price?.standard_plus?.discount;
-      oldPrice = data.price?.standard_plus?.["12"]?.year?.net;
-      newPrice = data.promotion?.price?.standard_plus?.["12"]?.year?.net;
+      discount = data.promotion?.price?.["standard-plus"]?.discount;
+      oldPrice = data.price?.["standard-plus"]?.regular_price_year;
+      newPrice = data.promotion?.price?.["standard-plus"]?.["12"]?.year?.net;
     } else {
       packageName = "Standard";
       discount = data.promotion?.price?.standard?.discount;
-      oldPrice = data.price?.standard?.["12"]?.year?.net;
+      oldPrice = data.price?.standard?.regular_price_year;
       newPrice = data.promotion?.price?.standard?.["12"]?.year?.net;
     }
+    
   
     // Update trial promo
     if (discount && discount !== 0) {
