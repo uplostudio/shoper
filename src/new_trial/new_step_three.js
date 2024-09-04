@@ -113,10 +113,9 @@ $(document).ready(function () {
     window.dataLayer.push(formData);
   }
 
-  
-
   function handleFormSubmission() {
     const isPremiumPackage = localStorage.getItem('isPremiumPackage') === 'true';
+    const isStandardPlusPackage = localStorage.getItem('isStandardPlusPackage') === 'true';
     validateForm($form[0]).then((errors) => {
       const phone = localStorage.getItem("phoneNumber") || "";
       const formId = $form.data("formid") || "create_trial_step3";
@@ -131,7 +130,7 @@ $(document).ready(function () {
           performNIPPreflightCheck($form).then((isNipValid) => {
             if (isNipValid) {
               sendFormDataToURL($form[0]);
-          console.log(isPremiumPackage)
+              console.log(isPremiumPackage, isStandardPlusPackage);
 
               DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
               window.dataLayer = window.dataLayer || [];
@@ -139,7 +138,7 @@ $(document).ready(function () {
                 event: "ecommerce_purchase",
                 ecommerce: {
                   trial: true,
-                  trial_type: isPremiumPackage ? "Premium" : "Standard",
+                  trial_type: isPremiumPackage ? "Premium" : (isStandardPlusPackage ? "Standard+" : "Standard"),
                   client_type: "Firma",
                 },
                 eventLabel: window.location.pathname,
@@ -151,14 +150,14 @@ $(document).ready(function () {
           });
         } else {
           sendFormDataToURL($form[0]);
-          console.log(isPremiumPackage)
+          console.log(isPremiumPackage, isStandardPlusPackage);
           DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
           window.dataLayer = window.dataLayer || [];
           window.dataLayer.push({
             event: "ecommerce_purchase",
             ecommerce: {
               trial: true,
-              trial_type: isPremiumPackage ? "Premium" : "Standard",
+              trial_type: isPremiumPackage ? "Premium" : (isStandardPlusPackage ? "Standard+" : "Standard"),
               client_type: "Konsument",
             },
             eventLabel: window.location.pathname,
@@ -186,11 +185,14 @@ $(document).ready(function () {
       }
 
       if (data.license_id) {
+        // Handle license_id if needed
       }
       if (data.host) {
+        // Handle host if needed
       }
     }
   });
+
   const targetNode = document.querySelector('[data-element="modal_trial_two"]');
   const config = { attributes: true, attributeFilter: ["style"] };
 

@@ -172,6 +172,7 @@ $(document).ready(function () {
         },
       });
     } else {
+      // Handle errors if any
     }
   }
 
@@ -179,18 +180,38 @@ $(document).ready(function () {
 
   $(document).on("trialStepComplete", function (event, completedStep, data) {
     if (completedStep === 2) {
-      const isPremiumPackage =
-        localStorage.getItem("isPremiumPackage") === "true";
+      const isPremiumPackage = localStorage.getItem("isPremiumPackage") === "true";
+      const isStandardPlusPackage = localStorage.getItem("isStandardPlusPackage") === "true";
+      
+      let packageDetails;
+      if (isPremiumPackage) {
+        packageDetails = {
+          item_id: "Premium",
+          item_name: "Premium",
+          price: "499"
+        };
+      } else if (isStandardPlusPackage) {
+        packageDetails = {
+          item_id: "Standard+",
+          item_name: "Standard+",
+          price: "35"
+        };
+      } else {
+        packageDetails = {
+          item_id: "Standard",
+          item_name: "Standard",
+          price: "35"
+        };
+      }
+
       window.dataLayer = window.dataLayer || [];
       window.dataLayer.push({
         event: "add_payment_info",
         ecommerce: {
           items: [
             {
-              item_id: isPremiumPackage ? "Premium" : "Standard",
-              item_name: isPremiumPackage ? "Premium" : "Standard",
+              ...packageDetails,
               item_category: "Global Header",
-              price: isPremiumPackage ? "35" : "499",
               currency: "PLN",
               item_variant: "12",
             },
@@ -210,6 +231,7 @@ $(document).ready(function () {
       }
 
       if (data.license_id) {
+        // Any additional logic for license_id
       }
     }
   });

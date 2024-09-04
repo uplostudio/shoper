@@ -344,7 +344,7 @@ $(document).ready(() => {
         packageDetails = {
           item_id: "Standard+",
           item_name: "Standard+",
-          price: "59",
+          price: "35",
         };
       } else {
         packageDetails = {
