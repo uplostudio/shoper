@@ -8,8 +8,9 @@ $(document).ready(() => {
   const $modalTrialTwo = $('[data-element="modal_trial_two"]');
   const $modalTrialThree = $('[data-element="modal_trial_three"]');
   let isPremiumPackage = false;
+  let isStandardPlusPackage = false;
 
-  function updateTrialPromoElements(data, isPremiumPackage) {
+  function updateTrialPromoElements(data, isPremiumPackage, isStandardPlusPackage) {
     const $trialPromo = $('#trial-promo');
     const $trialPromoBox = $('#trial-promo-box');
     let discount, oldPrice, newPrice, packageName;
@@ -19,6 +20,11 @@ $(document).ready(() => {
       discount = data.promotion?.price?.premium?.discount;
       oldPrice = data.price?.premium?.regular_price_year;
       newPrice = data.promotion?.price?.premium?.["12"]?.year?.net;
+    } else if (isStandardPlusPackage) {
+      packageName = "Standard+";
+      discount = data.promotion?.price?.standard_plus?.discount;
+      oldPrice = data.price?.standard_plus?.["12"]?.year?.net;
+      newPrice = data.promotion?.price?.standard_plus?.["12"]?.year?.net;
     } else {
       packageName = "Standard";
       discount = data.promotion?.price?.standard?.discount;
@@ -39,7 +45,6 @@ $(document).ready(() => {
     
     $trialPromoBox.html(`Shoper ${packageName} w promocji <del>${formattedOldPrice}</del> <strong>${formattedNewPrice} zł</strong> netto / pierwszy rok`);
   }
-  
 
   const generateErrorMessage = (type) => {
     const messages = {
@@ -129,9 +134,15 @@ $(document).ready(() => {
       formData.package = 33;
       formData.period = 12;
       localStorage.setItem('isPremiumPackage', 'true');
+      localStorage.setItem('isStandardPlusPackage', 'false');
+    } else if (isStandardPlusPackage) {
+      formData.package = 38;
+      formData.period = 12;
+      localStorage.setItem('isPremiumPackage', 'false');
+      localStorage.setItem('isStandardPlusPackage', 'true');
     } else {
       localStorage.setItem('isPremiumPackage', 'false');
-
+      localStorage.setItem('isStandardPlusPackage', 'false');
     }
 
     const localStorageSID = localStorage.getItem("sid");
@@ -280,9 +291,10 @@ $(document).ready(() => {
       $("body").addClass("overflow-hidden");
 
       isPremiumPackage = $(this).data("premium") === true;
+      isStandardPlusPackage = $(this).data("standard-plus") === true;
 
       window.ShoperPricing.addLoadCallback(function (pricingData) {
-        updateTrialPromoElements(pricingData, isPremiumPackage);
+        updateTrialPromoElements(pricingData, isPremiumPackage, isStandardPlusPackage);
       });
     });
   }
@@ -321,17 +333,26 @@ $(document).ready(() => {
 
       window.dataLayer = window.dataLayer || [];
 
-      const packageDetails = isPremiumPackage
-        ? {
-            item_id: "Premium",
-            item_name: "Premium",
-            price: "499",
-          }
-        : {
-            item_id: "Standard",
-            item_name: "Standard",
-            price: "35",
-          };
+      let packageDetails;
+      if (isPremiumPackage) {
+        packageDetails = {
+          item_id: "Premium",
+          item_name: "Premium",
+          price: "499",
+        };
+      } else if (isStandardPlusPackage) {
+        packageDetails = {
+          item_id: "Standard+",
+          item_name: "Standard+",
+          price: "59",
+        };
+      } else {
+        packageDetails = {
+          item_id: "Standard",
+          item_name: "Standard",
+          price: "35",
+        };
+      }
 
       window.dataLayer.push({
         event: "begin_checkout",
@@ -367,7 +388,7 @@ $(document).ready(() => {
       }
 
       window.ShoperPricing.addLoadCallback(function (pricingData) {
-        updateTrialPromoElements(pricingData, isPremiumPackage);
+        updateTrialPromoElements(pricingData, isPremiumPackage, isStandardPlusPackage);
       });
     }
   },
@@ -415,7 +436,12 @@ $(document).on(
   "formSubmissionComplete",
   function (event, isSuccess, $form, $emailField, data) {
     if (isSuccess) {
-      const packageValue = localStorage.getItem('isPremiumPackage') === 'true' ? 33 : "";
+      let packageValue = "";
+      if (localStorage.getItem('isPremiumPackage') === 'true') {
+        packageValue = 33;
+      } else if (localStorage.getItem('isStandardPlusPackage') === 'true') {
+        packageValue = 38;
+      }
       DataLayerGatherers.pushTrackEventDataModal(
         window.myGlobals.clientId,
         $form.data("action"),
@@ -433,5 +459,3 @@ $(document).on(
     }
   }
 );
-
-
