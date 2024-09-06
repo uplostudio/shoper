@@ -337,18 +337,21 @@ $(document).ready(() => {
       let packageDetails;
       if (isPremiumPackage) {
         packageDetails = {
+          trial_type: "Premium",
           item_id: "Premium",
           item_name: "Premium",
           price: "499",
         };
       } else if (isStandardPlusPackage) {
         packageDetails = {
+          trial_type: "Standard+",
           item_id: "Standard+",
           item_name: "Standard+",
           price: "35",
         };
       } else {
         packageDetails = {
+          trial_type: "Standard",
           item_id: "Standard",
           item_name: "Standard",
           price: "35",
