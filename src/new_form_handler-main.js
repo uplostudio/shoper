@@ -228,7 +228,6 @@ function initializeInputs() {
           $(this)
             .addClass("active")
             .removeClass("invalid")
-            .attr("placeholder", "");
           $label.removeClass("valid invalid").addClass("active");
           $(this).siblings(".error-box").hide();
         },
@@ -241,10 +240,10 @@ function initializeInputs() {
           } else {
             $label.removeClass("active");
           }
-          $(this).attr(
-            "placeholder",
-            hasValue ? "" : $(this).data("initial-placeholder")
-          );
+          // $(this).attr(
+          //   "placeholder",
+          //   hasValue ? "" : $(this).data("initial-placeholder")
+          // );
           validateInput($(this)).then((isInvalid) => {
             if (isInvalid) {
               $label.addClass("invalid");
@@ -268,7 +267,7 @@ function initializeInputs() {
             $label.addClass("valid");
           }
         });
-        $element.attr("placeholder", "");
+        // $element.attr("placeholder", "");
       } else {
         $element.attr("placeholder", $element.data("initial-placeholder"));
       }
