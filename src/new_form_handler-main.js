@@ -133,7 +133,11 @@ function validateInput($input) {
 }
 
 function updateInputLabel($input, state) {
-  const $label = $input.siblings(".new__input-label");
+  let $label = $input.siblings(".new__input-label");
+  if (!$label.length) {
+    // ITI phone field case
+    $label = $input.parent().siblings(".new__input-label");
+  }
   if ($label.length) {
     $label.removeClass("valid invalid").addClass(state);
   }
