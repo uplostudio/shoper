@@ -23,8 +23,10 @@ $(document).ready(function () {
   function setupValidation() {
     // select only phone fields in the trial forms
     const phoneFields = $('[data-type="phone"]').filter(function () {
-      return $(this).parents('[data-action*="trial"]').length > 0;
+      const $parent = $(this).parents('[data-action*="trial"], [data-selium]');
+      return $parent.length > 0;
     });
+    
     phoneFields.each(function () {
       let phoneField = $(this);
 
