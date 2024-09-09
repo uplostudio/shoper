@@ -71,15 +71,18 @@ $(document).ready(function () {
 
     if (!phone) {
       showError($(field), errorMessages.default);
+      updateInputLabel($(field), 'invalid');
       errors.push(errorMessages.default);
     } else if (countryCode === "pl") {
       const phoneWithoutPrefix = phone.replace(/^\+48/, "");
       if (!/^\d{9}$/.test(phoneWithoutPrefix)) {
         showError($(field), errorMessages.phone);
+        updateInputLabel($(field), 'invalid');
         errors.push(errorMessages.phone);
       }
     } else {
       showError($(field), errorMessages.phone);
+      updateInputLabel($(field), 'invalid');
       errors.push(errorMessages.phone);
     }
 
@@ -104,6 +107,7 @@ $(document).ready(function () {
   function clearErrors($field) {
     $field.removeClass("error");
     $field.siblings(".error-box").hide();
+    updateInputLabel($field, 'valid');
   }
 
   function handleFormSubmission(e, phoneField, iti) {
@@ -148,6 +152,7 @@ $(document).ready(function () {
         success: function (data) {
           if (data.status === 0) {
             showError(phoneField, data.errors.phone.invalidPhone);
+            updateInputLabel(phoneField, 'invalid');
           } else {
             SharedUtils.handleResponse(
               data,

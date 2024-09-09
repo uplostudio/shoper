@@ -83,16 +83,19 @@ function validateInput($input) {
 
     if (isRequired && !isChecked) {
       showError($input, errorMessages.default, isOldStructure, true);
+      updateInputLabel($input, 'invalid');
       return Promise.resolve(true);
     }
 
     hideError($input, isOldStructure);
+    updateInputLabel($input, 'valid');
     return Promise.resolve(false);
   }
 
   // Handle other input types
   if (isRequired && value === "") {
     showError($input, errorMessages.default, isOldStructure, true);
+    updateInputLabel($input, 'invalid');
     return Promise.resolve(true);
   }
 
@@ -133,15 +136,14 @@ function validateInput($input) {
 }
 
 function updateInputLabel($input, state) {
-  let $label = $input.siblings(".new__input-label");
-  if (!$label.length) {
-    // ITI phone field case
-    $label = $input.parent().siblings(".new__input-label");
-  }
+  const $wrapper = $input.closest('[data-element="input-wrapper"]');
+  const $label = $wrapper.find('.new__input-label');
+  
   if ($label.length) {
     $label.removeClass("valid invalid").addClass(state);
   }
 }
+
 
 function pushFormError(errorMessage, $input) {
   const formId = $input.closest('form').attr('id');
