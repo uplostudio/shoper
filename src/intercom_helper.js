@@ -1,5 +1,3 @@
-// remove sites from intercom
-
 $(function () {
   var excludedSubpages = [
     "/rodo",
@@ -23,9 +21,24 @@ $(function () {
     "/new-components/forms"
   ];
 
-  var subpage = window.location.pathname;
+  var excludedDomains = [
+    "q5mb64jfuh3c6ngf.webflow.io",
+    "selium.eu"
+  ];
 
-  if ($.inArray(subpage, excludedSubpages) === -1) {
+  var currentUrl = window.location.href;
+  var currentHostname = window.location.hostname;
+  var currentPathname = window.location.pathname;
+
+  // Check if the current hostname is in the excluded domains
+  var isDomainExcluded = excludedDomains.some(function(domain) {
+    return currentHostname === domain || currentHostname.endsWith('.' + domain);
+  });
+
+  // Check if the current pathname is in the excluded subpages
+  var isSubpageExcluded = excludedSubpages.indexOf(currentPathname) !== -1;
+
+  if (!isDomainExcluded && !isSubpageExcluded) {
     $("body").append('<script src="https://development--shoper-web.netlify.app/intercom.js"></script>');
   }
 });
