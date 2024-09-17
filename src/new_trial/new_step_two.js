@@ -1,7 +1,7 @@
 $(document).ready(function () {
   let state = {
     errors: [],
-    phoneRegex: window.validationPatterns.phone,
+    phoneRegex: window.validationPatterns["number_phone"],
   };
 
   function maskPhoneNumber(phone) {
@@ -21,7 +21,7 @@ $(document).ready(function () {
   }
 
   function setupValidation() {
-    // select only phone fields in the trial forms
+    // select only phone fields in the trial forms and forms marked with [data-phone] attribute
     const phoneFields = $('[data-type="phone"]').filter(function () {
       const $parent = $(this).parents('[data-action*="trial"], [data-phone]');
       return $parent.length > 0;
@@ -66,34 +66,44 @@ $(document).ready(function () {
     let errors = [];
     const countryCode = iti.getSelectedCountryData().iso2;
     let phone = iti.getNumber().trim();
-
+  
     clearErrors($(field));
-
+  
+    // Find the relevant input data
+    const phoneInputData = inputsData.inputs.find(input => input["number_phone"]);
+    const phoneErrorMessage = phoneInputData ? phoneInputData["number_phone"].error : "Niepoprawny numer telefonu";
+    const phoneValidationPattern = phoneInputData ? phoneInputData["number_phone"].validationPatterns : /^\d{9}$/;
+  
     if (!phone) {
-      showError($(field), errorMessages.default);
+      showError($(field), "To pole jest wymagane");
       updateInputLabel($(field), 'invalid');
-      errors.push(errorMessages.default);
+      errors.push("To pole jest wymagane");
     } else if (countryCode === "pl") {
       const phoneWithoutPrefix = phone.replace(/^\+48/, "");
-      if (!/^\d{9}$/.test(phoneWithoutPrefix)) {
-        showError($(field), errorMessages.phone);
+      if (!phoneValidationPattern.test(phoneWithoutPrefix)) {
+        showError($(field), phoneErrorMessage);
         updateInputLabel($(field), 'invalid');
-        errors.push(errorMessages.phone);
+        errors.push(phoneErrorMessage);
       }
     } else {
-      showError($(field), errorMessages.phone);
-      updateInputLabel($(field), 'invalid');
-      errors.push(errorMessages.phone);
+      // For non-Polish numbers, you might want to use the library's built-in validation
+      if (!iti.isValidNumber()) {
+        showError($(field), phoneErrorMessage);
+        updateInputLabel($(field), 'invalid');
+        errors.push(phoneErrorMessage);
+      }
     }
-
+  
     if (errors.length > 0) {
       const $form = $(field).closest("form");
       formSubmitErrorTrial($form.attr("id"), $form.data("action"), phone);
     }
-
+  
     state.errors = errors;
     return errors;
   }
+  
+  
 
   function showError($field, message) {
     $field.addClass("error");
@@ -102,13 +112,14 @@ $(document).ready(function () {
       $errorElement = $('<div class="error-box"></div>').insertAfter($field);
     }
     $errorElement.text(message).show();
-  }
+  }  
 
   function clearErrors($field) {
     $field.removeClass("error");
     $field.siblings(".error-box").hide();
     updateInputLabel($field, 'valid');
   }
+  
 
   function handleFormSubmission(e, phoneField, iti) {
     e.preventDefault();

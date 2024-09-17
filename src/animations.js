@@ -23,8 +23,14 @@ function closeModal() {
       }
     });
   }
+
+  var currentUrl = window.location.href;
+  var baseUrl = currentUrl.split('#')[0];
+  history.pushState(null, null, baseUrl);
+  
   $(document).trigger("closeModalCalled");
 }
+
 
 // Attach the function to existing click events
 $(".modal__close, .modal__close-area, [data-trigger='close-modal'], [data-element='close_trial_wrapper']").on("click", closeModal);

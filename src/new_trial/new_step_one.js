@@ -49,7 +49,7 @@ $(document).ready(() => {
 
   const generateErrorMessage = (type) => {
     const messages = {
-      email: "Podaj poprawny adres e-mail.",
+      email: "Niepoprawny adres e-mail. Wprowadź adres w formacie: nazwa@domena.pl",
       required: "To pole jest wymagane.",
     };
     return messages[type] || messages.required;

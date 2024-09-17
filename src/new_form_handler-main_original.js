@@ -1,5 +1,33 @@
 const API_URL_ADDRESS = "https://backend.webflow.prod.shoper.cloud";
-const signupFormsActions = ["get_inpost", "get_ssl", "get_app"];
+const signupFormsActions = [
+  "get_inpost",
+  "get_ssl",
+  "get_app"
+];
+
+validationPatterns = {
+  email: /^(?=[a-zA-Z0-9@._%+-]{1,254}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
+  phone: /^\d{9}$/,
+  text: /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
+  nip: /^\d{10}$/,
+  url: /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
+  zipcode: /^(\d{5}|\d{2}-\d{3})$/,
+  address:
+    /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+(\s+\d+(\s*[a-zA-Z])?(\s*\/\s*\d+)?)?$/,
+};
+
+const errorMessages = {
+  email: "Podaj poprawny adres e-mail.",
+  phone:
+    "Podaj poprawny numer telefonu składający się z 9 cyfr bez znaków specjalnych.",
+  text: "Podaj poprawne dane.",
+  nip: "Podaj poprawny numer NIP",
+  address: "Podaj poprawny adres",
+  url: "Podaj poprawny adres URL.",
+  zipcode: "Podaj poprawny kod pocztowy",
+  default: "To pole jest wymagane",
+};
+
 const omittedAttributes = new Set([
   "method",
   "name",
@@ -12,167 +40,59 @@ const omittedAttributes = new Set([
   "autocomplete",
   "layer",
 ]);
-const validationPatterns = {};
-const errorMessages = {};
-
-const inputsData = {
-  inputs: [
-    {
-      email: {
-        active_placeholder: "np. jan.kowalski@domena.pl",
-        error:
-          "Niepoprawny adres e-mail. Wprowadź adres w formacie: nazwa@domena.pl",
-        validationPatterns:
-          /^(?=[a-zA-Z0-9@._%+-]{1,254}$)(?=[a-zA-Z0-9._%+-]{1,64}@)[a-zA-Z0-9._%+-]+@[a-zA-Z0-9.-]+\.[a-zA-Z]{2,}$/,
-      },
-    },
-    {
-      number_phone: {
-        active_placeholder: "w formacie: 123456789",
-        error:
-          "Niepoprawny numer telefonu. Wprowadź numer składający się z 9 cyfr w formacie: 123456789",
-        validationPatterns: /^\d{9}$/,
-      },
-    },
-    // old structure phone
-    {
-      phone: {
-        active_placeholder: "w formacie: 123456789",
-        error:
-          "Niepoprawny numer telefonu. Wprowadź numer składający się z 9 cyfr w formacie: 123456789",
-        validationPatterns: /^\d{9}$/,
-      },
-    },
-    {
-      url: {
-        active_placeholder: "np. www.twojsklep.pl",
-        error:
-          "Podaj poprawny adres www twojego sklepu w formacie: www.twojsklep.pl",
-        validationPatterns:
-          /^(https?:\/\/)?([\da-z\.-]+)\.([a-z\.]{2,6})([\/\w \.-]*)*\/?$/,
-      },
-    },
-    {
-      "address1[first_name]": {
-        active_placeholder: "",
-        error: "Podaj poprawne imię",
-        validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
-      },
-    },
-    {
-      "address1[last_name]": {
-        active_placeholder: "",
-        error: "Podaj poprawne nazwisko",
-        validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
-      },
-    },
-    {
-      name: {
-        active_placeholder: "",
-        error: "Podaj poprawne imię i nazwisko",
-        validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
-      },
-    },
-    {
-      "address1[company_name]": {
-        active_placeholder: "",
-        error: "Podaj poprawną nazwę firmy",
-        validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
-      },
-    },
-    {
-      "address1[nip]": {
-        active_placeholder: "w formacie 1234567890 lub XX1234567890",
-        error:
-          "Podaj poprawny numer NIP. Dopuszczalne formaty: 1234567890 lub XX1234567890",
-        validationPatterns: /^\d{10}$/,
-      },
-    },
-    {
-      "address1[line_1]": {
-        active_placeholder: "",
-        error: "Podaj poprawny adres",
-        validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+(\s+\d+(\s*[a-zA-Z])?(\s*\/\s*\d+)?)?$/,
-      },
-    },
-    {
-      "address1[post_code]": {
-        active_placeholder: "w formacie 12345",
-        error: "Podaj poprawny kod pocztowy",
-        validationPatterns: /^(\d{5}|\d{2}-\d{3})$/,
-      },
-    },
-    {
-      "address1[city]": {
-        active_placeholder: "",
-        error: "Podaj poprawny adres",
-        validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
-      },
-    },
-  ],
-};
-
-inputsData.inputs.forEach((input) => {
-  const key = Object.keys(input)[0];
-  validationPatterns[key] = input[key].validationPatterns;
-  errorMessages[key] = input[key].error;
-});
-
-window.validationPatterns = validationPatterns;
 
 function validateNIPWithAPI(nip, country) {
-  return $.ajax({
-    type: "POST",
-    url: API_URL_ADDRESS,
-    data: { action: "validate_nip", country, nip },
-  }).then(
-    (response) => response === true,
-    (error) => {
-      console.error("NIP validation API error:", error);
-      return false;
-    }
-  );
+  return new Promise((resolve, reject) => {
+    $.ajax({
+      type: "POST",
+      url: API_URL_ADDRESS,
+      data: {
+        action: "validate_nip",
+        country: country,
+        nip: nip,
+      },
+      success: (response) => {
+        resolve(response === true);
+      },
+      error: (xhr, status, error) => {
+        console.error("NIP validation API error:", error);
+        reject(error);
+      },
+    });
+  });
 }
 
 function addValidationSVG($input, isValid) {
-  const $wrapper = $input.closest('[data-element="input-wrapper"]');
-  if (!$wrapper.length) return;
-
-  const validSvgBase64 =
-    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgOEMwIDMuNTgxNzIgMy41ODE3MiAwIDggMEMxMi40MTgzIDAgMTYgMy41ODE3MiAxNiA4QzE2IDEyLjQxODMgMTIuNDE4MyAxNiA4IDE2QzMuNTgxNzIgMTYgMCAxMi40MTgzIDAgOFoiIGZpbGw9IiMyNEIyNkYiLz4KPHBhdGggZD0iTTYuNTAwMDggMTAuMDg1TDQuNDE1MDggOC4wMDAwNEwzLjcwNTA4IDguNzA1MDRMNi41MDAwOCAxMS41TDEyLjUwMDEgNS41MDAwNEwxMS43OTUxIDQuNzk1MDRMNi41MDAwOCAxMC4wODVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=";
-  const invalidSvgBase64 =
-    "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgOEMwIDMuNTgxNzIgMy41ODE3MiAwIDggMEMxMi40MTgzIDAgMTYgMy41ODE3MiAxNiA4QzE2IDEyLjQxODMgMTIuNDE4MyAxNiA4IDE2QzMuNTgxNzIgMTYgMCAxMi40MTgzIDAgOFoiIGZpbGw9IiNFMjNGNDYiLz4KPHBhdGggZD0iTTExLjUgNS4yMDVMMTAuNzk1IDQuNUw4IDcuMjk1TDUuMjA1IDQuNUw0LjUgNS4yMDVMNy4yOTUgOEw0LjUgMTAuNzk1TDUuMjA1IDExLjVMOCA4LjcwNUwxMC43OTUgMTEuNUwxMS41IDEwLjc5NUw4LjcwNSA4TDExLjUgNS4yMDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K";
-
-  $wrapper.find(".validation-svg").remove();
-
-  if ($input.is(":focus") || $input.hasClass("active")) {
-    return;
+  const isOldStructure = !$input.siblings(".new__input-label").length;
+  
+  if (isOldStructure) {
+    return; // Don't add SVG for old structure
   }
 
-  const $svg = $("<img>", {
+  const validSvgBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgOEMwIDMuNTgxNzIgMy41ODE3MiAwIDggMEMxMi40MTgzIDAgMTYgMy41ODE3MiAxNiA4QzE2IDEyLjQxODMgMTIuNDE4MyAxNiA4IDE2QzMuNTgxNzIgMTYgMCAxMi40MTgzIDAgOFoiIGZpbGw9IiMyNEIyNkYiLz4KPHBhdGggZD0iTTYuNTAwMDggMTAuMDg1TDQuNDE1MDggOC4wMDAwNEwzLjcwNTA4IDguNzA1MDRMNi41MDAwOCAxMS41TDEyLjUwMDEgNS41MDAwNEwxMS43OTUxIDQuNzk1MDRMNi41MDAwOCAxMC4wODVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4=";
+  const invalidSvgBase64 = "data:image/svg+xml;base64,PHN2ZyB3aWR0aD0iMTYiIGhlaWdodD0iMTYiIHZpZXdCb3g9IjAgMCAxNiAxNiIgZmlsbD0ibm9uZSIgeG1sbnM9Imh0dHA6Ly93d3cudzMub3JnLzIwMDAvc3ZnIj4KPHBhdGggZD0iTTAgOEMwIDMuNTgxNzIgMy41ODE3MiAwIDggMEMxMi40MTgzIDAgMTYgMy41ODE3MiAxNiA4QzE2IDEyLjQxODMgMTIuNDE4MyAxNiA4IDE2QzMuNTgxNzIgMTYgMCAxMi40MTgzIDAgOFoiIGZpbGw9IiNFMjNGNDYiLz4KPHBhdGggZD0iTTExLjUgNS4yMDVMMTAuNzk1IDQuNUw4IDcuMjk1TDUuMjA1IDQuNUw0LjUgNS4yMDVMNy4yOTUgOEw0LjUgMTAuNzk1TDUuMjA1IDExLjVMOCA4LjcwNUwxMC43OTUgMTEuNUwxMS41IDEwLjc5NUw4LjcwNSA4TDExLjUgNS4yMDVaIiBmaWxsPSJ3aGl0ZSIvPgo8L3N2Zz4K";
+  
+  // Remove any existing validation SVG
+  $input.siblings('.validation-svg').remove();
+  
+  // Create and add the new SVG
+  const $svg = $('<img>', {
     src: isValid ? validSvgBase64 : invalidSvgBase64,
-    class: "validation-svg",
+    class: 'validation-svg',
     css: {
-      position: "absolute",
-      right: "1rem",
-      top: "1.5rem",
-      transform: "translateY(-50%)",
-      width: "1rem",
-      height: "1rem",
-      pointerEvents: "none",
-    },
+      position: 'absolute',
+      right: '10px',
+      top: '1.5rem',
+      transform: 'translateY(-50%)',
+      width: '16px',
+      height: '16px',
+      pointerEvents: 'none'
+    }
   });
-
-  $wrapper.css("position", "relative");
-  $wrapper.append($svg);
+  
+  $input.parent().css('position', 'relative');
+  $input.after($svg);
 }
-
 
 function validateInput($input) {
   const value = $input.val().trim();
@@ -181,7 +101,6 @@ function validateInput($input) {
   const isActive = $input.hasClass("active");
   const isOldStructure = !$input.siblings(".new__input-label").length;
   const inputType = $input.data("type") || $input.attr("type");
-  const dataForm = $input.data("form");
 
   $input.removeClass("invalid error");
 
@@ -190,68 +109,60 @@ function validateInput($input) {
     return Promise.resolve(false);
   }
 
+  // Handle checkbox validation
   if (inputType === "checkbox") {
     const isChecked = $input.prop("checked");
+
     if (isRequired && !isChecked) {
-      showError($input, "To pole jest wymagane", isOldStructure, true);
-      updateInputLabel($input, "invalid");
+      showError($input, errorMessages.default, isOldStructure, true);
+      updateInputLabel($input, 'invalid');
       return Promise.resolve(true);
     }
+
     hideError($input, isOldStructure);
-    updateInputLabel($input, "valid");
+    updateInputLabel($input, 'valid');
     return Promise.resolve(false);
   }
 
+  // Handle other input types
   if (isRequired && value === "") {
-    showError($input, "To pole jest wymagane", isOldStructure, true);
-    updateInputLabel($input, "invalid");
+    showError($input, errorMessages.default, isOldStructure, true);
+    updateInputLabel($input, 'invalid');
     return Promise.resolve(true);
   }
 
-  if (value !== "") {
-    const pattern =
-      validationPatterns[inputType] || validationPatterns[dataForm];
-    if (pattern) {
-      if (!pattern.test(value)) {
-        showError(
-          $input,
-          errorMessages[inputType] ||
-            errorMessages[dataForm] ||
-            errorMessages.default,
-          isOldStructure,
-          false
-        );
-        if (!isOldStructure) addValidationSVG($input, false);
-        return Promise.resolve(true);
-      } else if (inputType === "nip" || dataForm === "address1[nip]") {
-        const $form = $input.closest("form");
-        const country =
-          $form.find('select[data-form="address1[country]"]').val() || "PL";
-        return validateNIPWithAPI(value, country)
-          .then((isValid) => {
-            if (!isValid) {
-              showError(
-                $input,
-                errorMessages["address1[nip]"],
-                isOldStructure,
-                false
-              );
-              updateInputLabel($input, "invalid");
-              if (!isOldStructure) addValidationSVG($input, false);
-              return true;
-            } else {
-              hideError($input, isOldStructure);
-              updateInputLabel($input, "valid");
-              if (!isOldStructure) addValidationSVG($input, true);
-              return false;
-            }
-          })
-          .catch(() => {
+  if (value !== "" && validationPatterns[inputType]) {
+    if (!validationPatterns[inputType].test(value)) {
+      showError(
+        $input,
+        errorMessages[inputType] || errorMessages.default,
+        isOldStructure,
+        false
+      );
+      if (!isOldStructure) addValidationSVG($input, false);
+      return Promise.resolve(true);
+    } else if (inputType === "nip") {
+      const $form = $input.closest('form');
+      const country = $form.find('select[data-form="address1[country]"]').val() || 'PL';
+      return validateNIPWithAPI(value, country)
+        .then((isValid) => {
+          if (!isValid) {
+            showError($input, errorMessages.nip, isOldStructure, false);
+            updateInputLabel($input, 'invalid');
+            if (!isOldStructure) addValidationSVG($input, false);
+            return true;
+          } else {
             hideError($input, isOldStructure);
-            updateInputLabel($input, "valid");
+            updateInputLabel($input, 'valid');
+            if (!isOldStructure) addValidationSVG($input, true);
             return false;
-          });
-      }
+          }
+        })
+        .catch(() => {
+          hideError($input, isOldStructure);
+          updateInputLabel($input, 'valid');
+          return false;
+        });
     }
   }
 
@@ -260,7 +171,7 @@ function validateInput($input) {
     if (value !== "") {
       addValidationSVG($input, true);
     } else {
-      $input.siblings(".validation-svg").remove();
+      $input.siblings('.validation-svg').remove();
     }
   }
   return Promise.resolve(false);
@@ -268,16 +179,16 @@ function validateInput($input) {
 
 function updateInputLabel($input, state) {
   const $wrapper = $input.closest('[data-element="input-wrapper"]');
-  const $label = $wrapper.find(".new__input-label");
-
+  const $label = $wrapper.find('.new__input-label');
+  
   if ($label.length) {
     $label.removeClass("valid invalid").addClass(state);
   }
 }
 
 function pushFormError(errorMessage, $input) {
-  const formId = $input.closest("form").attr("id");
-  const formStep = $input.attr("data-type") || "undefined";
+  const formId = $input.closest('form').attr('id');
+  const formStep = $input.attr('data-type') || 'undefined';
 
   window.dataLayer = window.dataLayer || [];
   window.dataLayer.push({
@@ -288,7 +199,7 @@ function pushFormError(errorMessage, $input) {
     form_step: formStep,
     form_type: "undefined",
     lead_offer: "standard",
-    lead_type: "new",
+    lead_type: "new"
   });
 }
 
@@ -325,7 +236,7 @@ function hideError($input, isOldStructure) {
     if ($input.val()) {
       addValidationSVG($input, true);
     } else {
-      $input.siblings(".validation-svg").remove();
+      $input.siblings('.validation-svg').remove();
     }
   }
 }
@@ -340,7 +251,7 @@ function handleBlur(event) {
 
     const $label = $element.siblings(".new__input-label");
     $label.removeClass("active valid invalid");
-
+    
     if (isInvalid) {
       $label.addClass("invalid");
       addValidationSVG($element, false);
@@ -348,9 +259,9 @@ function handleBlur(event) {
       $label.addClass("valid");
       addValidationSVG($element, true);
     } else {
-      $element.siblings(".validation-svg").remove();
+      $element.siblings('.validation-svg').remove();
     }
-
+    
     $element.attr("placeholder", $element.data("initial-placeholder"));
   });
 }
@@ -364,47 +275,14 @@ function initializeInputs() {
     if (!isOldStructure) {
       $element.data("initial-placeholder", $element.attr("placeholder"));
 
-      const dataForm = $element.data("form");
-      const inputType = $element.data("type") || $element.attr("type");
-      const inputData = inputsData.inputs.find(
-        (input) => input[dataForm] || input[inputType]
-      );
-
-      if (inputData) {
-        const data = inputData[dataForm] || inputData[inputType];
-        if (
-          data.active_placeholder &&
-          data.active_placeholder !== "{initial}"
-        ) {
-          $element.data("active-placeholder", data.active_placeholder);
-        }
-      }
-
       $element.on({
         focus: function () {
           const $label = $(this).siblings(".new__input-label");
-          $(this).addClass("active").removeClass("invalid");
+          $(this)
+            .addClass("active")
+            .removeClass("invalid")
           $label.removeClass("valid invalid").addClass("active");
           $(this).siblings(".error-box").hide();
-          $(this).siblings(".validation-svg").hide();
-
-          const activePlaceholder = $(this).data("active-placeholder");
-          if (activePlaceholder) {
-            $(this).attr("placeholder", activePlaceholder);
-          }
-        },
-        blur: function () {
-          $(this).removeClass("active");
-          $(this).attr("placeholder", $(this).data("initial-placeholder"));
-          validateInput($(this)).then((isInvalid) => {
-            if (isInvalid) {
-              addValidationSVG($(this), false);
-            } else if ($(this).val()) {
-              addValidationSVG($(this), true);
-            } else {
-              $(this).siblings(".validation-svg").remove();
-            }
-          });
         },
         input: function () {
           const $label = $(this).siblings(".new__input-label");
@@ -428,7 +306,7 @@ function initializeInputs() {
       // Initial state check
       const $label = $element.siblings(".new__input-label");
       $label.removeClass("active valid invalid");
-
+      
       // Only validate if the field has a value
       if ($element.val()) {
         validateInput($element).then((isInvalid) => {
@@ -454,45 +332,45 @@ function validateForm(formElement) {
     "input:not([type='submit']):not([data-exclude='true']):not(:disabled), textarea:not([data-exclude='true']):not(:disabled), select:not([data-exclude='true']):not(:disabled)"
   );
 
-  return Promise.all(
-    $inputs
-      .filter(function () {
-        return !$(this).closest("[data-element]").hasClass("hide");
-      })
-      .map(function () {
-        return validateInput($(this));
-      })
-      .get()
-  ).then((results) => results.filter(Boolean).length);
+  const validationPromises = $inputs
+    .map(function () {
+      const $input = $(this);
+      if (!$input.closest("[data-element]").hasClass("hide")) {
+        return validateInput($input);
+      }
+      return Promise.resolve(false);
+    })
+    .get();
+
+  return Promise.all(validationPromises).then((results) => {
+    return results.filter(Boolean).length;
+  });
 }
 
 function performNIPPreflightCheck($form) {
-  const $nipInput = $form.find(
-    'input[data-type="nip"]:not([data-exclude="true"]):not(:disabled), input[data-form="address1[nip]"]:not([data-exclude="true"]):not(:disabled)'
-  );
+  const $nipInput = $form.find('input[data-type="nip"]:not([data-exclude="true"]):not(:disabled)');
   if ($nipInput.length === 0) {
     return Promise.resolve(true);
   }
 
   const nipValue = $nipInput.val().trim();
-  if (!validationPatterns["address1[nip]"].test(nipValue)) {
+  if (!validationPatterns.nip.test(nipValue)) {
     showError(
       $nipInput,
-      errorMessages["address1[nip]"],
+      errorMessages.nip,
       !$nipInput.siblings(".new__input-label").length,
       false
     );
     return Promise.resolve(false);
   }
 
-  const country =
-    $form.find('select[data-form="address1[country]"]').val() || "PL";
+  const country = $form.find('select[data-form="address1[country]"]').val() || 'PL';
   return validateNIPWithAPI(nipValue, country)
     .then((isValid) => {
       if (!isValid) {
         showError(
           $nipInput,
-          errorMessages["address1[nip]"],
+          errorMessages.nip,
           !$nipInput.siblings(".new__input-label").length,
           false
         );
@@ -512,6 +390,7 @@ function sendFormDataToURL(formElement) {
   const $form = $(formElement);
   const $loader = $form.find(".loading-in-button.is-inner");
 
+  // Add form attributes
   Array.from(formElement.attributes).forEach(({ name, value }) => {
     const attributeName = name.replace("data-", "");
     if (value && !omittedAttributes.has(attributeName)) {
@@ -519,6 +398,7 @@ function sendFormDataToURL(formElement) {
     }
   });
 
+  // Add form inputs
   const $inputs = $form.find(
     "input:not([type='submit']):enabled:not([data-exclude='true']), textarea:enabled, select:enabled"
   );
@@ -550,28 +430,18 @@ function sendFormDataToURL(formElement) {
 
   const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
 
-  Object.entries(outputValues).forEach(([inputName, value]) => {
-    if (arrayInputNames.includes(inputName) && Array.isArray(value)) {
-      value.forEach((val, index) => {
-        formData.append(`${inputName}[${index}]`, val);
+  Object.keys(outputValues).forEach((inputName) => {
+    if (
+      arrayInputNames.includes(inputName) &&
+      Array.isArray(outputValues[inputName])
+    ) {
+      outputValues[inputName].forEach((value, index) => {
+        formData.append(`${inputName}[${index}]`, value);
       });
     } else {
-      formData.append(inputName, value);
+      formData.append(inputName, outputValues[inputName]);
     }
   });
-
-  const valueTrack = DataLayerGatherers.getValueTrackData();
-  formData.append("front_page", window.location.host + window.location.pathname);
-  formData.append("adwords[gclid]", window.myGlobals.gclidValue);
-  formData.append("adwords[fbclid]", window.myGlobals.fbclidValue);
-  
-  if (valueTrack) {
-      for (const [key, value] of Object.entries(valueTrack)) {
-          if (key !== 'timestamp') {
-              formData.append(`adwords[${key}]`, value);
-          }
-      }
-  }
 
   $.ajax({
     type: "POST",
@@ -580,10 +450,10 @@ function sendFormDataToURL(formElement) {
     processData: false,
     contentType: false,
     beforeSend: () => {
-      if ($loader && $loader.show) $loader.show();
+      if (typeof $loader !== "undefined" && $loader.show) $loader.show();
     },
     complete: () => {
-      if ($loader && $loader.hide) $loader.hide();
+      if (typeof $loader !== "undefined" && $loader.hide) $loader.hide();
     },
     success: (data) => {
       if (formData.has("host")) {
@@ -596,6 +466,7 @@ function sendFormDataToURL(formElement) {
               shop_id: "undefined",
             });
           }
+
           window.location.href = data.redirect;
         } else {
           $form.siblings(".error-admin").show();
@@ -638,19 +509,12 @@ function handleSubmitClick(e) {
 
   validateForm($form[0]).then((errors) => {
     if (errors > 0) {
-      DataLayerGatherers.pushTrackEventErrorModal(
-        $form.attr("id"),
-        $(this).val(),
-        $form.attr("data-label") || "consult-form"
-      );
+      DataLayerGatherers.pushTrackEventErrorModal($form.attr("id"), $(this).val(), $form.attr("data-label") || "consult-form")
     } else {
-      const $nipInput = $form.find(
-        'input[data-type="nip"]:not([data-exclude="true"]):not(:disabled), input[data-form="address1[nip]"]:not([data-exclude="true"]):not(:disabled)'
-      );
+      const $nipInput = $form.find('input[data-type="nip"]:not([data-exclude="true"]):not(:disabled)');
       if ($nipInput.length > 0) {
         const nipValue = $nipInput.val().trim();
-        const country =
-          $form.find('select[data-form="address1[country]"]').val() || "PL";
+        const country = $form.find('select[data-form="address1[country]"]').val() || 'PL';
         validateNIPWithAPI(nipValue, country)
           .then((isValid) => {
             if (isValid) {
@@ -658,7 +522,7 @@ function handleSubmitClick(e) {
             } else {
               showError(
                 $nipInput,
-                errorMessages["address1[nip]"],
+                errorMessages.nip,
                 !$nipInput.siblings(".new__input-label").length,
                 false
               );
@@ -698,6 +562,7 @@ function initializeEventListeners() {
   );
 
   $(document).on("submitSuccess submitError", (e, formElement) => {
+    // Common data for both success and error events
     const commonData = {
       event: "myTrackEvent",
       eventCategory: `Button modal form ${
@@ -725,14 +590,12 @@ function initializeEventListeners() {
     }
   });
 
-  $('select[data-form="address1[country]"]').on("change", function () {
-    const $form = $(this).closest("form");
-    const $nipInput = $form.find(
-      'input[data-type="nip"], input[data-form="address1[nip]"]'
-    );
-    if ($nipInput.length > 0 && $nipInput.val().trim() !== "") {
+  $('select[data-form="address1[country]"]').on('change', function() {
+    const $form = $(this).closest('form');
+    const $nipInput = $form.find('input[data-type="nip"]');
+    if ($nipInput.length > 0 && $nipInput.val().trim() !== '') {
       validateInput($nipInput).then((isInvalid) => {
-        updateInputLabel($nipInput, isInvalid ? "invalid" : "valid");
+        updateInputLabel($nipInput, isInvalid ? 'invalid' : 'valid');
       });
     }
   });
@@ -743,12 +606,14 @@ function cleanObject(obj = {}) {
     Object.entries(obj).filter(([, value]) => value != null && value !== "")
   );
 }
+
 function sendDataLayer(obj = {}) {
   const cleanedObj = cleanObject(obj);
   if (window.dataLayer) {
     dataLayer.push(cleanedObj);
   }
 }
+
 $(document).ready(() => {
   initializeInputs();
   initializeEventListeners();
