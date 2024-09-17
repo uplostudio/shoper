@@ -86,9 +86,9 @@ const inputsData = {
     },
     {
       "address1[nip]": {
-        active_placeholder: "w formacie 1234567890 lub XX1234567890",
+        active_placeholder: "w formacie 1234567890",
         error:
-          "Podaj poprawny numer NIP. Dopuszczalne formaty: 1234567890 lub XX1234567890",
+          "Podaj poprawny numer NIP. Dopuszczalne formaty: 1234567890",
         validationPatterns: /^\d{10}$/,
       },
     },
