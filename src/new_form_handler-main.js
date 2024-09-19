@@ -565,13 +565,12 @@ function sendFormDataToURL(formElement) {
   formData.append("adwords[gclid]", window.myGlobals.gclidValue);
   formData.append("adwords[fbclid]", window.myGlobals.fbclidValue);
   
-  if (valueTrack) {
-      for (const [key, value] of Object.entries(valueTrack)) {
-          if (key !== 'timestamp') {
-              formData.append(`adwords[${key}]`, value);
-          }
-      }
-  }
+  const utmData = DataLayerGatherers.addUtmDataToForm({});
+  Object.entries(utmData).forEach(([key, value]) => {
+    if (!formData.has(key)) {
+      formData.append(key, value);
+    }
+  });
 
   $.ajax({
     type: "POST",

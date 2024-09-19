@@ -128,7 +128,7 @@ $(document).ready(() => {
       analyticsId: window.myGlobals.analyticsId,
       affiliant: shoperAffiliate || "",
       form_source_url: window.location.href.split('?')[0],
-      ...DataLayerGatherers.getValueTrackData(),
+      ...DataLayerGatherers.addUtmDataToForm({}),
     };
 
     if (isPremiumPackage) {

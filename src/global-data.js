@@ -364,6 +364,18 @@ const DataLayerGatherers = {
     const data = localStorage.getItem(VALUE_TRACK_KEY);
     return data ? JSON.parse(data) : null;
   },
+
+  addUtmDataToForm: function (formData) {
+    const storedUtmData = this.getValueTrackData();
+    if (storedUtmData) {
+      Object.keys(storedUtmData).forEach(key => {
+        if (key !== 'timestamp') {
+          formData[`adwords[${key}]`] = storedUtmData[key];
+        }
+      });
+    }
+    return formData;
+  }
 };
 
 $(document).ready(function () {
