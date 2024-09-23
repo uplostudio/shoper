@@ -711,8 +711,8 @@ function initializeEventListeners() {
 
     if (e.type === "submitSuccess") {
       const formId = $(formElement).attr("id");
-      const leadOffer = $(formElement).attr("lead_offer")
-      const formType = $(formElement).attr("form_type")
+      const leadOffer = $(formElement).attr("data-lead_offer")
+      const formType = $(formElement).attr("data-form_type")
 
       sendDataLayer({
         event: "generate_lead",
