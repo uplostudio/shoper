@@ -711,15 +711,18 @@ function initializeEventListeners() {
 
     if (e.type === "submitSuccess") {
       const formId = $(formElement).attr("id");
+      const leadOffer = $(formElement).attr("lead_offer")
+      const formType = $(formElement).attr("form_type")
 
       sendDataLayer({
         event: "generate_lead",
         form_id: formId,
-        form_location: "",
-        form_type: "",
-        lead_offer: "standard",
+        lead_id: "unefined",
+        form_location: "undefined",
+        form_type: formType,
+        lead_offer: leadOffer || "undefined",
         form_step: "complete",
-        lead_type: "new",
+        lead_type: "undefined",
       });
     }
   });
