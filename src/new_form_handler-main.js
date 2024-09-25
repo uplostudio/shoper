@@ -126,6 +126,8 @@ inputsData.inputs.forEach((input) => {
 
 window.validationPatterns = validationPatterns;
 
+
+
 function validateNIPWithAPI(nip, country) {
   return $.ajax({
     type: "POST",
@@ -607,12 +609,13 @@ function sendFormDataToURL(formElement) {
         window.location.href = data.redirect;
         return;
       }
-
       if (data.status !== 0) {
+        console.log($form.eq(0));
         $form.hide().next().show();
-        $(document).trigger("submitSuccess", $form);
+        $(document).trigger("submitSuccess", $form.eq(0));
       } else {
-        $(document).trigger("submitError", $form);
+        console.log('Triggering submitError');
+        $(document).trigger("submitError", $form.eq(0));
       }
     },
     error: () => {
@@ -696,7 +699,20 @@ function initializeEventListeners() {
     $(".loading-in-button").hide()
   );
 
+  $('select[data-form="address1[country]"]').on("change", function () {
+    const $form = $(this).closest("form");
+    const $nipInput = $form.find(
+      'input[data-type="nip"], input[data-form="address1[nip]"]'
+    );
+    if ($nipInput.length > 0 && $nipInput.val().trim() !== "") {
+      validateInput($nipInput).then((isInvalid) => {
+        updateInputLabel($nipInput, isInvalid ? "invalid" : "valid");
+      });
+    }
+  });
+
   $(document).on("submitSuccess submitError", (e, formElement) => {
+    console.log(formElement)
     const commonData = {
       event: "myTrackEvent",
       eventCategory: `Button modal form ${
@@ -706,14 +722,14 @@ function initializeEventListeners() {
       eventType: $(formElement).attr("data-label"),
       eventLabel: window.location.href,
     };
-
+  
     sendDataLayer(commonData);
-
+  
     if (e.type === "submitSuccess") {
       const formId = $(formElement).attr("id");
       const leadOffer = $(formElement).attr("data-lead_offer")
       const formType = $(formElement).attr("data-form_type")
-
+  
       sendDataLayer({
         event: "generate_lead",
         form_id: formId,
@@ -723,18 +739,6 @@ function initializeEventListeners() {
         lead_offer: leadOffer || "undefined",
         form_step: "complete",
         lead_type: "undefined",
-      });
-    }
-  });
-
-  $('select[data-form="address1[country]"]').on("change", function () {
-    const $form = $(this).closest("form");
-    const $nipInput = $form.find(
-      'input[data-type="nip"], input[data-form="address1[nip]"]'
-    );
-    if ($nipInput.length > 0 && $nipInput.val().trim() !== "") {
-      validateInput($nipInput).then((isInvalid) => {
-        updateInputLabel($nipInput, isInvalid ? "invalid" : "valid");
       });
     }
   });

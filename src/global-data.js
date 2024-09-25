@@ -11,6 +11,12 @@ window.myGlobals = {
 };
 
 let hostname = window.location.hostname;
+const mainProject = "shoper.pl";
+
+function isMainProjectUrl(url) {
+  const urlPattern = /^(https?:\/\/)?(www\.)?shoper\.pl(\/.*)?$/;
+  return urlPattern.test(url);
+}
 
 window.myGlobals.URL =
   hostname === "www.shoper.pl"
@@ -384,13 +390,17 @@ $(document).ready(function () {
   DataLayerGatherers.controlFocus();
 });
 
-$(document).on("closeModalCalled", DataLayerGatherers.pushModalClosed);
+$(document).on("closeModalCalled", function() {
+  DataLayerGatherers.pushModalClosed();
+});
+
 
 $(document).ready(function () {
   $("[data-app^='open_'], [data-element^='open_']").click(function () {
     const dataAppValue = $(this).data("app") || $(this).data("element");
     const buttonTextContent = $(this).text();
     const eventType = dataAppValue.split("open_")[1].split("_")[0];
+
 
     window.dataLayer = window.dataLayer || [];
     window.dataLayer.push({
@@ -439,3 +449,4 @@ $(document).ready(function() {
 });
 
 // DL Conversion Functions ends here:
+

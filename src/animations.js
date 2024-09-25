@@ -23,12 +23,12 @@ function closeModal() {
       }
     });
   }
-
+  
   var currentUrl = window.location.href;
   var baseUrl = currentUrl.split('#')[0];
   history.pushState(null, null, baseUrl);
-  
-  $(document).trigger("closeModalCalled");
+
+  $(document).trigger("closeModalCalled", []);
 }
 
 

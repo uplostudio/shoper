@@ -7,6 +7,7 @@ const path = require('path');
 const paths = {
     scripts: {
         src: [
+            'src/global-data.js',
             'src/new_form_handler-main.js',
             'src/accordion.js',
             'src/new_trial/shared_utils.js',
@@ -14,7 +15,6 @@ const paths = {
             'src/new_trial/new_step_two.js',
             'src/new_trial/new_step_three.js',
             'src/form_helper.js',
-            'src/global-data.js',
             'src/animations.js',
             'src/intercom_helper.js',
             'src/navigation.js',
