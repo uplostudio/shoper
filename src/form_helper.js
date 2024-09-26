@@ -16,7 +16,7 @@ const pathnameGroups = {
     "/apilo",
     "/autopay",
     "/przelewy24",
-
+    "/webinary-black-friday"
   ],
 };
 
