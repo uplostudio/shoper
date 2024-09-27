@@ -18,7 +18,8 @@ $(function () {
     "/program-partnerski/reseller",
     "/program-partnerski/afiliant",
     "/program-partnerski/tworca-aplikacji",
-    "/new-components/forms"
+    "/new-components/forms",
+    "/webinary-black-friday"
   ];
 
   var excludedDomains = [
