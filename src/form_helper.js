@@ -47,3 +47,15 @@ function changeSubmitValue() {
       submitInput.val('Zaloguj się');
   }
 }
+
+
+// Price list hotifx
+
+$(document).ready(function() {
+  $('[card="enterprise"]')
+    .find('.pricelist__perks-list')
+    .children()
+    .first()
+    .find('.text-size-regular')
+    .text('500 000 produktów');
+});
