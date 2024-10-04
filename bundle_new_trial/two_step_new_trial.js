@@ -1435,7 +1435,13 @@ function maskPhoneNumber(e) {
                   "#create_trial_step1" === a.step
                     ? (e = 0)
                     : a.hasOwnProperty("client_id")
-                    ? (e = 1)
+                    ? ((e = 1),
+                      dataLayer.push({
+                        event: "sign_up",
+                        user_id: a.client_id || "undefined",
+                        method: "url",
+                        shop_id: a.shop_id || "undefined",
+                      }))
                     : a.hasOwnProperty("redirect") && (e = 2),
                     $(document).trigger("actualTrialStepComplete", [e, a, r]),
                     $('[data-app="trial-domain"]').text(a.host);
@@ -2653,5 +2659,4 @@ function setHiddenInputs(t) {
 window.addEventListener("DOMContentLoaded", () => {
   var e = getQueryParams();
   0 < Object.keys(e).length && storeParams(e), checkExpiry();
-  console.log("LOADED")  
 });
