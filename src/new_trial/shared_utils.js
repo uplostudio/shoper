@@ -86,7 +86,7 @@ SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, st
 
 SharedUtils.handleErrorResponse = function(error, $form, $field, $wFormFail, stepNumber) {
     if (error.statusText === "abort") {
-        console.log("Request was aborted");
+
     } else {
         console.error('Error:', error);
         $wFormFail.text('Wystąpił niespodziewany błąd.').show();

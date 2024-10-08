@@ -47,7 +47,6 @@ window.addEventListener("load", () => {
         return response.json();
       })
       .then((data) => {
-        // console.log(data)
         let obj = data.purchase_simulation.results;
         let picked = Object.fromEntries(Object.entries(obj).filter(([key]) => key.includes(`${installmentPeriod}`)));
         let pickedByPeriod = picked[`${installmentPeriod}`];

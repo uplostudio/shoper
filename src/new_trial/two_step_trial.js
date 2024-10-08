@@ -474,22 +474,22 @@ $(document).ready(() => {
   $(document)
     .off("actualTrialStepComplete")
     .on("actualTrialStepComplete", function (event, actualCompletedStep, data, $form) {
-      console.log("Actual trial step completed:", actualCompletedStep);
+
 
       switch (actualCompletedStep) {
         case 0:
-          console.log("Step 0 completed: Email validation");
+
           handleTrialStepComplete(event, actualCompletedStep, data, $form);
           break;
         case 1:
-          console.log("Step 1 completed: Client ID received");
+
           handleTrialStepComplete(event, actualCompletedStep, data, $form);
           break;
         case 2:
-          console.log("Step 2 completed: Redirect received");
+
           break;
         default:
-          console.log("Unknown step completed");
+
       }
     });
 

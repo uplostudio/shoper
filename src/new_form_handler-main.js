@@ -161,7 +161,7 @@ function validateInput($input) {
   const dataForm = $input.data("form");
   const inputName = $input.attr("name") || $input.attr("id");
 
-  console.log(`[validateInput] Validating input: ${inputName}, Value: ${value}, Type: ${inputType}, Required: ${isRequired}`);
+
 
   $input.removeClass("invalid error");
 
@@ -172,7 +172,7 @@ function validateInput($input) {
 
   if (inputType === "checkbox" || $input.closest(".new__trial.is-checkbox").length) {
     const isChecked = $input.prop("checked");
-    console.log(`[validateInput] Checkbox checked: ${isChecked}`);
+
     if (isRequired && !isChecked) {
       showError($input, "To pole jest wymagane", isOldStructure, true);
       updateInputLabel($input, "invalid");
@@ -259,7 +259,7 @@ function pushFormError(errorMessage, $input) {
 }
 
 function showError($input, message, isOldStructure, isRequiredError) {
-  console.log(`[showError] Showing error for input: ${$input.attr("name") || $input.attr("id")}, Message: ${message}`);
+
   pushFormError(message, $input);
 
   $input.addClass("invalid");
@@ -432,7 +432,6 @@ function validateForm(formElement) {
       })
       .get()
   ).then((results) => {
-    console.log(`[validateForm] Number of invalid inputs: ${results.filter(Boolean).length}`);
     return results.filter(Boolean).length;
   });
 }
@@ -469,10 +468,6 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
   const formData = new FormData();
   const $form = $(formElement);
   const $loader = $form.find(".loading-in-button.is-inner");
-  // const sid = JSON.parse(localStorage.getItem("sid") || '{}').value || "";
-  // if (sid) {
-  //   formData.append('sid', sid);
-  // }
 
   Array.from(formElement.attributes).forEach(({ name, value }) => {
     const attributeName = name.replace("data-", "");
@@ -494,7 +489,7 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
     const type = $input.attr("type");
     const dataForm = $input.attr("data-form") || name;
 
-    console.log(`[sendFormDataToURL] Processing input: ${name}, Type: ${type}`);
+
 
     if (type === "radio") {
       if ($input.is(":checked")) {
@@ -504,7 +499,7 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
       const checkboxName = $input.attr("name") || $input.siblings("label").attr("for");
       if (checkboxName) {
         outputValues[checkboxName] = $input.is(":checked") ? "1" : "0";
-        console.log(`[sendFormDataToURL] Checkbox ${checkboxName} value: ${outputValues[checkboxName]}`);
+
       }
     } else {
       const value = $input.val().trim();
@@ -536,7 +531,7 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
     }
   });
 
-  console.log("[sendFormDataToURL] Form data prepared:", formData);
+
 
   $.ajax({
     type: "POST",

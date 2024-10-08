@@ -83,7 +83,6 @@
 
     $(".nav__dropdown-tab-link").on("click", function () {
       if (checkIfMobile() === false) {
-        console.log("Click denied");
         return;
       }
       const target = $(this);
