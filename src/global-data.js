@@ -164,7 +164,7 @@ const DataLayerGatherers = {
     this.pushDataLayerEvent({
       event: "trial_sign_up",
       client_id: clientId,
-      "shop-id": shopId,
+      "shop_id": shopId,
       formId: formId,
       email: email,
     });
@@ -202,7 +202,7 @@ const DataLayerGatherers = {
       eventCategory: "Button modal form sent",
       client_id: client_id,
       formId: formId,
-      "shop-id": shopId,
+      "shop_id": shopId,
       eventAction: eventAction,
       eventLabel: window.location.pathname,
       eventType: eventType,

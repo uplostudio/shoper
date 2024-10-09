@@ -250,7 +250,7 @@ $(document).ready(() => {
             }
           }
           SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
-          DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data("action"), $emailField.val());
+          // DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data("action"), $emailField.val());
           localStorage.removeItem("shoper_affiliate");
 
           if ($form.data("action") === "validate_email") {
