@@ -630,6 +630,7 @@ function initializeEventListeners() {
     const triggerName = dataValue.replace(/^open_|_modal_button$/g, "");
     const $modal = $(`[data-app='${triggerName}'], [data-element='${triggerName}']`);
 
+
     $modal.addClass("modal--open");
     $(document.body).addClass("overflow-hidden");
 

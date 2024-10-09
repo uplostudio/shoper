@@ -349,10 +349,11 @@ $(document).ready(() => {
     });
   };
 
-  const $openTwoStepTrialWrapperButton = $("[data-element='open_trial_two_steps_wrapper']", "[data-element='open_trial_wrapper']");
+  const $openTwoStepTrialWrapperButton = $("[data-element='open_trial_wrapper']");
 
   if ($openTwoStepTrialWrapperButton.length) {
     $openTwoStepTrialWrapperButton.on("click", function () {
+      console.log("trial modal opened")  
       isUsingModal = true;
       formType = isUsingModal ? "modal" : "inline";
       $twoStepTrialsWrapper.show();
@@ -388,7 +389,8 @@ $(document).ready(() => {
         packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: "25" };
       }
 
-      // Fire begin_checkout event
+      
+
       DataLayerGatherers.pushDataLayerEvent({
         event: "begin_checkout",
         formId: "create_trial_button",

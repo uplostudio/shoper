@@ -9,10 +9,10 @@ const paths = {
     scripts: {
         src: 'src/**/*.js',  // This will match all .js files in src and its subdirectories
         bundleSrc: [
+            'src/new_trial/two_step_trial.js',
+            'src/new_trial/shared_utils.js',
             'src/new_form_handler-main.js',
             'src/accordion.js',
-            'src/new_trial/shared_utils.js',
-            'src/new_trial/two_step_trial.js',
             'src/form_helper.js',
             'src/global-data.js',
             'src/animations.js',
