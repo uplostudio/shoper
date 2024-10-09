@@ -392,7 +392,7 @@ $(document).ready(() => {
       DataLayerGatherers.pushDataLayerEvent({
         event: "begin_checkout",
         formId: "create_trial_button",
-        formType: formType,
+        form_type: formType,
         ecommerce: {
           value: "420",
           items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
@@ -443,7 +443,7 @@ $(document).ready(() => {
       DataLayerGatherers.pushDataLayerEvent({
         event: "begin_checkout",
         formId: formId,
-        formType: formType,
+        form_type: formType,
         ecommerce: {
           value: "420",
           items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
@@ -454,7 +454,7 @@ $(document).ready(() => {
       DataLayerGatherers.pushDataLayerEvent({
         event: "add_payment_info",
         formId: formId,
-        formType: formType,
+        form_type: formType,
         ecommerce: {
           value: "420",
           items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
@@ -638,7 +638,7 @@ $(document).ready(() => {
                     client_type: "Firma",
                   },
                   eventLabel: window.location.pathname,
-                  formType: formType,
+                  form_type: formType,
                 });
               } else {
                 formSubmitErrorTrial(formId, eventAction, phone);
@@ -656,7 +656,7 @@ $(document).ready(() => {
                 client_type: "Konsument",
               },
               eventLabel: window.location.pathname,
-              formType: formType,
+              form_type: formType,
             });
           }
         } else {
