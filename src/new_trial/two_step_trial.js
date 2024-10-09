@@ -69,38 +69,44 @@ $(document).ready(() => {
 
   const validateField = ($field, type) => {
     const isCheckbox = $field.attr("data-type") === "checkbox";
+    const isRequired = $field.attr("data-required") === "true";
     const value = isCheckbox ? $field.prop("checked") : $field.val().trim();
     const regex =
       type === "email" ? validationPatterns.email : state.phoneRegex;
     let error = null;
 
-    if ((!isCheckbox && !value) || (isCheckbox && !value)) {
-      error = generateErrorMessage("required");
-    } else if (!isCheckbox && !regex.test(value)) {
-      error = generateErrorMessage(type);
+    if (isRequired) {
+        if ((!isCheckbox && !value) || (isCheckbox && !value)) {
+            error = generateErrorMessage("required");
+        } else if (!isCheckbox && !regex.test(value)) {
+            error = generateErrorMessage(type);
+        }
+    } else if (!isCheckbox && value && !regex.test(value)) {
+        error = generateErrorMessage(type);
     }
 
     $field.next(".error-box").remove();
 
     if (error) {
-      if (!isCheckbox) {
-        $field.after(`<span class="error-box">${error}</span>`);
-      }
-      $field.removeClass("valid").addClass("invalid");
-      $field
-        .siblings(".new__input-label")
-        .removeClass("valid active")
-        .addClass("invalid");
+        if (!isCheckbox) {
+            $field.after(`<span class="error-box">${error}</span>`);
+        }
+        $field.removeClass("valid").addClass("invalid");
+        $field
+            .siblings(".new__input-label")
+            .removeClass("valid active")
+            .addClass("invalid");
     } else {
-      $field.removeClass("invalid").addClass("valid");
-      $field
-        .siblings(".new__input-label")
-        .removeClass("invalid")
-        .addClass("valid");
+        $field.removeClass("invalid").addClass("valid");
+        $field
+            .siblings(".new__input-label")
+            .removeClass("invalid")
+            .addClass("valid");
     }
 
     return error;
-  };
+};
+
 
   const validatePhone = (field) => {
     const $field = $(field);
@@ -456,10 +462,10 @@ $(document).ready(() => {
       isUsingModal = true;
       formType = isUsingModal ? "modal" : "inline";
       $twoStepTrialsWrapper.show();
-
+  
       const storedEmail = localStorage.getItem("trialEmail");
       const trialCompleted = localStorage.getItem("trialCompleted") === "true";
-
+  
       let initialStep;
       if (trialCompleted) {
         switchToModal("modal_trial_three");
@@ -469,17 +475,11 @@ $(document).ready(() => {
         initialStep = 0;
       }
 
-      // Track initial form step
-      DataLayerGatherers.pushFormInteractionEvent(
-        "create_trial_button",
-        window.location.pathname,
-        formType,
-        initialStep === 0
-          ? "email"
-          : initialStep === 2
-          ? "last_step"
-          : "unknown"
-      );
+      const $trialForm = $twoStepTrialsWrapper.find('form');
+      $trialForm.data('is-modal', isUsingModal);
+      $trialForm.data('completed-step', initialStep);
+      $trialForm.data('form-type', formType);
+
 
       if (storedEmail) {
         $('[data-form="email"]', $twoStepTrialsWrapper)

@@ -634,10 +634,10 @@ function initializeEventListeners() {
     $modal.addClass("modal--open");
     $(document.body).addClass("overflow-hidden");
 
-    const $form = $modal.find("form:first");
-    if ($form.length > 0) {
-      $form.find(":input:enabled:visible:first").focus();
-    }
+    // const $form = $modal.find("form:first");
+    // if ($form.length > 0) {
+    //   $form.find(":input:enabled:visible:first").focus();
+    // }
   });
 
   $("[fs-formsubmit-element='reset']").on("click", () => $(".loading-in-button").hide());

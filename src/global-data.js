@@ -389,24 +389,68 @@ $(window).on("load", function () {
   clientTypeChange();
 });
 
-function trackFormInteraction(form, input) {
+function trackFormInteraction(form, input, formType) {
   if (form.data('interaction-tracked')) return;
 
+  const formId = form.attr('id') || 'empty';
+  const formLocation = window.location.pathname;
+  let formStep = 'unknown';
+
+  // Check if the form ID contains "trial"
+  if (formId.toLowerCase().includes('trial')) {
+    const isUsingModal = form.data('is-modal') === true;
+    const actualCompletedStep = parseInt(form.data('completed-step') || '0', 10);
+
+    if (isUsingModal) {
+      // Modal flow
+      switch (actualCompletedStep) {
+        case 0:
+          formStep = "email";
+          break;
+        case 1:
+          formStep = "email_phone";
+          break;
+        case 2:
+          formStep = "last_step";
+          break;
+        default:
+          formStep = "unknown";
+      }
+    } else {
+      // Inline flow
+      switch (actualCompletedStep) {
+        case 0:
+          formStep = "email";
+          break;
+        case 1:
+          formStep = "phone";
+          break;
+        case 2:
+          formStep = "last_step";
+          break;
+        default:
+          formStep = "unknown";
+      }
+    }
+  } else {
+    // For other forms, use the input's data-form attribute
+    formStep = input && input.length ? input.attr('data-form') || 'unknown' : 'unknown';
+  }
+
   DataLayerGatherers.pushFormInteractionEvent(
-    form.attr('id') || 'empty',
-    window.location.pathname,
+    formId,
+    formLocation,
     formType,
-    input && input.length ? input.attr('data-form') || 'unknown' : 'unknown'
+    formStep
   );
 
   form.data('interaction-tracked', true);
 }
 
 $(document).ready(function() {
-  $("form:not([id*='trial'])").on("focus", "input, textarea, select", function() {
-    trackFormInteraction($(this.form), $(this));
+  $("form").on("focus", "input, textarea, select", function() {
+    const $form = $(this.form);
+    const formType = $form.data('form-type') || 'inline';
+    trackFormInteraction($form, $(this), formType);
   });
 });
-
-
-
