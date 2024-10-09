@@ -339,6 +339,7 @@ $(document).ready(() => {
             actualCompletedStep = 0;
           } else if (response.hasOwnProperty("client_id")) {
             actualCompletedStep = 1;
+            DataLayerGatherers.pushEmailSubmittedData(response.client_id, response.shop_id, $form.prop('id'), $emailField.val())
             dataLayer.push({
               event: "sign_up",
               user_id: response.client_id || "undefined",
