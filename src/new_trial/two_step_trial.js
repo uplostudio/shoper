@@ -353,7 +353,6 @@ $(document).ready(() => {
 
   if ($openTwoStepTrialWrapperButton.length) {
     $openTwoStepTrialWrapperButton.on("click", function () {
-      console.log("trial modal opened")  
       isUsingModal = true;
       formType = isUsingModal ? "modal" : "inline";
       $twoStepTrialsWrapper.show();
