@@ -11,25 +11,46 @@ $(document).ready(() => {
   let isStandardPlusPackage = false;
   let formType = "inline";
 
-  const updateTrialPromoElements = (data, isPremiumPackage, isStandardPlusPackage) => {
+  const updateTrialPromoElements = (
+    data,
+    isPremiumPackage,
+    isStandardPlusPackage
+  ) => {
     const $trialPromo = $("#trial-promo");
     const $trialPromoBox = $("#trial-promo-box");
-    const packageInfo = isPremiumPackage ? { name: "Premium", key: "premium" } : isStandardPlusPackage ? { name: "Standard+", key: "standard-plus" } : { name: "Standard", key: "standard" };
+    const packageInfo = isPremiumPackage
+      ? { name: "Premium", key: "premium" }
+      : isStandardPlusPackage
+      ? { name: "Standard+", key: "standard-plus" }
+      : { name: "Standard", key: "standard" };
 
     const discount = data.promotion?.price?.[packageInfo.key]?.discount;
     const oldPrice = data.price?.[packageInfo.key]?.regular_price_year;
     const newPrice = data.promotion?.price?.[packageInfo.key]?.[12]?.year?.net;
 
-    discount && discount !== 0 ? $trialPromo.text(`${discount}% taniej`).show() : $trialPromo.hide();
+    discount && discount !== 0
+      ? $trialPromo.text(`${discount}% taniej`).show()
+      : $trialPromo.hide();
 
-    const formatPrice = (price) => parseFloat(price || 0).toLocaleString("pl-PL", { minimumFractionDigits: 2, maximumFractionDigits: 2 });
+    const formatPrice = (price) =>
+      parseFloat(price || 0).toLocaleString("pl-PL", {
+        minimumFractionDigits: 2,
+        maximumFractionDigits: 2,
+      });
 
-    $trialPromoBox.html(`Shoper ${packageInfo.name} w promocji <del>${formatPrice(oldPrice)}</del> <strong>${formatPrice(newPrice)} zł</strong> netto / pierwszy rok`);
+    $trialPromoBox.html(
+      `Shoper ${packageInfo.name} w promocji <del>${formatPrice(
+        oldPrice
+      )}</del> <strong>${formatPrice(
+        newPrice
+      )} zł</strong> netto / pierwszy rok`
+    );
   };
 
   const generateErrorMessage = (type) =>
     ({
-      email: "Niepoprawny adres e-mail. Wprowadź adres w formacie: nazwa@domena.pl",
+      email:
+        "Niepoprawny adres e-mail. Wprowadź adres w formacie: nazwa@domena.pl",
       required: "To pole jest wymagane.",
       phone: "Niepoprawny numer telefonu. Wprowadź poprawny numer telefonu.",
     }[type] || "To pole jest wymagane.");
@@ -49,7 +70,8 @@ $(document).ready(() => {
   const validateField = ($field, type) => {
     const isCheckbox = $field.attr("data-type") === "checkbox";
     const value = isCheckbox ? $field.prop("checked") : $field.val().trim();
-    const regex = type === "email" ? validationPatterns.email : state.phoneRegex;
+    const regex =
+      type === "email" ? validationPatterns.email : state.phoneRegex;
     let error = null;
 
     if ((!isCheckbox && !value) || (isCheckbox && !value)) {
@@ -65,10 +87,16 @@ $(document).ready(() => {
         $field.after(`<span class="error-box">${error}</span>`);
       }
       $field.removeClass("valid").addClass("invalid");
-      $field.siblings(".new__input-label").removeClass("valid active").addClass("invalid");
+      $field
+        .siblings(".new__input-label")
+        .removeClass("valid active")
+        .addClass("invalid");
     } else {
       $field.removeClass("invalid").addClass("valid");
-      $field.siblings(".new__input-label").removeClass("invalid").addClass("valid");
+      $field
+        .siblings(".new__input-label")
+        .removeClass("invalid")
+        .addClass("valid");
     }
 
     return error;
@@ -89,16 +117,22 @@ $(document).ready(() => {
 
     clearErrors($field);
 
-    const phoneErrorMessage = "Niepoprawny numer telefonu. Wprowadź numer składający się z 9 cyfr w formacie: 123456789";
+    const phoneErrorMessage =
+      "Niepoprawny numer telefonu. Wprowadź numer składający się z 9 cyfr w formacie: 123456789";
     const polishPhonePattern = /^(?:\+48)?(?:(?:[\s-]?\d{3}){3}|\d{9})$/;
 
     if (!phone) {
       error = generateErrorMessage("required");
     } else if (countryCode === "pl") {
       const phoneDigitsOnly = phone.replace(/\D/g, "");
-      const phoneWithoutCountryCode = phoneDigitsOnly.startsWith("48") ? phoneDigitsOnly.slice(2) : phoneDigitsOnly;
+      const phoneWithoutCountryCode = phoneDigitsOnly.startsWith("48")
+        ? phoneDigitsOnly.slice(2)
+        : phoneDigitsOnly;
 
-      if (phoneWithoutCountryCode.length !== 9 || !polishPhonePattern.test(phone)) {
+      if (
+        phoneWithoutCountryCode.length !== 9 ||
+        !polishPhonePattern.test(phone)
+      ) {
         error = phoneErrorMessage;
       }
     } else if (!iti.isValidNumber()) {
@@ -133,7 +167,10 @@ $(document).ready(() => {
   const populatePhoneNumberFromLocalStorage = () => {
     const storedPhoneNumber = localStorage.getItem("originalPhoneNumber");
     if (storedPhoneNumber) {
-      const $phoneInput = $('[data-form="phone_number"]', $twoStepTrialsWrapper);
+      const $phoneInput = $(
+        '[data-form="phone_number"]',
+        $twoStepTrialsWrapper
+      );
       $phoneInput.val(storedPhoneNumber).prop("disabled", true);
 
       const iti = window.intlTelInputGlobals.getInstance($phoneInput[0]);
@@ -160,12 +197,24 @@ $(document).ready(() => {
     const $phoneField = $form.find('[data-type="phone"]');
     const $checkboxField = $form.find('[data-type="checkbox"]');
 
-    const checkboxError = $checkboxField.length ? validateField($checkboxField, "checkbox") : null;
-    const emailError = $emailField.length ? validateField($emailField, "email") : null;
-    const phoneError = $phoneField.length ? validatePhone($phoneField[0]) : null;
+    const checkboxError = $checkboxField.length
+      ? validateField($checkboxField, "checkbox")
+      : null;
+    const emailError = $emailField.length
+      ? validateField($emailField, "email")
+      : null;
+    const phoneError = $phoneField.length
+      ? validatePhone($phoneField[0])
+      : null;
 
     if (emailError || phoneError || checkboxError) {
-      formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val(), $phoneField.val(), $checkboxField.val());
+      formSubmitErrorTrial(
+        $form.attr("id"),
+        $form.data("action"),
+        $emailField.val(),
+        $phoneField.val(),
+        $checkboxField.val()
+      );
       return;
     }
 
@@ -189,7 +238,9 @@ $(document).ready(() => {
     };
 
     if ($checkboxField.length) {
-      formData[`${$checkboxField.attr("id")}`] = $checkboxField.prop("checked") ? 1 : 0;
+      formData[`${$checkboxField.attr("id")}`] = $checkboxField.prop("checked")
+        ? 1
+        : 0;
     }
 
     if ($phoneField.length) {
@@ -250,13 +301,21 @@ $(document).ready(() => {
               localStorage.setItem("originalPhoneNumber", iti.getNumber());
             }
           }
-          SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
+          SharedUtils.handleResponse(
+            response,
+            $form,
+            $emailField,
+            $wFormFail,
+            true,
+            1
+          );
           localStorage.removeItem("shoper_affiliate");
 
           if ($form.data("action") === "validate_email") {
             const newEmail = $emailField.val();
             const storedEmail = localStorage.getItem("trialEmail");
-            const trialCompleted = localStorage.getItem("trialCompleted") === "true";
+            const trialCompleted =
+              localStorage.getItem("trialCompleted") === "true";
 
             if (newEmail !== storedEmail || !trialCompleted) {
               localStorage.setItem("trialEmail", newEmail);
@@ -266,7 +325,9 @@ $(document).ready(() => {
               switchToModal("modal_trial_three");
             }
 
-            $('[data-form="email"]', $twoStepTrialsWrapper).val(newEmail).prop("disabled", true);
+            $('[data-form="email"]', $twoStepTrialsWrapper)
+              .val(newEmail)
+              .prop("disabled", true);
             $twoStepTrialsWrapper.show();
           } else if ($form.data("action") === "create_trial_step1_new") {
             switchToModal("modal_trial_three");
@@ -288,23 +349,41 @@ $(document).ready(() => {
             actualCompletedStep = 2;
           }
 
-          $(document).trigger("actualTrialStepComplete", [actualCompletedStep, response, $form]);
+          $(document).trigger("actualTrialStepComplete", [
+            actualCompletedStep,
+            response,
+            $form,
+          ]);
           $('[data-app="trial-domain"]').text(response.host);
         } else {
           let error;
-          if (response.hasOwnProperty("code") && SharedUtils.statusMessages.hasOwnProperty(response.code)) {
+          if (
+            response.hasOwnProperty("code") &&
+            SharedUtils.statusMessages.hasOwnProperty(response.code)
+          ) {
             error = SharedUtils.statusMessages[response.code];
           } else {
             error = generateErrorMessage("email");
           }
 
           showError($emailField, error);
-          formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
+          formSubmitErrorTrial(
+            $form.attr("id"),
+            $form.data("action"),
+            $emailField.val()
+          );
         }
       })
       .catch((error) => {
         console.error("Ajax error:", error);
-        SharedUtils.handleResponse(error, $form, $emailField, $wFormFail, false, 1);
+        SharedUtils.handleResponse(
+          error,
+          $form,
+          $emailField,
+          $wFormFail,
+          false,
+          1
+        );
       })
       .always(() => {
         $loader.hide();
@@ -313,33 +392,50 @@ $(document).ready(() => {
   };
 
   const setupValidation = () => {
-    $(document).on("blur", '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"]', function () {
-      validateField($(this), "email");
-    });
+    $(document).on(
+      "blur",
+      '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"]',
+      function () {
+        validateField($(this), "email");
+      }
+    );
 
     $(document).on("blur", '[data-type="phone"]', function () {
       validatePhone(this);
     });
 
-    $(document).on("keydown", '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"], [data-type="phone"]', function (e) {
-      if (e.key === "Enter") {
-        e.preventDefault();
+    $(document).on(
+      "keydown",
+      '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"], [data-type="phone"]',
+      function (e) {
+        if (e.key === "Enter") {
+          e.preventDefault();
+          handleFormSubmission(e, $(this).closest("form"));
+        }
+      }
+    );
+
+    $(document).on(
+      "click",
+      '[data-form="submit-step-one-two"], [data-form="validate_email"]',
+      function (e) {
+        formType = isUsingModal ? "modal" : "inline";
         handleFormSubmission(e, $(this).closest("form"));
       }
-    });
+    );
 
-    $(document).on("click", '[data-form="submit-step-one-two"], [data-form="validate_email"]', function (e) {
-      formType = isUsingModal ? "modal" : "inline";
-      handleFormSubmission(e, $(this).closest("form"));
-    });
-
-    $(document).on("submit", '[data-action="create_trial_step1_new"], [data-action="validate_email"]', function (e) {
-      handleFormSubmission(e, $(this));
-    });
+    $(document).on(
+      "submit",
+      '[data-action="create_trial_step1_new"], [data-action="validate_email"]',
+      function (e) {
+        handleFormSubmission(e, $(this));
+      }
+    );
 
     $('[data-type="phone"]').each(function () {
       window.intlTelInput(this, {
-        utilsScript: "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
+        utilsScript:
+          "https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js",
         preferredCountries: ["pl", "de", "ie", "us", "gb", "nl"],
         autoInsertDialCode: false,
         nationalMode: false,
@@ -350,7 +446,9 @@ $(document).ready(() => {
     });
   };
 
-  const $openTwoStepTrialWrapperButton = $("[data-element='open_trial_wrapper']");
+  const $openTwoStepTrialWrapperButton = $(
+    "[data-element='open_trial_wrapper']"
+  );
 
   if ($openTwoStepTrialWrapperButton.length) {
     $openTwoStepTrialWrapperButton.on("click", function () {
@@ -375,11 +473,17 @@ $(document).ready(() => {
         "create_trial_button",
         window.location.pathname,
         formType,
-        initialStep === 0 ? "email" : initialStep === 2 ? "last_step" : "unknown"
+        initialStep === 0
+          ? "email"
+          : initialStep === 2
+          ? "last_step"
+          : "unknown"
       );
 
       if (storedEmail) {
-        $('[data-form="email"]', $twoStepTrialsWrapper).val(storedEmail).prop("disabled", true);
+        $('[data-form="email"]', $twoStepTrialsWrapper)
+          .val(storedEmail)
+          .prop("disabled", true);
       }
 
       $(document).trigger("trialModalOpened", ["new_flow"]);
@@ -393,11 +497,26 @@ $(document).ready(() => {
       // Determine package details
       let packageDetails;
       if (isPremiumPackage) {
-        packageDetails = { trial_type: "Premium", item_id: "Premium", item_name: "Premium", price: "499" };
+        packageDetails = {
+          trial_type: "Premium",
+          item_id: "Premium",
+          item_name: "Premium",
+          price: "499",
+        };
       } else if (isStandardPlusPackage) {
-        packageDetails = { trial_type: "Standard+", item_id: "Standard+", item_name: "Standard+", price: "35" };
+        packageDetails = {
+          trial_type: "Standard+",
+          item_id: "Standard+",
+          item_name: "Standard+",
+          price: "35",
+        };
       } else {
-        packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: "25" };
+        packageDetails = {
+          trial_type: "Standard",
+          item_id: "Standard",
+          item_name: "Standard",
+          price: "25",
+        };
       }
 
       DataLayerGatherers.pushDataLayerEvent({
@@ -406,13 +525,24 @@ $(document).ready(() => {
         form_type: formType,
         ecommerce: {
           value: "420",
-          items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
+          items: [
+            {
+              ...packageDetails,
+              item_category: "Global Header",
+              currency: "PLN",
+              item_variant: "12",
+            },
+          ],
         },
         eventLabel: window.location.pathname,
       });
 
       window.ShoperPricing.addLoadCallback(function (pricingData) {
-        updateTrialPromoElements(pricingData, isPremiumPackage, isStandardPlusPackage);
+        updateTrialPromoElements(
+          pricingData,
+          isPremiumPackage,
+          isStandardPlusPackage
+        );
       });
     });
   }
@@ -437,18 +567,37 @@ $(document).ready(() => {
     };
   };
 
-  const handleTrialStepComplete = debounce(function (event, actualCompletedStep, data, $form) {
+  const handleTrialStepComplete = debounce(function (
+    event,
+    actualCompletedStep,
+    data,
+    $form
+  ) {
     let packageDetails;
     if (isPremiumPackage) {
-      packageDetails = { trial_type: "Premium", item_id: "Premium", item_name: "Premium", price: "499" };
+      packageDetails = {
+        trial_type: "Premium",
+        item_id: "Premium",
+        item_name: "Premium",
+        price: "499",
+      };
     } else if (isStandardPlusPackage) {
-      packageDetails = { trial_type: "Standard+", item_id: "Standard+", item_name: "Standard+", price: "35" };
+      packageDetails = {
+        trial_type: "Standard+",
+        item_id: "Standard+",
+        item_name: "Standard+",
+        price: "35",
+      };
     } else {
-      packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: "25" };
+      packageDetails = {
+        trial_type: "Standard",
+        item_id: "Standard",
+        item_name: "Standard",
+        price: "25",
+      };
     }
-  
+
     let formId = $form && $form.length ? $form.attr("id") : "unknown";
-  
     // Determine form step based on the flow and completed step
     let formStep;
     if (isUsingModal) {
@@ -482,14 +631,14 @@ $(document).ready(() => {
           formStep = "unknown";
       }
     }
-  
+
     DataLayerGatherers.pushFormInteractionEvent(
       formId,
       window.location.pathname,
       isUsingModal ? "modal" : "inline",
       formStep
     );
-  
+
     if (actualCompletedStep === 0) {
       DataLayerGatherers.pushDataLayerEvent({
         event: "begin_checkout",
@@ -497,7 +646,14 @@ $(document).ready(() => {
         form_type: isUsingModal ? "modal" : "inline",
         ecommerce: {
           value: "420",
-          items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
+          items: [
+            {
+              ...packageDetails,
+              item_category: "Global Header",
+              currency: "PLN",
+              item_variant: "12",
+            },
+          ],
         },
         eventLabel: window.location.pathname,
       });
@@ -508,27 +664,40 @@ $(document).ready(() => {
         form_type: isUsingModal ? "modal" : "inline",
         ecommerce: {
           value: "420",
-          items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
+          items: [
+            {
+              ...packageDetails,
+              item_category: "Global Header",
+              currency: "PLN",
+              item_variant: "12",
+            },
+          ],
         },
         eventLabel: window.location.pathname,
       });
     }
-  
+
     if (JSON.stringify(data) !== JSON.stringify(lastProcessedData)) {
       lastProcessedData = data;
       window.ShoperPricing.addLoadCallback(function (pricingData) {
-        updateTrialPromoElements(pricingData, isPremiumPackage, isStandardPlusPackage);
+        updateTrialPromoElements(
+          pricingData,
+          isPremiumPackage,
+          isStandardPlusPackage
+        );
       });
     }
-  }, 250);
-  
-  
+  },
+  250);
 
   $(document)
     .off("actualTrialStepComplete")
-    .on("actualTrialStepComplete", function (event, actualCompletedStep, data, $form) {
-      handleTrialStepComplete(event, actualCompletedStep, data, $form);
-    });
+    .on(
+      "actualTrialStepComplete",
+      function (event, actualCompletedStep, data, $form) {
+        handleTrialStepComplete(event, actualCompletedStep, data, $form);
+      }
+    );
 
   setupValidation();
   SharedUtils.checkAndUpdateSID();
@@ -544,11 +713,23 @@ $(document).ready(() => {
     if (ajaxRequest) {
       ajaxRequest.abort();
     }
-    $(document).off("blur", '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"]');
+    $(document).off(
+      "blur",
+      '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"]'
+    );
     $(document).off("blur", '[data-type="phone"]');
-    $(document).off("keydown", '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"], [data-type="phone"]');
-    $(document).off("click", '[data-form="submit-step-one-two"], [data-form="validate_email"]');
-    $(document).off("submit", '[data-action="create_trial_step1_new"], [data-action="validate_email"]');
+    $(document).off(
+      "keydown",
+      '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"], [data-type="phone"]'
+    );
+    $(document).off(
+      "click",
+      '[data-form="submit-step-one-two"], [data-form="validate_email"]'
+    );
+    $(document).off(
+      "submit",
+      '[data-action="create_trial_step1_new"], [data-action="validate_email"]'
+    );
     $openTwoStepTrialWrapperButton.off("click");
     $(document).off("actualTrialStepComplete");
   };
@@ -557,7 +738,9 @@ $(document).ready(() => {
 
   // Incorporating logic from new_step_three.js
   $(document).ready(function () {
-    const $form = $('[data-formid="create_trial_step2_new"], [data-name="reseller"]');
+    const $form = $(
+      '[data-formid="create_trial_step2_new"], [data-name="reseller"]'
+    );
     const $submitButton = $form.find('[data-form="submit-step-three"]');
     const $clientTypeRadios = $form.find('input[name="address[client_type]"]');
     const $payNowRadios = $form.find('input[name="pay_now"]');
@@ -571,13 +754,23 @@ $(document).ready(() => {
         const email = localStorage.getItem("email");
         const phone = localStorage.getItem("originalPhoneNumber");
 
-        $trialForm.find('[data-form="email"]').val(email).prop("disabled", true);
-        $trialForm.find('[data-form="phone_number"]').val(phone).prop("disabled", true);
+        $trialForm
+          .find('[data-form="email"]')
+          .val(email)
+          .prop("disabled", true);
+        $trialForm
+          .find('[data-form="phone_number"]')
+          .val(phone)
+          .prop("disabled", true);
       }
 
       SharedUtils.populateCountrySelect("#address1\\[country\\]");
 
-      $clientTypeRadios.filter('[value="1"]').prop("checked", true).closest("label").addClass("is-checked");
+      $clientTypeRadios
+        .filter('[value="1"]')
+        .prop("checked", true)
+        .closest("label")
+        .addClass("is-checked");
       toggleClientTypeFields();
 
       $clientTypeRadios.on("change", function () {
@@ -625,7 +818,9 @@ $(document).ready(() => {
       $trialPromoBox.toggle(isPayNow);
 
       const $submitButtonLabel = $submitButton.find("#label");
-      $submitButtonLabel.text(isPayNow ? "Zapłać teraz" : "Rozpocznij darmowy okres próbny");
+      $submitButtonLabel.text(
+        isPayNow ? "Zapłać teraz" : "Rozpocznij darmowy okres próbny"
+      );
     }
 
     function formSubmitErrorTrial(formId, eventAction, phone) {
@@ -633,45 +828,68 @@ $(document).ready(() => {
         event: "formSubmitError",
         formid: formId || "",
         action: eventAction || "",
-        "address1[client_type]": $form.find('input[name="address[client_type]"]:checked').val() || "",
-        "address1[first_name]": $form.find('input[name="address[first_name]"]').val() || "",
-        "address1[last_name]": $form.find('input[name="address[last_name]"]').val() || "",
-        "address1[line_1]": $form.find('input[name="address[line_1]"]').val() || "",
-        "address1[post_code]": $form.find('input[name="address[post_code]"]').val() || "",
+        "address1[client_type]":
+          $form.find('input[name="address[client_type]"]:checked').val() || "",
+        "address1[first_name]":
+          $form.find('input[name="address[first_name]"]').val() || "",
+        "address1[last_name]":
+          $form.find('input[name="address[last_name]"]').val() || "",
+        "address1[line_1]":
+          $form.find('input[name="address[line_1]"]').val() || "",
+        "address1[post_code]":
+          $form.find('input[name="address[post_code]"]').val() || "",
         "address1[city]": $form.find('input[name="address[city]"]').val() || "",
-        "address1[country]": $form.find('select[name="address[country]"]').val() || "",
+        "address1[country]":
+          $form.find('select[name="address[country]"]').val() || "",
         pay_now: $form.find('input[name="pay_now"]:checked').val() || "",
         accept: 1,
         website: "shoper",
         eventLabel: window.location.pathname || "",
       };
-    
+
       DataLayerGatherers.pushDataLayerEvent(formData);
     }
-    
 
     function handleFormSubmission() {
-      const isPremiumPackage = localStorage.getItem("isPremiumPackage") === "true";
-      const isStandardPlusPackage = localStorage.getItem("isStandardPlusPackage") === "true";
+      const isPremiumPackage =
+        localStorage.getItem("isPremiumPackage") === "true";
+      const isStandardPlusPackage =
+        localStorage.getItem("isStandardPlusPackage") === "true";
       validateForm($form[0]).then((errors) => {
         const phone = localStorage.getItem("originalPhoneNumber") || "";
         const formId = $form.data("formid");
         const eventAction = formId;
 
         if (errors === 0) {
-          const $nipField = $form.find('input[data-type="nip"]:not([data-exclude="true"]):not(:disabled)');
-          const shouldValidateNip = $nipField.length > 0 && $nipField.attr("data-exclude") !== "true";
+          const $nipField = $form.find(
+            'input[data-type="nip"]:not([data-exclude="true"]):not(:disabled)'
+          );
+          const shouldValidateNip =
+            $nipField.length > 0 && $nipField.attr("data-exclude") !== "true";
 
           if (shouldValidateNip) {
             performNIPPreflightCheck($form).then((isNipValid) => {
               if (isNipValid) {
                 sendFormDataToURL($form[0], true);
-                DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
+                DataLayerGatherers.pushFormSubmitSuccessData(
+                  formId,
+                  eventAction
+                );
+                DataLayerGatherers.pushFormInteractionEvent(
+                  formId,
+                  window.location.pathname,
+                  isUsingModal ? "modal" : "inline",
+                  "last_step"
+                );
                 DataLayerGatherers.pushDataLayerEvent({
                   event: "ecommerce_purchase",
                   ecommerce: {
                     trial: true,
-                    trial_type: isPremiumPackage ? "Premium" : isStandardPlusPackage ? "Standard+" : "Standard",
+                    trial_type: isPremiumPackage
+                      ? "Premium"
+                      : isStandardPlusPackage
+                      ? "Standard+"
+                      : "Standard",
                     client_type: "Firma",
                   },
                   eventLabel: window.location.pathname,
@@ -685,11 +903,21 @@ $(document).ready(() => {
           } else {
             sendFormDataToURL($form[0], true);
             DataLayerGatherers.pushFormSubmitSuccessData(formId, eventAction);
+            DataLayerGatherers.pushFormInteractionEvent(
+              formId,
+              window.location.pathname,
+              isUsingModal ? "modal" : "inline",
+              "last_step"
+            );
             DataLayerGatherers.pushDataLayerEvent({
               event: "ecommerce_purchase",
               ecommerce: {
                 trial: true,
-                trial_type: isPremiumPackage ? "Premium" : isStandardPlusPackage ? "Standard+" : "Standard",
+                trial_type: isPremiumPackage
+                  ? "Premium"
+                  : isStandardPlusPackage
+                  ? "Standard+"
+                  : "Standard",
                 client_type: "Konsument",
               },
               eventLabel: window.location.pathname,
@@ -705,35 +933,52 @@ $(document).ready(() => {
 
     setupForm();
 
-    $(document).on("actualTrialStepComplete", function (event, actualCompletedStep, data) {
-      if (actualCompletedStep === 2) {
-        const $modalTrialThree = $('[data-element="modal_trial_three"]');
-        const $modalTrialSuccess = $('[data-element="modal_trial_success"]');
+    $(document).on(
+      "actualTrialStepComplete",
+      function (event, actualCompletedStep, data) {
+        if (actualCompletedStep === 2) {
+          const $modalTrialThree = $('[data-element="modal_trial_three"]');
+          const $modalTrialSuccess = $('[data-element="modal_trial_success"]');
 
-        if ($modalTrialThree.length) {
-          $modalTrialThree.hide();
-        }
-        if ($modalTrialSuccess.length) {
-          $modalTrialSuccess.show();
+          if ($modalTrialThree.length) {
+            $modalTrialThree.hide();
+          }
+          if ($modalTrialSuccess.length) {
+            $modalTrialSuccess.show();
+          }
         }
       }
-    });
+    );
   });
 });
 
-$(document).on("formSubmissionComplete", function (event, isSuccess, $form, $emailField, data) {
-  if (isSuccess) {
-    let packageValue = "";
-    if (localStorage.getItem("isPremiumPackage") === "true") {
-      packageValue = 33;
-    } else if (localStorage.getItem("isStandardPlusPackage") === "true") {
-      packageValue = 38;
+$(document).on(
+  "formSubmissionComplete",
+  function (event, isSuccess, $form, $emailField, data) {
+    if (isSuccess) {
+      let packageValue = "";
+      if (localStorage.getItem("isPremiumPackage") === "true") {
+        packageValue = 33;
+      } else if (localStorage.getItem("isStandardPlusPackage") === "true") {
+        packageValue = 38;
+      }
+      DataLayerGatherers.pushTrackEventDataModal(
+        window.myGlobals.clientId,
+        $form.data("action"),
+        window.myGlobals.shopId,
+        $form.data("action"),
+        $emailField.val(),
+        packageValue
+      );
+    } else {
+      DataLayerGatherers.pushTrackEventError(
+        $form.data("action"),
+        $form.find("#label").text(),
+        $emailField.val()
+      );
     }
-    DataLayerGatherers.pushTrackEventDataModal(window.myGlobals.clientId, $form.data("action"), window.myGlobals.shopId, $form.data("action"), $emailField.val(), packageValue);
-  } else {
-    DataLayerGatherers.pushTrackEventError($form.data("action"), $form.find("#label").text(), $emailField.val());
   }
-});
+);
 
 function maskPhoneNumber(phone) {
   return phone.replace(/(\+48)(\d{7})(\d{2})/, "$1 *** *** *$3");
