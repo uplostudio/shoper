@@ -6,9 +6,10 @@ $(document).ready(() => {
 
   const $twoStepTrialsWrapper = $('[data-element="trial_wrapper"]');
   let ajaxRequest, currentSID, lastProcessedData;
-  isUsingModal = false;
+  let isUsingModal = false;
   let isPremiumPackage = false;
   let isStandardPlusPackage = false;
+  let formType = "inline";
 
   const updateTrialPromoElements = (data, isPremiumPackage, isStandardPlusPackage) => {
     const $trialPromo = $("#trial-promo");
@@ -250,7 +251,6 @@ $(document).ready(() => {
             }
           }
           SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
-          // DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data("action"), $emailField.val());
           localStorage.removeItem("shoper_affiliate");
 
           if ($form.data("action") === "validate_email") {
@@ -329,6 +329,7 @@ $(document).ready(() => {
     });
 
     $(document).on("click", '[data-form="submit-step-one-two"], [data-form="validate_email"]', function (e) {
+      formType = isUsingModal ? "modal" : "inline";
       handleFormSubmission(e, $(this).closest("form"));
     });
 
@@ -360,11 +361,22 @@ $(document).ready(() => {
       const storedEmail = localStorage.getItem("trialEmail");
       const trialCompleted = localStorage.getItem("trialCompleted") === "true";
 
+      let initialStep;
       if (trialCompleted) {
         switchToModal("modal_trial_three");
+        initialStep = 2;
       } else {
         switchToModal("modal_trial_one_two");
+        initialStep = 0;
       }
+
+      // Track initial form step
+      DataLayerGatherers.pushFormInteractionEvent(
+        "create_trial_button",
+        window.location.pathname,
+        formType,
+        initialStep === 0 ? "email" : initialStep === 2 ? "last_step" : "unknown"
+      );
 
       if (storedEmail) {
         $('[data-form="email"]', $twoStepTrialsWrapper).val(storedEmail).prop("disabled", true);
@@ -387,8 +399,6 @@ $(document).ready(() => {
       } else {
         packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: "25" };
       }
-
-      
 
       DataLayerGatherers.pushDataLayerEvent({
         event: "begin_checkout",
@@ -436,15 +446,55 @@ $(document).ready(() => {
     } else {
       packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: "25" };
     }
-
+  
     let formId = $form && $form.length ? $form.attr("id") : "unknown";
-
+  
+    // Determine form step based on the flow and completed step
+    let formStep;
+    if (isUsingModal) {
+      // Modal flow (started with openTwoStepTrialWrapperButton)
+      switch (actualCompletedStep) {
+        case 0:
+          formStep = "email";
+          break;
+        case 1:
+          formStep = "email_phone";
+          break;
+        case 2:
+          formStep = "last_step";
+          break;
+        default:
+          formStep = "unknown";
+      }
+    } else {
+      // Inline flow
+      switch (actualCompletedStep) {
+        case 0:
+          formStep = "email";
+          break;
+        case 1:
+          formStep = "phone";
+          break;
+        case 2:
+          formStep = "last_step";
+          break;
+        default:
+          formStep = "unknown";
+      }
+    }
+  
+    DataLayerGatherers.pushFormInteractionEvent(
+      formId,
+      window.location.pathname,
+      isUsingModal ? "modal" : "inline",
+      formStep
+    );
+  
     if (actualCompletedStep === 0) {
-      formType = "inline";
       DataLayerGatherers.pushDataLayerEvent({
         event: "begin_checkout",
         formId: formId,
-        form_type: formType,
+        form_type: isUsingModal ? "modal" : "inline",
         ecommerce: {
           value: "420",
           items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
@@ -455,7 +505,7 @@ $(document).ready(() => {
       DataLayerGatherers.pushDataLayerEvent({
         event: "add_payment_info",
         formId: formId,
-        form_type: formType,
+        form_type: isUsingModal ? "modal" : "inline",
         ecommerce: {
           value: "420",
           items: [{ ...packageDetails, item_category: "Global Header", currency: "PLN", item_variant: "12" }],
@@ -463,7 +513,7 @@ $(document).ready(() => {
         eventLabel: window.location.pathname,
       });
     }
-
+  
     if (JSON.stringify(data) !== JSON.stringify(lastProcessedData)) {
       lastProcessedData = data;
       window.ShoperPricing.addLoadCallback(function (pricingData) {
@@ -471,27 +521,13 @@ $(document).ready(() => {
       });
     }
   }, 250);
+  
+  
 
   $(document)
     .off("actualTrialStepComplete")
     .on("actualTrialStepComplete", function (event, actualCompletedStep, data, $form) {
-
-
-      switch (actualCompletedStep) {
-        case 0:
-
-          handleTrialStepComplete(event, actualCompletedStep, data, $form);
-          break;
-        case 1:
-
-          handleTrialStepComplete(event, actualCompletedStep, data, $form);
-          break;
-        case 2:
-
-          break;
-        default:
-
-      }
+      handleTrialStepComplete(event, actualCompletedStep, data, $form);
     });
 
   setupValidation();
@@ -702,5 +738,3 @@ $(document).on("formSubmissionComplete", function (event, isSuccess, $form, $ema
 function maskPhoneNumber(phone) {
   return phone.replace(/(\+48)(\d{7})(\d{2})/, "$1 *** *** *$3");
 }
-
-// 

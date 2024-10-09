@@ -403,10 +403,10 @@ function trackFormInteraction(form, input) {
 }
 
 $(document).ready(function() {
-  $("form").on("focus", "input, textarea, select", function() {
+  $("form:not([id*='trial'])").on("focus", "input, textarea, select", function() {
     trackFormInteraction($(this.form), $(this));
   });
 });
 
-// 
+
 
