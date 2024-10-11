@@ -569,8 +569,8 @@ $(document).ready(() => {
     const $submitButton = $form.find('[data-form="submit-step-three"]');
     const $clientTypeRadios = $form.find('input[name="address[client_type]"]');
     const $payNowRadios = $form.find('input[name="pay_now"]');
-    const $companyWrapper = $('[data-element="company"]');
-    const $consumentWrapper = $('[data-element="consument"]');
+    const $companyWrapper = $('[data-element-type="company"]');
+    const $consumentWrapper = $('[data-element-type="consument"]');
     const $trialPromoBox = $("#trial-promo-box");
 
     function setupForm() {

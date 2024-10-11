@@ -122,7 +122,7 @@ function validateNIPWithAPI(nip, country) {
 }
 
 function addValidationSVG($input, isValid) {
-    const $wrapper = $input.closest('[data-element="input-wrapper"]');
+  const $wrapper = $input.closest('[data-element="input-wrapper"]');
     if (!$wrapper.length) return;
 
     const validSvgBase64 =
