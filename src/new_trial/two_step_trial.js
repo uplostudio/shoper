@@ -47,45 +47,32 @@ $(document).ready(() => {
 
   const validateField = ($field, type) => {
     const isCheckbox = $field.attr("data-type") === "checkbox";
-    const isRequired = $field.attr("data-required") === "true";
     const value = isCheckbox ? $field.prop("checked") : $field.val().trim();
-    const regex =
-      type === "email" ? validationPatterns.email : state.phoneRegex;
+    const regex = type === "email" ? validationPatterns.email : state.phoneRegex;
     let error = null;
 
-    if (isRequired) {
-        if ((!isCheckbox && !value) || (isCheckbox && !value)) {
-            error = generateErrorMessage("required");
-        } else if (!isCheckbox && !regex.test(value)) {
-            error = generateErrorMessage(type);
-        }
-    } else if (!isCheckbox && value && !regex.test(value)) {
-        // For non-required fields, only validate if a value is provided
-        error = generateErrorMessage(type);
+    if ((!isCheckbox && !value) || (isCheckbox && !value)) {
+      error = generateErrorMessage("required");
+    } else if (!isCheckbox && !regex.test(value)) {
+      error = generateErrorMessage(type);
     }
 
     $field.next(".error-box").remove();
 
     if (error) {
-        if (!isCheckbox) {
-            $field.after(`<span class="error-box">${error}</span>`);
-        }
-        $field.removeClass("valid").addClass("invalid");
-        $field
-            .siblings(".new__input-label")
-            .removeClass("valid active")
-            .addClass("invalid");
+      if (!isCheckbox) {
+        $field.after(`<span class="error-box">${error}</span>`);
+      }
+      $field.removeClass("valid").addClass("invalid");
+      $field.siblings(".new__input-label").removeClass("valid active").addClass("invalid");
     } else {
-        $field.removeClass("invalid").addClass("valid");
-        $field
-            .siblings(".new__input-label")
-            .removeClass("invalid")
-            .addClass("valid");
+      $field.removeClass("invalid").addClass("valid");
+      $field.siblings(".new__input-label").removeClass("invalid").addClass("valid");
     }
 
     return error;
-};
-
+  };
+  
 
   const validatePhone = (field) => {
     const $field = $(field);
