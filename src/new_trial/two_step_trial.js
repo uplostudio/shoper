@@ -261,9 +261,9 @@ $(document).ready(() => {
         SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
         DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data("action"), $emailField.val());
         localStorage.removeItem("shoper_affiliate");
+        const newEmail = $emailField.val();
 
         if ($form.data("action") === "validate_email") {
-          const newEmail = $emailField.val();
           const storedEmail = localStorage.getItem("trialEmail");
           const trialCompleted = localStorage.getItem("trialCompleted") === "true";
 
@@ -278,6 +278,7 @@ $(document).ready(() => {
           $('[data-form="email"]', $twoStepTrialsWrapper).val(newEmail).prop("disabled", true);
           $twoStepTrialsWrapper.show();
         } else if ($form.data("action") === "create_trial_step1_new") {
+          $('[data-form="email"]', $twoStepTrialsWrapper).val(newEmail).prop("disabled", true);
           switchToModal("modal_trial_three");
           localStorage.setItem("trialCompleted", "true");
         }

@@ -155,86 +155,92 @@ function addValidationSVG($input, isValid) {
 }
 
 function validateInput($input) {
-    const value = $input.val().trim();
-    const isRequired = $input.prop("required");
-    const isDisabled = $input.prop("disabled");
-    const isActive = $input.hasClass("active");
-    const isOldStructure = !$input.siblings(".new__input-label").length;
-    const inputType = $input.data("type") || $input.attr("type");
-    const dataForm = $input.data("form");
-    const inputName = $input.attr("name") || $input.attr("id");
+  const value = $input.val().trim();
+  const isRequired = $input.prop("required");
+  const isDisabled = $input.prop("disabled");
+  const isActive = $input.hasClass("active");
+  const isOldStructure = !$input.siblings(".new__input-label").length;
+  const inputType = $input.data("type") || $input.attr("type");
+  const dataForm = $input.data("form");
+  const inputName = $input.attr("name") || $input.attr("id");
 
+  $input.removeClass("invalid error");
 
+  if (isActive || isDisabled) {
+      $input.siblings('.error-box, [class*="error-wrapper"]').hide();
+      return Promise.resolve(false);
+  }
 
-    $input.removeClass("invalid error");
+  if (inputType === "checkbox" || $input.closest(".new__trial.is-checkbox").length) {
+      const isChecked = $input.prop("checked");
 
-    if (isActive || isDisabled) {
-        $input.siblings('.error-box, [class*="error-wrapper"]').hide();
-        return Promise.resolve(false);
-    }
+      if (isRequired && !isChecked) {
+          showError($input, "To pole jest wymagane", isOldStructure, true);
+          updateInputLabel($input, "invalid");
+          return Promise.resolve(true);
+      }
+      hideError($input, isOldStructure);
+      updateInputLabel($input, "valid");
+      return Promise.resolve(false);
+  }
 
-    if (inputType === "checkbox" || $input.closest(".new__trial.is-checkbox").length) {
-        const isChecked = $input.prop("checked");
+  if (isRequired && value === "") {
+      showError($input, "To pole jest wymagane", isOldStructure, true);
+      updateInputLabel($input, "invalid");
+      return Promise.resolve(true);
+  }
 
-        if (isRequired && !isChecked) {
-            showError($input, "To pole jest wymagane", isOldStructure, true);
-            updateInputLabel($input, "invalid");
-            return Promise.resolve(true);
-        }
-        hideError($input, isOldStructure);
-        updateInputLabel($input, "valid");
-        return Promise.resolve(false);
-    }
+  if (value !== "") {
+      const pattern = validationPatterns[inputType] || validationPatterns[dataForm];
+      if (pattern) {
+          if (!pattern.test(value)) {
+              showError($input, errorMessages[inputType] || errorMessages[dataForm] || errorMessages.default, isOldStructure, false);
+              updateInputLabel($input, "invalid");
+              if (!isOldStructure) addValidationSVG($input, false);
+              return Promise.resolve(true);
+          } else if (inputType === "nip" || dataForm === "address1[nip]") {
+              const $form = $input.closest("form");
+              const country = $form.find('select[data-form="address1[country]"]').val() || "PL";
+              return validateNIPWithAPI(value, country)
+                  .then((isValid) => {
+                      if (!isValid) {
+                          showError($input, errorMessages["address1[nip]"], isOldStructure, false);
+                          updateInputLabel($input, "invalid");
+                          if (!isOldStructure) addValidationSVG($input, false);
+                          return true;
+                      } else {
+                          hideError($input, isOldStructure);
+                          updateInputLabel($input, "valid");
+                          if (!isOldStructure) addValidationSVG($input, true);
+                          return false;
+                      }
+                  })
+                  .catch(() => {
+                      hideError($input, isOldStructure);
+                      updateInputLabel($input, "valid");
+                      return false;
+                  });
+          } else {
+              hideError($input, isOldStructure);
+              updateInputLabel($input, "valid");
+              if (!isOldStructure) addValidationSVG($input, true);
+              return Promise.resolve(false);
+          }
+      }
+  }
 
-    if (isRequired && value === "") {
-        showError($input, "To pole jest wymagane", isOldStructure, true);
-        updateInputLabel($input, "invalid");
-        return Promise.resolve(true);
-    }
-
-    if (value !== "") {
-        const pattern = validationPatterns[inputType] || validationPatterns[dataForm];
-        if (pattern) {
-            if (!pattern.test(value)) {
-                showError($input, errorMessages[inputType] || errorMessages[dataForm] || errorMessages.default, isOldStructure, false);
-                if (!isOldStructure) addValidationSVG($input, false);
-                return Promise.resolve(true);
-            } else if (inputType === "nip" || dataForm === "address1[nip]") {
-                const $form = $input.closest("form");
-                const country = $form.find('select[data-form="address1[country]"]').val() || "PL";
-                return validateNIPWithAPI(value, country)
-                    .then((isValid) => {
-                        if (!isValid) {
-                            showError($input, errorMessages["address1[nip]"], isOldStructure, false);
-                            updateInputLabel($input, "invalid");
-                            if (!isOldStructure) addValidationSVG($input, false);
-                            return true;
-                        } else {
-                            hideError($input, isOldStructure);
-                            updateInputLabel($input, "valid");
-                            if (!isOldStructure) addValidationSVG($input, true);
-                            return false;
-                        }
-                    })
-                    .catch(() => {
-                        hideError($input, isOldStructure);
-                        updateInputLabel($input, "valid");
-                        return false;
-                    });
-            }
-        }
-    }
-
-    hideError($input, isOldStructure);
-    if (!isOldStructure) {
-        if (value !== "") {
-            addValidationSVG($input, true);
-        } else {
-            $input.siblings(".validation-svg").remove();
-        }
-    }
-    return Promise.resolve(false);
+  hideError($input, isOldStructure);
+  updateInputLabel($input, value !== "" ? "valid" : "");
+  if (!isOldStructure) {
+      if (value !== "") {
+          addValidationSVG($input, true);
+      } else {
+          $input.siblings(".validation-svg").remove();
+      }
+  }
+  return Promise.resolve(false);
 }
+
 
 function updateInputLabel($input, state) {
     const $wrapper = $input.closest('[data-element="input-wrapper"]');
