@@ -113,7 +113,16 @@ $(document).ready(() => {
       error = phoneErrorMessage;
     }
 
-    error ? showError($field, error) : updateInputLabel($field, "valid");
+    if (error) {
+      showError($field, error);
+      updateInputLabel($field, "invalid");
+      addValidationSVG($field, false); 
+  } else {
+      hideError($field);
+      updateInputLabel($field, "valid");
+      addValidationSVG($field, true); 
+  }
+
 
     return error;
   };
@@ -314,8 +323,8 @@ $(document).ready(() => {
         } else if (response.hasOwnProperty("code") && SharedUtils.statusMessages.hasOwnProperty(response.code)) {
           emailError = SharedUtils.statusMessages[response.code];
         } else if (response.hasOwnProperty("message")) {
-          // If there's a general message, show it on both fields
           emailError = phoneError = response.message;
+
         } else {
           emailError = generateErrorMessage("email");
         }
@@ -328,8 +337,11 @@ $(document).ready(() => {
 
         if (phoneError) {
           showError($phoneField, phoneError);
+          addValidationSVG($phoneField, false);
         } else {
           hideError($phoneField);
+          addValidationSVG($phoneField, true);
+          updateInputLabel($phoneField, "valid");
         }
 
         formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
