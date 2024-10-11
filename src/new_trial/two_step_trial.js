@@ -239,78 +239,101 @@ $(document).ready(() => {
     });
 
     ajaxRequest
-      .then((response) => {
-        if (response.status === 1) {
-          if ($phoneField.length) {
-            const iti = window.intlTelInputGlobals.getInstance($phoneField[0]);
-            if (iti) {
-              const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
-              localStorage.setItem("phoneNumber", maskedPhoneNumber);
-              localStorage.setItem("originalPhoneNumber", iti.getNumber());
-            }
+    .then((response) => {
+      if (response.status === 1) {
+        if ($phoneField.length) {
+          const iti = window.intlTelInputGlobals.getInstance($phoneField[0]);
+          if (iti) {
+            const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
+            localStorage.setItem("phoneNumber", maskedPhoneNumber);
+            localStorage.setItem("originalPhoneNumber", iti.getNumber());
           }
-          SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
-          DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data("action"), $emailField.val());
-          localStorage.removeItem("shoper_affiliate");
-
-          if ($form.data("action") === "validate_email") {
-            const newEmail = $emailField.val();
-            const storedEmail = localStorage.getItem("trialEmail");
-            const trialCompleted = localStorage.getItem("trialCompleted") === "true";
-
-            if (newEmail !== storedEmail || !trialCompleted) {
-              localStorage.setItem("trialEmail", newEmail);
-              localStorage.setItem("trialCompleted", "false");
-              switchToModal("modal_trial_one_two");
-            } else {
-              switchToModal("modal_trial_three");
-            }
-
-            $('[data-form="email"]', $twoStepTrialsWrapper).val(newEmail).prop("disabled", true);
-            $twoStepTrialsWrapper.show();
-          } else if ($form.data("action") === "create_trial_step1_new") {
-            switchToModal("modal_trial_three");
-            localStorage.setItem("trialCompleted", "true");
-          }
-
-          let actualCompletedStep = 0;
-          if (response.step === "#create_trial_step1") {
-            actualCompletedStep = 0;
-          } else if (response.hasOwnProperty("client_id")) {
-            actualCompletedStep = 1;
-            dataLayer.push({
-              event: "sign_up",
-              user_id: response.client_id || "undefined",
-              method: "url",
-              shop_id: response.shop_id || "undefined",
-            });
-          } else if (response.hasOwnProperty("redirect")) {
-            actualCompletedStep = 2;
-          }
-
-          $(document).trigger("actualTrialStepComplete", [actualCompletedStep, response, $form]);
-          $('[data-app="trial-domain"]').text(response.host);
-        } else {
-          let error;
-          if (response.hasOwnProperty("code") && SharedUtils.statusMessages.hasOwnProperty(response.code)) {
-            error = SharedUtils.statusMessages[response.code];
-          } else {
-            error = generateErrorMessage("email");
-          }
-
-          showError($emailField, error);
-          formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
         }
-      })
-      .catch((error) => {
-        console.error("Ajax error:", error);
-        SharedUtils.handleResponse(error, $form, $emailField, $wFormFail, false, 1);
-      })
-      .always(() => {
-        $loader.hide();
-        ajaxRequest = null;
-      });
-  };
+        SharedUtils.handleResponse(response, $form, $emailField, $wFormFail, true, 1);
+        DataLayerGatherers.pushEmailSubmittedData(window.myGlobals.clientId, window.myGlobals.shopId, $form.data("action"), $emailField.val());
+        localStorage.removeItem("shoper_affiliate");
+
+        if ($form.data("action") === "validate_email") {
+          const newEmail = $emailField.val();
+          const storedEmail = localStorage.getItem("trialEmail");
+          const trialCompleted = localStorage.getItem("trialCompleted") === "true";
+
+          if (newEmail !== storedEmail || !trialCompleted) {
+            localStorage.setItem("trialEmail", newEmail);
+            localStorage.setItem("trialCompleted", "false");
+            switchToModal("modal_trial_one_two");
+          } else {
+            switchToModal("modal_trial_three");
+          }
+
+          $('[data-form="email"]', $twoStepTrialsWrapper).val(newEmail).prop("disabled", true);
+          $twoStepTrialsWrapper.show();
+        } else if ($form.data("action") === "create_trial_step1_new") {
+          switchToModal("modal_trial_three");
+          localStorage.setItem("trialCompleted", "true");
+        }
+
+        let actualCompletedStep = 0;
+        if (response.step === "#create_trial_step1") {
+          actualCompletedStep = 0;
+        } else if (response.hasOwnProperty("client_id")) {
+          actualCompletedStep = 1;
+          dataLayer.push({
+            event: "sign_up",
+            user_id: response.client_id || "undefined",
+            method: "url",
+            shop_id: response.shop_id || "undefined",
+          });
+        } else if (response.hasOwnProperty("redirect")) {
+          actualCompletedStep = 2;
+        }
+
+        $(document).trigger("actualTrialStepComplete", [actualCompletedStep, response, $form]);
+        $('[data-app="trial-domain"]').text(response.host);
+      } else {
+        let emailError = null;
+        let phoneError = null;
+
+        if (response.hasOwnProperty("errors")) {
+          if (response.errors.hasOwnProperty("email")) {
+            emailError = response.errors.email.invalidEmail || generateErrorMessage("email");
+          }
+          if (response.errors.hasOwnProperty("phone")) {
+            phoneError = response.errors.phone.invalidPhone || "Niepoprawny numer telefonu";
+          }
+        } else if (response.hasOwnProperty("code") && SharedUtils.statusMessages.hasOwnProperty(response.code)) {
+          emailError = SharedUtils.statusMessages[response.code];
+        } else if (response.hasOwnProperty("message")) {
+          // If there's a general message, show it on both fields
+          emailError = phoneError = response.message;
+        } else {
+          emailError = generateErrorMessage("email");
+        }
+
+        if (emailError) {
+          showError($emailField, emailError);
+        } else {
+          hideError($emailField);
+        }
+
+        if (phoneError) {
+          showError($phoneField, phoneError);
+        } else {
+          hideError($phoneField);
+        }
+
+        formSubmitErrorTrial($form.attr("id"), $form.data("action"), $emailField.val());
+      }
+    })
+    .catch((error) => {
+      console.error("Ajax error:", error);
+      SharedUtils.handleResponse(error, $form, $emailField, $wFormFail, false, 1);
+    })
+    .always(() => {
+      $loader.hide();
+      ajaxRequest = null;
+    });
+};
 
   const setupValidation = () => {
     $(document).on("blur", '[data-action="create_trial_step1_new"] [data-type="email"], [data-action="validate_email"] [data-type="email"]', function () {
