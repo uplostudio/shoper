@@ -49,16 +49,23 @@ $(document).ready(() => {
     const isCheckbox = $field.attr("data-type") === "checkbox";
     const value = isCheckbox ? $field.prop("checked") : $field.val().trim();
     const regex = type === "email" ? validationPatterns.email : state.phoneRegex;
+    const isRequired = $field.attr("required") !== undefined;
     let error = null;
-
-    if ((!isCheckbox && !value) || (isCheckbox && !value)) {
-      error = generateErrorMessage("required");
-    } else if (!isCheckbox && !regex.test(value)) {
-      error = generateErrorMessage(type);
+  
+    if (isCheckbox) {
+      if (isRequired && !value) {
+        error = generateErrorMessage("required");
+      }
+    } else {
+      if (!value && isRequired) {
+        error = generateErrorMessage("required");
+      } else if (value && !regex.test(value)) {
+        error = generateErrorMessage(type);
+      }
     }
-
+  
     $field.next(".error-box").remove();
-
+  
     if (error) {
       if (!isCheckbox) {
         $field.after(`<span class="error-box">${error}</span>`);
@@ -69,9 +76,10 @@ $(document).ready(() => {
       $field.removeClass("invalid").addClass("valid");
       $field.siblings(".new__input-label").removeClass("invalid").addClass("valid");
     }
-
+  
     return error;
   };
+  
   
 
   const validatePhone = (field) => {
