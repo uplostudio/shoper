@@ -494,6 +494,8 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
 
     const $inputs = $form.find(inputSelector);
     const outputValues = {};
+    const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
+
 
     $inputs.each(function() {
         const $input = $(this);
@@ -501,25 +503,33 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
         const type = $input.attr("type");
         const dataForm = $input.attr("data-form") || name;
 
-
-
         if (type === "radio") {
             if ($input.is(":checked")) {
                 outputValues[dataForm] = $input.val();
             }
         } else if (type === "checkbox" || $input.closest(".new__trial.is-checkbox").length) {
-            const checkboxName = $input.attr("name") || $input.siblings("label").attr("for");
-            if (checkboxName) {
-                outputValues[checkboxName] = $input.is(":checked") ? "1" : "0";
-
+            if ($input.is(":checked")) {
+                const checkboxName = dataForm || name;
+                if (checkboxName) {
+                    if (arrayInputNames.includes(checkboxName)) {
+                        if (!outputValues[checkboxName]) {
+                            outputValues[checkboxName] = [];
+                        }
+                        const checkboxValue = $input.siblings('label').text().trim() || 
+                                              $input.attr("id") || 
+                                              $input.val() || 
+                                              "on";
+                        outputValues[checkboxName].push(checkboxValue);
+                    } else {
+                        outputValues[checkboxName] = "1";
+                    }
+                }
             }
         } else {
             const value = $input.val().trim();
             if (value) outputValues[dataForm] = value;
         }
     });
-
-    const arrayInputNames = ["marketplace", "country", "create_or_move_shop"];
 
     Object.entries(outputValues).forEach(([inputName, value]) => {
         if (arrayInputNames.includes(inputName) && Array.isArray(value)) {
@@ -530,6 +540,7 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
             formData.append(inputName, value);
         }
     });
+
 
     const valueTrack = DataLayerGatherers.getValueTrackData();
     formData.append("front_page", window.location.host + window.location.pathname + (window.location.hash || ""));
