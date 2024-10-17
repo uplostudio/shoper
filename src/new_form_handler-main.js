@@ -191,42 +191,42 @@ function validateInput($input) {
   }
 
   if (value !== "") {
-      const pattern = validationPatterns[inputType] || validationPatterns[dataForm];
-      if (pattern) {
-          if (!pattern.test(value)) {
-              showError($input, errorMessages[inputType] || errorMessages[dataForm] || errorMessages.default, isOldStructure, false);
+    const pattern = validationPatterns[inputType] || validationPatterns[dataForm];
+    if (pattern) {
+      if (!pattern.test(value)) {
+        showError($input, errorMessages[inputType] || errorMessages[dataForm] || errorMessages.default, isOldStructure, false);
+        updateInputLabel($input, "invalid");
+        if (!isOldStructure) addValidationSVG($input, false);
+        return Promise.resolve(true);
+      } else if ((inputType === "nip" || dataForm === "address1[nip]") && (isRequired || value !== "")) {
+        const $form = $input.closest("form");
+        const country = $form.find('select[data-form="address1[country]"]').val() || "PL";
+        return validateNIPWithAPI(value, country)
+          .then((isValid) => {
+            if (!isValid) {
+              showError($input, errorMessages["address1[nip]"], isOldStructure, false);
               updateInputLabel($input, "invalid");
               if (!isOldStructure) addValidationSVG($input, false);
-              return Promise.resolve(true);
-          } else if (inputType === "nip" || dataForm === "address1[nip]") {
-              const $form = $input.closest("form");
-              const country = $form.find('select[data-form="address1[country]"]').val() || "PL";
-              return validateNIPWithAPI(value, country)
-                  .then((isValid) => {
-                      if (!isValid) {
-                          showError($input, errorMessages["address1[nip]"], isOldStructure, false);
-                          updateInputLabel($input, "invalid");
-                          if (!isOldStructure) addValidationSVG($input, false);
-                          return true;
-                      } else {
-                          hideError($input, isOldStructure);
-                          updateInputLabel($input, "valid");
-                          if (!isOldStructure) addValidationSVG($input, true);
-                          return false;
-                      }
-                  })
-                  .catch(() => {
-                      hideError($input, isOldStructure);
-                      updateInputLabel($input, "valid");
-                      return false;
-                  });
-          } else {
+              return true;
+            } else {
               hideError($input, isOldStructure);
               updateInputLabel($input, "valid");
               if (!isOldStructure) addValidationSVG($input, true);
-              return Promise.resolve(false);
-          }
+              return false;
+            }
+          })
+          .catch(() => {
+            hideError($input, isOldStructure);
+            updateInputLabel($input, "valid");
+            return false;
+          });
+      } else {
+        hideError($input, isOldStructure);
+        updateInputLabel($input, "valid");
+        if (!isOldStructure) addValidationSVG($input, true);
+        return Promise.resolve(false);
       }
+    }
   }
 
   hideError($input, isOldStructure);
@@ -615,23 +615,30 @@ function handleSubmitClick(e) {
             const $nipInput = $form.find('input[data-type="nip"]:not([data-exclude="true"]):not(:disabled), input[data-form="address1[nip]"]:not([data-exclude="true"]):not(:disabled)');
             if ($nipInput.length > 0) {
                 const nipValue = $nipInput.val().trim();
-                const country = $form.find('select[data-form="address1[country]"]').val() || "PL";
-                validateNIPWithAPI(nipValue, country)
-                    .then((isValid) => {
-                        if (isValid) {
+                const isRequired = $nipInput.prop("required");
+                
+                if (isRequired || nipValue !== "") {
+                    const country = $form.find('select[data-form="address1[country]"]').val() || "PL";
+                    validateNIPWithAPI(nipValue, country)
+                        .then((isValid) => {
+                            if (isValid) {
+                                sendFormDataToURL($form[0]);
+                            } else {
+                                showError($nipInput, errorMessages["address1[nip]"], !$nipInput.siblings(".new__input-label").length, false);
+                            }
+                        })
+                        .catch(() => {
                             sendFormDataToURL($form[0]);
-                        } else {
-                            showError($nipInput, errorMessages["address1[nip]"], !$nipInput.siblings(".new__input-label").length, false);
-                        }
-                    })
-                    .catch(() => {
-                        sendFormDataToURL($form[0]);
-                    });
+                        });
+                } else {
+                    sendFormDataToURL($form[0]);
+                }
             } else {
                 sendFormDataToURL($form[0]);
             }
         }
     });
+
 }
 
 function initializeEventListeners() {
