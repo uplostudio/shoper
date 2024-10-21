@@ -394,7 +394,7 @@ $(document).ready(() => {
     });
   };
 
-  const $openTwoStepTrialWrapperButton = $("[data-element='open_trial_two_steps_wrapper']", "[data-element='open_trial_wrapper']");
+  const $openTwoStepTrialWrapperButton = $("[data-element='open_trial_two_steps_wrapper'], [data-element='open_trial_wrapper']");
 
   if ($openTwoStepTrialWrapperButton.length) {
     $openTwoStepTrialWrapperButton.on("click", function () {
