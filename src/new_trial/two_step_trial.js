@@ -199,7 +199,7 @@ $(document).ready(() => {
       email: $emailField.val(),
       "adwords[gclid]": window.myGlobals.gclidValue,
       "adwords[fbclid]": window.myGlobals.fbclidValue,
-      analyticsId: window.myGlobals.analyticsId,
+      analytics_id: window.myGlobals.analyticsId,
       affiliant: shoperAffiliate || "",
       form_source_url: window.location.href.split("?")[0],
       ...DataLayerGatherers.addUtmDataToForm({}),
