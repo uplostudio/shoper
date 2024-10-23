@@ -39,11 +39,17 @@ $(document).ready(function() {
         if (partner.partner_status) {
             $statusWrapper.append($('<div>').text(partner.partner_status));
         }
-
+        const $badgesSection = $item.find('[data-element="badges-section"]');
         // Check if both partner_status and partner_badges are empty
-        if (!partner.partner_status && (!partner.partner_badges || partner.partner_badges.length === 0)) {
-            // Find and remove badges-section within this specific reseller item
-            $item.find('[data-element="badges-section"]').remove();
+        if (partner.partner_status || (partner.partner_badges && partner.partner_badges.length > 0)) {
+            // Keep the badges section
+            if ($badgesSection.length === 0) {
+                // If badges section doesn't exist, we might need to create it
+                // Add code here to create the badges section if needed
+            }
+        } else {
+            // Only remove if both are empty
+            $badgesSection.remove();
         }
     }
 
