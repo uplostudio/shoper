@@ -1,5 +1,10 @@
 $(document).ready(function() {
     function createBadgeImages(partnerStatus, partnerBadges) {
+        // If both status is empty and badges array is empty or doesn't exist, return false
+        if (!partnerStatus && (!partnerBadges || partnerBadges.length === 0)) {
+            return false;
+        }
+
         const badgesHtml = [];
     
         function createImageUrl(type, text) {
@@ -7,15 +12,15 @@ $(document).ready(function() {
             const formattedText = text.toLowerCase().replace(/\s+/g, '_');
             return `${baseUrl}${type}/${formattedText}.png`;
         }
-    
+
         if (partnerStatus) {
             badgesHtml.push(`<img class="reseller_box-badge" src="${createImageUrl('status', partnerStatus)}" alt="${partnerStatus}">`);
         }
-    
+
         (partnerBadges || []).forEach(badge => {
             badgesHtml.push(`<img class="reseller_box-badge" src="${createImageUrl('badge', badge)}" alt="${badge}">`);
         });
-    
+
         return badgesHtml.join('');
     }
 
@@ -25,50 +30,54 @@ $(document).ready(function() {
         $item.find('[data-element="reseller-logo"]').attr('src', partner.logo || '');
         $item.find('[data-element="reseller-name"]').text(partner.name || '');
         $item.find('[data-element="reseller-city"]').text(partner.city || '');
-    
-        // Update categories
+
         const $categoriesWrapper = $item.find('[data-element="reseller-categories"]');
         $categoriesWrapper.empty();
+        
         const tickSvg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.0001 10.7799L3.2201 7.9999L2.27344 8.9399L6.0001 12.6666L14.0001 4.66656L13.0601 3.72656L6.0001 10.7799Z" fill="#03081C"/></svg>';
+
         (partner.categories || []).forEach(category => {
             const $categoryDiv = $('<div>').addClass('category-item').css({
                 display: 'flex',
                 alignItems: 'center',
             });
+            
             const $iconSpan = $('<span>').html(tickSvg).css({
                 marginRight: '8px',
                 flexShrink: 0
             });
+            
             const $textSpan = $('<span>').text(category);
+            
             $categoryDiv.append($iconSpan, $textSpan);
             $categoriesWrapper.append($categoryDiv);
         });
-    
-        // Update ERPs
+
         const $erpsWrapper = $item.find('[data-element="reseller-erps"]');
         $erpsWrapper.empty();
         (partner.erps || []).forEach(erp => {
             $erpsWrapper.append($('<div>').text(erp));
         });
-    
-        // Update status
+
         const $statusWrapper = $item.find('[data-element="reseller-status"]');
         $statusWrapper.empty();
         if (partner.partner_status) {
             $statusWrapper.append($('<div>').text(partner.partner_status));
         }
-    
+
         // Handle badges
-        const $badgesWrapper = $item.find('[data-element="reseller-badges-wrapper"]');
-        const $badgesSection = $item.find('[data-element="badges-section"]');
         const badgesHtml = createBadgeImages(partner.partner_status, partner.partner_badges);
         
-        if (badgesHtml) {
-            $badgesWrapper.html(badgesHtml);
-            $badgesSection.show();
+        // Find the badges section within this specific item
+        const $badgesSection = $item.find('[data-element="badges-section"]');
+        
+        if (badgesHtml === false) {
+            // If no badges/status, remove the entire section
+            $badgesSection.remove();
         } else {
-            $badgesWrapper.empty();
-            $badgesSection.remove(); // Remove the badges section for this specific item
+            // If there are badges/status, update the content
+            const $badgesWrapper = $item.find('[data-element="reseller-badges-wrapper"]');
+            $badgesWrapper.html(badgesHtml);
         }
     }
 
