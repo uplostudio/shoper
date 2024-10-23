@@ -30,81 +30,53 @@ $(document).ready(function () {
   }
 
   function updateResellerItem($item, partner) {
-    $item.attr("data-reseller-id", partner.id);
-    $item.attr("href", "/katalog-partnerow?reseller=" + partner.id);
-    $item
-      .find('[data-element="reseller-logo"]')
-      .attr("src", partner.logo || "");
-    $item.find('[data-element="reseller-name"]').text(partner.name || "");
-    $item.find('[data-element="reseller-city"]').text(partner.city || "");
+    $item.attr('data-reseller-id', partner.id);
+    $item.attr('href', '/katalog-partnerow?reseller=' + partner.id);
+    $item.find('[data-element="reseller-logo"]').attr('src', partner.logo || '');
+    $item.find('[data-element="reseller-name"]').text(partner.name || '');
+    $item.find('[data-element="reseller-city"]').text(partner.city || '');
 
-    const $categoriesWrapper = $item.find(
-      '[data-element="reseller-categories"]'
-    );
+    const $categoriesWrapper = $item.find('[data-element="reseller-categories"]');
     $categoriesWrapper.empty();
+    
+    const tickSvg = '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.0001 10.7799L3.2201 7.9999L2.27344 8.9399L6.0001 12.6666L14.0001 4.66656L13.0601 3.72656L6.0001 10.7799Z" fill="#03081C"/></svg>';
 
-    const tickSvg =
-      '<svg width="16" height="16" viewBox="0 0 16 16" fill="none" xmlns="http://www.w3.org/2000/svg"><path d="M6.0001 10.7799L3.2201 7.9999L2.27344 8.9399L6.0001 12.6666L14.0001 4.66656L13.0601 3.72656L6.0001 10.7799Z" fill="#03081C"/></svg>';
-
-    (partner.categories || []).forEach((category) => {
-      const $categoryDiv = $("<div>").addClass("category-item").css({
-        display: "flex",
-        alignItems: "center",
-      });
-
-      const $iconSpan = $("<span>").html(tickSvg).css({
-        marginRight: "8px",
-        flexShrink: 0,
-      });
-
-      const $textSpan = $("<span>").text(category);
-
-      $categoryDiv.append($iconSpan, $textSpan);
-      $categoriesWrapper.append($categoryDiv);
+    (partner.categories || []).forEach(category => {
+        const $categoryDiv = $('<div>').addClass('category-item').css({
+            display: 'flex',
+            alignItems: 'center',
+        });
+        
+        const $iconSpan = $('<span>').html(tickSvg).css({
+            marginRight: '8px',
+            flexShrink: 0
+        });
+        
+        const $textSpan = $('<span>').text(category);
+        
+        $categoryDiv.append($iconSpan, $textSpan);
+        $categoriesWrapper.append($categoryDiv);
     });
 
     const $erpsWrapper = $item.find('[data-element="reseller-erps"]');
     $erpsWrapper.empty();
-    (partner.erps || []).forEach((erp) => {
-      $erpsWrapper.append($("<div>").text(erp));
+    (partner.erps || []).forEach(erp => {
+        $erpsWrapper.append($('<div>').text(erp));
     });
 
     const $statusWrapper = $item.find('[data-element="reseller-status"]');
     $statusWrapper.empty();
     if (partner.partner_status) {
-      $statusWrapper.append($("<div>").text(partner.partner_status));
+        $statusWrapper.append($('<div>').text(partner.partner_status));
     }
 
     // Handle badges
-    const badgesHtml = createBadgeImages(
-      partner.partner_status,
-      partner.partner_badges
-    );
-
-    const $badgesWrapper = $item.find(
-      '[data-element="reseller-badges-wrapper"]'
-    );
-    const $badgesSection = $item.find('[data-element="badges-section"]');
-
-    if (
-      !partner.partner_status &&
-      (!partner.partner_badges || partner.partner_badges.length === 0)
-    ) {
-      // If no badges and no status, remove the badges section
-      if ($badgesSection.length) {
-        $badgesSection.remove();
-      }
-    } else {
-      // If there are badges or status, update the content
-      const badgesHtml = createBadgeImages(
-        partner.partner_status,
-        partner.partner_badges
-      );
-      if ($badgesWrapper.length) {
-        $badgesWrapper.html(badgesHtml);
-      }
+    // Only remove badges section if both status and badges are empty
+    if (!partner.partner_status && (!partner.partner_badges || partner.partner_badges.length === 0)) {
+        $item.find('[data-element="badges-section"]').remove();
     }
-  }
+}
+
 
   function populateFilterList(wrapperSelector, items, itemType) {
     const $wrapper = $(wrapperSelector);
