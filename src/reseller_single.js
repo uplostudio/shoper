@@ -63,6 +63,8 @@ $(document).ready(function() {
         $('[data-element="reseller-city"]').text(partner.city || '');
         $('[data-element="reseller-description"]').html(partner.description || '');
 
+        document.title = `${partner.name} - Shoper Partner`;
+
         const $categoriesWrapper = $('[data-element="reseller-categories"]');
         $categoriesWrapper.empty();
         
