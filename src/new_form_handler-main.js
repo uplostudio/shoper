@@ -1,6 +1,6 @@
 const API_URL_ADDRESS = "https://backend.webflow.prod.shoper.cloud";
 const signupFormsActions = ["get_inpost", "get_ssl", "get_app"];
-const omittedAttributes = new Set(["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "autocomplete", "layer"]);
+const omittedAttributes = new Set(["method", "name", "id", "class", "aria-label", "fs-formsubmit-element", "wf-page-id", "wf-element-id", "autocomplete", "layer", "form_signature", "alternative_form_signature", "form_signature_string"]);
 
 const validationPatterns = {};
 const errorMessages = {};

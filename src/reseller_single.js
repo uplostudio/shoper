@@ -64,20 +64,22 @@ $(document).ready(function() {
         $('[data-element="reseller-description"]').html(partner.description || '');
 
         document.title = `${partner.name} - Shoper Partner`;
-
-        // Update form header
+        
         $('[data-element="form-header"]').text(`Skontaktuj się z partnerem ${partner.name}`);
 
-        // Add hidden input to the form with partner's email
         const $resellerForm = $('#reseller_form');
-        if ($resellerForm.length) {
-            $resellerForm.append(
-                $('<input>')
-                    .attr('type', 'hidden')
-                    .attr('name', 'reseller_email')
-                    .val(partner.email)
-            );
-        }
+if ($resellerForm.length) {
+    $resellerForm.append(
+        $('<input>')
+            .attr('type', 'hidden')
+            .attr('name', 'reseller_email')
+            .val(partner.email),
+        $('<input>')
+            .attr('type', 'hidden')
+            .attr('name', 'reseller')
+            .val(partner.name)
+    );
+}
 
         const $categoriesWrapper = $('[data-element="reseller-categories"]');
         $categoriesWrapper.empty();
