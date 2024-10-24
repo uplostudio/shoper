@@ -1,7 +1,7 @@
 $(document).ready(function() {
     function getResellerId() {
         const urlParams = new URLSearchParams(window.location.search);
-        return urlParams.get('reseller');
+        return urlParams.get('partner');
     }
 
     function createBadgeImages(partnerStatus, partnerBadges) {
