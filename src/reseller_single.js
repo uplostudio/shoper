@@ -5,7 +5,7 @@ $(document).ready(function() {
     }
 
     function createBadgeImages(partnerStatus, partnerBadges) {
-    		const $badgesSection = $('[data-element="badges-section"]');
+        const $badgesSection = $('[data-element="badges-section"]');
         const $badgesWrapper = $('[data-element="reseller-badges-wrapper"]');
         $badgesWrapper.empty();
 
@@ -16,9 +16,9 @@ $(document).ready(function() {
         }
         
         if (!partnerStatus && (!partnerBadges || partnerBadges.length === 0)) {
-        $badgesSection.remove();
-        return;
-    }
+            $badgesSection.remove();
+            return;
+        }
 
         if (partnerStatus) {
             const $statusImg = $('<img>')
@@ -64,6 +64,20 @@ $(document).ready(function() {
         $('[data-element="reseller-description"]').html(partner.description || '');
 
         document.title = `${partner.name} - Shoper Partner`;
+
+        // Update form header
+        $('[data-element="form-header"]').text(`Skontaktuj się z partnerem ${partner.name}`);
+
+        // Add hidden input to the form with partner's email
+        const $resellerForm = $('#reseller_form');
+        if ($resellerForm.length) {
+            $resellerForm.append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'partner_email')
+                    .val(partner.email)
+            );
+        }
 
         const $categoriesWrapper = $('[data-element="reseller-categories"]');
         $categoriesWrapper.empty();
