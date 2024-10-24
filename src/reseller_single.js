@@ -74,7 +74,7 @@ $(document).ready(function() {
             $resellerForm.append(
                 $('<input>')
                     .attr('type', 'hidden')
-                    .attr('name', 'partner_email')
+                    .attr('name', 'reseller_email')
                     .val(partner.email)
             );
         }
