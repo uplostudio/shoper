@@ -54,7 +54,7 @@ $(document).ready(function() {
         } else {
             let $workingBadgesSection = $badgesSection;
             if (!$badgesSection.length) {
-                $workingBadgesSection = $('<div>').attr('data-element', 'badges-section');
+                $workingBadgesSection = $('<div>').attr('data-element', 'badges-section').attr('class', 'badges-section');
                 $item.append($workingBadgesSection);
             }
 
