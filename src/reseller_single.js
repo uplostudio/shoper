@@ -132,6 +132,7 @@ $(document).ready(function() {
                 console.error('Error fetching reseller data:', error);
             },
             complete: function() {
+                $('[data-element="partner-overview"]').removeClass('is-loading');
             }
         });
     }
