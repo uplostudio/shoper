@@ -187,6 +187,77 @@ $(document).ready(function() {
         filterResellers();
     }
 
+    function updateURLParameters() {
+        const params = new URLSearchParams();
+        
+        const selectedCategories = $('[data-element="list-zakres"] input:checked').map(function() {
+            return $(this).next('label').text();
+        }).get();
+        
+        if (selectedCategories.length > 0) {
+            params.set('zakres-uslug', selectedCategories.join(','));
+        }
+        
+        const selectedBadges = $('[data-element="list-specialization"] input:checked').map(function() {
+            return $(this).next('label').text();
+        }).get();
+        
+        if (selectedBadges.length > 0) {
+            params.set('specjalizacja', selectedBadges.join(','));
+        }
+        
+        const selectedStatuses = $('[data-element="list-status"] input:checked').map(function() {
+            return $(this).next('label').text();
+        }).get();
+        
+        if (selectedStatuses.length > 0) {
+            params.set('status', selectedStatuses.join(','));
+        }
+        
+        const searchTerm = $('input[data-name="search"]').val().trim();
+        if (searchTerm) {
+            params.set('search', searchTerm);
+        }
+        
+        const newURL = window.location.pathname + (params.toString() ? '?' + params.toString() : '');
+        window.history.pushState({}, '', newURL);
+    }
+
+    function loadFiltersFromURL() {
+        const params = new URLSearchParams(window.location.search);
+        
+        if (params.has('zakres-uslug')) {
+            const categories = params.get('zakres-uslug').split(',');
+            categories.forEach(category => {
+                $('[data-element="list-zakres"] label').filter(function() {
+                    return $(this).text() === category;
+                }).prev('input').prop('checked', true);
+            });
+        }
+        
+        if (params.has('specjalizacja')) {
+            const badges = params.get('specjalizacja').split(',');
+            badges.forEach(badge => {
+                $('[data-element="list-specialization"] label').filter(function() {
+                    return $(this).text() === badge;
+                }).prev('input').prop('checked', true);
+            });
+        }
+        
+        if (params.has('status')) {
+            const statuses = params.get('status').split(',');
+            statuses.forEach(status => {
+                $('[data-element="list-status"] label').filter(function() {
+                    return $(this).text() === status;
+                }).prev('input').prop('checked', true);
+            });
+        }
+        
+        if (params.has('search')) {
+            $('input[data-name="search"]').val(params.get('search'));
+        }
+    }
+
     let debounceTimer;
     function debounce(func, delay) {
         clearTimeout(debounceTimer);
@@ -235,58 +306,64 @@ $(document).ready(function() {
         });
 
         updateTags();
+        updateURLParameters();
     }
 
     function fetchResellerData() {
-        $.ajax({
-            url: 'https://backend.webflow.prod.shoper.cloud/?action=get_partners',
-            method: 'GET',
-            dataType: 'json',
-            success: function(response) {
-                const $wrapper = $('[data-element="resellers-list"]');
-                const $template = $wrapper.children('[data-element="reseller-item"]').first();
+        return new Promise((resolve, reject) => {
+            $.ajax({
+                url: 'https://backend.webflow.prod.shoper.cloud/?action=get_partners',
+                method: 'GET',
+                dataType: 'json',
+                success: function(response) {
+                    const $wrapper = $('[data-element="resellers-list"]');
+                    const $template = $wrapper.children('[data-element="reseller-item"]').first();
 
-                $wrapper.children('[data-element="reseller-item"]').not(':first').remove();
+                    $wrapper.children('[data-element="reseller-item"]').not(':first').remove();
 
-                if (response && response.status === 1 && Array.isArray(response.partners)) {
-                    const allCategories = [];
-                    const allBadges = [];
-                    const allStatuses = [];
+                    if (response && response.status === 1 && Array.isArray(response.partners)) {
+                        const allCategories = [];
+                        const allBadges = [];
+                        const allStatuses = [];
 
-                    response.partners.forEach((partner, index) => {
-                        const $resellerItem = index === 0 ? $template : $template.clone();
-                        if (index !== 0) {
-                            $wrapper.append($resellerItem);
+                        response.partners.forEach((partner, index) => {
+                            const $resellerItem = index === 0 ? $template : $template.clone();
+                            if (index !== 0) {
+                                $wrapper.append($resellerItem);
+                            }
+                            updateResellerItem($resellerItem, partner);
+                            $resellerItem.show();
+
+                            allCategories.push(...(partner.categories || []));
+                            allBadges.push(...(partner.partner_badges || []));
+                            if (partner.partner_status)
+                                allStatuses.push(partner.partner_status);
+                        });
+
+                        populateFilterList('[data-element="list-zakres"]', allCategories, 'category');
+                        populateFilterList('[data-element="list-specialization"]', allBadges, 'badge');
+                        populateFilterList('[data-element="list-status"]', allStatuses, 'status');
+
+                        if (response.partners.length === 0) {
+                            $template.hide();
                         }
-                        updateResellerItem($resellerItem, partner);
-                        $resellerItem.show();
-
-                        allCategories.push(...(partner.categories || []));
-                        allBadges.push(...(partner.partner_badges || []));
-                        if (partner.partner_status)
-                            allStatuses.push(partner.partner_status);
-                    });
-
-                    populateFilterList('[data-element="list-zakres"]', allCategories, 'category');
-                    populateFilterList('[data-element="list-specialization"]', allBadges, 'badge');
-                    populateFilterList('[data-element="list-status"]', allStatuses, 'status');
-
-                    if (response.partners.length === 0) {
+                    } else {
                         $template.hide();
                     }
-                } else {
-                    $template.hide();
+                    resolve();
+                },
+                error: function() {
+                    $('[data-element="resellers-list"]').children('[data-element="reseller-item"]').hide();
+                    reject();
+                },
+                complete: function() {
+                    $('[data-element="filters-component"]').removeClass('is-loading');
                 }
-            },
-            error: function() {
-                $('[data-element="resellers-list"]').children('[data-element="reseller-item"]').hide();
-            },
-            complete: function() {
-                $('[data-element="filters-component"]').removeClass('is-loading');
-            }
+            });
         });
     }
 
+    // Event handlers
     $('[data-element="list-zakres"], [data-element="list-specialization"], [data-element="list-status"]').on('change', 'input[type="checkbox"]', function() {
         filterResellers();
     });
@@ -295,5 +372,15 @@ $(document).ready(function() {
         debounce(filterResellers, 150);
     });
 
-    fetchResellerData();
+    // Handle browser back/forward buttons
+    window.addEventListener('popstate', function() {
+        loadFiltersFromURL();
+        filterResellers();
+    });
+
+    // Initial load
+    fetchResellerData().then(() => {
+        loadFiltersFromURL();
+        filterResellers();
+    });
 });
