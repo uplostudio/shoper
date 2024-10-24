@@ -396,7 +396,6 @@ function trackFormInteraction(form, input, formType) {
   const formLocation = window.location.pathname;
   let formStep = 'unknown';
 
-  // Check if the form ID contains "trial"
   if (formId.toLowerCase().includes('trial')) {
     const isUsingModal = form.data('is-modal') === true;
     const actualCompletedStep = parseInt(form.data('completed-step') || '0', 10);
@@ -433,7 +432,6 @@ function trackFormInteraction(form, input, formType) {
       }
     }
   } else {
-    // For other forms, use the input's data-form attribute
     formStep = input && input.length ? input.attr('data-form') || 'unknown' : 'unknown';
   }
 
