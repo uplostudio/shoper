@@ -1,7 +1,7 @@
 $(document).ready(function() {
     function updateResellerItem($item, partner) {
         $item.attr('data-reseller-id', partner.id);
-        $item.attr('href', '/katalog-partnerow?reseller=' + partner.id);
+        $item.attr('href', '/lista-partnerow?partner=' + partner.id);
         $item.find('[data-element="reseller-logo"]').attr('src', partner.logo || '');
         $item.find('[data-element="reseller-name"]').text(partner.name || '');
         $item.find('[data-element="reseller-city"]').text(partner.city || '');
