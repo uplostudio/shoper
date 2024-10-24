@@ -26,15 +26,13 @@ $(document).ready(function() {
 
             $categoryDiv.append($iconSpan, $textSpan);
             $categoriesWrapper.append($categoryDiv);
-        }
-        );
+        });
 
         const $erpsWrapper = $item.find('[data-element="reseller-erps"]');
         $erpsWrapper.empty();
         (partner.erps || []).forEach(erp => {
             $erpsWrapper.append($('<div>').text(erp));
-        }
-        );
+        });
 
         const $statusWrapper = $item.find('[data-element="reseller-status"]');
         $statusWrapper.empty();
@@ -68,20 +66,28 @@ $(document).ready(function() {
 
             if (hasStatus) {
                 const statusUrl = `https://dcsaascdn.net/shoperpl/partner/status/${partner.partner_status.toLowerCase().replace(/\s+/g, '_')}.png`;
-                const $status = $('<img>').attr('src', statusUrl).attr('alt', partner.partner_status).attr('loading', 'lazy').addClass('reseller_box-badge');
+                const $status = $('<img>')
+                    .attr('src', statusUrl)
+                    .attr('alt', partner.partner_status)
+                    .attr('title', partner.partner_status)
+                    .attr('loading', 'lazy')
+                    .addClass('reseller_box-badge');
                 $badgesWrapper.append($status);
             }
 
             if (hasBadges) {
                 partner.partner_badges.forEach(badge => {
                     const badgeUrl = `https://dcsaascdn.net/shoperpl/partner/badge/${badge.toLowerCase().replace(/\s+/g, '_')}.png`;
-                    const $badge = $('<img>').attr('src', badgeUrl).attr('alt', badge).attr('loading', 'lazy').addClass('reseller_box-badge');
+                    const $badge = $('<img>')
+                        .attr('src', badgeUrl)
+                        .attr('alt', badge)
+                        .attr('title', badge)
+                        .attr('loading', 'lazy')
+                        .addClass('reseller_box-badge');
                     $badgesWrapper.append($badge);
-                }
-                );
+                });
             }
         }
-
     }
 
     function populateFilterList(wrapperSelector, items, itemType) {
@@ -90,11 +96,11 @@ $(document).ready(function() {
         $wrapper.empty();
 
         const uniqueItems = [...new Set(items)];
-        const sortedItems = uniqueItems.sort( (a, b) => a.localeCompare(b, undefined, {
+        const sortedItems = uniqueItems.sort((a, b) => a.localeCompare(b, undefined, {
             sensitivity: 'base'
         }));
 
-        sortedItems.forEach( (item, index) => {
+        sortedItems.forEach((item, index) => {
             const $newItem = $template.clone();
             const itemId = `${itemType}-${index}`;
 
@@ -104,8 +110,7 @@ $(document).ready(function() {
 
             $newItem.empty().append($checkbox, $label);
             $wrapper.append($newItem);
-        }
-        );
+        });
     }
 
     function updateTags() {
@@ -143,7 +148,7 @@ $(document).ready(function() {
         $tagTemplate.addClass('hide');
     }
 
-    function addTag(text, $template, $container, $checkbox, isSearchTag=false) {
+    function addTag(text, $template, $container, $checkbox, isSearchTag = false) {
         const existingTag = $container.children().filter(function() {
             return $(this).find('[data-element="tag-text"]').text() === text;
         });
@@ -248,7 +253,7 @@ $(document).ready(function() {
                     const allBadges = [];
                     const allStatuses = [];
 
-                    response.partners.forEach( (partner, index) => {
+                    response.partners.forEach((partner, index) => {
                         const $resellerItem = index === 0 ? $template : $template.clone();
                         if (index !== 0) {
                             $wrapper.append($resellerItem);
@@ -260,8 +265,7 @@ $(document).ready(function() {
                         allBadges.push(...(partner.partner_badges || []));
                         if (partner.partner_status)
                             allStatuses.push(partner.partner_status);
-                    }
-                    );
+                    });
 
                     populateFilterList('[data-element="list-zakres"]', allCategories, 'category');
                     populateFilterList('[data-element="list-specialization"]', allBadges, 'badge');
