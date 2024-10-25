@@ -318,52 +318,58 @@ $(document).ready(function() {
                 success: function(response) {
                     const $wrapper = $('[data-element="resellers-list"]');
                     const $template = $wrapper.children('[data-element="reseller-item"]').first();
+                    
+                    const processingPromise = new Promise((resolveProcessing) => {
+                        if (response && response.status === 1 && Array.isArray(response.partners)) {
+                            const allCategories = [];
+                            const allBadges = [];
+                            const allStatuses = [];
     
-                    $wrapper.children('[data-element="reseller-item"]').not(':first').remove();
+                            $wrapper.children('[data-element="reseller-item"]').not(':first').remove();
     
-                    if (response && response.status === 1 && Array.isArray(response.partners)) {
-                        const allCategories = [];
-                        const allBadges = [];
-                        const allStatuses = [];
+                            response.partners.forEach((partner, index) => {
+                                const $resellerItem = index === 0 ? $template : $template.clone();
+                                if (index !== 0) {
+                                    $wrapper.append($resellerItem);
+                                }
+                                updateResellerItem($resellerItem, partner);
     
-                        response.partners.forEach((partner, index) => {
-                            const $resellerItem = index === 0 ? $template : $template.clone();
-                            if (index !== 0) {
-                                $wrapper.append($resellerItem);
+                                allCategories.push(...(partner.categories || []));
+                                allBadges.push(...(partner.partner_badges || []));
+                                if (partner.partner_status)
+                                    allStatuses.push(partner.partner_status);
+                            });
+    
+                            populateFilterList('[data-element="list-zakres"]', allCategories, 'category');
+                            populateFilterList('[data-element="list-specialization"]', allBadges, 'badge');
+                            populateFilterList('[data-element="list-status"]', allStatuses, 'status');
+    
+                            if (response.partners.length === 0) {
+                                $template.hide();
                             }
-                            updateResellerItem($resellerItem, partner);
-                            $resellerItem.show();
-    
-                            allCategories.push(...(partner.categories || []));
-                            allBadges.push(...(partner.partner_badges || []));
-                            if (partner.partner_status)
-                                allStatuses.push(partner.partner_status);
-                        });
-    
-                        populateFilterList('[data-element="list-zakres"]', allCategories, 'category');
-                        populateFilterList('[data-element="list-specialization"]', allBadges, 'badge');
-                        populateFilterList('[data-element="list-status"]', allStatuses, 'status');
-    
-                        if (response.partners.length === 0) {
+                        } else {
                             $template.hide();
                         }
-                    } else {
-                        $template.hide();
-                    }
-                    resolve();
+                        
+                        requestAnimationFrame(() => {
+                            resolveProcessing();
+                        });
+                    });
+    
+                    processingPromise.then(() => {
+                        $("[data-field='loader-anim']").remove();
+                        resolve();
+                    });
                 },
                 error: function() {
                     $('[data-element="resellers-list"]').children('[data-element="reseller-item"]').hide();
+                    $("[data-field='loader-anim']").remove();
                     reject();
-                },
-                complete: function() {
-                    setTimeout(() => {
-                        $("[data-field='loader']").remove();
-                    }, 500);
                 }
             });
         });
     }
+    
     
 
     // Event handlers
