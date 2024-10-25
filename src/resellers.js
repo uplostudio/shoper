@@ -357,7 +357,7 @@ $(document).ready(function() {
                     reject();
                 },
                 complete: function() {
-                    $('[data-element="filters-component"]').removeClass('is-loading');
+                    $("[data-field='loader']").remove()
                 }
             });
         });
