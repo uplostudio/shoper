@@ -318,14 +318,14 @@ $(document).ready(function() {
                 success: function(response) {
                     const $wrapper = $('[data-element="resellers-list"]');
                     const $template = $wrapper.children('[data-element="reseller-item"]').first();
-
+    
                     $wrapper.children('[data-element="reseller-item"]').not(':first').remove();
-
+    
                     if (response && response.status === 1 && Array.isArray(response.partners)) {
                         const allCategories = [];
                         const allBadges = [];
                         const allStatuses = [];
-
+    
                         response.partners.forEach((partner, index) => {
                             const $resellerItem = index === 0 ? $template : $template.clone();
                             if (index !== 0) {
@@ -333,35 +333,35 @@ $(document).ready(function() {
                             }
                             updateResellerItem($resellerItem, partner);
                             $resellerItem.show();
-
+    
                             allCategories.push(...(partner.categories || []));
                             allBadges.push(...(partner.partner_badges || []));
                             if (partner.partner_status)
                                 allStatuses.push(partner.partner_status);
                         });
-
+    
                         populateFilterList('[data-element="list-zakres"]', allCategories, 'category');
                         populateFilterList('[data-element="list-specialization"]', allBadges, 'badge');
                         populateFilterList('[data-element="list-status"]', allStatuses, 'status');
-
+    
                         if (response.partners.length === 0) {
                             $template.hide();
                         }
                     } else {
                         $template.hide();
                     }
+                    
+                    $("[data-field='loader']").remove();
+                    
                     resolve();
                 },
                 error: function() {
                     $('[data-element="resellers-list"]').children('[data-element="reseller-item"]').hide();
                     reject();
-                },
-                complete: function() {
-                    $("[data-field='loader']").remove()
                 }
             });
         });
-    }
+    }    
 
     // Event handlers
     $('[data-element="list-zakres"], [data-element="list-specialization"], [data-element="list-status"]').on('change', 'input[type="checkbox"]', function() {
