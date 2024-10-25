@@ -350,18 +350,21 @@ $(document).ready(function() {
                     } else {
                         $template.hide();
                     }
-                    
-                    $("[data-field='loader']").remove();
-                    
                     resolve();
                 },
                 error: function() {
                     $('[data-element="resellers-list"]').children('[data-element="reseller-item"]').hide();
                     reject();
+                },
+                complete: function() {
+                    setTimeout(() => {
+                        $("[data-field='loader']").remove();
+                    }, 500);
                 }
             });
         });
-    }    
+    }
+    
 
     // Event handlers
     $('[data-element="list-zakres"], [data-element="list-specialization"], [data-element="list-status"]').on('change', 'input[type="checkbox"]', function() {
