@@ -1,4 +1,5 @@
 $(document).ready(function() {
+    
     function updateResellerItem($item, partner) {
         $item.attr('data-reseller-id', partner.id);
         $item.attr('href', '/lista-partnerow?partner=' + partner.id);
@@ -268,52 +269,54 @@ $(document).ready(function() {
         const selectedCategories = $('[data-element="list-zakres"] input:checked').map(function() {
             return $(this).next('label').text();
         }).get();
-
+    
         const selectedBadges = $('[data-element="list-specialization"] input:checked').map(function() {
             return $(this).next('label').text();
         }).get();
-
+    
         const selectedStatuses = $('[data-element="list-status"] input:checked').map(function() {
             return $(this).next('label').text();
         }).get();
-
+    
         const searchTerm = $('input[data-name="search"]').val().toLowerCase();
-
+    
         let visibleItems = 0;
-
-        $('[data-element="reseller-item"]').each(function() {
+        const $resellerItems = $('[data-element="reseller-item"]');
+        const $emptyState = $('[data-element="empty"]');
+    
+        $emptyState.css('display', 'none');
+    
+        $resellerItems.each(function() {
             const $item = $(this);
             const categories = $item.find('[data-element="reseller-categories"] .category-item span:last-child').map(function() {
                 return $(this).text();
             }).get();
-
+    
             const badges = $item.find('[data-element="reseller-badges-wrapper"] img').map(function() {
                 return $(this).attr('alt');
             }).get();
-
+    
             const status = $item.find('[data-element="reseller-status"] div').text();
-
+    
             const name = $item.find('[data-element="reseller-name"]').text().toLowerCase();
-
+    
             const matchesCategories = selectedCategories.length === 0 || selectedCategories.some(cat => categories.includes(cat));
             const matchesBadges = selectedBadges.length === 0 || selectedBadges.some(badge => badges.includes(badge));
             const matchesStatus = selectedStatuses.length === 0 || selectedStatuses.includes(status);
             const matchesSearch = searchTerm === '' || name.includes(searchTerm);
-
+    
             if (matchesCategories && matchesBadges && matchesStatus && matchesSearch) {
-                $item.show();
+                $item.css('display', 'block');
+                visibleItems++;
             } else {
-                $item.hide();
+                $item.css('display', 'none');
             }
         });
-
-        const $emptyState = $('[data-element="empty"]');
-    if (visibleItems === 0) {
-        $emptyState.show();
-    } else {
-        $emptyState.hide();
-    }
-
+    
+        if (visibleItems === 0) {
+            $emptyState.css('display', 'block');
+        }
+    
         updateTags();
         updateURLParameters();
     }
