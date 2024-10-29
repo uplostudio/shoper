@@ -275,6 +275,8 @@ $(document).ready(() => {
         if ($form.data("action") === "validate_email") {
           const storedEmail = localStorage.getItem("trialEmail");
           const trialCompleted = localStorage.getItem("trialCompleted") === "true";
+          
+          $('[data-element^="card-"]').removeClass('modal--open');
 
           if (newEmail !== storedEmail || !trialCompleted) {
             localStorage.setItem("trialEmail", newEmail);
