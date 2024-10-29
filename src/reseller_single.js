@@ -33,6 +33,7 @@ $(document).ready(function() {
             const $badgeImg = $('<img>')
                 .addClass('reseller_box-badge')
                 .attr('src', createImageUrl('badge', badge))
+                .attr('title', badge)
                 .attr('alt', badge);
             $badgesWrapper.append($badgeImg);
         });
