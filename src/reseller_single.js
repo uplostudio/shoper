@@ -23,8 +23,9 @@ $(document).ready(function() {
         if (partnerStatus) {
             const $statusImg = $('<img>')
                 .addClass('reseller_box-badge')
+                .attr('alt', partnerStatus)
                 .attr('src', createImageUrl('status', partnerStatus))
-                .attr('alt', partnerStatus);
+                .attr('title', partnerStatus);
             $badgesWrapper.append($statusImg);
         }
 
