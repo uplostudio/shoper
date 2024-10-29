@@ -145,10 +145,14 @@ if ($resellerForm.length) {
                 if (response && response.status === 1 && response.partner) {
                     updateResellerDetails(response.partner);
                 } else {
+                    $('[data-element="404-wrapper"]').show();
+                    $('[data-element="content-section"]').remove();
                     console.error('Invalid response or partner data not found');
                 }
             },
             error: function(xhr, status, error) {
+                $('[data-element="404-wrapper"]').show();
+                $('[data-element="content-section"]').remove();
                 console.error('Error fetching reseller data:', error);
             },
             complete: function() {
@@ -156,6 +160,7 @@ if ($resellerForm.length) {
             }
         });
     }
+    
 
     const resellerId = getResellerId();
     if (resellerId) {
