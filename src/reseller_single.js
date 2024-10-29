@@ -157,7 +157,6 @@ if ($resellerForm.length) {
             },
             complete: function() {
                 $('[data-element="partner-overview"]').removeClass('is-loading');
-                $('[data-element="404-wrapper"]').remove();
             }
         });
     }
