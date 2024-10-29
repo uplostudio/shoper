@@ -279,6 +279,8 @@ $(document).ready(function() {
 
         const searchTerm = $('input[data-name="search"]').val().toLowerCase();
 
+        let visibleItems = 0;
+
         $('[data-element="reseller-item"]').each(function() {
             const $item = $(this);
             const categories = $item.find('[data-element="reseller-categories"] .category-item span:last-child').map(function() {
@@ -304,6 +306,13 @@ $(document).ready(function() {
                 $item.hide();
             }
         });
+
+        const $emptyState = $('[data-element="empty"]');
+    if (visibleItems === 0) {
+        $emptyState.show();
+    } else {
+        $emptyState.hide();
+    }
 
         updateTags();
         updateURLParameters();
