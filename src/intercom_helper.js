@@ -19,7 +19,13 @@ $(function () {
     "/program-partnerski/afiliant",
     "/program-partnerski/tworca-aplikacji",
     "/new-components/forms",
-    "/trustisto"
+    "/trustisto",
+    "/statusy-i-odznaki",
+    "/statusy",
+    "/odznaki",
+    "/lista-partnerow",
+    "/katalog-partnerow",
+    "/katalog-partnerow/lista-partnerow"
   ];
 
   var excludedDomains = [
