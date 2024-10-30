@@ -4,7 +4,7 @@ $(document).ready(function() {
     let ajaxCompleted = false;
     let domLoaded = false;
 
-    $('body').css('overflow', 'hidden');
+    // $('body').css('overflow', 'hidden');
 
     function updateLoaderProgress() {
         if (domLoaded && loadedResources >= totalResources && ajaxCompleted) {
