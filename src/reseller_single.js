@@ -1,4 +1,84 @@
 $(document).ready(function() {
+    // Prevent scrolling while loading
+    $('body').css('overflow', 'hidden');
+
+    let totalResources = 0;
+    let loadedResources = 0;
+    let ajaxCompleted = false;
+    let domLoaded = false;
+    let forceComplete = false;
+
+    // Add security timer
+    const LOADING_TIMEOUT = 3000; // 3 seconds
+    setTimeout(() => {
+        if (!domLoaded || loadedResources < totalResources || !ajaxCompleted) {
+            console.log('Loading timeout reached - forcing completion');
+            forceComplete = true;
+            domLoaded = true;
+            loadedResources = totalResources;
+            ajaxCompleted = true;
+            updateLoaderProgress();
+        }
+    }, LOADING_TIMEOUT);
+
+    function updateLoaderProgress() {
+        // If force complete, skip calculations
+        if (forceComplete) {
+            $("[data-field='loader-anim']").fadeOut(200, function() {
+                $(this).remove();
+                $('body').css('overflow', '');
+            });
+            return;
+        }
+
+        // Calculate percentage
+        const maxProgress = ajaxCompleted ? 100 : 70;
+        const baseProgress = (loadedResources / Math.max(1, totalResources)) * maxProgress;
+        const finalProgress = Math.min(Math.round(baseProgress), 100);
+        
+        // Update loader text
+        $('[data-item="loader-text"]').text(`${finalProgress}%`);
+
+        // Check if everything is loaded
+        if (domLoaded && (loadedResources >= totalResources) && ajaxCompleted) {
+            $("[data-field='loader-anim']").fadeOut(200, function() {
+                $(this).remove();
+                $('body').css('overflow', '');
+            });
+        }
+    }
+
+    function countResources() {
+
+        const resources = $('img[src]:not([loading="lazy"]), script[src], link[rel="stylesheet"]').filter(function() {
+
+            return !(this.complete || this.readyState === 'complete' || this.readyState === 'loaded');
+        });
+        
+        totalResources = resources.length;
+        totalResources += 1;
+        
+        if (totalResources === 0) totalResources = 1;
+        
+        updateLoaderProgress();
+    }
+
+    function trackResourceLoading() {
+        $('img[src]:not([loading="lazy"]), script[src], link[rel="stylesheet"]').each(function() {
+            const element = this;
+            
+            if (element.complete || element.readyState === 'complete' || element.readyState === 'loaded') {
+                loadedResources++;
+                updateLoaderProgress();
+            } else {
+                $(element).one('load error', function() {
+                    loadedResources++;
+                    updateLoaderProgress();
+                });
+            }
+        });
+    }
+
     function getResellerId() {
         const urlParams = new URLSearchParams(window.location.search);
         return urlParams.get('partner');
@@ -70,18 +150,18 @@ $(document).ready(function() {
         $('[data-element="form-header"]').text(`Skontaktuj się z partnerem ${partner.name}`);
 
         const $resellerForm = $('#reseller_form');
-if ($resellerForm.length) {
-    $resellerForm.append(
-        $('<input>')
-            .attr('type', 'hidden')
-            .attr('name', 'reseller_email')
-            .val(partner.email),
-        $('<input>')
-            .attr('type', 'hidden')
-            .attr('name', 'reseller')
-            .val(partner.name)
-    );
-}
+        if ($resellerForm.length) {
+            $resellerForm.append(
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'reseller_email')
+                    .val(partner.email),
+                $('<input>')
+                    .attr('type', 'hidden')
+                    .attr('name', 'reseller')
+                    .val(partner.name)
+            );
+        }
 
         const $categoriesWrapper = $('[data-element="reseller-categories"]');
         $categoriesWrapper.empty();
@@ -122,7 +202,6 @@ if ($resellerForm.length) {
         $('[data-element="reseller-phone"]').text(partner.phone || '');
         $('[data-element="reseller-email"]').text(partner.email || '');
 
-        // Create example images
         if (partner.screens && partner.screens.length > 0) {
             createExampleImages(partner.screens);
         }
@@ -157,15 +236,34 @@ if ($resellerForm.length) {
             },
             complete: function() {
                 $('[data-element="partner-overview"]').removeClass('is-loading');
+                ajaxCompleted = true;
+                updateLoaderProgress();
             }
         });
     }
-    
+
+    $(window).on('load', function() {
+        domLoaded = true;
+        updateLoaderProgress();
+    });
+
+    if (document.readyState === 'complete') {
+        domLoaded = true;
+        updateLoaderProgress();
+    }
+
+    $("[data-field='loader-anim']").show();
+
+    countResources();
+    trackResourceLoading();
+
 
     const resellerId = getResellerId();
     if (resellerId) {
         fetchResellerData(resellerId);
     } else {
         console.error('Reseller ID not found in URL');
+        ajaxCompleted = true;
+        updateLoaderProgress();
     }
 });
