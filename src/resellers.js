@@ -4,10 +4,13 @@ $(document).ready(function() {
     let ajaxCompleted = false;
     let domLoaded = false;
 
+    $('body').css('overflow', 'hidden');
+
     function updateLoaderProgress() {
         if (domLoaded && loadedResources >= totalResources && ajaxCompleted) {
             $("[data-field='loader-anim']").fadeOut(200, function() {
                 $(this).remove();
+                $('body').css('overflow', '');
             });
             return;
         }
@@ -27,7 +30,7 @@ $(document).ready(function() {
     function trackResourceLoading() {
         $('img, script, link[rel="stylesheet"]').each(function() {
             const element = this;
-
+            
             if (element.complete || element.readyState === 'complete' || element.readyState === 'loaded') {
                 loadedResources++;
                 updateLoaderProgress();
@@ -361,6 +364,11 @@ $(document).ready(function() {
         domLoaded = true;
         updateLoaderProgress();
     });
+
+    if (document.readyState === 'complete') {
+        domLoaded = true;
+        updateLoaderProgress();
+    }
 
     countResources();
     trackResourceLoading();
