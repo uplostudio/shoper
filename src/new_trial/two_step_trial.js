@@ -275,7 +275,6 @@ $(document).ready(() => {
         if ($form.data("action") === "validate_email") {
           const storedEmail = localStorage.getItem("trialEmail");
           const trialCompleted = localStorage.getItem("trialCompleted") === "true";
-          
           $('[data-element^="card-"]').removeClass('modal--open');
 
           if (newEmail !== storedEmail || !trialCompleted) {
@@ -568,7 +567,6 @@ $(document).ready(() => {
 
   $(window).on("beforeunload", cleanup);
 
-  // Incorporating logic from new_step_three.js
   $(document).ready(function () {
     const $form = $('[data-formid="create_trial_step2_new"], [data-name="reseller"]');
     const $submitButton = $form.find('[data-form="submit-step-three"]');
@@ -590,14 +588,14 @@ $(document).ready(() => {
 
       SharedUtils.populateCountrySelect("#address1\\[country\\]");
 
-      $clientTypeRadios.filter('[value="1"]').prop("checked", true).closest("label").addClass("is-checked");
-      toggleClientTypeFields();
+$clientTypeRadios.filter('[value="1"]').prop("checked", true).closest("label").addClass("is-checked");
+toggleClientTypeFields();
 
-      $clientTypeRadios.on("change", function () {
-        $clientTypeRadios.closest("label").removeClass("is-checked");
-        $(this).closest("label").addClass("is-checked");
-        toggleClientTypeFields();
-      });
+$clientTypeRadios.on("change", function () {
+    $clientTypeRadios.closest("label").removeClass("is-checked");
+    $(this).closest("label").addClass("is-checked");
+    toggleClientTypeFields();
+});
 
       $payNowRadios.on("change", toggleTrialPromoBox);
 
