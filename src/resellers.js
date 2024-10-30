@@ -1,13 +1,31 @@
 $(document).ready(function() {
+    // Prevent scrolling while loading
+    $('body').css('overflow', 'hidden');
+
     let totalResources = 0;
     let loadedResources = 0;
     let ajaxCompleted = false;
     let domLoaded = false;
+    let forceComplete = false;
 
-    // $('body').css('overflow', 'hidden');
+    // Add security timer
+    const LOADING_TIMEOUT = 3000;
+    // 3 seconds
+    setTimeout( () => {
+        if (!domLoaded || loadedResources < totalResources || !ajaxCompleted) {
+            console.log('Loading timeout reached - forcing completion');
+            forceComplete = true;
+            domLoaded = true;
+            loadedResources = totalResources;
+            ajaxCompleted = true;
+            updateLoaderProgress();
+        }
+    }
+    , LOADING_TIMEOUT);
 
     function updateLoaderProgress() {
-        if (domLoaded && loadedResources >= totalResources && ajaxCompleted) {
+        // If force complete, skip calculations
+        if (forceComplete) {
             $("[data-field='loader-anim']").fadeOut(200, function() {
                 $(this).remove();
                 $('body').css('overflow', '');
@@ -15,27 +33,51 @@ $(document).ready(function() {
             return;
         }
 
+        // Calculate percentage
         const maxProgress = ajaxCompleted ? 100 : 70;
-        const baseProgress = (loadedResources / totalResources) * maxProgress;
+        const baseProgress = (loadedResources / Math.max(1, totalResources)) * maxProgress;
         const finalProgress = Math.min(Math.round(baseProgress), 100);
+
+        // Update loader text
         $('[data-item="loader-text"]').text(`${finalProgress}%`);
+
+        // Check if everything is loaded
+        if (domLoaded && (loadedResources >= totalResources) && ajaxCompleted) {
+            $("[data-field='loader-anim']").fadeOut(200, function() {
+                $(this).remove();
+                $('body').css('overflow', '');
+            });
+        }
     }
 
     function countResources() {
-        totalResources = $('img, script, link[rel="stylesheet"]').length;
-        totalResources += 1;
+        // Only count resources that actually need loading
+        const resources = $('img[src]:not([loading="lazy"]), script[src], link[rel="stylesheet"]').filter(function() {
+            // Filter out already loaded resources
+            return !(this.complete || this.readyState === 'complete' || this.readyState === 'loaded');
+        });
+
+        totalResources = resources.length;
         // Add +1 for the AJAX request
+        totalResources += 1;
+
+        // If no resources need loading, set minimum to 1 to avoid division by zero
+        if (totalResources === 0)
+            totalResources = 1;
+
+        // Initial progress update
+        updateLoaderProgress();
     }
 
     function trackResourceLoading() {
-        $('img, script, link[rel="stylesheet"]').each(function() {
+        $('img[src]:not([loading="lazy"]), script[src], link[rel="stylesheet"]').each(function() {
             const element = this;
-            
+
             if (element.complete || element.readyState === 'complete' || element.readyState === 'loaded') {
                 loadedResources++;
                 updateLoaderProgress();
             } else {
-                $(element).on('load error', function() {
+                $(element).one('load error', function() {
                     loadedResources++;
                     updateLoaderProgress();
                 });
@@ -152,12 +194,10 @@ $(document).ready(function() {
 
     function updateTags() {
         const $tagTemplate = $('[data-element="tag-template"]');
-        if ($tagTemplate.length === 0) {
+        if ($tagTemplate.length === 0)
             return;
-        }
 
         const $tagContainer = $tagTemplate.parent();
-
         $tagContainer.children().not($tagTemplate).remove();
 
         let tagCount = 0;
@@ -190,9 +230,8 @@ $(document).ready(function() {
             return $(this).find('[data-element="tag-text"]').text() === text;
         });
 
-        if (existingTag.length > 0) {
+        if (existingTag.length > 0)
             return;
-        }
 
         const $newTag = $template.clone();
         $newTag.removeAttr('data-element');
@@ -360,19 +399,6 @@ $(document).ready(function() {
         updateURLParameters();
     }
 
-    $(window).on('load', function() {
-        domLoaded = true;
-        updateLoaderProgress();
-    });
-
-    if (document.readyState === 'complete') {
-        domLoaded = true;
-        updateLoaderProgress();
-    }
-
-    countResources();
-    trackResourceLoading();
-
     function fetchResellerData() {
         return new Promise( (resolve, reject) => {
             $.ajax({
@@ -425,7 +451,6 @@ $(document).ready(function() {
 
                     processingPromise.then( () => {
                         loadedResources++;
-                        // Count AJAX as loaded
                         ajaxCompleted = true;
                         updateLoaderProgress();
                         resolve();
@@ -435,7 +460,6 @@ $(document).ready(function() {
                 error: function() {
                     $('[data-element="resellers-list"]').children('[data-element="reseller-item"]').hide();
                     loadedResources++;
-                    // Count AJAX as loaded even on error
                     ajaxCompleted = true;
                     updateLoaderProgress();
                     reject();
@@ -460,6 +484,21 @@ $(document).ready(function() {
         filterResellers();
     });
 
+    // Handle window load event
+    $(window).on('load', function() {
+        domLoaded = true;
+        updateLoaderProgress();
+    });
+
+    // Check if document is already loaded
+    if (document.readyState === 'complete') {
+        domLoaded = true;
+        updateLoaderProgress();
+    }
+
+    // Make sure the loader is shown immediately
+    $("[data-field='loader-anim']").show();
+
     // Initialize loading tracking
     countResources();
     trackResourceLoading();
@@ -468,6 +507,9 @@ $(document).ready(function() {
     fetchResellerData().then( () => {
         loadFiltersFromURL();
         filterResellers();
+    }
+    ).catch(error => {
+        console.error('Error loading data:', error);
     }
     );
 });
