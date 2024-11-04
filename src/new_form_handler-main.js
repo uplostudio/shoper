@@ -14,6 +14,8 @@ const omittedAttributes = new Set([
   "form_signature",
   "alternative_form_signature",
   "form_signature_string",
+  "data-form_step",
+  "data-form_type"
 ]);
 
 const validationPatterns = {};
