@@ -159,39 +159,41 @@
 
   function toggleNav(event) {
     const burger = $(".nav__burger-inner");
-    $('[data-app="custom-banner"]').css("display", "flex");
+    $('[data-app="custom-banner"], [data-element="custom-banner"]').css("display", "flex");
     closeAllDropdowns();
+    
     if (navState === false) {
-      $('[data-app="custom-banner"]').css("display", "none");
-      const wrapper = $("<div>").addClass("nav__mobile-menu-wrapper").attr("data-sh-state", "temp");
-      $nav_menu.children().wrapAll(wrapper);
-      $nav_menu.addClass(navDirective).attr("data-sh-state", "open");
-      burger.children().each(function () {
-        $(this).addClass(navDirective);
-        $(this)
-          .children()
-          .each(function () {
+        $('[data-app="custom-banner"], [data-element="custom-banner"]').css("display", "none");
+        const wrapper = $("<div>").addClass("nav__mobile-menu-wrapper").attr("data-sh-state", "temp");
+        $nav_menu.children().wrapAll(wrapper);
+        $nav_menu.addClass(navDirective).attr("data-sh-state", "open");
+        burger.children().each(function () {
             $(this).addClass(navDirective);
-          });
-      });
-      return (navState = true);
+            $(this)
+                .children()
+                .each(function () {
+                    $(this).addClass(navDirective);
+                });
+        });
+        return (navState = true);
     }
 
     if (navState === true) {
-      $('[data-app="custom-banner"]').css("display", "flex");
-      $('[data-sh-state="temp"]').children().unwrap();
-      $nav_menu.removeClass(navDirective).attr("data-sh-state", "closed");
-      burger.children().each(function () {
-        $(this).removeClass(navDirective);
-        $(this)
-          .children()
-          .each(function () {
+        $('[data-app="custom-banner"], [data-element="custom-banner"]').css("display", "flex");
+        $('[data-sh-state="temp"]').children().unwrap();
+        $nav_menu.removeClass(navDirective).attr("data-sh-state", "closed");
+        burger.children().each(function () {
             $(this).removeClass(navDirective);
-          });
-      });
-      return (navState = false);
+            $(this)
+                .children()
+                .each(function () {
+                    $(this).removeClass(navDirective);
+                });
+        });
+        return (navState = false);
     }
-  }
+}
+
 
   function toggleNavDropdown(target) {
     const targetIndex = target.attr("data-sh-index");
