@@ -25,7 +25,9 @@ $(function () {
     "/odznaki",
     "/lista-partnerow",
     "/katalog-partnerow",
-    "/katalog-partnerow/lista-partnerow"
+    "/katalog-partnerow/lista-partnerow",
+    "/oferty-black-friday-nowi-klienci",
+    "/oferty-black-friday-obecni-klienci"
   ];
 
   var excludedDomains = [
