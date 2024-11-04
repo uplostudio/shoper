@@ -1,8 +1,8 @@
-let lineAnimationTime = 1000;
+// let lineAnimationTime = 1000;
 
-setTimeout(() => {
-	$("#line-load-animate").addClass("animate");
-}, lineAnimationTime);
+// setTimeout(() => {
+// 	$("#line-load-animate").addClass("animate");
+// }, lineAnimationTime);
 
 // overflow hidden when nav is open
 $(".nav__burger-inner").on("click", function () {
@@ -108,24 +108,24 @@ $(window).scroll(function () {
 	});
 });
 
-function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
-	$(document).ready(function () {
-		let keyword = $(`[${dataAttribute}]`).attr(dataAttribute);
+// function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
+// 	$(document).ready(function () {
+// 		let keyword = $(`[${dataAttribute}]`).attr(dataAttribute);
 
-		if (!keyword || keyword.trim() === "") {
-			return;
-		}
+// 		if (!keyword || keyword.trim() === "") {
+// 			return;
+// 		}
 
-		let escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-		let regex = new RegExp(`${escapedKeyword}`, "gi");
+// 		let escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
+// 		let regex = new RegExp(`${escapedKeyword}`, "gi");
 
-		$(targetElement).html(function (_, html) {
-			return html.replace(
-				regex,
-				`<span id="${spanId}" class="${spanClass}">${keyword}</span>`
-			);
-		});
-	});
-}
+// 		$(targetElement).html(function (_, html) {
+// 			return html.replace(
+// 				regex,
+// 				`<span id="${spanId}" class="${spanClass}">${keyword}</span>`
+// 			);
+// 		});
+// 	});
+// }
 
-wrapKeywordInSpan("h1", "data-span", "line-load-animate", "mark animate");
+// wrapKeywordInSpan("h1", "data-span", "line-load-animate", "mark animate");
