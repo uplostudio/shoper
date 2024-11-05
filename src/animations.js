@@ -5,31 +5,28 @@ $(".nav__burger-inner").on("click", function () {
 
 // Defining the modal close logic in a function
 function closeModal() {
-    $("*").removeClass("modal--open");
-    
-    // Rest of your original function
-    $(document.body).toggleClass("overflow-hidden", false);
-    isFromBanner = false;
-    formLocation = "";
-    formType = "inline";
-    isUsingModal = false;
-    
-    if ($(".checkbox-multi.is-trigger").length) {
-        $(".checkbox-multi.is-trigger").each(function () {
-            if ($(this).hasClass("w--redirected-checked")) {
-                $(".checkbox-multi.is-trigger").removeClass("w--redirected-checked");
-                return false;
-            }
-        });
-    }
+	$(".modal--open").removeClass("modal--open");
+	$("[data-element='trial_wrapper']").hide();
+	$(document.body).toggleClass("overflow-hidden", false);
+	isFromBanner = false;
+	formLocation = "";
+  formType = "inline";
+  isUsingModal = false;
+	if ($(".checkbox-multi.is-trigger").length) {
+		$(".checkbox-multi.is-trigger").each(function () {
+			if ($(this).hasClass("w--redirected-checked")) {
+				$(".checkbox-multi.is-trigger").removeClass("w--redirected-checked");
+				return false;
+			}
+		});
+	}
 
-    var currentUrl = window.location.href;
-    var baseUrl = currentUrl.split("#")[0];
-    history.pushState(null, null, baseUrl);
+	var currentUrl = window.location.href;
+	var baseUrl = currentUrl.split("#")[0];
+	history.pushState(null, null, baseUrl);
 
-    $(document).trigger("closeModalCalled");
+	$(document).trigger("closeModalCalled");
 }
-
 
 // Attach the function to existing click events
 $(
