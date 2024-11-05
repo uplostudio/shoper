@@ -1,9 +1,3 @@
-// let lineAnimationTime = 1000;
-
-// setTimeout(() => {
-// 	$("#line-load-animate").addClass("animate");
-// }, lineAnimationTime);
-
 // overflow hidden when nav is open
 $(".nav__burger-inner").on("click", function () {
 	$("body").toggleClass("overflow-hidden");
@@ -11,27 +5,31 @@ $(".nav__burger-inner").on("click", function () {
 
 // Defining the modal close logic in a function
 function closeModal() {
-	$(".modal--open").removeClass("modal--open");
-	$(document.body).toggleClass("overflow-hidden", false);
-	isFromBanner = false;
-	formLocation = "";
-  formType = "inline";
-  isUsingModal = false;
-	if ($(".checkbox-multi.is-trigger").length) {
-		$(".checkbox-multi.is-trigger").each(function () {
-			if ($(this).hasClass("w--redirected-checked")) {
-				$(".checkbox-multi.is-trigger").removeClass("w--redirected-checked");
-				return false;
-			}
-		});
-	}
+    $("*").removeClass("modal--open");
+    
+    // Rest of your original function
+    $(document.body).toggleClass("overflow-hidden", false);
+    isFromBanner = false;
+    formLocation = "";
+    formType = "inline";
+    isUsingModal = false;
+    
+    if ($(".checkbox-multi.is-trigger").length) {
+        $(".checkbox-multi.is-trigger").each(function () {
+            if ($(this).hasClass("w--redirected-checked")) {
+                $(".checkbox-multi.is-trigger").removeClass("w--redirected-checked");
+                return false;
+            }
+        });
+    }
 
-	var currentUrl = window.location.href;
-	var baseUrl = currentUrl.split("#")[0];
-	history.pushState(null, null, baseUrl);
+    var currentUrl = window.location.href;
+    var baseUrl = currentUrl.split("#")[0];
+    history.pushState(null, null, baseUrl);
 
-	$(document).trigger("closeModalCalled");
+    $(document).trigger("closeModalCalled");
 }
+
 
 // Attach the function to existing click events
 $(
@@ -107,25 +105,3 @@ $(window).scroll(function () {
 		}, 2000);
 	});
 });
-
-// function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
-// 	$(document).ready(function () {
-// 		let keyword = $(`[${dataAttribute}]`).attr(dataAttribute);
-
-// 		if (!keyword || keyword.trim() === "") {
-// 			return;
-// 		}
-
-// 		let escapedKeyword = keyword.replace(/[.*+?^${}()|[\]\\]/g, "\\$&");
-// 		let regex = new RegExp(`${escapedKeyword}`, "gi");
-
-// 		$(targetElement).html(function (_, html) {
-// 			return html.replace(
-// 				regex,
-// 				`<span id="${spanId}" class="${spanClass}">${keyword}</span>`
-// 			);
-// 		});
-// 	});
-// }
-
-// wrapKeywordInSpan("h1", "data-span", "line-load-animate", "mark animate");
