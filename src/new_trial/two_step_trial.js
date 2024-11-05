@@ -288,6 +288,7 @@ $(document).ready(() => {
           $('[data-form="email"]', $twoStepTrialsWrapper).val(newEmail).prop("disabled", true);
           $twoStepTrialsWrapper.show();
         } else if ($form.data("action") === "create_trial_step1_new") {
+          $('[data-element^="card-trial-"]').removeClass('modal--open');
           $('[data-form="email"]', $twoStepTrialsWrapper).val(newEmail).prop("disabled", true);
           switchToModal("modal_trial_three");
           localStorage.setItem("trialCompleted", "true");
@@ -398,8 +399,6 @@ $(document).ready(() => {
   const $openTwoStepTrialWrapperButton = $(
     "[data-element='open_trial_two_steps_wrapper'], [data-element='open_trial_wrapper'], [data-element='open_card-trial-one'], [data-element='open_card-trial-two'], [data-element='open_card-trial-three']"
   );
-  
-  
 
   if ($openTwoStepTrialWrapperButton.length) {
     $openTwoStepTrialWrapperButton.on("click", function () {
