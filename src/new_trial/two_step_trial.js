@@ -396,7 +396,7 @@ $(document).ready(() => {
   };
 
   const $openTwoStepTrialWrapperButton = $(
-    "[data-element='open_trial_two_steps_wrapper'], [data-element='open_trial_wrapper'], [data-element^='open_card-'][data-element$='-trial']"
+    "[data-element='open_trial_two_steps_wrapper'], [data-element='open_trial_wrapper'], [data-element^='open_card-']"
   );
   
 
