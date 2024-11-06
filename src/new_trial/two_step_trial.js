@@ -10,6 +10,10 @@ $(document).ready(() => {
   let isPremiumPackage = false;
   let isStandardPlusPackage = false;
 
+  const premiumPrice = "3588";
+  const standardPlusPrice = "259";
+  const standardPrice = "239";
+
   const updateTrialPromoElements = (data, isPremiumPackage, isStandardPlusPackage) => {
     const $trialPromo = $("#trial-promo");
     const $trialPromoBox = $("#trial-promo-box");
@@ -430,11 +434,11 @@ $(document).ready(() => {
       // Determine package details
       let packageDetails;
       if (isPremiumPackage) {
-        packageDetails = { trial_type: "Premium", item_id: "Premium", item_name: "Premium", price: "499" };
+        packageDetails = { trial_type: "Premium", item_id: "Premium", item_name: "Premium", price: premiumPrice };
       } else if (isStandardPlusPackage) {
-        packageDetails = { trial_type: "Standard+", item_id: "Standard+", item_name: "Standard+", price: "35" };
+        packageDetails = { trial_type: "Standard+", item_id: "Standard+", item_name: "Standard+", price: standardPlusPrice };
       } else {
-        packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: "25" };
+        packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: standardPrice };
       }
 
       // Fire begin_checkout event
@@ -478,11 +482,11 @@ $(document).ready(() => {
   const handleTrialStepComplete = debounce(function (event, actualCompletedStep, data, $form) {
     let packageDetails;
     if (isPremiumPackage) {
-      packageDetails = { trial_type: "Premium", item_id: "Premium", item_name: "Premium", price: "499" };
+      packageDetails = { trial_type: "Premium", item_id: "Premium", item_name: "Premium", price: premiumPrice };
     } else if (isStandardPlusPackage) {
-      packageDetails = { trial_type: "Standard+", item_id: "Standard+", item_name: "Standard+", price: "35" };
+      packageDetails = { trial_type: "Standard+", item_id: "Standard+", item_name: "Standard+", price: standardPlusPrice };
     } else {
-      packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: "25" };
+      packageDetails = { trial_type: "Standard", item_id: "Standard", item_name: "Standard", price: standardPrice };
     }
 
     let formId = $form && $form.length ? $form.attr("id") : "unknown";
