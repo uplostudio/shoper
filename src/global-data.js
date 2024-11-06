@@ -396,7 +396,7 @@ function trackFormInteraction(form, input, formType) {
   const formLocation = window.location.pathname;
   let formStep = 'unknown';
 
-  if (formId.toLowerCase().includes('trial')) {
+  if (formId.toLowerCase().includes('trial') || form.attr('data-form_type') === 'modal') {
     const isUsingModal = form.data('is-modal') === true;
     const actualCompletedStep = parseInt(form.data('completed-step') || '0', 10);
 

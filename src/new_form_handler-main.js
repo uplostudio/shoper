@@ -645,7 +645,7 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
       if (formData.has("host")) {
         if (data.status === 1) {
           $form.siblings(".error-admin").hide();
-          if ($form.attr("data-action") === "get_admin") {
+          if ($form.attr("data-action") === "get_admin" || $form.attr("data-action") === "get_product") {
             dataLayer.push({
               event: "login",
               user_id: "undefined",
