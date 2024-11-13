@@ -743,6 +743,7 @@ function initializeEventListeners() {
   $("[data-form='submit']").on("click", handleSubmitClick);
 
   $("[data-app^='open_'], [data-element^='open_']").on("click", function () {
+    isUsingModal = true;
     const dataValue = $(this).data("app") || $(this).data("element");
     const triggerName = dataValue.replace(/^open_|_modal_button$/g, "");
     const $modal = $(
