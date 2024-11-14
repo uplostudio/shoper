@@ -7,12 +7,13 @@ window.myGlobals = {
   URL: null,
   fbclidValue: getOrStoreParameter("fbclid"),
   gclidValue: getOrStoreParameter("gclid"),
+  isUsingModal: false,
 };
 
-window.myGlobals.URL = window.location.hostname === "www.shoper.pl"
-  ? "https://www.shoper.pl/ajax.php"
-  : "https://webflow-sandbox.shoper.pl/ajax.php";
-
+window.myGlobals.URL =
+  window.location.hostname === "www.shoper.pl"
+    ? "https://www.shoper.pl/ajax.php"
+    : "https://webflow-sandbox.shoper.pl/ajax.php";
 
 function getOrStoreParameter(name) {
   const urlSearchParams = new URLSearchParams(window.location.search);
@@ -33,11 +34,13 @@ function getOrStoreParameter(name) {
 function updateAnalytics() {
   setTimeout(() => {
     try {
-      const clientId = document.cookie.split('; ')
-        .find(row => row.startsWith('_ga='))
-        ?.split('.')
-        .slice(2)
-        .join('.') || '';
+      const clientId =
+        document.cookie
+          .split("; ")
+          .find((row) => row.startsWith("_ga="))
+          ?.split(".")
+          .slice(2)
+          .join(".") || "";
 
       if (clientId) {
         window.myGlobals.analyticsId = clientId;
@@ -47,8 +50,6 @@ function updateAnalytics() {
   }, 2000);
 }
 
-
-
 const DataLayerGatherers = {
   pushDataLayerEvent(eventData) {
     window.dataLayer = window.dataLayer || [];
@@ -56,73 +57,76 @@ const DataLayerGatherers = {
   },
 
   formAbandonEvent() {
-    const $trialModal = $('.new__trial-modal');
+    const $trialModal = $(".new__trial-modal");
     const $modalSteps = $('[data-element^="modal_trial_"]');
     const $closeButton = $('[data-element="close_trial_wrapper"]');
     let isFormModified = false;
     let lastFocusedInput = null;
     let currentFormId = null;
-  
+
     function getCurrentVisibleForm() {
-      const $visibleStep = $modalSteps.filter(function() {
-        return $(this).css('display') !== 'none';
+      const $visibleStep = $modalSteps.filter(function () {
+        return $(this).css("display") !== "none";
       });
       const $form = $visibleStep.find('[data-action^="create_trial_step"]');
       return $form;
     }
-  
+
     $trialModal.on("input change", "input, select, textarea", function () {
       isFormModified = true;
     });
-  
+
     $trialModal.on("focus", "input, select, textarea", function () {
       lastFocusedInput = $(this);
-      currentFormId = getCurrentVisibleForm().attr('data-action');
+      currentFormId = getCurrentVisibleForm().attr("data-action");
     });
-  
+
     $trialModal.on("blur", "input, select, textarea", function () {
       isFormModified = true;
     });
-  
+
     $closeButton.on("click", function (event) {
       if (isFormModified) {
         sendFormAbandonEvent();
       }
     });
-  
+
     $(document).on("click", function (event) {
       const $clickedElement = $(event.target);
-      
+
       if (!$clickedElement.closest($trialModal).length && isFormModified) {
         sendFormAbandonEvent();
       }
     });
-  
+
     $(document).on("keydown", function (event) {
       if (event.key === "Escape" && isFormModified) {
         sendFormAbandonEvent();
       }
     });
-  
+
     $trialModal.on("submit", '[data-action^="create_trial_step"]', function () {
       isFormModified = false;
       lastFocusedInput = null;
       currentFormId = null;
     });
-  
+
     function sendFormAbandonEvent() {
-      if (currentFormId && !$(`[data-action="${currentFormId}"]`).data("submitted")) {
+      if (
+        currentFormId &&
+        !$(`[data-action="${currentFormId}"]`).data("submitted")
+      ) {
         const emailValue = lastFocusedInput.val();
-  
+
         DataLayerGatherers.pushDataLayerEvent({
-          "event": "formAbandon",
-          "formId": currentFormId,
-          "email": emailValue,
-          "action": currentFormId,
-          "website": "shoper",
-          "eventLabel": window.location.href
+          event: "formAbandon",
+          formId: currentFormId,
+          email: emailValue,
+          action: currentFormId,
+          website: "shoper",
+          eventLabel: window.location.href,
         });
-  
+
         isFormModified = false;
         lastFocusedInput = null;
         currentFormId = null;
@@ -133,8 +137,8 @@ const DataLayerGatherers = {
   controlBlur() {
     $(document).on("blur", "form input", function () {
       const $input = $(this);
-      const $form = $input.closest('form');
-      
+      const $form = $input.closest("form");
+
       DataLayerGatherers.pushDataLayerEvent({
         event: "controlBlur",
         formId: $form.attr("data-action"),
@@ -148,8 +152,8 @@ const DataLayerGatherers = {
   controlFocus() {
     $(document).on("focus", "form input", function () {
       const $input = $(this);
-      const $form = $input.closest('form');
-      
+      const $form = $input.closest("form");
+
       DataLayerGatherers.pushDataLayerEvent({
         event: "controlFocus",
         formId: $form.attr("data-action"),
@@ -164,7 +168,7 @@ const DataLayerGatherers = {
     this.pushDataLayerEvent({
       event: "trial_sign_up",
       client_id: clientId,
-      "shop_id": shopId,
+      shop_id: shopId,
       formId: formId,
       email: email,
     });
@@ -196,18 +200,25 @@ const DataLayerGatherers = {
     });
   },
 
-  pushTrackEventDataModal(client_id, formId, shopId, eventAction, eventType, package) {
+  pushTrackEventDataModal(
+    client_id,
+    formId,
+    shopId,
+    eventAction,
+    eventType,
+    package
+  ) {
     this.pushDataLayerEvent({
       event: "formSubmitSuccess",
       eventCategory: "Button modal form sent",
       client_id: client_id,
       formId: formId,
-      "shop_id": shopId,
+      shop_id: shopId,
       eventAction: eventAction,
       eventLabel: window.location.pathname,
       eventType: eventType,
       eventHistory: window.history,
-      package: package
+      package: package,
     });
   },
 
@@ -291,7 +302,7 @@ const DataLayerGatherers = {
       "utm_campaign",
       "utm_content",
       "adgroup",
-      'utm_term'
+      "utm_term",
     ];
     const VALUE_TRACK_KEY = "adwords";
     const NINETY_DAYS_MS = 90 * 24 * 60 * 60 * 1000;
@@ -343,14 +354,14 @@ const DataLayerGatherers = {
   addUtmDataToForm(formData) {
     const storedUtmData = this.getValueTrackData();
     if (storedUtmData) {
-      Object.keys(storedUtmData).forEach(key => {
-        if (key !== 'timestamp') {
+      Object.keys(storedUtmData).forEach((key) => {
+        if (key !== "timestamp") {
           formData[`adwords[${key}]`] = storedUtmData[key];
         }
       });
     }
     return formData;
-  }
+  },
 };
 
 $(document).ready(function () {
@@ -359,7 +370,10 @@ $(document).ready(function () {
   DataLayerGatherers.controlFocus();
 });
 
-$(document).on("closeModalCalled", DataLayerGatherers.pushModalClosed.bind(DataLayerGatherers));
+$(document).on(
+  "closeModalCalled",
+  DataLayerGatherers.pushModalClosed.bind(DataLayerGatherers)
+);
 
 $(document).ready(function () {
   $("a[data-app^='open_'], a[data-element^='open_']").click(function () {
@@ -390,17 +404,34 @@ $(window).on("load", function () {
 });
 
 function trackFormInteraction(form, input, formType) {
-  if (form.data('interaction-tracked')) return;
+  if (form.data("interaction-tracked")) return;
 
-  const formId = form.attr('id') || 'empty';
+  const formId = form.attr("id") || "empty";
   const formLocation = window.location.pathname;
-  let formStep = 'unknown';
+  let formStep;
 
-  if (formId.toLowerCase().includes('trial') || form.attr('data-form_type') === 'modal') {
-    const isUsingModal = form.data('is-modal') === true;
-    const actualCompletedStep = parseInt(form.data('completed-step') || '0', 10);
+  if (
+    formId.toLowerCase().includes("trial") ||
+    form.attr("data-form_type") === "modal"
+  ) {
+    let actualCompletedStep;
 
-    if (isUsingModal) {
+    const formAction = form.data("action");
+    switch (formAction) {
+      case "validate_email":
+        actualCompletedStep = 0;
+        break;
+      case "create_trial_step1_new":
+        actualCompletedStep = 1;
+        break;
+      case "create_trial_step2_new":
+        actualCompletedStep = 2;
+        break;
+      default:
+        actualCompletedStep = 0;
+    }
+
+    if (window.myGlobals.isUsingModal) {
       // Modal flow
       switch (actualCompletedStep) {
         case 0:
@@ -432,23 +463,24 @@ function trackFormInteraction(form, input, formType) {
       }
     }
   } else {
-    formStep = input && input.length ? input.attr('data-form') || 'unknown' : 'unknown';
+    formStep =
+      input && input.length ? input.attr("data-form") || "unknown" : "unknown";
   }
 
   DataLayerGatherers.pushFormInteractionEvent(
     formId,
     formLocation,
-    formType,
+    window.myGlobals.isUsingModal ? "modal" : "inline",
     formStep
   );
 
-  form.data('interaction-tracked', true);
+  form.data("interaction-tracked", true);
 }
 
-$(document).ready(function() {
-  $("form").on("focus", "input, textarea, select", function() {
+$(document).ready(function () {
+  $("form").on("focus", "input, textarea, select", function () {
     const $form = $(this.form);
-    const formType = $form.data('form-type') || 'inline';
+    const formType = $form.data("form-type") || "inline";
     trackFormInteraction($form, $(this), formType);
   });
 });

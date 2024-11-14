@@ -406,8 +406,8 @@ $(document).ready(() => {
 
   if ($openTwoStepTrialWrapperButton.length) {
     $openTwoStepTrialWrapperButton.on("click", function () {
-      isUsingModal = true;
-      formType = isUsingModal ? "modal" : "inline";
+      window.myGlobals.isUsingModal = true;
+      formType = "modal";
       $twoStepTrialsWrapper.show();
 
       const storedEmail = localStorage.getItem("trialEmail");
@@ -720,19 +720,33 @@ $clientTypeRadios.on("change", function () {
 
     setupForm();
 
-    $(document).on("actualTrialStepComplete", function (event, actualCompletedStep, data) {
-      if (actualCompletedStep === 2) {
-        const $modalTrialThree = $('[data-element="modal_trial_three"]');
-        const $modalTrialSuccess = $('[data-element="modal_trial_success"]');
-
-        if ($modalTrialThree.length) {
-          $modalTrialThree.hide();
-        }
-        if ($modalTrialSuccess.length) {
-          $modalTrialSuccess.show();
-        }
+    $(document).on("actualTrialStepComplete", function (event, actualCompletedStep, data, $form) {
+      if ($form) {
+        $form.data('completed-step', actualCompletedStep);
+      }
+    
+      switch (actualCompletedStep) {
+        case 0:
+          handleTrialStepComplete(event, actualCompletedStep, data, $form);
+          break;
+        case 1:
+          handleTrialStepComplete(event, actualCompletedStep, data, $form);
+          break;
+        case 2:
+          const $modalTrialThree = $('[data-element="modal_trial_three"]');
+          const $modalTrialSuccess = $('[data-element="modal_trial_success"]');
+    
+          if ($modalTrialThree.length) {
+            $modalTrialThree.hide();
+          }
+          if ($modalTrialSuccess.length) {
+            $modalTrialSuccess.show();
+          }
+          break;
+        default:
       }
     });
+    
   });
 });
 
