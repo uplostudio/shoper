@@ -63,7 +63,7 @@ $(document).ready(function() {
         // Recalculate after all images are loaded
         $(window).on('load', function() {
             initialPosition = $nav.offset().top;
-            topPadding = $('.dynamic-div-above').outerHeight(true);
+            topPadding = $("[data-element='custom-banner']").outerHeight(true);
         });
         
         $(window).on('scroll', function() {
@@ -89,7 +89,7 @@ $(document).ready(function() {
             clearTimeout(resizeTimeout);
             resizeTimeout = setTimeout(function() {
                 initialPosition = $nav.offset().top;
-                topPadding = $('.dynamic-div-above').outerHeight(true);
+                topPadding = $("[data-element='custom-banner']").outerHeight(true);
             }, 250);
         });
     }
