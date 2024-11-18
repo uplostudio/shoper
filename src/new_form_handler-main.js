@@ -753,10 +753,10 @@ function initializeEventListeners() {
     $modal.addClass("modal--open");
     $(document.body).addClass("overflow-hidden");
 
-    const $form = $modal.find("form:first");
-    if ($form.length > 0) {
-      $form.find(":input:not(select):enabled:visible:first").focus();
-    }    
+    // const $form = $modal.find("form:first");
+    // if ($form.length > 0) {
+    //   $form.find(":input:not(select):enabled:visible:first").focus();
+    // }    
   });
 
   $(document).on("submitSuccess submitError", (e, formElement) => {
