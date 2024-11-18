@@ -755,8 +755,8 @@ function initializeEventListeners() {
 
     const $form = $modal.find("form:first");
     if ($form.length > 0) {
-      $form.find(":input:enabled:visible:first").focus();
-    }
+      $form.find(":input:not(select):enabled:visible:first").focus();
+    }    
   });
 
   $(document).on("submitSuccess submitError", (e, formElement) => {
