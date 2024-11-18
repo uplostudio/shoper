@@ -39,6 +39,8 @@ $(document).on("keyup", function (e) {
 });
 
 $("[fs-formsubmit-element='reset']").on("click", function () {
+  $(".loading-in-button").hide();
+  $('.validation-svg').remove();
   $(".checkbox-multi.is-trigger").each(function () {
     if ($(this).hasClass("w--redirected-checked")) {
       $(".checkbox-multi.is-trigger").removeClass("w--redirected-checked");

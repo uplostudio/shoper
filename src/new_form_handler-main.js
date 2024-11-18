@@ -759,10 +759,6 @@ function initializeEventListeners() {
     }
   });
 
-  $("[fs-formsubmit-element='reset']").on("click", () =>
-    $(".loading-in-button").hide()
-  );
-
   $(document).on("submitSuccess submitError", (e, formElement) => {
     const commonData = {
       event: "myTrackEvent",
