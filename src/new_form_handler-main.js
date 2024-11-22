@@ -90,7 +90,7 @@ const inputsData = {
         active_placeholder: "",
         error: "Podaj poprawną nazwę firmy",
         validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
+          /^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż0-9\s"\"&.+-]+(?:\s+(?:sp\.|spółka|S\.A\.|SA|z\s+o\.o\.|z\.o\.o\.|z\s+ograniczoną\s+odpowiedzialnością|spółka\s+komandytowa|sp\.\s+k\.|sp\.\s+j\.|spółka\s+jawna))?$/i,
       },
     },
     {
