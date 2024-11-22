@@ -105,7 +105,7 @@ const inputsData = {
         active_placeholder: "",
         error: "Podaj poprawny adres",
         validationPatterns:
-          /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+(\s+\d+(\s*[a-zA-Z])?(\s*\/\s*\d+)?)?$/,
+          /^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s.-]+\s+\d+(?:[A-Za-z])?(?:\/\d+(?:[A-Za-z])?)?$/,
       },
     },
     {
