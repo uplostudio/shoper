@@ -69,28 +69,37 @@ try {
 
 //recalculate available space on mobile
 // First we get the viewport height and we multiple it by 1% to get a value for a vh unit
+let vh = window.innerHeight * 0.01;
 // Then we set the value in the --vh custom property to the root of the document
-// document.documentElement.style.setProperty("--vh", `${vh}px`);
+document.documentElement.style.setProperty("--vh", `${vh}px`);
 
 // We listen to the resize event
-// window.addEventListener("resize", () => {
-//   // We execute the same script as before
-//   vh = window.innerHeight * 0.01;
-//   document.documentElement.style.setProperty("--vh", `${vh}px`);
-// });
+window.addEventListener("resize", () => {
+  // We execute the same script as before
+  let vh = window.innerHeight * 0.01;
+  document.documentElement.style.setProperty("--vh", `${vh}px`);
+});
 
 //line animation when scrolled into view
+function isScrolledIntoView(elem) {
+  var docViewTop = $(window).scrollTop();
+  var docViewBottom = docViewTop + $(window).height();
 
+  var elemTop = $(elem).offset().top;
+  var elemBottom = elemTop + $(elem).height();
 
-// $(window).scroll(function () {
-//   $(".is-in-view").each(function () {
-//     setTimeout(() => {
-//       if (isScrolledIntoView(this) === true) {
-//         $(this).addClass("animate");
-//       }
-//     }, 2000);
-//   });
-// });
+  return elemBottom <= docViewBottom && elemTop >= docViewTop;
+}
+
+$(window).scroll(function () {
+  $(".is-in-view").each(function () {
+    setTimeout(() => {
+      if (isScrolledIntoView(this) === true) {
+        $(this).addClass("animate");
+      }
+    }, 2000);
+  });
+});
 
 function wrapKeywordInSpan(targetElement, dataAttribute, spanId, spanClass) {
   $(document).ready(function () {
