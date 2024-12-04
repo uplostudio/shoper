@@ -1,6 +1,5 @@
 {
   "version": 2,
-  "rootDirectory": "package-price-updater",
   "headers": [
     {
       "source": "/api/(.*)",
