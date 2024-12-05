@@ -60,7 +60,7 @@ function setHiddenInputs(data) {
     for (let key in data) {
         if (data.hasOwnProperty(key)) {
             if (PARAMS.includes(key)) {
-                document.querySelectorAll("form").forEach(function(item, index) {
+                document.querySelectorAll("form:not(#changelog-filter)").forEach(function(item, index) {
                     item.insertAdjacentHTML(
                         "beforeend",
                         `<input data-name="${VALUE_TRACK_KEY}[${key}]" type="hidden" name="${VALUE_TRACK_KEY}[${key}]" value="${data[key]}"/>`
