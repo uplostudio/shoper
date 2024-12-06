@@ -19,7 +19,8 @@ const paths = {
             'src/intercom_helper.js',
             'src/navigation.js',
             'src/afiliant.js',
-            'src/valueTrack.js'
+            'src/valueTrack.js',
+            'src/prices_map.js'
         ],
         dest: 'bundle/',
         minDest: 'min/'
