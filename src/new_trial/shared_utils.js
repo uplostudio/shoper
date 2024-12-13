@@ -68,7 +68,7 @@ SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, st
             value: data.sid,
             timestamp: now
         }));
-        localStorage.setItem("trialStartTimestamp", now); // Add this line
+        localStorage.setItem("trialStartTimestamp", now);
         this.setCurrentSID(data.sid);
         $('[data-formid="create_trial_step1_new"], [data-formid="create_trial_step2"], [data-formid="create_trial_step2_new"]').attr('data-sid', data.sid);
     }
