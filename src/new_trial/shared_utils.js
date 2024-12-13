@@ -47,6 +47,7 @@ SharedUtils.handleResponse = function(data, $form, $field, $wFormFail, isSuccess
 }
 ;
 
+// In shared_utils.js
 SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, stepNumber) {
     if (data.client_id) {
         window.myGlobals.clientId = data.client_id;
@@ -61,13 +62,13 @@ SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, st
         window.myGlobals.licenseId = data.license_id;
     }
 
-    // Store SID if present in the response
     if (data.sid) {
         const now = new Date().getTime();
         localStorage.setItem('sid', JSON.stringify({
             value: data.sid,
             timestamp: now
         }));
+        localStorage.setItem("trialStartTimestamp", now); // Add this line
         this.setCurrentSID(data.sid);
         $('[data-formid="create_trial_step1_new"], [data-formid="create_trial_step2"], [data-formid="create_trial_step2_new"]').attr('data-sid', data.sid);
     }
@@ -83,6 +84,7 @@ SharedUtils.handleSuccessResponse = function(data, $form, $field, $wFormFail, st
         $(document).trigger('trialStepComplete', [stepNumber, data]);
     }
 };
+
 
 SharedUtils.handleErrorResponse = function(error, $form, $field, $wFormFail, stepNumber) {
     if (error.statusText === "abort") {

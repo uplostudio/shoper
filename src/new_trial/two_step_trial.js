@@ -3,6 +3,25 @@ $(document).ready(() => {
     errors: [],
     phoneRegex: window.validationPatterns["number_phone"],
   };
+  const setTrialEmail = (email) => {
+    localStorage.setItem("trialEmail", email);
+    localStorage.setItem("trialStartTimestamp", Date.now());
+  };
+
+  const checkTrialExpiration = () => {
+    const trialStartTimestamp = localStorage.getItem("trialStartTimestamp");
+    
+    if (trialStartTimestamp) {
+      const currentTime = Date.now();
+      const timeDifference = currentTime - parseInt(trialStartTimestamp);
+      const hoursPassed = timeDifference / (1000 * 60 * 60);
+      
+      if (hoursPassed >= 24) {
+        localStorage.clear();
+      }
+    }
+  };
+  
 
   const $twoStepTrialsWrapper = $('[data-element="trial_wrapper"]');
   let ajaxRequest, currentSID, lastProcessedData;
@@ -282,7 +301,7 @@ $(document).ready(() => {
           $('[data-element^="card-"]').removeClass('modal--open');
 
           if (newEmail !== storedEmail || !trialCompleted) {
-            localStorage.setItem("trialEmail", newEmail);
+            setTrialEmail(newEmail);
             localStorage.setItem("trialCompleted", "false");
             switchToModal("modal_trial_one_two");
           } else {
@@ -748,6 +767,7 @@ $clientTypeRadios.on("change", function () {
     });
     
   });
+  checkTrialExpiration();
 });
 
 $(document).on("formSubmissionComplete", function (event, isSuccess, $form, $emailField, data) {
@@ -767,3 +787,5 @@ $(document).on("formSubmissionComplete", function (event, isSuccess, $form, $ema
 function maskPhoneNumber(phone) {
   return phone.replace(/(\+48)(\d{7})(\d{2})/, "$1 *** *** *$3");
 }
+
+// setInterval(checkTrialExpiration, 60 * 1000);
