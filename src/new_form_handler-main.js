@@ -103,9 +103,9 @@ const inputsData = {
     {
       'address1[line_1]': {
         active_placeholder: '',
-        error: 'Podaj poprawny adres',
+        error: 'np. Woronicza',
         validationPatterns:
-          /^[A-Za-zĄąĆćĘęŁłŃńÓóŚśŹźŻż\s.-]+\s+\d+(?:[A-Za-z])?(?:\/\d+(?:[A-Za-z])?)?$/,
+         /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
       },
     },
     {
