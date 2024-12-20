@@ -826,7 +826,7 @@ $(document).ready(() => {
 
   setupValidation();
   SharedUtils.checkAndUpdateSID();
-  initializeMouseflowTracking();
+  // initializeMouseflowTracking();
 
   if (typeof updateAnalytics === 'function') {
     updateAnalytics();
