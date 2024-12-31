@@ -134,6 +134,74 @@
         });
     });
 
+    $(".nav__dropdown").hover(
+      function() {
+        if (checkIfMobile()) {
+          return;
+        }
+
+        if (!checkIfMobile()) {  // Only add hover handlers if NOT mobile
+          $(".nav__dropdown").hover(
+              function() {
+                  if (dropdownState) return; // Don't interfere if a dropdown is already open via click
+                  
+                  // Close all other dropdowns first
+                  $(".nav__dropdown-list").removeClass(dropdownDirective);
+                  
+                  // Get the current dropdown index
+                  const targetIndex = $(this).attr("data-sh-index");
+                  
+                  // Show only the current dropdown
+                  $(this).find(".nav__dropdown-list").addClass(dropdownDirective);
+                  $(`[data-sh-dropdown="${targetIndex}"]`).addClass(dropdownDirective);
+                  
+                  // Set z-index for the active dropdown
+                  $(this).find(".nav__dropdown-list").css("z-index", "100");
+                  $(`[data-sh-dropdown="${targetIndex}"]`).css("z-index", "100");
+              },
+              function() {
+                  if (dropdownState) return; // Don't interfere if a dropdown is already open via click
+                  
+                  // On hover out, remove the dropdown and reset z-index
+                  const targetIndex = $(this).attr("data-sh-index");
+                  $(this).find(".nav__dropdown-list").removeClass(dropdownDirective);
+                  $(`[data-sh-dropdown="${targetIndex}"]`).removeClass(dropdownDirective);
+                  $(this).find(".nav__dropdown-list").css("z-index", "");
+                  $(`[data-sh-dropdown="${targetIndex}"]`).css("z-index", "");
+              }
+          );
+      }
+      
+        
+        // Close all other dropdowns first
+        $(".nav__dropdown-list").removeClass(dropdownDirective);
+        
+        // Get the current dropdown index
+        const targetIndex = $(this).attr("data-sh-index");
+        
+        // Show only the current dropdown
+        $(this).find(".nav__dropdown-list").addClass(dropdownDirective);
+        $(`[data-sh-dropdown="${targetIndex}"]`).addClass(dropdownDirective);
+        
+        // Set z-index for the active dropdown
+        $(this).find(".nav__dropdown-list").css("z-index", "100");
+        $(`[data-sh-dropdown="${targetIndex}"]`).css("z-index", "100");
+      },
+      function() {
+        if (checkIfMobile()) {
+          return;
+        }
+        
+        // On hover out, remove the dropdown and reset z-index
+        const targetIndex = $(this).attr("data-sh-index");
+        $(this).find(".nav__dropdown-list").removeClass(dropdownDirective);
+        $(`[data-sh-dropdown="${targetIndex}"]`).removeClass(dropdownDirective);
+        $(this).find(".nav__dropdown-list").css("z-index", "");
+        $(`[data-sh-dropdown="${targetIndex}"]`).css("z-index", "");
+      }
+    );
+
+
     if (checkIfMobile()) {
       let dropdownContent = $("[data-sh-dropdown]");
       let target = $('[data-sh-mount="mainDropdown"]');
