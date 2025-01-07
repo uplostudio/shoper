@@ -96,7 +96,7 @@ const inputsData = {
     {
       'address1[nip]': {
         active_placeholder: 'w formacie 1234567890',
-        error: 'Podaj poprawny numer NIP. Dopuszczalne formaty: 1234567890',
+        error: 'Podaj poprawny numer NIP w formacie: 12345678990',
         validationPatterns: /^\d{10}$/,
       },
     },
@@ -109,8 +109,8 @@ const inputsData = {
     },
     {
       'address1[post_code]': {
-        active_placeholder: 'w formacie 12345',
-        error: 'Podaj poprawny kod pocztowy',
+        active_placeholder: 'w formacie 12-345',
+        error: 'Podaj poprawny kod pocztowy w formacie: 12-345',
         validationPatterns: /^(\d{5}|\d{2}-\d{3})$/,
       },
     },
