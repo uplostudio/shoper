@@ -1,4 +1,6 @@
 $(function () {
+  var excludeIntercomFromAllPages = true;
+
   var excludedSubpages = [
     "/rodo",
     "/zmien-oprogramowanie-sklepu",
@@ -39,15 +41,13 @@ $(function () {
   var currentHostname = window.location.hostname;
   var currentPathname = window.location.pathname;
 
-  // Check if the current hostname is in the excluded domains
   var isDomainExcluded = excludedDomains.some(function(domain) {
     return currentHostname === domain || currentHostname.endsWith('.' + domain);
   });
 
-  // Check if the current pathname is in the excluded subpages
   var isSubpageExcluded = excludedSubpages.indexOf(currentPathname) !== -1;
 
-  if (!isDomainExcluded && !isSubpageExcluded) {
+  if (!excludeIntercomFromAllPages && !isDomainExcluded && !isSubpageExcluded) {
     $("body").append('<script src="https://development--shoper-web.netlify.app/intercom.js"></script>');
   }
 });
