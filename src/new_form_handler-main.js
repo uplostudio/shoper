@@ -109,15 +109,15 @@ const inputsData = {
     },
     {
       'address1[post_code]': {
-        active_placeholder: 'w formacie 12-345',
+        active_placeholder: 'np. 12-345',
         error: 'Podaj poprawny kod pocztowy w formacie: 12-345',
         validationPatterns: /^(\d{5}|\d{2}-\d{3})$/,
       },
     },
     {
       'address1[city]': {
-        active_placeholder: '',
-        error: 'Podaj poprawny adres',
+        active_placeholder: '', 
+        error: 'Podaj poprawną nazwę miejscowości',
         validationPatterns:
           /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
       },
