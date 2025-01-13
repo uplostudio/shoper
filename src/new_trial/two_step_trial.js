@@ -1,65 +1,5 @@
 $(document).ready(() => {
-  // function initializeMouseflowTracking() {
-  //   window._mfq = window._mfq || [];
-
-  //   // Track the email validation form
-  //   _mfq.push([
-  //     'config',
-  //     'forms',
-  //     [
-  //       {
-  //         formPath: '/trial/validate-email',
-  //         target: {
-  //           selector: '[data-action="validate_email"] .w-form-done',
-  //         },
-  //         result: 'success',
-  //       },
-  //     ],
-  //   ]);
-
-  //   // Track the first step trial form
-  //   _mfq.push([
-  //     'config',
-  //     'forms',
-  //     [
-  //       {
-  //         formPath: '/trial/step1',
-  //         target: {
-  //           selector: '[data-action="create_trial_step1_new"] .w-form-done',
-  //         },
-  //         result: 'success',
-  //       },
-  //     ],
-  //   ]);
-
-  //   // Track the second step trial form
-  //   _mfq.push([
-  //     'config',
-  //     'forms',
-  //     [
-  //       {
-  //         formPath: '/trial/step2',
-  //         target: {
-  //           selector: '[data-formid="create_trial_step2_new"] .w-form-done',
-  //         },
-  //         result: 'success',
-  //       },
-  //     ],
-  //   ]);
-  // }
-
-//   function ensureMouseflowInitialized() {
-//     if (typeof window._mfq === 'undefined' || !Array.isArray(window._mfq)) {
-//         window._mfq = [];
-//         console.log('Mouseflow queue initialized');
-//     }
-    
-//     // Check if Mouseflow is properly loaded
-//     if (typeof window.mouseflow === 'undefined') {
-//         console.warn('Mouseflow not loaded yet');
-//     }
-// }
-
+  window._mfq = window._mfq || [];
   const state = {
     errors: [],
     phoneRegex: window.validationPatterns['number_phone'],
@@ -390,41 +330,10 @@ $(document).ready(() => {
     ajaxRequest
       .then((response) => {
         if (response.status === 1) {
-          // window._mfq = window._mfq || [];
-          // setTimeout(() => {
-          //   const formAction = $form.data('action');
-          //   const formId = $form.data('formid');
 
-          //   let formPath;
-          //   if (formAction === 'validate_email') {
-          //     formPath = '/trial/validate-email';
-          //   } else if (formAction === 'create_trial_step1_new') {
-          //     formPath = '/trial/step1';
-          //   } else if (formId === 'create_trial_step2_new') {
-          //     formPath = '/trial/step2';
-          //   }
+          let formId = $form.data('formid');
+          window._mfq.push(['formSubmitSuccess', `#${formId}`]);
 
-          //   if (formPath) {
-          //     // Force array initialization if needed
-          //     if (!Array.isArray(window._mfq)) {
-          //       window._mfq = [];
-          //     }
-
-          //     // Push the event
-          //     window._mfq.push([
-          //       'formSubmitSuccess',
-          //       {
-          //         formPath: formPath,
-          //       },
-          //     ]);
-
-          //     // Debug logging
-          //     console.log('Mouseflow tracking pushed:', {
-          //       formPath: formPath,
-          //       _mfq: window._mfq,
-          //     });
-          //   }
-          // }, 100);
           if ($phoneField.length) {
             const iti = window.intlTelInputGlobals.getInstance($phoneField[0]);
             if (iti) {
@@ -499,28 +408,9 @@ $(document).ready(() => {
           ]);
           $('[data-app="trial-domain"]').text(response.host);
         } else {
-          // window._mfq = window._mfq || [];
-          // const formAction = $form.data('action');
-          // const formId = $form.data('formid');
-
-          // let formPath;
-          // if (formAction === 'validate_email') {
-          //   formPath = '/trial/validate-email';
-          // } else if (formAction === 'create_trial_step1_new') {
-          //   formPath = '/trial/step1';
-          // } else if (formId === 'create_trial_step2_new') {
-          //   formPath = '/trial/step2';
-          // }
-
-          // if (formPath) {
-          //   _mfq.push([
-          //     'formSubmitFail',
-          //     {
-          //       formPath: formPath,
-          //       reason: response.message || 'Unknown error',
-          //     },
-          //   ]);
-          // }
+          
+          let formId = $form.data('formid');
+          window._mfq.push(['formSubmitError', `#${formId}`]);
 
           let emailError = null;
           let phoneError = null;
