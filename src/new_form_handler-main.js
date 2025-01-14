@@ -791,11 +791,6 @@ function initializeEventListeners() {
 
     $modal.addClass('modal--open');
     $(document.body).addClass('overflow-hidden');
-
-    // const $form = $modal.find("form:first");
-    // if ($form.length > 0) {
-    //   $form.find(":input:not(select):enabled:visible:first").focus();
-    // }
   });
 
   $(document).on('submitSuccess submitError', (e, formElement) => {
@@ -848,4 +843,80 @@ function cleanObject(obj = {}) {
 $(document).ready(() => {
   initializeInputs();
   initializeEventListeners();
+});
+
+
+$(document).ready(function() {
+    const $select = $('select[name="countries"]')
+  
+    $select.wrap('<div class="country-select-wrapper"></div>');
+    $('<div class="selected-flag"><img class="flag-img" /></div>').insertBefore($select);
+    
+    fetch('https://restcountries.com/v3.1/all?fields=name,flags,idd,translations')
+        .then(response => response.json())
+        .then(countries => {
+            // Find Poland data first for initial state
+            const poland = countries.find(country => country.translations.pol?.common === 'Polska');
+            const polandDialCode = poland.idd.root + (poland.idd.suffixes?.[0] || '');
+            // Set initial flag
+            $('.selected-flag img').attr('src', poland.flags.svg);
+            
+            $select.append('<option value="">Wybierz kraj</option>');
+            
+            countries
+                .sort((a, b) => {
+                    const aName = a.translations.pol?.common || a.name.common;
+                    const bName = b.translations.pol?.common || b.name.common;
+                    return aName.localeCompare(bName);
+                })
+                .forEach(country => {
+                    const dialCode = country.idd.root + (country.idd.suffixes?.[0] || '');
+                    const polishName = country.translations.pol?.common || country.name.common;
+                    
+                    const option = $('<option>', {
+                        value: country.flags.svg,
+                        'data-dial-code': dialCode,
+                        // For dropdown display
+                        'data-full-text': `${polishName} ${dialCode}`,
+                        // For selected display
+                        text: dialCode,
+                        selected: polishName === 'Polska'
+                    });
+                    $select.append(option);
+                });
+            
+            // Set initial texts
+            $select.find('option').each(function() {
+                const fullText = $(this).data('full-text');
+                if (fullText) {
+                    if ($(this).is(':selected')) {
+                        $(this).text($(this).data('dial-code'));
+                    } else {
+                        $(this).text(fullText);
+                    }
+                }
+            });
+            
+            $select.on('change', function() {
+                const flagUrl = $(this).val();
+                const $selectedOption = $select.find('option:selected');
+                const dialCode = $selectedOption.data('dial-code');
+                
+                if (flagUrl) {
+                    // Update flag
+                    $('.selected-flag img').attr('src', flagUrl);
+                    
+                    // Reset all options to full text
+                    $select.find('option').each(function() {
+                        $(this).text($(this).data('full-text'));
+                    });
+                    
+                    // Set selected option to show only dial code
+                    $selectedOption.text(dialCode);
+                }
+            });
+        })
+        .catch(error => {
+            console.error('Error fetching countries:', error);
+        });
 });
