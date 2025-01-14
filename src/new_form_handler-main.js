@@ -840,89 +840,6 @@ function initializeEventListeners() {
   });
 }
 
-function handleSelectPhonePrefix() {
-  const $select = $('select[name="countries"]');
-
-  $select.wrap('<div class="country-select-wrapper"></div>');
-  $('<div class="selected-flag"><img class="flag-img" /></div>').insertBefore(
-    $select
-  );
-
-  fetch('https://restcountries.com/v3.1/all?fields=name,flags,idd,translations')
-    .then((response) => response.json())
-    .then((countries) => {
-      const poland = countries.find(
-        (country) => country.translations.pol?.common === 'Polska'
-      );
-      const polandDialCode = poland.idd.root + (poland.idd.suffixes?.[0] || '');
-
-      $('.selected-flag img').attr('src', poland.flags.svg);
-
-      $select.append('<option value="">Wybierz kraj</option>');
-
-      const polandOption = $('<option>', {
-        value: poland.flags.svg,
-        'data-dial-code': polandDialCode,
-        'data-full-text': `Polska ${polandDialCode}`,
-        text: polandDialCode,
-        selected: true,
-      });
-      $select.append(polandOption);
-
-      countries
-        .filter((country) => country.translations.pol?.common !== 'Polska')
-        .sort((a, b) => {
-          const aName = a.translations.pol?.common || a.name.common;
-          const bName = b.translations.pol?.common || b.name.common;
-          return aName.localeCompare(bName);
-        })
-        .forEach((country) => {
-          const dialCode = country.idd.root + (country.idd.suffixes?.[0] || '');
-          const polishName =
-            country.translations.pol?.common || country.name.common;
-
-          const option = $('<option>', {
-            value: country.flags.svg,
-            'data-dial-code': dialCode,
-            'data-full-text': `${polishName} ${dialCode}`,
-            text: dialCode,
-          });
-          $select.append(option);
-        });
-
-      updateOptionDisplay();
-
-      $select.on('change', function () {
-        const flagUrl = $(this).val();
-        const $selectedOption = $select.find('option:selected');
-        const dialCode = $selectedOption.data('dial-code');
-
-        if (flagUrl) {
-          $('.selected-flag img').attr('src', flagUrl);
-
-          updateOptionDisplay();
-        }
-      });
-    })
-    .catch((error) => {
-      console.error('Error fetching countries:', error);
-    });
-
-  function updateOptionDisplay() {
-    $select.find('option').each(function () {
-      const fullText = $(this).data('full-text');
-      if (fullText) {
-        if ($(this).is(':selected')) {
-          $(this).text($(this).data('dial-code'));
-        } else {
-          $(this).text(fullText);
-        }
-      }
-    });
-  }
-}
-
-
 function cleanObject(obj = {}) {
   return Object.fromEntries(
     Object.entries(obj).filter(([, value]) => value != null && value !== '')
@@ -932,6 +849,6 @@ function cleanObject(obj = {}) {
 $(document).ready(() => {
   initializeInputs();
   initializeEventListeners();
-  handleSelectPhonePrefix();
+  // handleSelectPhonePrefix();
 });
 
