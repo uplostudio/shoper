@@ -88,7 +88,6 @@ $(document).ready(() => {
       eventLabel: window.location.pathname,
     });
   };
-
   const validateField = ($field, type) => {
     const isCheckbox = $field.attr('data-type') === 'checkbox';
     const value = isCheckbox ? $field.prop('checked') : $field.val().trim();
@@ -133,38 +132,19 @@ $(document).ready(() => {
 
   const validatePhone = (field) => {
     const $field = $(field);
-    const iti = window.intlTelInputGlobals.getInstance(field);
-
-    if (!iti) {
-      console.error('IntlTelInput instance not found for field:', field);
-      return 'IntlTelInput not initialized';
-    }
-
+    const $prefixSelect = $field.parent().prev().find('select');
+    const selectedPrefix = $prefixSelect.find(':selected').attr('data-dial-code');
+    const phoneValue = $field.val().trim();
+    
     let error = null;
-    const countryCode = iti.getSelectedCountryData().iso2;
-    let phone = iti.getNumber().trim();
-
     clearErrors($field);
 
-    const phoneErrorMessage =
-      'Niepoprawny numer telefonu. Wprowadź numer składający się z 9 cyfr w formacie: 123456789';
-    const polishPhonePattern = /^(?:\+48)?(?:(?:[\s-]?\d{3}){3}|\d{9})$/;
+    const phoneErrorMessage = 'Niepoprawny numer telefonu. Wprowadź numer składający się z 9 cyfr w formacie: 123456789';
+    const phonePattern = /^\d{9}$/;
 
-    if (!phone) {
+    if (!phoneValue) {
       error = generateErrorMessage('required');
-    } else if (countryCode === 'pl') {
-      const phoneDigitsOnly = phone.replace(/\D/g, '');
-      const phoneWithoutCountryCode = phoneDigitsOnly.startsWith('48')
-        ? phoneDigitsOnly.slice(2)
-        : phoneDigitsOnly;
-
-      if (
-        phoneWithoutCountryCode.length !== 9 ||
-        !polishPhonePattern.test(phone)
-      ) {
-        error = phoneErrorMessage;
-      }
-    } else if (!iti.isValidNumber()) {
+    } else if (!phonePattern.test(phoneValue)) {
       error = phoneErrorMessage;
     }
 
@@ -200,21 +180,16 @@ $(document).ready(() => {
     $label.removeClass('valid invalid').addClass(state);
     $field.removeClass('valid invalid').addClass(state);
   };
-
   const populatePhoneNumberFromLocalStorage = () => {
     const storedPhoneNumber = localStorage.getItem('originalPhoneNumber');
     if (storedPhoneNumber) {
-      const $phoneInput = $(
-        '[data-form="phone_number"]',
-        $twoStepTrialsWrapper
-      );
-      $phoneInput.val(storedPhoneNumber).prop('disabled', true);
-
-      const iti = window.intlTelInputGlobals.getInstance($phoneInput[0]);
-      if (iti) {
-        iti.setNumber(originalPhoneNumber);
-        iti.disable();
-      }
+      const $phoneInput = $('[data-form="phone_number"]', $twoStepTrialsWrapper);
+      $phoneInput.val(storedPhoneNumber.slice(-9)).prop('disabled', true);
+      
+      const prefix = storedPhoneNumber.slice(0, -9);
+      const $prefixSelect = $phoneInput.parent().prev().find('select');
+      $prefixSelect.find(`option[data-dial-code="${prefix}"]`).prop('selected', true);
+      $prefixSelect.prop('disabled', true);
     }
   };
 
@@ -281,14 +256,11 @@ $(document).ready(() => {
     }
 
     if ($phoneField.length) {
-      const iti = window.intlTelInputGlobals.getInstance($phoneField[0]);
-      if (iti) {
-        formData.phone = iti.getNumber();
-      } else {
-        console.error('IntlTelInput instance not found for phone field');
-      }
+      const $prefixSelect = $phoneField.parent().prev().find('select');
+      const selectedPrefix = $prefixSelect.find(':selected').attr('data-dial-code');
+      const phoneValue = $phoneField.val().trim();
+      formData.phone = selectedPrefix + phoneValue; 
     }
-
     if (isPremiumPackage) {
       formData.package = 33;
       formData.period = 12;
@@ -330,18 +302,19 @@ $(document).ready(() => {
     ajaxRequest
       .then((response) => {
         if (response.status === 1) {
-
           let formId = $form.data('formid');
           window._mfq.push(['formSubmitSuccess', `#${formId}`]);
 
           if ($phoneField.length) {
-            const iti = window.intlTelInputGlobals.getInstance($phoneField[0]);
-            if (iti) {
-              const maskedPhoneNumber = maskPhoneNumber(iti.getNumber());
-              localStorage.setItem('phoneNumber', maskedPhoneNumber);
-              localStorage.setItem('originalPhoneNumber', iti.getNumber());
-            }
+            const $prefixSelect = $phoneField.parent().prev().find('select');
+            const selectedPrefix = $prefixSelect.find(':selected').attr('data-dial-code');
+            const phoneValue = $phoneField.val().trim();
+            const fullPhoneNumber = `${selectedPrefix}${phoneValue}`;
+            const maskedPhoneNumber = maskPhoneNumber(fullPhoneNumber);
+            localStorage.setItem('phoneNumber', maskedPhoneNumber);
+            localStorage.setItem('originalPhoneNumber', fullPhoneNumber);
           }
+
           SharedUtils.handleResponse(
             response,
             $form,
@@ -385,7 +358,6 @@ $(document).ready(() => {
             switchToModal('modal_trial_three');
             localStorage.setItem('trialCompleted', 'true');
           }
-
           let actualCompletedStep = 0;
           if (response.step === '#create_trial_step1') {
             actualCompletedStep = 0;
@@ -408,7 +380,6 @@ $(document).ready(() => {
           ]);
           $('[data-app="trial-domain"]').text(response.host);
         } else {
-          
           let formId = $form.data('formid');
           window._mfq.push(['formSubmitError', `#${formId}`]);
 
@@ -475,7 +446,6 @@ $(document).ready(() => {
         ajaxRequest = null;
       });
   };
-
   const setupValidation = () => {
     $(document).on(
       'blur',
@@ -515,19 +485,6 @@ $(document).ready(() => {
         handleFormSubmission(e, $(this));
       }
     );
-
-    $('[data-type="phone"]').each(function () {
-      window.intlTelInput(this, {
-        utilsScript:
-          'https://cdn.jsdelivr.net/npm/intl-tel-input@18.1.1/build/js/utils.js',
-        preferredCountries: ['pl', 'de', 'ie', 'us', 'gb', 'nl'],
-        autoInsertDialCode: false,
-        nationalMode: false,
-        separateDialCode: true,
-        autoPlaceholder: 'off',
-        initialCountry: 'pl',
-      });
-    });
   };
 
   const $openTwoStepTrialWrapperButton = $(
@@ -562,8 +519,6 @@ $(document).ready(() => {
 
       isPremiumPackage = $(this).data('premium') === true;
       isStandardPlusPackage = $(this).data('standard-plus') === true;
-
-      // Determine package details
       let packageDetails;
       if (isPremiumPackage) {
         packageDetails = {
@@ -588,7 +543,6 @@ $(document).ready(() => {
         };
       }
 
-      // Fire begin_checkout event
       DataLayerGatherers.pushDataLayerEvent({
         event: 'begin_checkout',
         formId: 'create_trial_button',
@@ -666,7 +620,6 @@ $(document).ready(() => {
         price: standardPrice,
       };
     }
-
     let formId = $form && $form.length ? $form.attr('id') : 'unknown';
 
     if (actualCompletedStep === 0) {
@@ -742,7 +695,6 @@ $(document).ready(() => {
 
   setupValidation();
   SharedUtils.checkAndUpdateSID();
-  // initializeMouseflowTracking();
 
   if (typeof updateAnalytics === 'function') {
     updateAnalytics();
@@ -776,7 +728,6 @@ $(document).ready(() => {
   };
 
   $(window).on('beforeunload', cleanup);
-
   $(document).ready(function () {
     const $form = $(
       '[data-formid="create_trial_step2_new"], [data-name="reseller"]'
@@ -798,10 +749,16 @@ $(document).ready(() => {
           .find('[data-form="email"]')
           .val(email)
           .prop('disabled', true);
-        $trialForm
-          .find('[data-form="phone_number"]')
-          .val(phone)
-          .prop('disabled', true);
+        
+        if (phone) {
+          const $phoneInput = $trialForm.find('[data-form="phone_number"]');
+          $phoneInput.val(phone.slice(-9)).prop('disabled', true);
+          
+          const prefix = phone.slice(0, -9);
+          const $prefixSelect = $phoneInput.parent().prev().find('select');
+          $prefixSelect.find(`option[data-dial-code="${prefix}"]`).prop('selected', true);
+          $prefixSelect.prop('disabled', true);
+        }
       }
 
       SharedUtils.populateCountrySelect('#address1\\[country\\]');
@@ -852,7 +809,6 @@ $(document).ready(() => {
         .attr('data-exclude', isCompany ? 'true' : null);
       clearAllErrors();
     }
-
     function toggleTrialPromoBox() {
       const isPayNow = $payNowRadios.filter(':checked').val() === '1';
       $trialPromoBox.toggle(isPayNow);
@@ -958,7 +914,6 @@ $(document).ready(() => {
         }
       });
     }
-
     setupForm();
 
     $(document).on(
@@ -1025,7 +980,5 @@ $(document).on(
 );
 
 function maskPhoneNumber(phone) {
-  return phone.replace(/(\+48)(\d{7})(\d{2})/, '$1 *** *** *$3');
+  return phone.replace(/(\+\d{2})(\d{7})(\d{2})/, '$1 *** *** *$3');
 }
-
-// setInterval(checkTrialExpiration, 60 * 1000);

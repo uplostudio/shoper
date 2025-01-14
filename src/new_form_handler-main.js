@@ -116,7 +116,7 @@ const inputsData = {
     },
     {
       'address1[city]': {
-        active_placeholder: '', 
+        active_placeholder: '',
         error: 'Podaj poprawną nazwę miejscowości',
         validationPatterns:
           /^[a-zA-ZàáâäãåąčćęèéêëėįìíîïłńòóôöõøùúûüųūÿýżźñçčšžÀÁÂÄÃÅĄĆČĖĘÈÉÊËÌÍÎÏĮŁŃÒÓÔÖÕØÙÚÛÜŲŪŸÝŻŹÑßÇŒÆČŠŽ∂ðŚś ,.'-]+$/,
@@ -135,13 +135,26 @@ window.validationPatterns = validationPatterns;
 
 function sanitizeMySQLKeywords(value) {
   const mysqlKeywords = [
-    'union', 'select', 'insert', 'update', 'delete', 'drop', 
-    'join', 'where', 'from', 'alter', 'table', 'database'
+    'union',
+    'select',
+    'insert',
+    'update',
+    'delete',
+    'drop',
+    'join',
+    'where',
+    'from',
+    'alter',
+    'table',
+    'database',
   ];
 
   const pattern = new RegExp(`\\b(${mysqlKeywords.join('|')})\\b`, 'gi');
-  
-  return value.replace(pattern, (match) => `${match.charAt(0)}\u200B${match.slice(1)}`);
+
+  return value.replace(
+    pattern,
+    (match) => `${match.charAt(0)}\u200B${match.slice(1)}`
+  );
 }
 
 function validateNIPWithAPI(nip, country) {
@@ -567,10 +580,11 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
   });
 
   const inputSelector = includeDisabled
-    ? "input:not([type='submit']):not([data-exclude='true']), textarea, select"
-    : "input:not([type='submit']):enabled:not([data-exclude='true']), textarea:enabled, select:enabled";
+    ? "input:not([type='submit']):not([data-exclude='true']), textarea, select:not([name='countries'])"
+    : "input:not([type='submit']):enabled:not([data-exclude='true']), textarea:enabled, select:enabled:not([name='countries'])";
 
   const $inputs = $form.find(inputSelector);
+
   const outputValues = {};
   const arrayInputNames = ['marketplace', 'country', 'create_or_move_shop'];
 
@@ -580,7 +594,14 @@ function sendFormDataToURL(formElement, includeDisabled = false) {
     const type = $input.attr('type');
     const dataForm = $input.attr('data-form') || name;
 
-    if (type === 'radio') {
+    if ($input.attr('data-type') === 'phone') {
+      const $prefixSelect = $input.parent().prev().find('select[name="countries"]');
+      const selectedPrefix = $prefixSelect.find(':selected').attr('data-dial-code');
+      const phoneValue = $input.val().trim();
+      if (phoneValue) {
+        outputValues[dataForm] = selectedPrefix.replace(/\s+/g, '') + phoneValue;
+      }
+    } else if (type === 'radio') {
       if ($input.is(':checked')) {
         outputValues[dataForm] = $input.val();
       }
