@@ -841,76 +841,75 @@ function initializeEventListeners() {
 }
 
 function handleSelectPhonePrefix() {
-  $('select[name="countries"]').each(function() {
-    const $select = $(this);
-    
-    if (!$select.parent().hasClass('country-select-wrapper')) {
-      $select.wrap('<div class="country-select-wrapper"></div>');
-      $('<div class="selected-flag"><img class="flag-img" /></div>').insertBefore($select);
-    }
+  const $select = $('select[name="countries"]');
 
-    fetch('https://restcountries.com/v3.1/all?fields=name,flags,idd,translations')
-      .then((response) => response.json())
-      .then((countries) => {
-        const poland = countries.find(
-          (country) => country.translations.pol?.common === 'Polska'
-        );
-        const polandDialCode = poland.idd.root + (poland.idd.suffixes?.[0] || '');
+  $select.wrap('<div class="country-select-wrapper"></div>');
+  $('<div class="selected-flag"><img class="flag-img" /></div>').insertBefore(
+    $select
+  );
 
-        // Update flag for this specific select
-        $select.siblings('.selected-flag').find('img').attr('src', poland.flags.svg);
+  fetch('https://restcountries.com/v3.1/all?fields=name,flags,idd,translations')
+    .then((response) => response.json())
+    .then((countries) => {
+      const poland = countries.find(
+        (country) => country.translations.pol?.common === 'Polska'
+      );
+      const polandDialCode = poland.idd.root + (poland.idd.suffixes?.[0] || '');
 
-        $select.append('<option value="">Wybierz kraj</option>');
+      $('.selected-flag img').attr('src', poland.flags.svg);
 
-        const polandOption = $('<option>', {
-          value: poland.flags.svg,
-          'data-dial-code': polandDialCode,
-          'data-full-text': `Polska ${polandDialCode}`,
-          text: polandDialCode,
-          selected: true,
-        });
-        $select.append(polandOption);
+      $select.append('<option value="">Wybierz kraj</option>');
 
-        countries
-          .filter((country) => country.translations.pol?.common !== 'Polska')
-          .sort((a, b) => {
-            const aName = a.translations.pol?.common || a.name.common;
-            const bName = b.translations.pol?.common || b.name.common;
-            return aName.localeCompare(bName);
-          })
-          .forEach((country) => {
-            const dialCode = country.idd.root + (country.idd.suffixes?.[0] || '');
-            const polishName = country.translations.pol?.common || country.name.common;
-
-            const option = $('<option>', {
-              value: country.flags.svg,
-              'data-dial-code': dialCode,
-              'data-full-text': `${polishName} ${dialCode}`,
-              text: dialCode,
-            });
-            $select.append(option);
-          });
-
-        updateOptionDisplay($select);
-
-        // Handle change event for this specific select
-        $select.off('change').on('change', function() {
-          const flagUrl = $(this).val();
-
-          if (flagUrl) {
-            $(this).siblings('.selected-flag').find('img').attr('src', flagUrl);
-            updateOptionDisplay($(this));
-          }
-        });
-      })
-      .catch((error) => {
-        console.error('Error fetching countries:', error);
+      const polandOption = $('<option>', {
+        value: poland.flags.svg,
+        'data-dial-code': polandDialCode,
+        'data-full-text': `Polska ${polandDialCode}`,
+        text: polandDialCode,
+        selected: true,
       });
-  });
+      $select.append(polandOption);
 
-  // Updated updateOptionDisplay to work with specific select element
-  function updateOptionDisplay($select) {
-    $select.find('option').each(function() {
+      countries
+        .filter((country) => country.translations.pol?.common !== 'Polska')
+        .sort((a, b) => {
+          const aName = a.translations.pol?.common || a.name.common;
+          const bName = b.translations.pol?.common || b.name.common;
+          return aName.localeCompare(bName);
+        })
+        .forEach((country) => {
+          const dialCode = country.idd.root + (country.idd.suffixes?.[0] || '');
+          const polishName =
+            country.translations.pol?.common || country.name.common;
+
+          const option = $('<option>', {
+            value: country.flags.svg,
+            'data-dial-code': dialCode,
+            'data-full-text': `${polishName} ${dialCode}`,
+            text: dialCode,
+          });
+          $select.append(option);
+        });
+
+      updateOptionDisplay();
+
+      $select.on('change', function () {
+        const flagUrl = $(this).val();
+        const $selectedOption = $select.find('option:selected');
+        const dialCode = $selectedOption.data('dial-code');
+
+        if (flagUrl) {
+          $('.selected-flag img').attr('src', flagUrl);
+
+          updateOptionDisplay();
+        }
+      });
+    })
+    .catch((error) => {
+      console.error('Error fetching countries:', error);
+    });
+
+  function updateOptionDisplay() {
+    $select.find('option').each(function () {
       const fullText = $(this).data('full-text');
       if (fullText) {
         if ($(this).is(':selected')) {
@@ -922,7 +921,6 @@ function handleSelectPhonePrefix() {
     });
   }
 }
-
 
 
 function cleanObject(obj = {}) {
