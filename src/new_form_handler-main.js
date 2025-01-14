@@ -869,31 +869,30 @@ $(document).ready(function() {
           const polandOption = $('<option>', {
               value: poland.flags.svg,
               'data-dial-code': polandDialCode,
-              'data-full-text': `${poland.translations.pol?.common || poland.name.common} ${polandDialCode}`,
+              'data-full-text': `Polska ${polandDialCode}`,
               text: polandDialCode,
               selected: true
           });
           $select.append(polandOption);
-
+          
           countries
+              .filter(country => country.translations.pol?.common !== 'Polska')
               .sort((a, b) => {
                   const aName = a.translations.pol?.common || a.name.common;
                   const bName = b.translations.pol?.common || b.name.common;
                   return aName.localeCompare(bName);
               })
               .forEach(country => {
-                  if (country.translations.pol?.common !== 'Polska') {
-                      const dialCode = country.idd.root + (country.idd.suffixes?.[0] || '');
-                      const polishName = country.translations.pol?.common || country.name.common;
-                      
-                      const option = $('<option>', {
-                          value: country.flags.svg,
-                          'data-dial-code': dialCode,
-                          'data-full-text': `${polishName} ${dialCode}`,
-                          text: `${polishName} ${dialCode}`
-                      });
-                      $select.append(option);
-                  }
+                  const dialCode = country.idd.root + (country.idd.suffixes?.[0] || '');
+                  const polishName = country.translations.pol?.common || country.name.common;
+                  
+                  const option = $('<option>', {
+                      value: country.flags.svg,
+                      'data-dial-code': dialCode,
+                      'data-full-text': `${polishName} ${dialCode}`,
+                      text: dialCode
+                  });
+                  $select.append(option);
               });
           
           $select.find('option').each(function() {
