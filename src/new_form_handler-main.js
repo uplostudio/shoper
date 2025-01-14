@@ -900,11 +900,6 @@ function handleSelectPhonePrefix() {
         if (flagUrl) {
           $('.selected-flag img').attr('src', flagUrl);
 
-          const $phoneInput = $('#phone');
-          if ($phoneInput.length) {
-            $phoneInput.attr('placeholder', dialCode);
-          }
-
           updateOptionDisplay();
         }
       });
