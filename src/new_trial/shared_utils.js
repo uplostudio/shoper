@@ -171,24 +171,6 @@ SharedUtils.populateCountrySelect = function(selectElement, selectedCountry="PL"
 }
 ;
 
-// Common event listeners
-$(document).on("click", ".iti.iti--allow-dropdown.iti--separate-dial-code.iti--show-flags", function() {
-    if ($(window).width() < 992) {
-        var container = $(".iti.iti--container");
-        if (container.length && !container.parent().is(this)) {
-            container.css({
-                top: "48px",
-                left: "0",
-                position: "absolute",
-                height: "50vh",
-                "overflow-y": "auto",
-            });
-
-            $(this).append(container);
-        }
-    }
-});
-
 // Countries list
 SharedUtils.countriesList = [{
     name_pl: "Polska",
