@@ -840,6 +840,152 @@ function initializeEventListeners() {
   });
 }
 
+function handleSelectPhonePrefix() {
+  const $select = $('select[name="countries"]');
+  if (!$select.length) return;
+
+  const defaultPoland = {
+      flags: {
+          svg: 'https://flagcdn.com/pl.svg'
+      },
+      dialCode: '+48'
+  };
+
+  function setupDefaultSelect($currentSelect) {
+      $currentSelect.empty().append(`
+          <option value="">Wybierz kraj</option>
+          <option value="${defaultPoland.flags.svg}" 
+                  data-dial-code="${defaultPoland.dialCode}" 
+                  data-full-text="Polska ${defaultPoland.dialCode}" 
+                  selected>
+              ${defaultPoland.dialCode}
+          </option>
+      `);
+  }
+
+  let errorLogged = false;
+  function handleError($wrapper, $currentSelect, error) {
+      if (!errorLogged) {
+          console.error('Country select initialization failed:', {
+              error: error?.message || error,
+              status: error?.status,
+              type: error?.type
+          });
+          errorLogged = true;
+      }
+
+      setupDefaultSelect($currentSelect);
+      updateOptionDisplay($currentSelect);
+      
+      if ($wrapper) {
+          $wrapper.find('.selected-flag img').attr('src', defaultPoland.flags.svg);
+      }
+  }
+
+  const countriesPromise = fetch('https://restcountries.com/v3.1/all?fields=name,flags,idd,translations')
+      .then(response => {
+          if (!response.ok) {
+              throw new Error(`Failed to fetch countries: ${response.status} ${response.statusText}`);
+          }
+          return response.json();
+      })
+      .catch(error => {
+          throw new Error(`Network request failed: ${error.message}`);
+      });
+
+  $select.each(function() {
+      const $currentSelect = $(this);
+      const $wrapper = $currentSelect.wrap('<div class="country-select-wrapper"></div>').parent();
+      const $flagContainer = $('<div class="selected-flag"><img class="flag-img" /></div>');
+      
+      $flagContainer.insertBefore($currentSelect);
+      setupDefaultSelect($currentSelect);
+      $wrapper.find('.selected-flag img').attr('src', defaultPoland.flags.svg);
+
+      countriesPromise
+          .then(countries => {
+              if (!Array.isArray(countries)) {
+                  throw new Error('Invalid API response: expected array of countries');
+              }
+
+              if (!countries.length) {
+                  throw new Error('Empty countries list received from API');
+              }
+
+              $currentSelect.empty().append('<option value="">Wybierz kraj</option>');
+
+              const poland = countries.find(country => country.translations.pol?.common === 'Polska');
+              if (!poland?.idd?.root) {
+                  throw new Error('Poland data is missing or invalid in API response');
+              }
+
+              const polandDialCode = poland.idd.root + (poland.idd.suffixes?.[0] || '');
+              $currentSelect.append(`
+                  <option value="${poland.flags.svg}" 
+                          data-dial-code="${polandDialCode}" 
+                          data-full-text="Polska ${polandDialCode}" 
+                          selected>
+                      ${polandDialCode}
+                  </option>
+              `);
+              $wrapper.find('.selected-flag img').attr('src', poland.flags.svg);
+
+              const validCountries = countries.filter(country => 
+                  country.translations.pol?.common !== 'Polska' && 
+                  country.idd?.root &&
+                  country.flags?.svg
+              );
+
+              if (!validCountries.length) {
+                  throw new Error('No valid country data found in API response');
+              }
+
+              validCountries
+                  .sort((a, b) => {
+                      const aName = a.translations.pol?.common || a.name.common;
+                      const bName = b.translations.pol?.common || b.name.common;
+                      return aName.localeCompare(bName);
+                  })
+                  .forEach(country => {
+                      const dialCode = country.idd.root + (country.idd.suffixes?.[0] || '');
+                      const polishName = country.translations.pol?.common || country.name.common;
+                      $currentSelect.append(`
+                          <option value="${country.flags.svg}" 
+                                  data-dial-code="${dialCode}" 
+                                  data-full-text="${polishName} ${dialCode}">
+                              ${dialCode}
+                          </option>
+                      `);
+                  });
+
+              updateOptionDisplay($currentSelect);
+          })
+          .catch(error => {
+              handleError($wrapper, $currentSelect, error);
+          });
+
+      $currentSelect.on('change', function() {
+          const $selected = $(this).find(':selected');
+          const flagUrl = $selected.val();
+          const dialCode = $selected.data('dial-code');
+
+          if (flagUrl) {
+              $wrapper.find('.selected-flag img').attr('src', flagUrl);
+              updateOptionDisplay($(this));
+          }
+      });
+  });
+
+  function updateOptionDisplay($select) {
+      $select.find('option').each(function() {
+          const fullText = $(this).data('full-text');
+          if (fullText) {
+              $(this).text($(this).is(':selected') ? $(this).data('dial-code') : fullText);
+          }
+      });
+  }
+}
+
 function cleanObject(obj = {}) {
   return Object.fromEntries(
     Object.entries(obj).filter(([, value]) => value != null && value !== '')
@@ -849,6 +995,6 @@ function cleanObject(obj = {}) {
 $(document).ready(() => {
   initializeInputs();
   initializeEventListeners();
-  // handleSelectPhonePrefix();
+  handleSelectPhonePrefix();
 });
 
