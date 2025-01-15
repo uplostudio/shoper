@@ -751,7 +751,7 @@ $(document).ready(() => {
           .prop('disabled', true);
         
         if (phone) {
-          const $phoneInput = $trialForm.find('[data-form="phone_number"]');
+          const $phoneInput = $trialForm.find('[data-form="phone"]');
           $phoneInput.val(phone.slice(-9)).prop('disabled', true);
           
           const prefix = phone.slice(0, -9);
