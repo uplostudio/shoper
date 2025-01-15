@@ -761,7 +761,8 @@ $(document).ready(() => {
         }
       }
 
-      SharedUtils.populateCountrySelect('#address1\\[country\\]');
+      SharedUtils.populateCountrySelect('[data-form="address1[country]"]');
+
 
       $clientTypeRadios
         .filter('[value="1"]')

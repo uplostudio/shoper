@@ -168,8 +168,7 @@ SharedUtils.populateCountrySelect = function(selectElement, selectedCountry="PL"
         }
         $(selectElement).append(option);
     });
-}
-;
+};
 
 // Countries list
 SharedUtils.countriesList = [{
