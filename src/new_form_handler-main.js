@@ -858,7 +858,7 @@ function handleSelectPhonePrefix() {
                   data-dial-code="${defaultPoland.dialCode}" 
                   data-full-text="Polska ${defaultPoland.dialCode}" 
                   selected>
-              ${defaultPoland.dialCode}
+              Polska ${defaultPoland.dialCode}
           </option>
       `);
   }
@@ -875,8 +875,6 @@ function handleSelectPhonePrefix() {
       }
 
       setupDefaultSelect($currentSelect);
-      updateOptionDisplay($currentSelect);
-      
       if ($wrapper) {
           $wrapper.find('.selected-flag img').attr('src', defaultPoland.flags.svg);
       }
@@ -898,9 +896,32 @@ function handleSelectPhonePrefix() {
       const $wrapper = $currentSelect.wrap('<div class="country-select-wrapper"></div>').parent();
       const $flagContainer = $('<div class="selected-flag"><img class="flag-img" /></div>');
       
+      // Create a custom display element for the selected value
+      const $customDisplay = $('<div class="custom-select-display"></div>');
+      
       $flagContainer.insertBefore($currentSelect);
+      $customDisplay.insertAfter($currentSelect);
       setupDefaultSelect($currentSelect);
       $wrapper.find('.selected-flag img').attr('src', defaultPoland.flags.svg);
+
+      function updateSelectedDisplay() {
+          const $selected = $currentSelect.find(':selected');
+          const dialCode = $selected.data('dial-code') || '';
+          const flagUrl = $selected.val();
+          
+          if (flagUrl) {
+              $wrapper.find('.selected-flag img').attr('src', flagUrl);
+              $customDisplay.text(dialCode);
+          }
+      }
+
+      // Initial display update
+      updateSelectedDisplay();
+
+      // Handle change events
+      $currentSelect.on('change', function() {
+          updateSelectedDisplay();
+      });
 
       countriesPromise
           .then(countries => {
@@ -925,7 +946,7 @@ function handleSelectPhonePrefix() {
                           data-dial-code="${polandDialCode}" 
                           data-full-text="Polska ${polandDialCode}" 
                           selected>
-                      ${polandDialCode}
+                      Polska ${polandDialCode}
                   </option>
               `);
               $wrapper.find('.selected-flag img').attr('src', poland.flags.svg);
@@ -953,37 +974,17 @@ function handleSelectPhonePrefix() {
                           <option value="${country.flags.svg}" 
                                   data-dial-code="${dialCode}" 
                                   data-full-text="${polishName} ${dialCode}">
-                              ${dialCode}
+                              ${polishName} ${dialCode}
                           </option>
                       `);
                   });
 
-              updateOptionDisplay($currentSelect);
+              updateSelectedDisplay();
           })
           .catch(error => {
               handleError($wrapper, $currentSelect, error);
           });
-
-      $currentSelect.on('change', function() {
-          const $selected = $(this).find(':selected');
-          const flagUrl = $selected.val();
-          const dialCode = $selected.data('dial-code');
-
-          if (flagUrl) {
-              $wrapper.find('.selected-flag img').attr('src', flagUrl);
-              updateOptionDisplay($(this));
-          }
-      });
   });
-
-  function updateOptionDisplay($select) {
-      $select.find('option').each(function() {
-          const fullText = $(this).data('full-text');
-          if (fullText) {
-              $(this).text($(this).is(':selected') ? $(this).data('dial-code') : fullText);
-          }
-      });
-  }
 }
 
 function cleanObject(obj = {}) {
